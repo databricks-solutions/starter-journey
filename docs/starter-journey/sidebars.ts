@@ -180,6 +180,19 @@ const sidebars: SidebarsConfig = {
         'databricks-aibi/databricks-apps',
       ],
     },
+    {
+      type: 'category',
+      label: '10. Business semantics',
+      collapsed: true,
+      link: {type: 'doc', id: 'business-semantics/index'},
+      items: [
+        'business-semantics/why-semantic-layer',
+        'business-semantics/metric-views-fundamentals',
+        'business-semantics/data-modeling-metric-views',
+        'business-semantics/agent-metadata-ai-readiness',
+        'business-semantics/technical-enablement-lab',
+      ],
+    },
   ],
 };
 
