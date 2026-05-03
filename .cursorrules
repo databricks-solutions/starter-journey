@@ -1,0 +1,40 @@
+# Cursor Rules — Starter Journey
+
+Read CLAUDE.md at the repo root for full project context. This file adds Cursor-specific guidance.
+
+## Quick start
+
+The Docusaurus project is at `docs/starter-journey/` (not the repo root). To start the dev server:
+
+```bash
+cd docs/starter-journey && npm install && npm run start -- --port 3000
+```
+
+## Before editing documentation
+
+1. Read `docs/STYLE.md` for the two page templates (Technical and Educational) and writing rules.
+2. Check `docs/starter-journey/sidebars.ts` to understand the current section numbering and structure.
+3. After any doc or sidebar change, run `npm run build` from `docs/starter-journey/` to catch broken links.
+
+## File patterns
+
+- **Doc pages:** `docs/starter-journey/docs/**/*.md` — use markdown, not MDX, unless you need React imports.
+- **Sidebar config:** `docs/starter-journey/sidebars.ts` — manually managed. Every new page must be registered here.
+- **Site config:** `docs/starter-journey/docusaurus.config.ts` — plugins, navbar, footer, gtag.
+- **Images:** `docs/starter-journey/static/img/` — prefix with section slug (e.g., `infra-*.png`).
+- **Blog posts:** `docs/starter-journey/blog/YYYY-MM-DD-<slug>.mdx`.
+
+## Rules for generated content
+
+- Only use `:::tip`, `:::warning`, `:::danger` admonitions. No `:::info`, `:::success`, `:::note`.
+- Every page needs the shared top chrome (frontmatter + value prop + prereqs) and bottom chrome (`## Next` with Do next / Learn why / Reference).
+- Internal links use `/docs/<path>` format. Never use relative file paths.
+- No filler phrases. See the banned-phrases list in `docs/STYLE.md`.
+- One idea per sentence. Paragraphs under 4 sentences. Active voice.
+
+## Git workflow
+
+- Create feature branches from `main` for all changes.
+- PRs to `main` run a build check via GitHub Actions (`test-deploy.yml`).
+- Merges to `main` auto-deploy to GitHub Pages (`deploy.yml`).
+- Do not commit `node_modules/`, `build/`, or `.docusaurus/`.
