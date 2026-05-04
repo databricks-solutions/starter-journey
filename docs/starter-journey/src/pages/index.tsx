@@ -2,39 +2,41 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HeaderAnimation from '@site/src/components/HeaderAnimation';
 import Heading from '@theme/Heading';
+import {useColorMode} from '@docusaurus/theme-common';
 
 import styles from './index.module.css';
 
-function HomepageHeader() {
+function HomepageHero() {
   const {siteConfig} = useDocusaurusContext();
+  const {colorMode} = useColorMode();
+  const isDarkTheme = colorMode === 'dark';
+
   return (
-    <header className={clsx('hero', styles.heroBanner)}>
-      <div className="container">
-        <div className={styles.heroImageWrapper}>
-          <img
-            src={useBaseUrl('img/mainpage.jpg')}
-            alt="Starter Journey"
-            className={styles.heroImage}
-            style={{ maxWidth: '560px', width: '100%', height: 'auto' }}
-          />
+    <section className={styles.heroSection}>
+      <HeaderAnimation isDarkMode={isDarkTheme} />
+      <div className={styles.heroOverlay}>
+        <div className={styles.heroText}>
+          <Heading as="h1" className={styles.heroTitle}>
+            {siteConfig.title}
+          </Heading>
+          <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--primary button--lg"
+              to="/docs/get-started">
+              Start the Journey →
+            </Link>
+          </div>
         </div>
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--primary button--lg"
-            to="/docs/get-started">
-            Start the Journey →
-          </Link>
+        <div className={styles.heroFeatures}>
+          <HomepageFeatures />
         </div>
       </div>
-    </header>
+    </section>
   );
 }
 
@@ -44,10 +46,7 @@ export default function Home(): ReactNode {
     <Layout
       title={siteConfig.title}
       description={siteConfig.tagline}>
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
+      <HomepageHero />
     </Layout>
   );
 }

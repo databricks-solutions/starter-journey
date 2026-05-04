@@ -1,39 +1,76 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+/* ═══════════════════════════════════════
+   HERO SECTION (canvas + text + features)
+   ═══════════════════════════════════════ */
 
-.heroBanner {
-  padding: 2rem 0 4rem;
-  text-align: center;
+.heroSection {
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 1.5rem 3rem;
 }
 
-.heroImageWrapper {
-  margin-bottom: 1.5rem;
-}
-
-.heroImage {
-  max-width: 320px;
+.heroOverlay {
+  position: relative;
+  z-index: 10;
   width: 100%;
-  height: auto;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 1.5rem 2rem 3rem;
-  }
+.heroText {
+  max-width: 700px;
+}
 
-  .heroImage {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-  }
+.heroTitle {
+  font-size: 5.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.heroSubtitle {
+  font-size: 1.3rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+:global([data-theme='dark']) .heroSubtitle {
+  color: #bbb;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroFeatures {
+  width: 100%;
+}
+
+@media screen and (max-width: 996px) {
+  .heroSection {
+    padding: 3rem 1rem 2rem;
+  }
+
+  .heroTitle {
+    font-size: 3.3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .heroOverlay {
+    gap: 2rem;
+  }
 }
