@@ -68,7 +68,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/starter-journey-social-card.png',
     colorMode: {
       defaultMode: 'light',
       respectPrefersColorScheme: false,
