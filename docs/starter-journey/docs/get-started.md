@@ -34,5 +34,6 @@ The Starter Journey is a step-by-step guide that takes you from an empty Databri
 | 7 | **[Automation & orchestration](/docs/orchestration)** | The pipeline running on a schedule with retries and notifications |
 | 8 | **[Query and explore](/docs/query-and-explore)** | Interactive SQL queries running against your lakehouse data |
 | 9 | **[Databricks AI/BI](/docs/databricks-aibi)** | Dashboards, Genie Spaces, and apps surfacing data to business users |
+| 10 | **[Cost monitoring](/docs/cost-monitoring)** | Tags, billing system tables, account usage UI, budgets, and AI/BI cost dashboards |
 
 Use the sidebar to navigate through each section in order, or jump directly to the topic you need.

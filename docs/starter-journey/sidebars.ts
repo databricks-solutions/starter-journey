@@ -180,6 +180,19 @@ const sidebars: SidebarsConfig = {
         'databricks-aibi/databricks-apps',
       ],
     },
+    {
+      type: 'category',
+      label: '10. Cost monitoring',
+      collapsed: true,
+      link: {type: 'doc', id: 'cost-monitoring/index'},
+      items: [
+        'cost-monitoring/tag-compute-and-jobs',
+        'cost-monitoring/system-billing-usage',
+        'cost-monitoring/cost-management-ui',
+        'cost-monitoring/budget-alerts',
+        'cost-monitoring/cost-dashboard-aibi',
+      ],
+    },
   ],
 };
 
