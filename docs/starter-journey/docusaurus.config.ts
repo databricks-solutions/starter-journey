@@ -31,21 +31,6 @@ const config: Config = {
 
   plugins: [
     [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: [
-          {
-            from: '/docs/cost-monitoring/cost-management-ui',
-            to: '/docs/cost-monitoring/import-usage-dashboard',
-          },
-          {
-            from: '/docs/cost-monitoring/cost-dashboard-aibi',
-            to: '/docs/cost-monitoring/import-usage-dashboard',
-          },
-        ],
-      },
-    ],
-    [
       require.resolve('docusaurus-plugin-search-local'),
       {
         hashed: true,
