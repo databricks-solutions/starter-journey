@@ -12,11 +12,7 @@ description: Install the dbdemos system-tables package for optional forecasting 
 
 Multiple dashboards plus notebooks: consumption tracking, **DBU** forecast, model-endpoint cost attribution, warehouse attribution, and UC/volume analysis. Intermediate tables land in a **Unity Catalog catalog and schema you choose** (not necessarily `main`).
 
-:::warning
-
-**dbdemos** is open source and **not** an officially supported Databricks product. Treat installs as best-effort; use GitHub issues for demo bugs.
-
-:::
+**Official source (Demo Center):** [System Tables: Billing Forecast, Usage Analytics, and Access Auditing with Unity Catalog](https://www.databricks.com/resources/demos/tutorials/governance/system-tables?itm_data=demo_center&itm_source=www&itm_category=home&itm_page=home&itm_component=card&itm_offer=system-tables)
 
 :::tip
 
@@ -109,4 +105,4 @@ Confirm the cluster has internet egress to PyPI and enough resources.
 
 - **Do next:** [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)
 - **Learn why:** [Unity Catalog foundations](/docs/before-you-start/foundations/unity-catalog)
-- **Reference:** [System Tables billing demo (Demo Center)](https://www.databricks.com/resources/demos/tutorials/governance/system-tables)
+- **Reference:** [System Tables demo (Demo Center)](https://www.databricks.com/resources/demos/tutorials/governance/system-tables?itm_data=demo_center&itm_source=www&itm_category=home&itm_page=home&itm_component=card&itm_offer=system-tables)

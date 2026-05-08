@@ -35,8 +35,6 @@ Sign in as an account admin:
 - **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
 - **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
 
-Same pattern as [Add Groups — Manual, step 1](/docs/infra-setup/add-groups/manual#1-open-the-account-console).
-
 ## Steps
 
 Follow the official guide end to end: **[Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)**.
@@ -50,10 +48,6 @@ Use this pattern when you want a **development** slice of the account with two e
 - **Budget name:** `Development Workspace budget`
 - **Definitions:** restrict to your non-production workspace (and optional tag filters if you use them on [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)).
 - **Alert thresholds:** add **$500** and **$1000** as two separate monthly lines with the right distribution lists.
-
-The diagram below is a **layout reference** (replace with your own screenshots from the account console when you publish internally).
-
-![Reference layout for Development Workspace budget with thresholds at 500 and 1000 USD](/img/cost-budget-development-workspace-reference.svg)
 
 ## Expect latency
 

@@ -28,8 +28,6 @@ Open the account console for your cloud:
 - **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
 - **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
 
-Same pattern as [Add Groups — Manual, step 1](/docs/infra-setup/add-groups/manual#1-open-the-account-console).
-
 ### 2. Open Usage and import {#import-the-usage-dashboard}
 
 1. Click **Usage** in the left sidebar.
