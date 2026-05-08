@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Starter Journey',
   tagline: 'The essential building blocks for organizations starting with Databricks',
-  favicon: 'img/icon.ico',
+  favicon: 'img/databricks-logo-orange.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here.
-  url: 'https://github.com',
+  url: 'https://databricks-solutions.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/starter-journey/',
 
@@ -59,12 +59,16 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        gtag: {
+          trackingID: 'G-QX34J60J8M',
+          anonymizeIP: false,
+        },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/starter-journey-social-card.png',
     colorMode: {
       defaultMode: 'light',
       respectPrefersColorScheme: false,
