@@ -103,7 +103,19 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '4. Data Governance Strategy',
+      label: '4. Cost monitoring',
+      collapsed: true,
+      link: {type: 'doc', id: 'cost-monitoring/index'},
+      items: [
+        'cost-monitoring/import-usage-dashboard',
+        'cost-monitoring/additional-dashboards',
+        'cost-monitoring/tag-compute-and-jobs',
+        'cost-monitoring/budget-alerts',
+      ],
+    },
+    {
+      type: 'category',
+      label: '5. Data Governance Strategy',
       collapsed: true,
       link: {type: 'doc', id: 'data-governance-strategy/index'},
       items: [
@@ -113,7 +125,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '5. Access your data',
+      label: '6. Access your data',
       collapsed: true,
       link: {type: 'doc', id: 'access-your-data/index'},
       items: [
@@ -150,7 +162,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '6. Build the first pipeline',
+      label: '7. Build the first pipeline',
       collapsed: true,
       link: {type: 'doc', id: 'build-first-pipeline/index'},
       items: [
@@ -160,7 +172,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '7. Automation & Orchestration',
+      label: '8. Automation & Orchestration',
       collapsed: true,
       link: {type: 'doc', id: 'orchestration/index'},
       items: [
@@ -168,31 +180,16 @@ const sidebars: SidebarsConfig = {
         'orchestration/dabs',
       ],
     },
-    {type: 'doc', id: 'query-and-explore', label: '8. Query and Explore'},
+    {type: 'doc', id: 'query-and-explore', label: '9. Query and Explore'},
     {
       type: 'category',
-      label: '9. Databricks AI/BI',
+      label: '10. Databricks AI/BI',
       collapsed: true,
       link: {type: 'doc', id: 'databricks-aibi/index'},
       items: [
         'databricks-aibi/dashboards',
         'databricks-aibi/genie-spaces',
         'databricks-aibi/databricks-apps',
-      ],
-    },
-    {
-      type: 'category',
-      label: '10. Cost monitoring',
-      collapsed: true,
-      link: {type: 'doc', id: 'cost-monitoring/index'},
-      items: [
-        'cost-monitoring/import-usage-dashboard',
-        'cost-monitoring/system-tables-demo-dashboards',
-        'cost-monitoring/system-billing-usage',
-        'cost-monitoring/tag-compute-and-jobs',
-        'cost-monitoring/budget-alerts',
-        'cost-monitoring/sql-cost-alerts',
-        'cost-monitoring/compute-policies-cost',
       ],
     },
   ],

@@ -1,53 +1,57 @@
 ---
 sidebar_position: 0
 sidebar_label: Cost monitoring
-description: Import dashboards, enable billing system tables, attribute usage with tags, set budgets and SQL alerts, and enforce compute policies.
+description: Day-zero cost visibility after infra setup—import usage dashboards, optional dbdemos dashboards, tags, and budgets.
 ---
 
 # Cost monitoring
 
-> **You'll stand up** cost observability, attribution, alerts, and guardrails across seven ordered topics — roughly **see → understand → control**.
+> **You'll complete** a short **day-zero** cost path right after infra: see spend in the account console, optionally add dashboards in a workspace, tag workloads, and set budgets.
 >
-> **Prereqs:** [Infra setup](/docs/infra-setup), [Unity Catalog foundations](/docs/before-you-start/foundations/unity-catalog)
+> **Prereqs:** [Infra setup](/docs/infra-setup)
 
 ## Why this matters
 
-Spend often ramps before teams agree how to read it. Databricks already records **DBUs**; your job is surfacing that signal fast, explaining what feeds charts, tagging workloads, then layering proactive alerts and creation-time limits.
+Organizations that wait on cost monitoring inherit two predictable problems: **surprise invoices** when usage scales before anyone is watching, and **no credible story** when finance asks who drove which spend. Day-zero monitoring fixes that by making consumption visible **while** you still have a small number of workspaces and owners. You align expectations before teams multiply, pipelines land in production, and tags become painful to retrofit.
 
-Expect **under an hour** of focused admin work spread across the steps below when schemas are already present.
+Databricks already emits billable usage. The Starter Journey keeps the first pass **admin-light**: account-console dashboard import, optional packaged dashboards, attribution habits, and budgets—without replacing the full depth of product documentation.
 
-This section follows the Starter Journey dossier **v3**: dashboards first (**show**), system tables next (**explain**), attribution and budgets (**monitor**), SQL alerts (**custom signals**), compute policies (**prevent**).
+## Mental model (system tables)
+
+**System tables** are the read-only billing and operations tables in the **`system`** catalog (for example **`system.billing.usage`** and **`system.billing.list_prices`**). Imported dashboards and SQL you write later both read from them. You do not need to master the schema on day zero; you need to know they are the **source of truth** for consumption and list-price dollars.
+
+For depth, use the official references:
+
+- [System tables reference](https://docs.databricks.com/aws/en/admin/system-tables/)
+- [Billable usage system table reference](https://docs.databricks.com/aws/en/admin/system-tables/billing)
+- [Monitor costs using system tables](https://docs.databricks.com/aws/en/admin/usage/system-tables)
+- [Top 10 queries to use with System Tables](https://community.databricks.com/t5/technical-blog/top-10-queries-to-use-with-system-tables/bc-p/89393) (community walkthrough)
 
 ## Journey checklist
 
 - [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
-- [x] ~~Data Governance Strategy.~~
-- [x] ~~Access your data.~~
-- [x] ~~Build the first pipeline.~~
-- [x] ~~Automation and orchestration.~~
-- [x] ~~Query and explore.~~
-- [x] ~~Databricks AI/BI.~~
-- [ ] **Cost monitoring**
+- [ ] **Cost monitoring (day zero)**
     - [ ] [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard)
-    - [ ] [Demo dashboards (dbdemos)](/docs/cost-monitoring/system-tables-demo-dashboards)
-    - [ ] [System tables](/docs/cost-monitoring/system-billing-usage)
+    - [ ] [Additional dashboards](/docs/cost-monitoring/additional-dashboards)
     - [ ] [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)
     - [ ] [Budget alerts](/docs/cost-monitoring/budget-alerts)
-    - [ ] [SQL cost alerts](/docs/cost-monitoring/sql-cost-alerts)
-    - [ ] [Compute policies](/docs/cost-monitoring/compute-policies-cost)
+- [ ] [Data governance strategy](/docs/data-governance-strategy)
+- [ ] [Access your data](/docs/access-your-data)
+- [ ] [Build the first pipeline](/docs/build-first-pipeline)
+- [ ] [Automation & orchestration](/docs/orchestration)
+- [ ] [Query and explore](/docs/query-and-explore)
+- [ ] [Databricks AI/BI](/docs/databricks-aibi)
 
 ## Recommended order
 
 | Step | Topic | Why this slot |
 |------|-------|----------------|
-| 1 | [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard) | Fastest zero-code visibility from the account console. |
-| 2 | [Demo dashboards (dbdemos)](/docs/cost-monitoring/system-tables-demo-dashboards) | Specialized forecasts and attribution packs on real data. |
-| 3 | [System tables](/docs/cost-monitoring/system-billing-usage) | Understand **`system.billing`** once you have seen it in dashboards. |
-| 4 | [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs) | Forward-looking attribution for classic and serverless compute. |
-| 5 | [Budget alerts](/docs/cost-monitoring/budget-alerts) | Account-wide monthly monitors with email. |
-| 6 | [SQL cost alerts](/docs/cost-monitoring/sql-cost-alerts) | Workspace schedules with Slack/email/webhooks for nuanced rules. |
-| 7 | [Compute policies](/docs/cost-monitoring/compute-policies-cost) | Block oversized clusters and enforce tags at creation time. |
+| 1 | [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard) | Fast visibility from the account console—no SQL. |
+| 2 | [Additional dashboards](/docs/cost-monitoring/additional-dashboards) | Optional packaged dashboards on your catalog and schema. |
+| 3 | [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs) | Forward-only labels for team and project rollups. |
+| 4 | [Budget alerts](/docs/cost-monitoring/budget-alerts) | Account-level monthly monitors with email. |
 
 ## Next
 

@@ -7,7 +7,7 @@ description: This page moved. Use Import usage dashboard for the pre-built usage
 
 > **This page moved.** Pre-built usage import and custom AI/BI dashboards are covered on one page now.
 >
-> **Prereqs:** [System tables](/docs/cost-monitoring/system-billing-usage), [Databricks AI/BI](/docs/databricks-aibi)
+> **Prereqs:** [Databricks AI/BI](/docs/databricks-aibi); billing tables are documented in [Monitor costs using system tables](https://docs.databricks.com/aws/en/admin/usage/system-tables)
 
 Use **[Import usage dashboard](./import-usage-dashboard)** for **Setup dashboard** from the account console, version choice, scope, and publish options.
 

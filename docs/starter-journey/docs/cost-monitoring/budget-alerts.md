@@ -1,14 +1,14 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 sidebar_label: Budget alerts
-description: Create account-console budgets with monthly USD thresholds and email alerts scoped by workspace or tags.
+description: Account admins configure monthly budgets with email thresholds; follow the official budgets guide and use the example Development Workspace budget.
 ---
 
 # Budget alerts
 
-> **You'll create** account-level budgets that email stakeholders when spend crosses list-price thresholds in ~15 min.
+> **You'll configure** account-level budgets that email stakeholders when spend crosses list-price thresholds.
 >
-> **Prereqs:** [Account Console foundations](/docs/before-you-start/foundations/account-console), [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs) (recommended for tag filters)
+> **Prereqs:** [Account Console foundations](/docs/before-you-start/foundations/account-console)
 
 ## What you'll build
 
@@ -21,76 +21,48 @@ Monthly **USD** budgets driven by **list prices** (including platform add-ons). 
 
 :::warning
 
-Budgets **monitor only**. Usage keeps accruing after you cross a threshold.
+Only **account admins** create budgets. Budgets **monitor only** — usage keeps accruing after you cross a threshold.
 
 :::
 
 **Public Preview — budgets:** Limits may change before GA.
 
-<!-- TODO: dossier open question #8 — Budget GA timeline and alert caps -->
+## Open the account console
+
+Sign in as an account admin:
+
+- **AWS:** [accounts.cloud.databricks.com](https://accounts.cloud.databricks.com)
+- **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
+- **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
+
+Same pattern as [Add Groups — Manual, step 1](/docs/infra-setup/add-groups/manual#1-open-the-account-console).
 
 ## Steps
 
-### 1. Create a budget
+Follow the official guide end to end: **[Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)**.
 
-1. Sign in to the [account console](https://accounts.cloud.databricks.com).
-2. Open **Usage**.
-3. Open the **Budgets** tab.
-4. Click **Add budget**.
-5. Enter a **Name**.
-6. Under **Definitions**, optionally choose workspaces and/or **custom tag** key:value filters — leave blank for account-wide scope.
-7. Add up to **four** unique **Monthly threshold** amounts. Each threshold carries its own comma-separated **Email** list.
-8. Click **Create**.
+That guide covers **Usage** → **Budgets** → **Add budget**, definitions, thresholds, and email recipients.
 
-Recipients do not need Databricks accounts.
+## Example: Development Workspace budget
 
-### 2. Expect latency
+Use this pattern when you want a **development** slice of the account with two early-warning thresholds:
+
+- **Budget name:** `Development Workspace budget`
+- **Definitions:** restrict to your non-production workspace (and optional tag filters if you use them on [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)).
+- **Alert thresholds:** add **$500** and **$1000** as two separate monthly lines with the right distribution lists.
+
+The diagram below is a **layout reference** (replace with your own screenshots from the account console when you publish internally).
+
+![Reference layout for Development Workspace budget with thresholds at 500 and 1000 USD](/img/cost-budget-development-workspace-reference.svg)
+
+## Expect latency
 
 Alerts may lag usage by up to **24 hours**. New budgets can show **$0** briefly while telemetry catches up.
-
-<!-- TODO: dossier open question #10 — billing latency vs formal SLA -->
-
-### 3. Validate scope with SQL (optional)
-
-Workspace rollups month-to-date:
-
-```sql
-SELECT
-  workspace_id,
-  SUM(u.usage_quantity * lp.pricing.effective_list.default) AS mtd_cost_usd
-FROM system.billing.usage u
-JOIN system.billing.list_prices lp
-  ON u.sku_name = lp.sku_name
-  AND u.cloud = lp.cloud
-  AND u.usage_start_time >= lp.price_start_time
-  AND (u.usage_end_time <= lp.price_end_time OR lp.price_end_time IS NULL)
-WHERE u.usage_date >= DATE_TRUNC('month', CURRENT_DATE)
-GROUP BY 1
-ORDER BY mtd_cost_usd DESC;
-```
-
-Tag rollups:
-
-```sql
-SELECT
-  custom_tags['team'] AS team,
-  SUM(u.usage_quantity * lp.pricing.effective_list.default) AS mtd_cost_usd
-FROM system.billing.usage u
-JOIN system.billing.list_prices lp
-  ON u.sku_name = lp.sku_name
-  AND u.cloud = lp.cloud
-  AND u.usage_start_time >= lp.price_start_time
-  AND (u.usage_end_time <= lp.price_end_time OR lp.price_end_time IS NULL)
-WHERE u.usage_date >= DATE_TRUNC('month', CURRENT_DATE)
-  AND custom_tags['team'] IS NOT NULL
-GROUP BY 1
-ORDER BY mtd_cost_usd DESC;
-```
 
 ## Verify
 
 1. **Usage** → **Budgets** lists the new budget.
-2. Open it — cumulative spend plots against dotted thresholds.
+2. Open it — cumulative spend plots against dotted threshold lines.
 3. For a dry-run email, set a threshold below month-to-date spend and wait (check spam).
 
 ## Troubleshoot
@@ -112,7 +84,7 @@ Verify addresses, spam folders, and that spend crossed the configured threshold 
 <details>
 <summary>Totals mismatch invoices</summary>
 
-Budgets intentionally ignore credits/discounts. Model contracts in SQL or external tools if needed.
+Budgets intentionally ignore credits and discounts. Model contracts in SQL or external tools if you need invoice-accurate thresholds.
 
 </details>
 
@@ -132,6 +104,6 @@ Confirm resources emitted that tag before the budget month ([Tags and attributio
 
 ## Next
 
-- **Do next:** [SQL cost alerts](/docs/cost-monitoring/sql-cost-alerts)
+- **Do next:** [Data governance strategy](/docs/data-governance-strategy)
 - **Learn why:** [Account Console foundations](/docs/before-you-start/foundations/account-console)
 - **Reference:** [Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)
