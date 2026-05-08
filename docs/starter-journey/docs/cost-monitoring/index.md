@@ -1,22 +1,22 @@
 ---
 sidebar_position: 0
 sidebar_label: Cost monitoring
-description: Attribute spend with tags, enable billing system tables, use the account console, set budgets, and build cost dashboards.
+description: Import dashboards, enable billing system tables, attribute usage with tags, set budgets and SQL alerts, and enforce compute policies.
 ---
 
 # Cost monitoring
 
-> **You'll set up** cost visibility and alerts across your account in under an hour of admin time, spread across the topics below.
+> **You'll stand up** cost observability, attribution, alerts, and guardrails across seven ordered topics — roughly **see → understand → control**.
 >
 > **Prereqs:** [Infra setup](/docs/infra-setup), [Unity Catalog foundations](/docs/before-you-start/foundations/unity-catalog)
 
 ## Why this matters
 
-When organizations first adopt Databricks, spend can grow quickly, often before anyone sees what is driving the bill. Early cost monitoring prevents surprise invoices at month-end and the inability to answer who spent what and why once leadership asks.
+Spend often ramps before teams agree how to read it. Databricks already records **DBUs**; your job is surfacing that signal fast, explaining what feeds charts, tagging workloads, then layering proactive alerts and creation-time limits.
 
-Databricks records every unit of consumption automatically. Your work is enabling the data, labeling it with tags, and pointing a dashboard or alert at it. Doing that right after foundational setup pays off from day one.
+Expect **under an hour** of focused admin work spread across the steps below when schemas are already present.
 
-This section walks five topics in order: tag resources so costs can be attributed, turn on system billing tables for raw data, use the built-in account console for quick answers, configure budget alerts for proactive email, then build a custom dashboard for ongoing team-level monitoring.
+This section follows the Starter Journey dossier **v3**: dashboards first (**show**), system tables next (**explain**), attribution and budgets (**monitor**), SQL alerts (**custom signals**), compute policies (**prevent**).
 
 ## Journey checklist
 
@@ -29,24 +29,28 @@ This section walks five topics in order: tag resources so costs can be attribute
 - [x] ~~Query and explore.~~
 - [x] ~~Databricks AI/BI.~~
 - [ ] **Cost monitoring**
-    - [ ] [Tag compute and jobs](/docs/cost-monitoring/tag-compute-and-jobs)
-    - [ ] [Enable system billing usage](/docs/cost-monitoring/system-billing-usage)
-    - [ ] [Use the cost management UI](/docs/cost-monitoring/cost-management-ui)
-    - [ ] [Set up budget alerts](/docs/cost-monitoring/budget-alerts)
-    - [ ] [Build a cost dashboard with AI/BI](/docs/cost-monitoring/cost-dashboard-aibi)
+    - [ ] [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard)
+    - [ ] [Demo dashboards (dbdemos)](/docs/cost-monitoring/system-tables-demo-dashboards)
+    - [ ] [System tables](/docs/cost-monitoring/system-billing-usage)
+    - [ ] [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)
+    - [ ] [Budget alerts](/docs/cost-monitoring/budget-alerts)
+    - [ ] [SQL cost alerts](/docs/cost-monitoring/sql-cost-alerts)
+    - [ ] [Compute policies](/docs/cost-monitoring/compute-policies-cost)
 
-## What you'll set up
+## Recommended order
 
-Work through these pages in order. Tagging is forward-only, so start there. System tables gate SQL alerts and custom dashboards. The account console works without SQL, but understanding billing tables helps you read the UI.
-
-- **[Tag compute and jobs](/docs/cost-monitoring/tag-compute-and-jobs)** — Add custom tags to clusters, warehouses, pools, and serverless policies so usage rolls up by team, project, or cost center.
-- **[Enable system billing usage](/docs/cost-monitoring/system-billing-usage)** — Turn on the `system.billing` schema and query `system.billing.usage` with list prices for DBU and dollar estimates.
-- **[Use the cost management UI](/docs/cost-monitoring/cost-management-ui)** — Read the legacy usage chart, align list prices to your contract, and download usage CSVs. The **Consumption** tab is the entry point for the pre-built dashboard in [Build a cost dashboard with AI/BI](/docs/cost-monitoring/cost-dashboard-aibi#import-the-pre-built-usage-dashboard).
-- **[Set up budget alerts](/docs/cost-monitoring/budget-alerts)** — Create monthly budgets with email thresholds scoped by workspace or tag, plus optional SQL alerts for custom rules.
-- **[Build a cost dashboard with AI/BI](/docs/cost-monitoring/cost-dashboard-aibi#import-the-pre-built-usage-dashboard)** — Import the pre-built usage dashboard from the account console, or author a Lakeview dashboard on billing tables.
+| Step | Topic | Why this slot |
+|------|-------|----------------|
+| 1 | [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard) | Fastest zero-code visibility from the account console. |
+| 2 | [Demo dashboards (dbdemos)](/docs/cost-monitoring/system-tables-demo-dashboards) | Specialized forecasts and attribution packs on real data. |
+| 3 | [System tables](/docs/cost-monitoring/system-billing-usage) | Understand **`system.billing`** once you have seen it in dashboards. |
+| 4 | [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs) | Forward-looking attribution for classic and serverless compute. |
+| 5 | [Budget alerts](/docs/cost-monitoring/budget-alerts) | Account-wide monthly monitors with email. |
+| 6 | [SQL cost alerts](/docs/cost-monitoring/sql-cost-alerts) | Workspace schedules with Slack/email/webhooks for nuanced rules. |
+| 7 | [Compute policies](/docs/cost-monitoring/compute-policies-cost) | Block oversized clusters and enforce tags at creation time. |
 
 ## Next
 
-- **Do next:** [Tag compute and jobs](/docs/cost-monitoring/tag-compute-and-jobs)
+- **Do next:** [Import usage dashboard](/docs/cost-monitoring/import-usage-dashboard)
 - **Learn why:** [Account Console foundations](/docs/before-you-start/foundations/account-console)
 - **Reference:** [Cost management tools on Databricks](https://docs.databricks.com/aws/en/admin/usage)

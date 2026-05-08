@@ -25,7 +25,26 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  // Load before preset client modules so window.gtag exists when the gtag
+  // plugin fires on client-side navigations (blocked scripts / race conditions).
+  clientModules: [require.resolve('./src/clientModules/gtag-shim.ts')],
+
   plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/cost-monitoring/cost-management-ui',
+            to: '/docs/cost-monitoring/import-usage-dashboard',
+          },
+          {
+            from: '/docs/cost-monitoring/cost-dashboard-aibi',
+            to: '/docs/cost-monitoring/import-usage-dashboard',
+          },
+        ],
+      },
+    ],
     [
       require.resolve('docusaurus-plugin-search-local'),
       {
