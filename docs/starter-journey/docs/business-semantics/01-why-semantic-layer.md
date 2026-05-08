@@ -1,47 +1,52 @@
 ---
 sidebar_label: "Why a semantic layer?"
-description: The metric drift problem, Unity Catalog as governance, define-once use-everywhere, and where business semantics fit on the platform.
+description: How Unity Catalog metric views fix metric drift across SQL, dashboards, and AI.
 ---
 
 # Why a semantic layer?
 
-> **You'll** name the business and trust issues a **semantic layer** addresses, and place **business semantics** in the Databricks stack — in about **20 minutes** of reading.
+> **You'll** see the metric drift problem and where Unity Catalog metric views fix it — in **5 min**.
 >
 > **Prereqs:** [Business semantics — overview](/docs/business-semantics/)
 
-**Who this is for:** Engineers, analysts, business users, and leadership.  
-**Outcome:** Shared vocabulary and a clear “why” before you change anything in a workspace.
+## The problem: same KPI, different numbers
 
-## The metric drift problem
+Three teams report Q1 revenue. Three different numbers.
 
-In most organizations, “revenue,” “active user,” and “fiscal quarter” mean different things in each team’s spreadsheets, dashboards, and ad hoc SQL. Small differences add up to **inconsistent KPIs** — leadership sees conflicting numbers, and it is hard to know which version is **authoritative**.
+- **Sales:** `SUM(amount) WHERE status = 'closed'` → $4.2M
+- **Finance:** `SUM(amount) WHERE invoice_date >= '2026-01-01'` → $4.0M
+- **BI dashboard:** `SUM(net_amount)` joined to a refunds table → $3.8M
 
-**Metric drift** is not one bad query; it is **parallel definitions** of the same business idea with no single place that **owns** the logic.
+Each is reasonable. Each lives in a different SQL file or BI tool. Nobody owns the canonical definition. Leadership picks the one they trust most this week.
 
-## Unity Catalog as the governance foundation
+## The fix: define metrics once, in the catalog
 
-[Unity Catalog](/docs/before-you-start/foundations/unity-catalog) is where **who can see what** meets **where data comes from**. Grants and row filters control access; lineage and audit logs show how assets connect. When **metric** logic also lives in that layer, you govern **definitions** with the **data** — not in each tool separately.
+A **metric view** is a Unity Catalog object that holds the formula, the grain, and the filters for a KPI. SQL editors, notebooks, AI/BI dashboards, and Genie all call the same object — they cannot drift.
 
-## Define once, use everywhere
+```sql
+SELECT `Total Revenue`
+FROM main.sales.orders_metrics
+WHERE `Order Month` >= '2026-01-01';
+```
 
-A central semantic definition means **one** implementation of a KPI, used wherever it is needed. Teams still slice by region, time, or product — the **core formula and grain** stay the same. The same object can feed SQL, notebooks, AI/BI, and natural-language features on the lakehouse **without** re-copying rules into every surface. That is what this path helps you **activate** as a first-class feature.
+Same query in any tool. Same number, every time.
 
-## Where business semantics fits in the platform
+## Where it sits
 
-**Business semantics** (as **metric views** in Unity Catalog) is the **definition layer** above curated tables. Queries, jobs, dashboards, and agents **call** that layer instead of re-deriving metrics in silos. The other Starter Journey sections (pipelines, [AI/BI](/docs/databricks-aibi/), and so on) work best when you can **trust** those shared definitions.
+```
+[curated tables]  →  [metric views]  →  [SQL / AI/BI / Genie / agents]
+                          ↑
+                   governed in Unity Catalog
+```
 
-:::tip Reflection (self-paced)
-On your own or with a few stakeholders, write how **one** business concept is defined (for example **revenue** or **active user**), each from a different function. If definitions disagree, you have a concrete case for a governed semantic layer — no slide deck required.
+Consumers still slice by region, time, or product. The formula stays in one place.
+
+:::tip Quick alignment exercise
+Ask three people on different teams to write the SQL for "active customer." If you get three answers, you have a concrete case for a metric view — no slide deck required.
 :::
-
-## Topic checklist
-
-- [ ] I can explain **metric drift** in one sentence
-- [ ] I can name **one** way Unity Catalog supports **governed** metric definitions
-- [ ] I understand **where** metric views sit relative to **tables and BI**
 
 ## Next
 
 - **Do next:** [Metric views fundamentals](/docs/business-semantics/metric-views-fundamentals)
 - **Learn why:** [Data governance strategy](/docs/data-governance-strategy/)
-- **Reference:** [Unity Catalog — Databricks documentation](https://docs.databricks.com/aws/en/data-governance/unity-catalog/index.html)
+- **Reference:** [Business semantics in Unity Catalog](https://docs.databricks.com/aws/en/business-semantics/)

@@ -188,8 +188,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'business-semantics/why-semantic-layer',
         'business-semantics/metric-views-fundamentals',
-        'business-semantics/data-modeling-metric-views',
-        'business-semantics/agent-metadata-ai-readiness',
         'business-semantics/technical-enablement-lab',
       ],
     },
