@@ -6,7 +6,7 @@ description: Install the dbdemos system-tables package for optional forecasting 
 
 # Additional dashboards
 
-> **You'll install** the community **`system-tables`** demo so optional AI/BI dashboards run against your real billing data in ~25 min.
+> **You'll install** the community **`system-tables`** demo so optional AI/BI dashboards run against your real billing data in ~15 min.
 
 ## What you'll build
 
@@ -24,24 +24,17 @@ Confirm the demo slug is still **`system-tables`** on PyPI or GitHub before you 
 
 ## Steps
 
-### 1. Install dbdemos in a Python notebook
+### 1. Install the dashboard from dbdemos library.
 
-1. Open a Python notebook attached to cluster or serverless.
-2. Run:
+Run the following cells on a new Python notebook.
 
 ```python
 %pip install dbdemos
 ```
 
-3. Restart Python:
-
 ```python
 dbutils.library.restartPython()
 ```
-
-### 2. Install the system-tables demo
-
-Set **`catalog`** and **`schema`** to a location where you have **CREATE** (replace placeholders with your real names):
 
 ```python
 import dbdemos
@@ -49,20 +42,25 @@ import dbdemos
 catalog = "mycatalog"
 schema = "myschema"
 
-dbdemos.install("system-tables", catalog=catalog, schema=schema)
+dbdemos.install("uc-04-system-tables", catalog=catalog, schema=schema)
 ```
+
+Set **`catalog`** and **`schema`** to your existing UC assets, example:
 
 Wait until the notebook finishes and prints status for notebooks and dashboards.
 
-### 3. Open dashboards in the workspace
+![dbdemos install notebook showing the system tables demo setup with catalog and schema configuration](/img/usage-demo-1.webp)
 
-In the workspace sidebar, open **Dashboards**. Open the new dashboards from the install output (or search by title, for example **DBU Consumption Forecast**). Confirm each loads against non-sample usage.
+![dbdemos install output listing the installed Databricks AI/BI dashboards and Genie Space for system tables](/img/usage-demo-2.webp)
+
 
 ## Verify
 
-1. **Billing Forecast** shows history and a projected trend when enough history exists (**30+** days helps).
-2. **Warehouse Cost Attribution** shows non-null **`warehouse_id`** rows when SQL warehouses drove usage.
-3. Open an installed notebook and trace the SQL behind a chart.
+Open **Dashboards** and **Genie Spaces** sections to verify the new assets.
+
+![Dashboards list showing the installed dbdemos System Tables dashboards in a Databricks workspace](/img/verify-demo-1.webp)
+
+![Genie Spaces page showing the installed Databricks System Table Genie Space](/img/verify-demo-2.webp)
 
 ## Troubleshoot
 

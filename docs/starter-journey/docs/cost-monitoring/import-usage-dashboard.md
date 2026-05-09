@@ -6,7 +6,7 @@ description: Account admins import the pre-built AI/BI usage dashboard and read 
 
 # Import usage dashboard
 
-> **You'll import** the account-console usage dashboard into a workspace and know how to read the **Usage** page in ~20 min.
+> **You'll import** the account-console usage dashboard into a workspace and know how to read the **Usage** page in ~10 min.
 
 ## What you'll build
 
@@ -14,7 +14,7 @@ A pre-built, editable AI/BI (**Lakeview**) dashboard scoped to your account or o
 
 :::warning
 
-Only **account admins** can import the dashboard from the account console. If **Setup dashboard** is missing, sign in with an account admin identity.
+Only **account admins** can import the dashboard from the account console.
 
 :::
 
@@ -28,7 +28,9 @@ Open the account console for your cloud:
 - **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
 - **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
 
-### 2. Open Usage and import {#import-the-usage-dashboard}
+### 2. Import the usage dashboard into a Workspace
+
+![Setup usage dashboard dialog showing Account usage selected, Version 2.0, and a target workspace dropdown with the Import button highlighted](/img/import-usage-dashboard.webp)
 
 1. Click **Usage** in the left sidebar.
 2. Click **Setup dashboard**.
@@ -70,9 +72,13 @@ Add datasets from SQL on **`system.billing.usage`** and joined **`system.billing
 
 ## Verify
 
+![Dashboards page in a Databricks workspace showing the imported Account Usage Dashboard featured at the top of the list](/img/verify-usage-dashboard.webp)
+
 1. Open the imported dashboard and confirm charts return data for a recent date range.
 2. Open the **Custom tags** view — untagged usage looks sparse until you tag compute ([Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)).
 3. Ask a colleague with **SELECT** on **`system.billing`** (and warehouse access if you published with viewer credentials) to open the published dashboard.
+
+
 
 ## Troubleshoot
 

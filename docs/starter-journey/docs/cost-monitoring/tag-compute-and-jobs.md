@@ -38,7 +38,12 @@ Serverless notebooks, jobs, Lakeflow pipelines, and model serving pick up tags f
 
 One assigned policy auto-attaches; multiple policies force an explicit pick at creation; if none is chosen, the UI may default to the first alphabetical policy; changes affect **new** usage only.
 
-**Video:** [Serverless usage policies walkthrough](https://youtu.be/KngmFckrabU)
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/KngmFckrabU"
+  title="Serverless usage policies walkthrough"
+></iframe>
 
 ## Classic compute
 

@@ -49,6 +49,8 @@ Use this pattern when you want a **development** slice of the account with two e
 - **Definitions:** restrict to your non-production workspace (and optional tag filters if you use them on [Tags and attribution](/docs/cost-monitoring/tag-compute-and-jobs)).
 - **Alert thresholds:** add **$500** and **$1000** as two separate monthly lines with the right distribution lists.
 
+![Create budget form showing name, workspace scope, and two monthly alert thresholds at $500 and $1000](/img/create-budget.webp)
+
 ## Expect latency
 
 Alerts may lag usage by up to **24 hours**. New budgets can show **$0** briefly while telemetry catches up.
@@ -58,6 +60,8 @@ Alerts may lag usage by up to **24 hours**. New budgets can show **$0** briefly 
 1. **Usage** → **Budgets** lists the new budget.
 2. Open it — cumulative spend plots against dotted threshold lines.
 3. For a dry-run email, set a threshold below month-to-date spend and wait (check spam).
+
+![Budget detail panel showing the Development Workspace budget with monthly thresholds and alert email addresses](/img/verify-budget.webp)
 
 ## Troubleshoot
 
