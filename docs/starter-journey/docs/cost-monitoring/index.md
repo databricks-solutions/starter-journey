@@ -14,8 +14,6 @@ description: Day-zero cost visibility after infra setup—import usage dashboard
 
 Organizations that wait on cost monitoring inherit two predictable problems: **surprise invoices** when usage scales before anyone is watching, and **no credible story** when finance asks who drove which spend. Day-zero monitoring fixes that by making consumption visible **while** you still have a small number of workspaces and owners. You align expectations before teams multiply, pipelines land in production, and tags become painful to retrofit.
 
-Databricks already emits billable usage. The Starter Journey keeps the first pass **admin-light**: account-console dashboard import, optional packaged dashboards, attribution habits, and budgets—without replacing the full depth of product documentation.
-
 ## Mental model (system tables)
 
 **System tables** are the read-only billing and operations tables in the **`system`** catalog (for example **`system.billing.usage`** and **`system.billing.list_prices`**). Imported dashboards and SQL you write later both read from them. You do not need to master the schema on day zero; you need to know they are the **source of truth** for consumption and list-price dollars.
