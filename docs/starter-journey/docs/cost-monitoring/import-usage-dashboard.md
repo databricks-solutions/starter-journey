@@ -10,7 +10,7 @@ description: Account admins import the pre-built AI/BI usage dashboard and read 
 
 ## What you'll build
 
-A pre-built, editable AI/BI (**Lakeview**) dashboard scoped to your account or one workspace. Charts break down spend by product, SKU, and tags without authoring SQL first.
+A pre-built, editable dashboard in **AI/BI Dashboards**, scoped to your account or one workspace. Charts break down spend by product, SKU, and tags without authoring SQL first.
 
 :::warning
 
@@ -66,7 +66,7 @@ Graphs and downloads reconcile to **`system.billing.usage`**. When numbers diver
 
 :::
 
-### 5. Optional: build your own Lakeview dashboard
+### 5. Optional: build your own dashboard in AI/BI Dashboards
 
 Add datasets from SQL on **`system.billing.usage`** and joined **`system.billing.list_prices`**. Start from [Databricks AI/BI dashboards](/docs/databricks-aibi/dashboards) and [Dashboards (AI/BI)](https://docs.databricks.com/aws/en/dashboards).
 
