@@ -25,6 +25,10 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  // Load before preset client modules so window.gtag exists when the gtag
+  // plugin fires on client-side navigations (blocked scripts / race conditions).
+  clientModules: [require.resolve('./src/clientModules/gtag-shim.ts')],
+
   plugins: [
     [
       require.resolve('docusaurus-plugin-search-local'),
