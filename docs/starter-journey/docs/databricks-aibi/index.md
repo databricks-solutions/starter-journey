@@ -4,7 +4,7 @@ sidebar_label: 9. Databricks AI/BI
 description: Build dashboards, Genie spaces, and applications to surface lakehouse data to business users.
 ---
 
-# 9. Databricks AI/BI
+# 10. Databricks AI/BI
 
 > **You'll learn** how Databricks AI/BI turns lakehouse data into dashboards, natural-language analytics, and custom applications in ~5 min.
 >
@@ -16,14 +16,17 @@ Data sitting in tables is useful to engineers. Business users need dashboards, s
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
 - [x] ~~Data Governance Strategy.~~
 - [x] ~~Access your data.~~
 - [x] ~~Build the first pipeline.~~
 - [x] ~~Automation and orchestration.~~
 - [x] ~~Query and explore.~~
 - [ ] **Databricks AI/BI.**
+- [ ] Business semantics.
 
 ## How it works
 

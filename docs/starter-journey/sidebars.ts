@@ -45,7 +45,7 @@ const sidebars: SidebarsConfig = {
             {
               type: 'category',
               label: 'AWS',
-              link: {type: 'doc', id: 'infra-setup/create-workspaces/aws/index'},
+              collapsed: true,
               items: [
                 'infra-setup/create-workspaces/aws/manual',
                 'infra-setup/create-workspaces/aws/terraform',
@@ -54,7 +54,7 @@ const sidebars: SidebarsConfig = {
             {
               type: 'category',
               label: 'Azure',
-              link: {type: 'doc', id: 'infra-setup/create-workspaces/azure/index'},
+              collapsed: true,
               items: [
                 'infra-setup/create-workspaces/azure/manual',
                 'infra-setup/create-workspaces/azure/terraform',
@@ -63,7 +63,7 @@ const sidebars: SidebarsConfig = {
             {
               type: 'category',
               label: 'GCP',
-              link: {type: 'doc', id: 'infra-setup/create-workspaces/gcp/index'},
+              collapsed: true,
               items: [
                 'infra-setup/create-workspaces/gcp/manual',
                 'infra-setup/create-workspaces/gcp/terraform',
@@ -194,13 +194,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '11. Business semantics',
+      label: '11. Business Semantics',
       collapsed: true,
       link: {type: 'doc', id: 'business-semantics/index'},
       items: [
-        'business-semantics/why-semantic-layer',
-        'business-semantics/metric-views-fundamentals',
-        'business-semantics/technical-enablement-lab',
+        'business-semantics/lab',
       ],
     },
   ],

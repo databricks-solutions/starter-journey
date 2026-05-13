@@ -15,14 +15,17 @@ Data is connected, governance is in place, but raw data sitting in storage does 
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
 - [x] ~~Data Governance Strategy.~~
 - [x] ~~Access your data.~~
 - [ ] **Build the first pipeline.**
 - [ ] Automation and orchestration.
 - [ ] Query and explore.
 - [ ] Databricks AI/BI.
+- [ ] Business semantics.
 
 ## Data engineering on Databricks
 

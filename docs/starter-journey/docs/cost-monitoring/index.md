@@ -27,7 +27,7 @@ For depth, use the official references:
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
 - [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
 - [ ] **Cost monitoring (day zero)**
@@ -41,6 +41,7 @@ For depth, use the official references:
 - [ ] [Automation & orchestration](/docs/orchestration)
 - [ ] [Query and explore](/docs/query-and-explore)
 - [ ] [Databricks AI/BI](/docs/databricks-aibi)
+- [ ] [Business semantics](/docs/business-semantics)
 
 ## Recommended order
 

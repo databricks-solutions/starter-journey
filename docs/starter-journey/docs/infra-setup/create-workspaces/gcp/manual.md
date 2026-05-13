@@ -1,5 +1,5 @@
 ---
-sidebar_label: Manual (GCP)
+sidebar_label: Manual
 description: Create a Databricks workspace on GCP manually through the account console.
 ---
 

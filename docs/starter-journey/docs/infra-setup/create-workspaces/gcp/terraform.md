@@ -1,5 +1,5 @@
 ---
-sidebar_label: Terraform (GCP)
+sidebar_label: Terraform
 description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform.
 ---
 

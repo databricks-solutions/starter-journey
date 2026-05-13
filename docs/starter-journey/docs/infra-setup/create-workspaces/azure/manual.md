@@ -1,5 +1,5 @@
 ---
-sidebar_label: Manual (Azure)
+sidebar_label: Manual
 description: Create a Databricks workspace on Azure manually through the Azure portal.
 ---
 

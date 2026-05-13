@@ -18,13 +18,22 @@ Transferring ownership to a group ensures continuity and shared responsibility.
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [ ] Infra setup
-    - [x] Create workspaces.
-    - [x] Add users.
-    - [x] Add groups.
+    - [x] ~~Create workspaces.~~
+    - [x] ~~Add users.~~
+    - [x] ~~Add groups.~~
     - [ ] **Change ownership to metastore admins.**
     - [ ] Activate SSO.
+- [ ] Cost monitoring.
+- [ ] Data Governance Strategy.
+- [ ] Access your data.
+- [ ] Build the first pipeline.
+- [ ] Automation and orchestration.
+- [ ] Query and explore.
+- [ ] Databricks AI/BI.
+- [ ] Business semantics.
 
 ## How it works
 

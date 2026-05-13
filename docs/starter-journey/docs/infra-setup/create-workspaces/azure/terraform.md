@@ -1,5 +1,5 @@
 ---
-sidebar_label: Terraform (Azure)
+sidebar_label: Terraform
 description: Deploy a Databricks workspace on Azure with VNet injection using Terraform.
 ---
 
