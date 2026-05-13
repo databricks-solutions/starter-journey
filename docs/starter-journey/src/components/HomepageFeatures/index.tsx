@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     image: require('@site/static/img/build-by-bricksters.webp').default,
     description: (
       <>
-        Skip the guesswork - Get the "insider playbook" built by Databricks employees who have guided hundres of global customers to success.
+        Skip the guesswork - Get the "insider playbook" built by Databricks employees who have guided hundreds of global customers to success.
       </>
     ),
   },

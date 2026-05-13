@@ -14,21 +14,46 @@ description: Create Databricks workspaces with dedicated networking on AWS, Azur
 
 Workspaces are the compute and collaboration boundary in Databricks. Each workspace runs inside a dedicated VPC (AWS), VNet (Azure), or VPC (GCP) that isolates network traffic. Getting the workspace and network layout right at creation time avoids costly re-deployments later.
 
+## Mental model
+
+The industry standard is three workspaces aligned to the software development lifecycle:
+
+1. **Development** — where engineers iterate on code and test changes.
+2. **Staging** — integration testing and user acceptance before production.
+3. **Production** — stable workloads serving the business.
+
+Each workspace should be isolated at the network level. Isolating environments at the workspace level prevents a failing experiment from touching production data and makes it easier to enforce different access policies per environment. 
+
+* For more isolation information, see [Data Governance Strategy - Medium-Large Organizations](/docs/data-governance-strategy/medium-large-organizations)
+* For the workspace mental model and foundations, see [Workspace foundations](/docs/before-you-start/foundations/workspace#mental-model).
+
+
+
 ## How it works
 
 Each cloud provider has two deployment paths:
 
-- **Manual** — point-and-click through the account console or cloud portal. Good for first-time setup or small environments.
-- **Terraform** — infrastructure as code for repeatable, version-controlled deployments. Recommended for staging and production.
+- **Manual** — point-and-click through the account console or cloud portal. Good for a first workspace or proof of concept.
+- **Terraform** — infrastructure as code for repeatable, version-controlled deployments. Use this for staging and production.
 
-Pick your cloud provider to get started:
+## Pick your cloud provider
 
-- **[AWS](/docs/infra-setup/create-workspaces/aws)** — Manual and Terraform options.
-- **[Azure](/docs/infra-setup/create-workspaces/azure)** — Manual and Terraform options.
-- **[GCP](/docs/infra-setup/create-workspaces/gcp)** — Manual and Terraform options.
+### AWS
+
+- [Manual](/docs/infra-setup/create-workspaces/aws/manual) — account console wizard with automated IAM, S3, and VPC resource creation.
+- [Terraform](/docs/infra-setup/create-workspaces/aws/terraform) — IaC deployment with customer-managed VPC (BYOVPC).
+
+### Azure
+
+- [Manual](/docs/infra-setup/create-workspaces/azure/manual) — Azure portal deployment with managed resource group and VNet.
+- [Terraform](/docs/infra-setup/create-workspaces/azure/terraform) — IaC deployment with VNet injection.
+
+### GCP
+
+- [Manual](/docs/infra-setup/create-workspaces/gcp/manual) — account console wizard with automated service account and GCS configuration.
+- [Terraform](/docs/infra-setup/create-workspaces/gcp/terraform) — IaC deployment with customer-managed VPC (BYOVPC).
 
 ## Next
 
-- **Do next:** [AWS workspace creation](/docs/infra-setup/create-workspaces/aws)
 - **Learn why:** [Workspace foundations](/docs/before-you-start/foundations/workspace)
 - **Reference:** [Databricks workspace administration](https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html)

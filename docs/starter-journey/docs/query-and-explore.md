@@ -1,9 +1,9 @@
 ---
-sidebar_label: 8. Query and Explore
+sidebar_label: 9. Query and Explore
 description: Run interactive SQL queries against your lakehouse data using the Databricks SQL Editor and serverless warehouses.
 ---
 
-# 8. Query and explore
+# 9. Query and explore
 
 > **You'll learn** how to query and explore your lakehouse data using the Databricks SQL Editor in ~5 min.
 >
@@ -15,14 +15,17 @@ A pipeline that writes data is only half the story. Analysts and engineers need 
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
 - [x] ~~Data Governance Strategy.~~
 - [x] ~~Access your data.~~
 - [x] ~~Build the first pipeline.~~
 - [x] ~~Automation and orchestration.~~
 - [ ] **Query and explore.**
 - [ ] Databricks AI/BI.
+- [ ] Business semantics.
 
 ## How it works
 

@@ -15,14 +15,17 @@ A pipeline that only runs when someone clicks "Run" is not production-ready. Lak
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
 - [x] ~~Data Governance Strategy.~~
 - [x] ~~Access your data.~~
 - [x] ~~Build the first pipeline.~~
 - [ ] **Automation and orchestration.**
 - [ ] Query and explore.
 - [ ] Databricks AI/BI.
+- [ ] Business semantics.
 
 ## How it works
 

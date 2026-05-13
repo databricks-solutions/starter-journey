@@ -1,5 +1,5 @@
 ---
-sidebar_label: Terraform (AWS)
+sidebar_label: Terraform
 description: Deploy a Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
 ---
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: Manual (AWS)
+sidebar_label: Manual
 description: Create a Databricks workspace on AWS using the automated configuration wizard.
 ---
 

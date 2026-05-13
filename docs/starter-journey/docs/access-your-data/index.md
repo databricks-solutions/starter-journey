@@ -16,14 +16,17 @@ Workspaces, users, groups, and governance are configured. But Databricks cannot 
 
 ## Journey checklist
 
-- [x] ~~Identify target cloud tenant(s).~~
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
 - [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
 - [x] ~~Data Governance Strategy.~~
 - [ ] **Access your data.**
 - [ ] Build the first pipeline.
 - [ ] Automation and orchestration.
 - [ ] Query and explore.
 - [ ] Databricks AI/BI.
+- [ ] Business semantics.
 
 ## How it works
 
