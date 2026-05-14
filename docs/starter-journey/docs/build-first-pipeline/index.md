@@ -35,7 +35,7 @@ Databricks data engineering is built on three pillars. Each handles a different 
 |---|---|---|
 | **Lakeflow Connect** | Ingest data from external sources into UC tables | [Access your data — ingestion pipelines](/docs/access-your-data/managed-connectors/create-ingestion-pipeline/) |
 | **Spark Declarative Pipelines** | Transform raw data through bronze, silver, and gold layers | This section |
-| **Lakeflow Jobs** | Orchestrate pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/orchestration) |
+| **Lakeflow Jobs** | Orchestrate pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/orchestration/workspace) |
 
 ### Lakeflow introduction
 
@@ -70,11 +70,11 @@ Read these before writing your first pipeline:
 
 Two paths to build your first pipeline — pick the one that matches your workflow:
 
-- **[UI + Genie Code](/docs/build-first-pipeline/ui-databricks-agent)** — Build a pipeline interactively using the Databricks UI and Genie Code.
+- **[Workspace + Genie Code](/docs/build-first-pipeline/workspace-databricks-agent)** — Build a pipeline interactively using the Databricks Workspace and Genie Code.
 - **[DABs](/docs/build-first-pipeline/dabs)** — Deploy a complete medallion pipeline as code using Databricks Asset Bundles.
 
 ## Next
 
-- **Do next:** [UI + Genie Code](/docs/build-first-pipeline/ui-databricks-agent)
+- **Do next:** [Workspace + Genie Code](/docs/build-first-pipeline/workspace-databricks-agent)
 - **Learn why:** [Data Governance Strategy](/docs/data-governance-strategy)
 - **Reference:** [Spark Declarative Pipelines — Databricks docs](https://docs.databricks.com/aws/en/ldp/)

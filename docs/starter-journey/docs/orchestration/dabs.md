@@ -7,7 +7,7 @@ description: Define and deploy Lakeflow Jobs as code using Databricks Asset Bund
 
 > **You'll learn** how to define a Lakeflow Job using Databricks Asset Bundles (DABs) for repeatable, code-first orchestration in ~10 min.
 >
-> **Prereqs:** [Automation & Orchestration](/docs/orchestration)
+> **Prereqs:** [Automation & Orchestration — Workspace](/docs/orchestration/workspace)
 
 ## Why this matters
 
@@ -56,5 +56,5 @@ For the full list of resource types DABs can manage, see [DABs supported resourc
 
 ## Next
 
-- **Learn why:** [Automation & Orchestration overview](/docs/orchestration)
+- **Learn why:** [Automation & Orchestration — Workspace](/docs/orchestration/workspace)
 - **Reference:** [Databricks Asset Bundles — Databricks docs](https://docs.databricks.com/aws/en/dev-tools/bundles/index.html)

@@ -1,17 +1,17 @@
 ---
-sidebar_label: UI + Genie Code
-description: Build a Spark Declarative Pipeline using the Databricks UI and Genie Code.
+sidebar_label: Workspace + Genie Code
+description: Build a Spark Declarative Pipeline using the Databricks Workspace and Genie Code.
 ---
 
-# UI + Genie Code
+# Workspace + Genie Code
 
-> **You'll learn** how to build a pipeline interactively using the Databricks UI and Genie Code in ~10 min.
+> **You'll learn** how to build a pipeline interactively using the Databricks Workspace and Genie Code in ~10 min.
 >
 > **Prereqs:** [Build the first pipeline](/docs/build-first-pipeline)
 
 ## Why this matters
 
-The fastest way to go from raw data to a working pipeline is the Databricks UI combined with Genie Code. Genie Code generates pipeline code from natural-language prompts, and the UI lets you validate, edit, and run it without leaving the browser. This is the recommended starting point before moving to code-first approaches like DABs.
+The fastest way to go from raw data to a working pipeline is the Databricks Workspace combined with Genie Code. Genie Code generates pipeline code from natural-language prompts, and the Workspace lets you validate, edit, and run it without leaving the browser. This is the recommended starting point before moving to code-first approaches like DABs.
 
 ## How it works
 
@@ -19,7 +19,7 @@ The Databricks workspace includes a pipeline editor where you can create Spark D
 
 ### Getting started
 
-This video walks through creating a pipeline from scratch using the UI and Genie Code:
+This video walks through creating a pipeline from scratch using the Workspace and Genie Code:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/krzr52wd4nM"></iframe>
 
@@ -31,7 +31,7 @@ Once the basics are working, Genie Code can help with more complex transformatio
 
 ## When to use / when not to
 
-**Use the UI + Genie Code when:**
+**Use the Workspace + Genie Code when:**
 
 - You are building your first pipeline and want fast feedback.
 - You want to prototype a transformation before committing to code.

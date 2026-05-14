@@ -7,7 +7,7 @@ description: Run interactive SQL queries against your lakehouse data using the D
 
 > **You'll learn** how to query and explore your lakehouse data using the Databricks SQL Editor in ~5 min.
 >
-> **Prereqs:** [Automation & Orchestration](/docs/orchestration)
+> **Prereqs:** [Automation & Orchestration](/docs/orchestration/workspace)
 
 ## Why this matters
 
@@ -64,5 +64,5 @@ You can drag and drop tables from the schema browser directly into the editor. N
 ## Next
 
 - **Do next:** [Databricks AI/BI](/docs/databricks-aibi)
-- **Learn why:** [Automation & Orchestration](/docs/orchestration)
+- **Learn why:** [Automation & Orchestration](/docs/orchestration/workspace)
 - **Reference:** [SQL Editor — Databricks docs](https://docs.databricks.com/aws/en/sql/user/sql-editor)

@@ -38,7 +38,7 @@ For depth, use the official references:
 - [ ] [Data governance strategy](/docs/data-governance-strategy)
 - [ ] [Access your data](/docs/access-your-data)
 - [ ] [Build the first pipeline](/docs/build-first-pipeline)
-- [ ] [Automation & orchestration](/docs/orchestration)
+- [ ] [Automation & orchestration](/docs/orchestration/workspace)
 - [ ] [Query and explore](/docs/query-and-explore)
 - [ ] [Databricks AI/BI](/docs/databricks-aibi)
 - [ ] [Business semantics](/docs/business-semantics)
