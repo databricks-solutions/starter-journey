@@ -4,6 +4,7 @@ description: Create a Databricks workspace on AWS using the automated configurat
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
 
 # AWS — Manual Workspace Creation
 
@@ -27,7 +28,7 @@ A Databricks workspace deployed on your AWS account using the automated configur
 
 Open the PDF guide below and follow the step-by-step instructions. When prompted, select the target AWS account.
 
-<a target="_blank" href={useBaseUrl('/pdfs/AWS-Automated-Configuration-Classic-Workspace-Deployment.pdf')}>**PDF — AWS Automated Configuration Classic Workspace Deployment**</a>
+<Button label="Open PDF" link={useBaseUrl('/pdfs/AWS-Automated-Configuration-Classic-Workspace-Deployment.pdf')} />
 
 :::warning
 Deploy the workspace in the same AWS region as your data sources. Cross-region traffic incurs egress fees that add up quickly.

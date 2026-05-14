@@ -26,13 +26,13 @@ The Starter Journey is a step-by-step guide that takes you from an empty Databri
 
 | # | Section | What you'll have when done |
 |---|---|---|
-| 2 | **[Before you start](/docs/before-you-start)** | A clear understanding of workspaces, Unity Catalog, and your cloud tenant model |
+| 2 | **[Before you start](/docs/before-you-start/foundations)** | A clear understanding of workspaces, Unity Catalog, and your cloud tenant model |
 | 3 | **[Infra setup](/docs/infra-setup)** | Workspaces provisioned, users and groups added, SSO activated |
 | 4 | **[Cost monitoring](/docs/cost-monitoring)** | Day-zero visibility: imported usage dashboard, optional packaged dashboards, tags, and account budgets |
 | 5 | **[Data governance strategy](/docs/data-governance-strategy)** | A catalog/schema structure that fits your organization's size |
 | 6 | **[Access your data](/docs/access-your-data)** | Cloud storage connected, external systems accessible via managed connectors |
 | 7 | **[Build the first pipeline](/docs/build-first-pipeline)** | A working medallion pipeline (bronze → silver → gold) |
-| 8 | **[Automation & orchestration](/docs/orchestration)** | The pipeline running on a schedule with retries and notifications |
+| 8 | **[Automation & orchestration](/docs/orchestration/workspace)** | The pipeline running on a schedule with retries and notifications |
 | 9 | **[Query and explore](/docs/query-and-explore)** | Interactive SQL queries running against your lakehouse data |
 | 10 | **[Databricks AI/BI](/docs/databricks-aibi)** | Dashboards, Genie Spaces, and apps surfacing data to business users |
 | 11 | **[Business semantics](/docs/business-semantics/)** | **Self-paced** path to **activate** governed **metric views** and Genie-ready metadata, with a hands-on checkpoint across SQL, AI/BI, and Genie |

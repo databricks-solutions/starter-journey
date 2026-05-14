@@ -8,7 +8,7 @@ description: Set up workspaces, users, groups, metastore administration, and SSO
 
 > **You'll deploy** the core Databricks infrastructure — workspaces, identity, and governance — in this section.
 >
-> **Prereqs:** [Before you Start](/docs/before-you-start)
+> **Prereqs:** [Before you Start](/docs/before-you-start/foundations)
 
 ## Why this matters
 

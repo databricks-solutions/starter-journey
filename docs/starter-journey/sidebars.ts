@@ -7,7 +7,6 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '2. Before you Start',
       collapsed: true,
-      link: {type: 'doc', id: 'before-you-start/index'},
       items: [
         {
           type: 'category',
@@ -166,7 +165,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: 'build-first-pipeline/index'},
       items: [
-        'build-first-pipeline/ui-databricks-agent',
+        'build-first-pipeline/workspace-databricks-agent',
         'build-first-pipeline/dabs',
       ],
     },
@@ -174,9 +173,8 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '8. Automation & Orchestration',
       collapsed: true,
-      link: {type: 'doc', id: 'orchestration/index'},
       items: [
-        'orchestration/ui',
+        'orchestration/workspace',
         'orchestration/dabs',
       ],
     },
