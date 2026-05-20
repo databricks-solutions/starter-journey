@@ -1,10 +1,10 @@
 ---
 sidebar_position: 0
-sidebar_label: Infra Setup
+sidebar_label: 3. Infra Setup
 description: Set up workspaces, users, groups, metastore administration, and SSO for your Databricks deployment.
 ---
 
-# Infra Setup
+# 3. Infra Setup
 
 > **You'll deploy** the core Databricks infrastructure — workspaces, identity, and governance — in this section.
 >

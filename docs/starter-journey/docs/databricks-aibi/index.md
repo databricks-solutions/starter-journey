@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0
-sidebar_label: 9. Databricks AI/BI
+sidebar_label: 10. Databricks AI/BI
 description: Build dashboards, Genie spaces, and applications to surface lakehouse data to business users.
 ---
 

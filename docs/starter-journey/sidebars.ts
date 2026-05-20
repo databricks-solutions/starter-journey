@@ -199,6 +199,27 @@ const sidebars: SidebarsConfig = {
         'business-semantics/lab',
       ],
     },
+    {
+      type: 'category',
+      label: '12. Data Access Control',
+      collapsed: true,
+      link: {type: 'doc', id: 'data-access-control/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: '13. CI/CD and DevOps',
+      collapsed: true,
+      link: {type: 'doc', id: 'ci-cd-devops/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: '14. MLOps',
+      collapsed: true,
+      link: {type: 'doc', id: 'mlops/index'},
+      items: [],
+    },
   ],
 };
 
