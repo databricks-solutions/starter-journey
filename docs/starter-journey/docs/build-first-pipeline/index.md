@@ -1,9 +1,9 @@
 ---
-sidebar_label: Build the first pipeline
+sidebar_label: 7. Build the first pipeline
 description: Build your first Spark Declarative Pipeline on Databricks using Lakeflow for ingestion, transformation, and orchestration.
 ---
 
-# Build the First Pipeline
+# 7. Build the first pipeline
 
 > **You'll learn** how Lakeflow and Spark Declarative Pipelines work and build your first transformation pipeline in ~20 min.
 >

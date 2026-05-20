@@ -1,10 +1,10 @@
 ---
 sidebar_position: 0
-sidebar_label: Cost monitoring
+sidebar_label: 4. Cost monitoring
 description: Day-zero cost visibility after infra setup—import usage dashboards, optional dbdemos dashboards, tags, and budgets.
 ---
 
-# Cost monitoring
+# 4. Cost monitoring
 
 > **You'll complete** a short **day-zero** cost path right after infra: see spend in the account console, optionally add dashboards in a workspace, tag workloads, and set budgets.
 >

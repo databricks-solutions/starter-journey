@@ -1,10 +1,10 @@
 ---
 sidebar_position: 0
-sidebar_label: Access your data
+sidebar_label: 6. Access your data
 description: Connect Databricks to your data sources — cloud object storage and external systems via managed connectors.
 ---
 
-# Access Your Data
+# 6. Access your data
 
 > **You'll connect** Databricks to your organization's data sources in this section.
 >
