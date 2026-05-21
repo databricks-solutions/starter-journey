@@ -246,5 +246,5 @@ Reconcile time zone, fiscal vs. calendar boundaries, and any row filters in the 
 ## Next
 
 - **Do next:** [12. Data Access Control](/docs/data-access-control/) — work in progress
-- **Learn why:** [Genie spaces](/docs/databricks-aibi/genie-spaces), [AI/BI overview](/docs/databricks-aibi/)
+- **Learn why:** [Genie spaces](/docs/databricks-aibi/genie-spaces), [AI/BI overview](/docs/databricks-aibi/dashboards)
 - **Reference:** [Create and edit metric views](https://docs.databricks.com/aws/en/business-semantics/metric-views/create-edit), [TPC-H metric view example](https://docs.databricks.com/aws/en/business-semantics/metric-views/tpch-example)

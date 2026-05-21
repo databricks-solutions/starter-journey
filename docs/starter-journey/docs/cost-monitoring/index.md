@@ -40,7 +40,7 @@ For depth, use the official references:
 - [ ] [Build the first pipeline](/docs/build-first-pipeline)
 - [ ] [Automation & orchestration](/docs/orchestration/workspace)
 - [ ] [Query and explore](/docs/query-and-explore)
-- [ ] [Databricks AI/BI](/docs/databricks-aibi)
+- [ ] [Databricks AI/BI](/docs/databricks-aibi/dashboards)
 - [ ] [Business semantics](/docs/business-semantics)
 
 ## Recommended order
