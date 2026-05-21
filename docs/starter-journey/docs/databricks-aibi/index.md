@@ -57,6 +57,7 @@ All three read from the same governed tables. A dashboard, a Genie Space, and an
 
 - **[Dashboards](/docs/databricks-aibi/dashboards)** — Create and share visual reports.
 - **[Genie Spaces](/docs/databricks-aibi/genie-spaces)** — Let business users ask data questions in natural language.
+- **[Try a sample Genie Space](/docs/databricks-aibi/try-a-sample-genie-space)** — Install a pre-built Genie Space via dbdemos to test drive natural-language analytics.
 - **[Databricks Apps](/docs/databricks-aibi/databricks-apps)** — Build and deploy custom web applications.
 
 ## Next

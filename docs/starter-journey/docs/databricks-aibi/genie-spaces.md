@@ -29,6 +29,18 @@ Genie works best when given context — metric definitions, column descriptions,
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/YysLV-hycDM"></iframe>
 
+### Configure Genie instructions
+
+Instructions teach Genie your domain vocabulary, metric definitions, and query patterns. This video explains the difference between global instructions (always applied) and chat context (per-conversation), and when to use each:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KlSfyeymXeU"></iframe>
+
+### Optimize tables with liquid clustering
+
+Liquid clustering on the tables a Genie Space reads cuts query latency and warehouse cost — especially on the columns Genie filters on most. This video walks through applying it:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KMpWs4N2360"></iframe>
+
 ## When to use / when not to
 
 **Use Genie Spaces when:**
@@ -50,6 +62,6 @@ Genie works best when given context — metric definitions, column descriptions,
 
 ## Next
 
-- **Do next:** [Databricks Apps](/docs/databricks-aibi/databricks-apps)
+- **Do next:** [Try a sample Genie Space](/docs/databricks-aibi/try-a-sample-genie-space)
 - **Learn why:** [Databricks AI/BI overview](/docs/databricks-aibi)
 - **Reference:** [Genie Spaces — Databricks docs](https://docs.databricks.com/aws/en/genie/index.html)

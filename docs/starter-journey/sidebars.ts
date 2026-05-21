@@ -187,6 +187,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'databricks-aibi/dashboards',
         'databricks-aibi/genie-spaces',
+        'databricks-aibi/try-a-sample-genie-space',
         'databricks-aibi/databricks-apps',
       ],
     },
