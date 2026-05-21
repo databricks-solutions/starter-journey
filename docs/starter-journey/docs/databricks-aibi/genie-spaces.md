@@ -7,7 +7,7 @@ description: Create Genie Spaces so business users can ask data questions in nat
 
 > **You'll learn** how to create and configure a Genie Space for natural-language analytics in ~10 min.
 >
-> **Prereqs:** [Databricks AI/BI](/docs/databricks-aibi)
+> **Prereqs:** [Query and explore](/docs/query-and-explore)
 
 ## Why this matters
 
@@ -63,5 +63,5 @@ Liquid clustering on the tables a Genie Space reads cuts query latency and wareh
 ## Next
 
 - **Do next:** [Try a sample Genie Space](/docs/databricks-aibi/try-a-sample-genie-space)
-- **Learn why:** [Databricks AI/BI overview](/docs/databricks-aibi)
+- **Learn why:** [Query and explore](/docs/query-and-explore)
 - **Reference:** [Genie Spaces — Databricks docs](https://docs.databricks.com/aws/en/genie/index.html)

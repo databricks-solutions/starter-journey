@@ -34,7 +34,7 @@ The Starter Journey is a step-by-step guide that takes you from an empty Databri
 | 7 | **[Build the first pipeline](/docs/build-first-pipeline)** | A working medallion pipeline (bronze → silver → gold) |
 | 8 | **[Automation & orchestration](/docs/orchestration/workspace)** | The pipeline running on a schedule with retries and notifications |
 | 9 | **[Query and explore](/docs/query-and-explore)** | Interactive SQL queries running against your lakehouse data |
-| 10 | **[Databricks AI/BI](/docs/databricks-aibi)** | Dashboards, Genie Spaces, and apps surfacing data to business users |
+| 10 | **[Databricks AI/BI](/docs/databricks-aibi/dashboards)** | Dashboards, Genie Spaces, and apps surfacing data to business users |
 | 11 | **[Business semantics](/docs/business-semantics/)** | **Self-paced** path to **activate** governed **metric views** and Genie-ready metadata, with a hands-on checkpoint across SQL, AI/BI, and Genie |
 
 Use the sidebar to navigate through each section in order, or jump directly to the topic you need.

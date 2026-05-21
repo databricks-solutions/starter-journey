@@ -183,11 +183,16 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '10. Databricks AI/BI',
       collapsed: true,
-      link: {type: 'doc', id: 'databricks-aibi/index'},
       items: [
         'databricks-aibi/dashboards',
-        'databricks-aibi/genie-spaces',
-        'databricks-aibi/try-a-sample-genie-space',
+        {
+          type: 'category',
+          label: 'Genie Spaces',
+          link: {type: 'doc', id: 'databricks-aibi/genie-spaces'},
+          items: [
+            'databricks-aibi/try-a-sample-genie-space',
+          ],
+        },
         'databricks-aibi/databricks-apps',
       ],
     },

@@ -7,7 +7,7 @@ description: Build and deploy custom web applications on Databricks with built-i
 
 > **You'll learn** how Databricks Apps let you build custom web applications that run on Databricks with native auth and data access in ~5 min.
 >
-> **Prereqs:** [Databricks AI/BI](/docs/databricks-aibi)
+> **Prereqs:** [Query and explore](/docs/query-and-explore)
 
 ## Why this matters
 
@@ -43,6 +43,6 @@ The [Databricks Apps Cookbook](https://apps-cookbook.dev/) has ready-to-deploy e
 
 ## Next
 
-- **Learn why:** [Databricks AI/BI overview](/docs/databricks-aibi)
+- **Learn why:** [Query and explore](/docs/query-and-explore)
 - **Reference:** [Databricks Apps — Databricks docs](https://docs.databricks.com/aws/en/apps/index.html)
 - **Resource:** [Databricks Apps Cookbook](https://apps-cookbook.dev/)

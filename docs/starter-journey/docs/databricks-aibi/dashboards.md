@@ -7,7 +7,7 @@ description: Create, share, and embed AI/BI dashboards that visualize lakehouse 
 
 > **You'll learn** how to create and share Databricks AI/BI dashboards in ~10 min.
 >
-> **Prereqs:** [Databricks AI/BI](/docs/databricks-aibi)
+> **Prereqs:** [Query and explore](/docs/query-and-explore)
 
 ## Why this matters
 
@@ -50,5 +50,5 @@ Dashboards can be embedded in internal portals, wikis, or custom apps using ifra
 ## Next
 
 - **Do next:** [Genie Spaces](/docs/databricks-aibi/genie-spaces)
-- **Learn why:** [Databricks AI/BI overview](/docs/databricks-aibi)
+- **Learn why:** [Query and explore](/docs/query-and-explore)
 - **Reference:** [AI/BI Dashboards — Databricks docs](https://docs.databricks.com/aws/en/dashboards/index.html)

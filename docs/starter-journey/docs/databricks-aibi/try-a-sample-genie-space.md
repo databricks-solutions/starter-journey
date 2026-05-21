@@ -1,10 +1,10 @@
 ---
 sidebar_position: 3
-sidebar_label: Try a sample Genie Space
+sidebar_label: Hands-on lab
 description: Install the AI/BI Analytics in Capital Markets dbdemo to explore a pre-built Genie Space on sample financial data.
 ---
 
-# Try a sample Genie Space
+# Hands-on lab
 
 > **You'll install** the **AI/BI: Analytics in Capital Markets** dbdemo so you can explore a pre-built Genie Space and dashboard on sample financial-services data in ~10 min.
 
@@ -12,7 +12,7 @@ description: Install the AI/BI Analytics in Capital Markets dbdemo to explore a 
 
 A ready-to-use Genie Space ("DBDemos - AI-BI - Portfolio Assistant") plus a companion AI/BI dashboard and notebook, all loaded with sample portfolio holdings, market sentiment, and stock data. Use it to test natural-language questions like *"What is the market sentiment for companies in my portfolio in the retail industry?"* without modeling your own data first.
 
-**Official source (Demo Center):** [AI/BI: Analytics in Capital Markets with Dashboards and Genie](https://www.databricks.com/resources/demos/tutorials/aibi-analytics-in-capital-markets)
+**Official source (Demo Center):** [Demo Center: Data Warehouse and AI/BI](https://www.databricks.com/resources/demos/tutorials?itm_data=demo_center#data-warehouse-and-bi)
 
 ## Steps
 
@@ -30,10 +30,19 @@ dbutils.library.restartPython()
 
 ```python
 import dbdemos
-dbdemos.install('aibi-portfolio-assistant', catalog='main', schema='dbdemos_aibi_fsi_portfolio_assistant')
+import random
+
+catalog = 'MY_CATALOG'
+schema = 'MY_SCHEMA'
+
+demos_availables_for_genie = ['aibi-portfolio-assistant', 'aibi-customer-support', 'aibi-patient-genomics', 'aibi-marketing-campaign', 'aibi-sales-pipeline-review', 'aibi-supply-chain-forecasting']
+
+demo_to_install = random.choice(demos_availables_for_genie)
+
+dbdemos.install(demo_to_install, catalog=catalog, schema=schema)
 ```
 
-Swap `catalog` and `schema` for any UC catalog and schema where your user has **CREATE** privileges.
+Swap `MY_CATALOG` and `MY_SCHEMA` for any UC catalog and schema where your user has **CREATE** privileges.
 
 ![dbdemos installation in progress with %pip install and dbdemos.install for aibi-portfolio-assistant](/img/aibi-portfolio-install-1.png)
 

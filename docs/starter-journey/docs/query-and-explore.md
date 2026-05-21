@@ -43,19 +43,6 @@ You can drag and drop tables from the schema browser directly into the editor. N
   src="https://www.youtube.com/embed/0XWf1V40SdI"
 ></iframe>
 
-## When to use / when not to
-
-**Use the SQL Editor when:**
-
-- You need to validate pipeline output or inspect table contents.
-- You want to prototype a query before embedding it in a dashboard or notebook.
-- You are running one-off exploratory analysis.
-
-**Use notebooks instead when:**
-
-- You need Python, Scala, or R alongside SQL.
-- The analysis spans multiple steps that benefit from cell-by-cell execution.
-
 ## Common pitfalls
 
 - **Running queries on a pro warehouse when serverless is available** — serverless warehouses start faster and scale automatically. Use them for interactive work unless your admin has configured a specific warehouse for your team.
@@ -63,6 +50,8 @@ You can drag and drop tables from the schema browser directly into the editor. N
 
 ## Next
 
-- **Do next:** [Databricks AI/BI](/docs/databricks-aibi)
-- **Learn why:** [Automation & Orchestration](/docs/orchestration/workspace)
-- **Reference:** [SQL Editor — Databricks docs](https://docs.databricks.com/aws/en/sql/user/sql-editor)
+| Page | What you'll do |
+|---|---|
+| [Dashboards](/docs/databricks-aibi/dashboards) | Create and share visual reports backed by governed lakehouse tables. |
+| [Genie Spaces](/docs/databricks-aibi/genie-spaces) | Let business users ask data questions in natural language. |
+| [Databricks Apps](/docs/databricks-aibi/databricks-apps) | Build and deploy custom web applications on Databricks. |
