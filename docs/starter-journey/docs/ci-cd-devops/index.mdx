@@ -36,12 +36,14 @@ Think of Databricks DevOps as two separate concerns. Each has its own tool and l
 
 | Layer | What it covers | Tool | Example |
 |---|---|---|---|
-| **Platform infrastructure** (external - AWS and Databricks Account related)| Accounts, networks, metastores, workspaces, IAM — anything outside a Databricks workspace | Terraform | [AWS Terraform deployment](/docs/infra-setup/create-workspaces/aws/terraform) |
-| **Databricks Projects** (internal - within the Workspace)| Jobs, pipelines, schemas, dashboards and [other assets required in a Databricks project](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | [Build your first pipeline with DABs](/docs/build-first-pipeline/dabs) |
+| **Platform infrastructure** (external - AWS and Databricks Account related)| Accounts, networks, metastores, workspaces, IAM — anything outside a Databricks workspace | Terraform | [Terraform Examples](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples) |
+| **Databricks Projects** (internal - within the Workspace)| Jobs, pipelines, schemas, dashboards and [other assets required in a Databricks project](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build your first pipeline with DABs](/docs/build-first-pipeline/dabs)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
 
 ## What is DABs?
 
-Declarative Automation Bundles (DABs) is Databricks infrastructure-as-code. You can also think of it as **Databricks as Code**: project assets live in Git as YAML and source files instead of manual Workspace clicks.
+
+
+[Declarative Automation Bundles (DABs)](https://docs.databricks.com/aws/en/dev-tools/bundles/) is Databricks infrastructure-as-code. You can also think of it as **Databricks as Code**: project assets live in Git as YAML and source files instead of manual Workspace clicks.
 
 - **IaC for the workspace.** DABs defines jobs, pipelines, schemas, and [related resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources) in configuration files. The bundle is the deployable unit — one repo, one project, multiple environment targets.
 - **Software-engineering workflow.** A Databricks project follows the same lifecycle as application code: branches, pull requests, and CI/CD pipelines. Your DevOps team chooses the branching model; [trunk-based development](https://www.travis-ci.com/blog/explaining-trunk-based-development/) is the recommended default because it keeps main always deployable and reduces long-lived merge conflicts.
@@ -84,7 +86,7 @@ The following items are covered in the video:
 - [x] Create a base CI/CD pipeline for your preferred DevOps tool.
 
 :::warning
-The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)** presented here is not a official Databricks-supported tools. Validate exported bundles in a non-production workspace before you rely on them in CI/CD.
+The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)** presented here is not a official Databricks-supported tool. Validate generated bundles in a non-production workspace before you rely on them in CI/CD.
 :::
 
 <iframe
@@ -135,14 +137,6 @@ Neither team shares a monolithic repo. A pipeline change in marketing C360 does 
 
 - You are exploring a one-off notebook or prototype that will not be promoted.
 - Only one person touches the asset and it has no downstream consumers.
-
-# Official resources
-
-- [What are Declarative Automation Bundles?
-](https://docs.databricks.com/aws/en/dev-tools/bundles/)
-- [Bundle configuration examples
-](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)
-- [Tutorials](https://docs.databricks.com/aws/en/dev-tools/bundles/tutorials)
 
 ## Next
 
