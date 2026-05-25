@@ -36,12 +36,8 @@ Think of Databricks DevOps as two separate concerns. Each has its own tool and l
 
 | Layer | What it covers | Tool | Example |
 |---|---|---|---|
-| **Platform infrastructure** | Accounts, networks, metastores, workspaces, IAM — anything outside a Databricks workspace | Terraform | [AWS Terraform deployment](/docs/infra-setup/create-workspaces/aws/terraform) |
-| **Workspace projects** | Jobs, pipelines, schemas, dashboards and [other assets required in a Databricks project](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | [Build your first pipeline with DABs](/docs/build-first-pipeline/dabs) |
-
-Manage platform infrastructure with Terraform. Workspaces, VPCs, storage credentials, and account-level settings change rarely and touch cloud provider APIs — Terraform is the right fit.
-
-Manage every Databricks project with DABs (formerly Databricks Asset Bundles). A project is the set of assets you version, review, and promote across dev, staging, and production targets.
+| **Platform infrastructure** (external - AWS and Databricks Account related)| Accounts, networks, metastores, workspaces, IAM — anything outside a Databricks workspace | Terraform | [AWS Terraform deployment](/docs/infra-setup/create-workspaces/aws/terraform) |
+| **Databricks Projects** (internal - within the Workspace)| Jobs, pipelines, schemas, dashboards and [other assets required in a Databricks project](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | [Build your first pipeline with DABs](/docs/build-first-pipeline/dabs) |
 
 ## What is DABs?
 
@@ -85,7 +81,7 @@ The following items are covered in the video:
 
 - [x] Create the DABs project and base file structure.
 - [x] Migrate workspace assets to DABs.
-- [x] Create a base CI/CD pipeline for your preferred CI/CD tool.
+- [x] Create a base CI/CD pipeline for your preferred DevOps tool.
 
 :::warning
 The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)** presented here is not a official Databricks-supported tools. Validate exported bundles in a non-production workspace before you rely on them in CI/CD.
