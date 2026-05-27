@@ -1,34 +1,48 @@
 ---
-description: Naming convention for PDF deck buttons in doc pages
+description: Naming convention and component format for PDF deck buttons in doc pages
 globs: docs/starter-journey/docs/**/*.md,docs/starter-journey/docs/**/*.mdx
 alwaysApply: false
 ---
 
-# PDF Deck Button Naming
+# PDF Deck Button Standard
 
-When adding a `<Button>` or `<a>` that links to a PDF deck, the label **must** follow this pattern:
+Every button that links to a PDF **must** use the `<Button>` component with `useBaseUrl`. Never use raw `<a>` tags for PDF links.
 
+## Required imports
+
+Every `.mdx` file that contains a PDF button must have these imports at the top (after frontmatter):
+
+```mdx
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
 ```
-"Deck - [Topic the deck addresses]"
+
+## Component format
+
+```jsx
+<Button label="Deck - [Topic the deck addresses]" link={useBaseUrl('/pdfs/filename.pdf')} />
 ```
 
-## Examples
+## Label naming
+
+Labels **must** follow the pattern `"Deck - [Topic]"`:
 
 ✅ GOOD
 ```jsx
 <Button label="Deck - Genie Best Practices" link={useBaseUrl('/pdfs/Genie Best Practices.pdf')} />
-<Button label="Deck - UC Best Practices" link={useBaseUrl('/pdfs/UC Best Practices.pdf')} />
+<Button label="Deck - Genie Spaces Implementation Guide" link={useBaseUrl('/pdfs/Genie Spaces Implementation Guide.pdf')} />
+<Button label="Deck - UC Best Practices" link={useBaseUrl('/pdfs/UC Best Practices and Patterns from accumulated STS experiences.pdf')} />
 <Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
 ```
 
-❌ BAD
+❌ BAD — wrong component or wrong label format
 ```jsx
+<a href="/pdfs/file.pdf">View PDF</a>
 <Button label="UC Best Practices Deck" ... />
 <Button label="View PDF" ... />
-<Button label="Genie Spaces Implementation Guide" ... />
 ```
 
 ## Placement
 
 - Place deck buttons inside a `:::tip` admonition (never `:::warning` or `:::danger`).
-- Add a short lead-in sentence before the button, e.g. "For a more elaborated explanation, check the following deck:"
+- Add a short lead-in sentence before the button(s), e.g. "For a more elaborated explanation, check the following deck:"
