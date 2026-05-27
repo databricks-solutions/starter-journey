@@ -1,0 +1,34 @@
+---
+description: Naming convention for PDF deck buttons in doc pages
+globs: docs/starter-journey/docs/**/*.md,docs/starter-journey/docs/**/*.mdx
+alwaysApply: false
+---
+
+# PDF Deck Button Naming
+
+When adding a `<Button>` or `<a>` that links to a PDF deck, the label **must** follow this pattern:
+
+```
+"Deck - [Topic the deck addresses]"
+```
+
+## Examples
+
+✅ GOOD
+```jsx
+<Button label="Deck - Genie Best Practices" link={useBaseUrl('/pdfs/Genie Best Practices.pdf')} />
+<Button label="Deck - UC Best Practices" link={useBaseUrl('/pdfs/UC Best Practices.pdf')} />
+<Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
+```
+
+❌ BAD
+```jsx
+<Button label="UC Best Practices Deck" ... />
+<Button label="View PDF" ... />
+<Button label="Genie Spaces Implementation Guide" ... />
+```
+
+## Placement
+
+- Place deck buttons inside a `:::tip` admonition (never `:::warning` or `:::danger`).
+- Add a short lead-in sentence before the button, e.g. "For a more elaborated explanation, check the following deck:"
