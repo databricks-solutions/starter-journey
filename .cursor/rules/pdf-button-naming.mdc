@@ -1,5 +1,5 @@
 ---
-description: Naming convention and component format for PDF deck buttons in doc pages
+description: Naming convention for PDF deck buttons in doc pages
 globs: docs/starter-journey/docs/**/*.md,docs/starter-journey/docs/**/*.mdx
 alwaysApply: false
 ---
@@ -26,23 +26,31 @@ import Button from '@site/src/components/Button';
 ## Label naming
 
 Labels **must** follow the pattern `"Deck - [Topic]"`:
+# PDF Deck Button Naming
+
+When adding a `<Button>` or `<a>` that links to a PDF deck, the label **must** follow this pattern:
+
+```
+"Deck - [Topic the deck addresses]"
+```
+
+## Examples
 
 ✅ GOOD
 ```jsx
 <Button label="Deck - Genie Best Practices" link={useBaseUrl('/pdfs/Genie Best Practices.pdf')} />
-<Button label="Deck - Genie Spaces Implementation Guide" link={useBaseUrl('/pdfs/Genie Spaces Implementation Guide.pdf')} />
-<Button label="Deck - UC Best Practices" link={useBaseUrl('/pdfs/UC Best Practices and Patterns from accumulated STS experiences.pdf')} />
+<Button label="Deck - UC Best Practices" link={useBaseUrl('/pdfs/UC Best Practices.pdf')} />
 <Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
 ```
 
-❌ BAD — wrong component or wrong label format
+❌ BAD
 ```jsx
-<a href="/pdfs/file.pdf">View PDF</a>
 <Button label="UC Best Practices Deck" ... />
 <Button label="View PDF" ... />
+<Button label="Genie Spaces Implementation Guide" ... />
 ```
 
 ## Placement
 
 - Place deck buttons inside a `:::tip` admonition (never `:::warning` or `:::danger`).
-- Add a short lead-in sentence before the button(s), e.g. "For a more elaborated explanation, check the following deck:"
+- Add a short lead-in sentence before the button, e.g. "For a more elaborated explanation, check the following deck:"
