@@ -224,7 +224,13 @@ const sidebars: SidebarsConfig = {
       label: '14. MLOps',
       collapsed: true,
       link: {type: 'doc', id: 'mlops/index'},
-      items: [],
+      items: [
+        'mlops/feature-engineering',
+        'mlops/model-training',
+        'mlops/model-deployment',
+        'mlops/inference',
+        'mlops/dabs',
+      ],
     },
   ],
 };
