@@ -4,6 +4,28 @@ globs: docs/starter-journey/docs/**/*.md,docs/starter-journey/docs/**/*.mdx
 alwaysApply: false
 ---
 
+# PDF Deck Button Standard
+
+Every button that links to a PDF **must** use the `<Button>` component with `useBaseUrl`. Never use raw `<a>` tags for PDF links.
+
+## Required imports
+
+Every `.mdx` file that contains a PDF button must have these imports at the top (after frontmatter):
+
+```mdx
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+```
+
+## Component format
+
+```jsx
+<Button label="Deck - [Topic the deck addresses]" link={useBaseUrl('/pdfs/filename.pdf')} />
+```
+
+## Label naming
+
+Labels **must** follow the pattern `"Deck - [Topic]"`:
 # PDF Deck Button Naming
 
 When adding a `<Button>` or `<a>` that links to a PDF deck, the label **must** follow this pattern:
