@@ -59,22 +59,7 @@ Other useful commands (all from `docs/starter-journey/`):
 
 - **PRs to `main`** trigger `test-deploy.yml` — runs `docusaurus build` to verify the site compiles. Broken links fail the build (`onBrokenLinks: 'throw'` in `docusaurus.config.ts`).
 - **Pushes to `main`** trigger `deploy.yml` — builds and deploys to GitHub Pages.
-- **Mondays 14:00 UTC** — `section-freshness.yml` checks that every top-level journey section was updated within the last 60 days (see below).
 - npm packages are fetched from a JFrog registry via OIDC in CI. Locally, the default npm registry works.
-
-## Section freshness tracker
-
-Top-level sidebar sections (1–14 in `sidebars.ts`) must stay current. Dates live in `docs/starter-journey/section-freshness.csv` (`section_name`, `last_update` as `YYYY-MM-DD`).
-
-**When you meaningfully update docs in a section**, bump that section's `last_update` in the same PR.
-
-```bash
-python scripts/check_section_freshness.py
-```
-
-If any section is older than 60 days, the weekly workflow fails and opens or updates a GitHub issue labeled `section-freshness`. The issue @mentions every human [repo contributor](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) (bots excluded) so they get a GitHub notification; repeat failures add a new comment with mentions again. When all sections are fresh again, that issue is closed automatically.
-
-When adding a new numbered section, add a row to the CSV and to `REQUIRED_SECTIONS` in `scripts/check_section_freshness.py`.
 
 ## Documentation authoring
 
@@ -200,8 +185,6 @@ For a standalone page with no subpages, use a simple doc entry instead:
 
 Run `npm run build` from `docs/starter-journey/` to verify no broken links. The build will throw on any dead internal link.
 
-Add a row to `docs/starter-journey/section-freshness.csv` and to `REQUIRED_SECTIONS` in `scripts/check_section_freshness.py` (label must match `sidebars.ts` exactly).
-
 ## Adding a blog post
 
 Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming convention: `YYYY-MM-DD-<slug>.mdx`. Authors are defined in `blog/authors.yml` and tags in `blog/tags.yml`.
@@ -216,9 +199,6 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 | `docs/STYLE.md` | Writing style guide for all doc pages |
 | `.github/workflows/deploy.yml` | Production deployment workflow |
 | `.github/workflows/test-deploy.yml` | PR build-check workflow |
-| `.github/workflows/section-freshness.yml` | Weekly stale-section check |
-| `docs/starter-journey/section-freshness.csv` | Last-updated date per journey section |
-| `scripts/check_section_freshness.py` | Freshness checker (stdlib only) |
 
 ## Common mistakes to avoid
 
