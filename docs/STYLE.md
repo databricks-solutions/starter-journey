@@ -153,6 +153,7 @@ Every sentence must carry information the reader didn't already have. Cut filler
 
 1. **Page length cap.** Technical pages that exceed ~5 screens should be split. Educational pages that exceed ~7 screens should be split — one concept per page.
 2. **Diagram naming.** Prefix images by section (`uc-<thing>.png`, `infra-<thing>.png`) so `static/img` doesn't become a soup. Already partly done.
+3. **Section freshness.** When you update content in a top-level journey section (1–14 in the sidebar), set that section's `last_update` in `docs/starter-journey/section-freshness.csv` to today's date (`YYYY-MM-DD`) in the same PR.
 
 ---
 
