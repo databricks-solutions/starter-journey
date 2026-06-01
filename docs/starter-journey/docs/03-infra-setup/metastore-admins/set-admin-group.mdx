@@ -1,0 +1,77 @@
+---
+sidebar_label: Set admin group
+description: Transfer metastore ownership from an individual user to the metastore admin group.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Set Admin Group
+
+> **You'll transfer** metastore ownership to a dedicated admin group in ~5 min.
+>
+> **Prereqs:** [Add Groups](/docs/03-infra-setup/add-groups), a metastore admin group created (e.g., `metastore-admins`)
+
+## What you'll build
+
+A metastore owned by a group instead of an individual user or service principal. This ensures shared responsibility and prevents a single point of failure.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- A metastore admin group already created (see [Add Groups](/docs/03-infra-setup/add-groups)).
+
+:::danger
+The metastore admin must be a group. Avoid assigning individuals or service principals as the metastore owner — if the individual leaves or the principal is deleted, governance operations stop.
+:::
+
+## Steps
+
+### 1. Open the account console
+
+Go to the account console for your cloud provider:
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+### 2. Navigate to the metastore
+
+1. On the left panel, click **Catalog**.
+2. Click on the available metastore.
+
+### 3. Verify the current owner
+
+Check who currently owns the metastore. If it is already a group (e.g., `metastore-admins`), no change is needed.
+
+### 4. Transfer ownership
+
+If the owner is a user or service principal:
+
+1. Click the owner field to edit it.
+2. Assign the metastore admin group (e.g., `metastore-admins` or `unity-admins`) as the new owner.
+
+### 5. Configure metastore settings
+
+1. Enable **auto-assignment** for new workspaces if you want the metastore attached automatically.
+2. (Optional) Activate **Delta Sharing** if required for your projects.
+
+<img src={useBaseUrl('/img/account-metastore-owner.png')} alt="Metastore owner configuration in the account console"/>
+
+## Verify
+
+1. In the account console, navigate to **Catalog** and click the metastore.
+2. Confirm the **Owner** field shows the admin group name, not an individual user.
+
+## Troubleshoot
+
+<details>
+<summary>Cannot change the metastore owner</summary>
+
+Only the current metastore owner or an account admin can transfer ownership. Verify you have account-admin privileges. If the current owner is a user who has left the organization, contact Databricks support.
+</details>
+
+## Next
+
+- **Do next:** [UC assets ownership](/docs/03-infra-setup/metastore-admins/uc-assets-ownership)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Manage metastore privileges](https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/)

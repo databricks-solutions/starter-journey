@@ -47,6 +47,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          numberPrefixParser: false,
         },
         blog: {
           showReadingTime: true,
@@ -87,7 +88,7 @@ const config: Config = {
       items: [
         {
           type: 'doc',
-          docId: 'get-started',
+          docId: '01-get-started',
           position: 'left',
           label: 'Get Started',
         },

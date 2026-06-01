@@ -1,0 +1,54 @@
+---
+sidebar_label: DABs
+description: Deploy a complete medallion pipeline as code using Databricks Asset Bundles.
+---
+
+# DABs
+
+> **You'll learn** how to deploy a full medallion pipeline using Databricks Asset Bundles in ~15 min.
+>
+> **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
+
+## Why this matters
+
+The UI is great for prototyping, but production pipelines need to be version-controlled, testable, and deployable across environments. Databricks Asset Bundles (DABs) let you define pipelines, jobs, schemas, and compute as code in a single project. One `databricks bundle deploy` command provisions everything.
+
+## How it works
+
+The example project below deploys a complete medallion architecture pipeline, including:
+
+- **1 job** with 2 tasks: a notebook task that generates sample data, followed by a pipeline task that runs the transformation.
+- **1 Spark Declarative Pipeline** — the bronze-silver-gold transformation chain.
+- **3 schemas** — bronze, silver, and gold.
+- **1 volume** — a landing zone for raw files.
+- **1 DBSQL warehouse** — for querying the output.
+
+See all [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
+
+### Medallion Architecture on Unity Catalog using DABs
+
+The GitHub repository is ready to clone and deploy:
+
+[github.com/ivancalvo-dbxs/medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs)
+
+### Video walkthrough
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/W8ucHwzwdhc"></iframe>
+
+## When to use / when not to
+
+**Use DABs when:**
+
+- You want version-controlled, repeatable deployments.
+- The pipeline needs to run in dev, staging, and production.
+- You want to define all resources (schemas, volumes, warehouses) alongside the pipeline code.
+
+**Use the UI + agent instead when:**
+
+- You are exploring data and prototyping transformations.
+- You want fast iteration without setting up a local development environment.
+
+## Next
+
+- **Learn why:** [Spark Declarative Pipelines overview](/docs/07-build-first-pipeline)
+- **Reference:** [Databricks Asset Bundles — Databricks docs](https://docs.databricks.com/aws/en/dev-tools/bundles/)

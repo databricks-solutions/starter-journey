@@ -1,0 +1,75 @@
+---
+sidebar_label: SCIM
+description: Automate user provisioning into Databricks using SCIM from your identity provider.
+---
+
+# Add Users — SCIM
+
+> **You'll configure** SCIM to automatically sync users from your identity provider into Databricks in ~15 min.
+>
+> **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console), account-admin privileges, identity provider admin access
+
+## What you'll build
+
+An automated sync between your identity provider (Entra ID, Okta, or OneLogin) and the Databricks account. Users and their attributes sync on a schedule, so you never need to add them manually again.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- Admin access to your identity provider (Entra ID, Okta, or OneLogin).
+
+## Steps
+
+### 1. Choose your identity provider
+
+Follow the guide that matches your IdP:
+
+| Identity provider | Guide |
+|---|---|
+| Microsoft Entra ID (Azure AD) | [Configure SCIM provisioning for Entra ID](https://docs.databricks.com/aws/en/admin/users-groups/scim/aad) |
+| Okta | [Configure SCIM provisioning for Okta](https://docs.databricks.com/aws/en/admin/users-groups/scim/okta) |
+| OneLogin | [Configure SCIM provisioning for OneLogin](https://docs.databricks.com/aws/en/admin/users-groups/scim/onelogin) |
+
+:::tip
+On Azure, a newer automatic sync feature is available: [Sync users and groups automatically from Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/databricks/admin/users-groups/automatic-identity-management). This replaces manual SCIM configuration for Azure deployments.
+:::
+
+### 2. Configure the SCIM connector
+
+Follow the selected guide to create a SCIM application in your IdP, generate a SCIM token from the Databricks account console, and configure the sync.
+
+Select your cloud provider at the top-right of the Databricks docs page if the instructions differ by cloud.
+
+### 3. Run the initial sync
+
+Trigger the first sync from your IdP. Verify the users appear in the Databricks account console under **User management** > **Users**.
+
+### 4. (Optional) Enable all IdP users
+
+If you want every user in your identity provider to have Databricks access without manual assignment: [Enable all identity provider users to access Databricks](https://docs.databricks.com/aws/en/admin/users-groups/scim/enable-all-users).
+
+## Verify
+
+1. In the Databricks account console, navigate to **User management** > **Users**.
+2. Confirm the synced users appear with the correct email addresses and display names.
+3. In your IdP, verify the SCIM application shows a successful provisioning status.
+
+## Troubleshoot
+
+<details>
+<summary>Users not appearing after sync</summary>
+
+Check the SCIM application logs in your IdP for provisioning errors. Common causes: expired SCIM token, incorrect account console URL in the IdP configuration, or the user is not assigned to the SCIM application in the IdP.
+</details>
+
+<details>
+<summary>Duplicate users after enabling SCIM</summary>
+
+If users were added manually before SCIM was configured, the SCIM sync may create duplicates. Match on email address in the IdP connector settings to merge existing accounts.
+</details>
+
+## Next
+
+- **Do next:** [Add Groups](/docs/03-infra-setup/add-groups)
+- **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
+- **Reference:** [SCIM provisioning overview](https://docs.databricks.com/aws/en/admin/users-groups/scim/)

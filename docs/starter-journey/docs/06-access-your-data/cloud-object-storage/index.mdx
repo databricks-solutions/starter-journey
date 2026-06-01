@@ -1,0 +1,53 @@
+---
+sidebar_position: 0
+sidebar_label: Cloud Object Storage
+description: Connect Databricks to your cloud object storage (S3, ADLS, GCS) using Unity Catalog storage credentials and external locations.
+---
+
+# Cloud Object Storage
+
+> **You'll understand** how Databricks connects to cloud object storage through Unity Catalog in ~5 min.
+>
+> **Prereqs:** [Access your data](/docs/06-access-your-data)
+
+## Why this matters
+
+Most organization data lives in cloud object storage — S3 buckets, ADLS containers, or GCS buckets. Databricks needs a governed path to read and write that data. Without it, teams fall back to hardcoded credentials or cluster-level configurations, which bypass Unity Catalog governance entirely.
+
+## Mental model
+
+Two Unity Catalog objects work together to connect Databricks to your storage:
+
+![Storage credentials and external locations](/img/uc-cloud-object-idea.png)
+
+**Storage Credential** — authenticates Databricks compute to your cloud storage. Depending on the cloud provider, it wraps:
+- An IAM role (AWS and GCP).
+- A managed identity (Azure).
+
+**External Location** — defines the path to a specific storage location:
+- AWS: `s3://mybucket/mydepartment/mydataset/`
+- Azure: `abfss://mycontainer@mystorageaccount.dfs.core.windows.net/mydataset/`
+- GCP: `gs://mybucket/mydepartment/mydataset/`
+
+Together, the storage credential handles *authentication* and the external location handles *authorization* — who can access which path.
+
+## How it works
+
+1. A metastore admin creates a **storage credential** that references a cloud IAM identity.
+2. The admin creates one or more **external locations** that point to specific paths and are bound to that credential.
+3. Unity Catalog grants on the external location control which users and groups can read or write data at that path.
+4. Any notebook, job, or SQL query that references the path goes through UC permission checks automatically.
+
+## Create storage credentials and external locations
+
+Pick your cloud provider to follow the step-by-step guide:
+
+- **[AWS](/docs/06-access-your-data/cloud-object-storage/aws)** — Create a storage credential and external location for Amazon S3.
+- **[Azure](/docs/06-access-your-data/cloud-object-storage/azure)** — Create an access connector, storage credential, and external location for ADLS Gen2.
+- **[GCP](/docs/06-access-your-data/cloud-object-storage/gcp)** — Create a storage credential and external location for Google Cloud Storage.
+
+## Next
+
+- **Do next:** [AWS — S3 storage setup](/docs/06-access-your-data/cloud-object-storage/aws)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Connect to cloud object storage using Unity Catalog](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/)

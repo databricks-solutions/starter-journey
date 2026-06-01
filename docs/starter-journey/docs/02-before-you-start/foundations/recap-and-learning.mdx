@@ -1,0 +1,59 @@
+---
+sidebar_label: Recap and learning
+description: Quick-check questions to confirm you understand the account console, workspaces, and Unity Catalog before moving on.
+---
+
+# Recap and learning
+
+> **You'll verify** your understanding of the three core Databricks concepts in ~3 min.
+>
+> **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console), [Workspace](/docs/02-before-you-start/foundations/workspace), [Unity Catalog](/docs/02-before-you-start/foundations/unity-catalog)
+
+## Why this matters
+
+The infrastructure setup section assumes you know these concepts. Gaps here surface later as misconfigured workspaces, broken permissions, or ungoverned data paths. Use the questions below to check yourself before moving on.
+
+## Account Console
+
+**What is it?**
+A central admin portal — similar to the AWS console or Azure portal — where you manage workspaces, Unity Catalog metastores, users, groups, service principals, billing, SCIM, and SSO.
+
+**When do you use it?**
+When provisioning or deleting workspaces, setting up identity, assigning metastores, or reviewing billing. Day-to-day data work happens inside a workspace, not here.
+
+## Workspace
+
+**What is it?**
+A cloud-based environment scoped to a region where teams run notebooks, jobs, SQL queries, dashboards, and ML experiments.
+
+**How many do I need?**
+Start with three: development, staging, and production. This follows the standard software development lifecycle. You do not need one workspace per team — use groups and permissions instead.
+
+**How do I isolate data between workspaces?**
+You don't — at least not at the workspace level. Data isolation is handled by Unity Catalog grants. A workspace can access any data its attached metastore governs, subject to the permissions you define.
+
+## Unity Catalog
+
+**What is it?**
+The centralized governance layer that manages permissions, lineage, and discovery for all data and AI assets across workspaces.
+
+**Where is the data stored?**
+In your cloud account's object storage. Unity Catalog governs access — it does not store or move your data.
+
+**How should every data and AI interaction be done?**
+Through Unity Catalog. Every read, write, and execution should flow through UC so that grants, lineage, and audit logs are enforced.
+
+**What should be avoided?**
+
+:::danger
+- Accessing data with hardcoded credentials in notebooks or scripts.
+- Configuring data access at the cluster level using external libraries and environment variables.
+
+Both approaches bypass UC governance, making access invisible to lineage and impossible to audit or revoke centrally.
+:::
+
+## Next
+
+- **Do next:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
+- **Learn why:** [Unity Catalog](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks administration overview](https://docs.databricks.com/aws/en/admin/)

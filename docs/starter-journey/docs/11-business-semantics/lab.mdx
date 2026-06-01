@@ -1,0 +1,250 @@
+---
+sidebar_label: "Hands-on lab"
+description: Build a certified sales KPI metric view using the TPC-H dataset and validate the same number in SQL, AI/BI, and Genie.
+---
+
+# Hands-on: build and validate a sales KPI
+
+> **You'll** create a certified metric view and confirm the same number lands in SQL, a dashboard, and Genie — in **30–45 min**.
+>
+> **Prereqs:** [Business Semantics overview](/docs/11-business-semantics/), a serverless SQL warehouse, `CREATE` on a target schema
+
+**What you'll build:** A sales analytics metric view sourced from `samples.tpch.orders` with joins to customers and geography. You'll validate `Total Revenue`, `Unique Customers`, and `Avg Order Value` across SQL, an [AI/BI dashboard](/docs/10-databricks-aibi/dashboards), and a [Genie space](/docs/10-databricks-aibi/genie-spaces).
+
+## 1. Create the metric view
+
+Open a SQL editor. Set your catalog and schema first, then create the view.
+
+```sql
+USE CATALOG my_catalog;
+USE SCHEMA my_schema;
+
+CREATE OR REPLACE VIEW orders_metrics
+WITH METRICS LANGUAGE YAML AS $$
+version: 1.1
+
+source: SELECT * FROM samples.tpch.orders
+
+joins:
+  - name: customer
+    source: samples.tpch.customer
+    'on': o_custkey = c_custkey
+    joins:
+      - name: nation
+        source: samples.tpch.nation
+        'on': c_nationkey = n_nationkey
+
+filter: o_orderdate >= '1995-01-01'
+
+comment: |-
+  Sales analytics metric view for order performance analysis.
+  Joins orders with customers and geography.
+  Owner: Analytics Team
+  Last updated: 2025-01-15
+
+dimensions:
+  - name: order_date
+    expr: o_orderdate
+    display_name: Order Date
+  - name: order_month
+    expr: "DATE_TRUNC('MONTH', o_orderdate)"
+    display_name: Order Month
+  - name: order_year
+    expr: YEAR(o_orderdate)
+    display_name: Order Year
+  - name: order_status
+    expr: |-
+      CASE o_orderstatus
+        WHEN 'O' THEN 'Open'
+        WHEN 'P' THEN 'Processing'
+        WHEN 'F' THEN 'Fulfilled'
+      END
+    display_name: Order Status
+    synonyms:
+      - status
+      - fulfillment status
+  - name: order_priority
+    expr: "SPLIT(o_orderpriority, '-')[0]"
+    display_name: Priority
+  - name: customer_name
+    expr: customer.c_name
+    display_name: Customer Name
+  - name: market_segment
+    expr: customer.c_mktsegment
+    display_name: Market Segment
+    synonyms:
+      - segment
+      - industry
+  - name: customer_nation
+    expr: customer.nation.n_name
+    display_name: Country
+    synonyms:
+      - nation
+      - country
+
+measures:
+  - name: order_count
+    expr: COUNT(DISTINCT o_orderkey)
+    display_name: Order Count
+    format:
+      type: number
+      decimal_places:
+        type: exact
+        places: 0
+      abbreviation: compact
+  - name: total_revenue
+    expr: SUM(o_totalprice)
+    display_name: Total Revenue
+    format:
+      type: currency
+      currency_code: USD
+      decimal_places:
+        type: exact
+        places: 2
+      abbreviation: compact
+    synonyms:
+      - revenue
+      - sales
+  - name: unique_customers
+    expr: COUNT(DISTINCT o_custkey)
+    display_name: Unique Customers
+    format:
+      type: number
+      decimal_places:
+        type: exact
+        places: 0
+      abbreviation: compact
+  - name: avg_order_value
+    expr: MEASURE(total_revenue) / MEASURE(order_count)
+    display_name: Avg Order Value
+    format:
+      type: currency
+      currency_code: USD
+      decimal_places:
+        type: exact
+        places: 2
+      abbreviation: compact
+    synonyms:
+      - AOV
+  - name: revenue_per_customer
+    expr: MEASURE(total_revenue) / MEASURE(unique_customers)
+    display_name: Revenue per Customer
+    format:
+      type: currency
+      currency_code: USD
+      decimal_places:
+        type: exact
+        places: 2
+      abbreviation: compact
+  - name: open_order_revenue
+    expr: SUM(o_totalprice) FILTER (WHERE o_orderstatus = 'O')
+    display_name: Open Order Revenue
+    format:
+      type: currency
+      currency_code: USD
+      decimal_places:
+        type: exact
+        places: 2
+      abbreviation: compact
+    synonyms:
+      - backlog
+  - name: fulfilled_order_revenue
+    expr: SUM(o_totalprice) FILTER (WHERE o_orderstatus = 'F')
+    display_name: Fulfilled Revenue
+    format:
+      type: currency
+      currency_code: USD
+      decimal_places:
+        type: exact
+        places: 2
+      abbreviation: compact
+  - name: t7d_customers
+    expr: COUNT(DISTINCT o_custkey)
+    window:
+      - order: order_date
+        semiadditive: last
+        range: trailing 7 day
+    display_name: 7-Day Rolling Customers
+    format:
+      type: number
+      decimal_places:
+        type: exact
+        places: 0
+$$;
+```
+
+## 2. Grant access and certify
+
+```sql
+GRANT SELECT ON VIEW my_catalog.my_schema.orders_metrics TO `analysts`;
+ALTER VIEW my_catalog.my_schema.orders_metrics SET TAGS ('certified' = 'true');
+```
+
+Use a **group**, not individual users. Set the owner in Catalog Explorer if it is not already a service principal or shared group.
+
+## 3. Validate in three surfaces
+
+Run the same query in each surface and compare the results.
+
+### SQL editor
+
+```sql
+SELECT
+  `Order Month`,
+  `Market Segment`,
+  MEASURE(`Total Revenue`),
+  MEASURE(`Unique Customers`),
+  MEASURE(`Avg Order Value`)
+FROM my_catalog.my_schema.orders_metrics
+WHERE `Order Month` BETWEEN '1995-01-01' AND '1995-12-31'
+GROUP BY ALL
+ORDER BY `Order Month`;
+```
+
+Spot-check by running the equivalent raw aggregation against `samples.tpch.orders` joined to `samples.tpch.customer`. The numbers must match.
+
+### AI/BI dashboard
+
+In a [dashboard](/docs/10-databricks-aibi/dashboards), add a dataset bound to `my_catalog.my_schema.orders_metrics` and a tile showing `Total Revenue` by `Order Month`. The currency format comes from the YAML — no extra config needed.
+
+### Genie space
+
+Add `my_catalog.my_schema.orders_metrics` to a [Genie space](/docs/10-databricks-aibi/genie-spaces). Ask:
+
+- "What was revenue by month in 1995?"
+- "Show me backlog by country." — uses your `backlog` synonym for `Open Order Revenue` and `country` synonym for `Country`.
+- "How many unique customers placed fulfilled orders by market segment?"
+
+Genie should pick the metric view and return the same totals.
+
+## Done when
+
+- [ ] All three surfaces return the same `Total Revenue` for the same filter
+- [ ] A business partner recognizes the metric by display name, not the column name
+- [ ] The view is owned by a group and tagged `certified=true`
+
+## Troubleshoot
+
+<details>
+<summary>Genie does not pick the metric view</summary>
+
+Check that the object is in the space, the user has `SELECT`, and the metric has clear synonyms and a comment. Add space-level instructions if the wrong measure keeps getting chosen.
+</details>
+
+<details>
+<summary>SQL and dashboard numbers do not match</summary>
+
+Reconcile time zone, fiscal vs. calendar boundaries, and any row filters in the dashboard query. The metric view's `filter:` clause holds the "official" exclusion. Dashboard-level filters must not contradict it.
+</details>
+
+<details>
+<summary>MEASURE() references fail to resolve</summary>
+
+`avg_order_value` and `revenue_per_customer` use `MEASURE(total_revenue)` and `MEASURE(order_count)` — composed measures. Both referenced measures must be defined in the same metric view. Verify the names match exactly (case-sensitive).
+</details>
+
+## Next
+
+- **Do next:** [12. Data Access Control](/docs/12-data-access-control/) — work in progress
+- **Learn why:** [Genie spaces](/docs/10-databricks-aibi/genie-spaces), [AI/BI overview](/docs/10-databricks-aibi/dashboards)
+- **Reference:** [Create and edit metric views](https://docs.databricks.com/aws/en/business-semantics/metric-views/create-edit), [TPC-H metric view example](https://docs.databricks.com/aws/en/business-semantics/metric-views/tpch-example)

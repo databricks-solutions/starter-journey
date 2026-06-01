@@ -1,0 +1,50 @@
+---
+sidebar_label: Workspace + Genie Code
+description: Build a Spark Declarative Pipeline using the Databricks Workspace and Genie Code.
+---
+
+# Workspace + Genie Code
+
+> **You'll learn** how to build a pipeline interactively using the Databricks Workspace and Genie Code in ~10 min.
+>
+> **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline)
+
+## Why this matters
+
+The fastest way to go from raw data to a working pipeline is the Databricks Workspace combined with Genie Code. Genie Code generates pipeline code from natural-language prompts, and the Workspace lets you validate, edit, and run it without leaving the browser. This is the recommended starting point before moving to code-first approaches like DABs.
+
+## How it works
+
+The Databricks workspace includes a pipeline editor where you can create Spark Declarative Pipelines visually. Genie Code assists by generating transformation code, suggesting data quality expectations, and auto-completing schema definitions based on your data.
+
+### Getting started
+
+This video walks through creating a pipeline from scratch using the Workspace and Genie Code:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/krzr52wd4nM"></iframe>
+
+### Take Genie Code to the next level
+
+Once the basics are working, Genie Code can help with more complex transformations, joins, and data quality rules:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h56NiaDDPE0"></iframe>
+
+## When to use / when not to
+
+**Use the Workspace + Genie Code when:**
+
+- You are building your first pipeline and want fast feedback.
+- You want to prototype a transformation before committing to code.
+- You prefer a visual, interactive workflow.
+
+**Use DABs instead when:**
+
+- You need version-controlled, repeatable deployments.
+- The pipeline will run in staging and production environments.
+- You want to define infrastructure (schemas, volumes, warehouses) alongside the pipeline.
+
+## Next
+
+- **Do next:** [DABs pipeline](/docs/07-build-first-pipeline/dabs)
+- **Learn why:** [Spark Declarative Pipelines overview](/docs/07-build-first-pipeline)
+- **Reference:** [Create a pipeline — Databricks docs](https://docs.databricks.com/aws/en/ldp/)

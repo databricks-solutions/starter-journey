@@ -1,0 +1,77 @@
+---
+sidebar_position: 0
+sidebar_label: Cloud Tenant ready
+description: Decide whether your Databricks deployment maps to one cloud account or many before creating workspaces.
+---
+
+# Cloud Tenant ready
+
+> **You'll decide** how Databricks maps to your cloud accounts in ~5 min.
+>
+> **Prereqs:** [Foundations](/docs/02-before-you-start/foundations)
+
+## Why this matters
+
+Databricks workspaces run inside cloud accounts (AWS accounts, Azure subscriptions, or GCP projects). How you distribute workspaces across those accounts determines your blast radius, network boundaries, billing separation, and long-term operational complexity. Changing this layout after workspaces are running is costly.
+
+## Mental model
+
+A cloud tenant is a single AWS account, Azure subscription, or GCP project. Your organization might have one or many. Databricks does not require a specific layout — it works in both single-tenant and multi-tenant setups. The right choice depends on your isolation requirements.
+
+## How it works
+
+### Single-tenant
+
+All Databricks workspaces and their backing cloud resources (IAM roles, storage, networking) live in one cloud account. Simpler to manage, fewer moving parts.
+
+Best for organizations with a single cloud account and no requirement to isolate environments at the cloud-account level.
+
+### Multi-tenant
+
+Databricks workspaces are spread across multiple cloud accounts — typically one per environment (dev, staging, prod) or one per business unit. Each account has its own IAM boundary, storage, and network.
+
+Best for organizations that need hard isolation between environments or divisions, either for compliance or blast-radius control.
+
+### Which one are you?
+
+| Scenario | Setup |
+|---|---|
+| One cloud account, no plan to add more | [Single-tenant](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup) |
+| Multiple cloud accounts by environment or business unit | [Multi-tenant](/docs/02-before-you-start/cloud-tenant-ready/multi-tenant-setup) |
+
+## Journey checklist
+
+Before moving to infrastructure setup, confirm the following:
+
+- [ ] Identified which cloud account(s) Databricks will deploy into.
+- [ ] Decided single-tenant or multi-tenant layout.
+- [ ] Verified you have admin access to each target cloud account.
+
+## When to use / when not to
+
+**Go multi-tenant when:**
+
+- Regulatory or compliance rules require hard account-level boundaries.
+- You need separate billing at the cloud-account level.
+- Different business units manage their own cloud accounts independently.
+
+**Stay single-tenant when:**
+
+- You only have one cloud account and no plans to add more.
+- Data isolation can be handled through Unity Catalog grants rather than account boundaries.
+
+## Common pitfalls
+
+### Splitting too early
+
+Creating multiple cloud accounts just to separate teams adds overhead with little benefit. Unity Catalog handles data isolation. Cloud-account separation is for cases where you need network, IAM, or billing boundaries.
+
+### Not splitting when you should
+
+Running production workloads in the same cloud account as development means a misconfigured IAM policy or a runaway Spark job can impact production. If your organization already has separate accounts for prod, use them.
+
+## Next
+
+- **Do next:** [Single-tenant setup](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup)
+- **Learn why:** [Workspace foundations](/docs/02-before-you-start/foundations/workspace)
+- **Reference:** [Databricks account architecture](https://docs.databricks.com/aws/en/admin/account-settings/)

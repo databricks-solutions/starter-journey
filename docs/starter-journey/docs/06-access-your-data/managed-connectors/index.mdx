@@ -1,0 +1,37 @@
+---
+sidebar_position: 0
+sidebar_label: Managed connectors
+description: Use Unity Catalog managed connectors to query external systems and ingest data into Databricks.
+---
+
+# Managed Connectors
+
+> **You'll understand** how managed connectors let you query and ingest data from external systems through Unity Catalog in ~5 min.
+>
+> **Prereqs:** [Access your data](/docs/06-access-your-data)
+
+## Why this matters
+
+Not all data lives in cloud object storage. Databases, SaaS platforms, and data warehouses hold critical data that needs to flow into Databricks or be queryable from it. Managed connectors provide a governed, UC-registered path to those systems — no hardcoded credentials, no ad-hoc JDBC strings buried in notebooks.
+
+## How it works
+
+A **connection** is a Unity Catalog object that stores the authentication details for an external system (PostgreSQL, MySQL, SQL Server, Snowflake, Salesforce, etc.). Once created, a connection enables two workflows:
+
+| Workflow | Use when | What it creates |
+|---|---|---|
+| **Query federation** | You need to query a small subset of external data without copying it | A foreign catalog that pushes queries down to the source system |
+| **Ingestion pipeline** | You need continuous CDC or batch ingestion into Databricks | A Lakeflow Connect pipeline that replicates data into UC tables |
+
+Both workflows start with creating a connection. The connection itself does not move data — it only stores credentials and connectivity details.
+
+## What you'll set up
+
+- **[Create connection](/docs/06-access-your-data/managed-connectors/create-connection)** — Register an external system in Unity Catalog and test connectivity. Includes [Query federation](/docs/06-access-your-data/managed-connectors/create-connection/query-federation) for creating foreign catalogs.
+- **[Create ingestion pipeline](/docs/06-access-your-data/managed-connectors/create-ingestion-pipeline)** — Build a Lakeflow Connect pipeline to ingest data from the connected system into UC tables.
+
+## Next
+
+- **Do next:** [Create connection](/docs/06-access-your-data/managed-connectors/create-connection)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Lakehouse Federation overview](https://docs.databricks.com/aws/en/query-federation/)

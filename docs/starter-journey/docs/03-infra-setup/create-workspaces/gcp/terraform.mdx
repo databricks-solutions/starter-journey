@@ -1,0 +1,57 @@
+---
+sidebar_label: Terraform
+description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform.
+---
+
+# GCP — Terraform
+
+> **You'll deploy** a Databricks workspace with BYOVPC on GCP using Terraform in ~20 min.
+>
+> **Prereqs:** [GCP project](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll build
+
+A Databricks workspace deployed into your GCP project with a customer-managed VPC. The Terraform template handles service accounts, GCS buckets, VPC networking, and workspace configuration.
+
+## Prerequisites
+
+- A GCP project with Owner permissions.
+- A Databricks account with account-admin privileges.
+- Terraform CLI installed locally.
+- GCP CLI authenticated (`gcloud auth application-default login`).
+
+## Steps
+
+### 1. Deploy the workspace
+
+1. Go to the template repository: [GCP BYOVPC Terraform Deployment](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone).
+2. Follow the **README.md** instructions.
+3. Copy `tf/terraform.tfvars.example` and fill in your values — project ID, region, and workspace name.
+4. Run `terraform init && terraform apply`.
+5. Repeat for **staging** and **production** workspaces.
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
+2. Navigate to **Workspaces** and confirm the new workspace shows a **Running** status.
+3. In the GCP console, verify the VPC and service accounts were created in the target project.
+
+## Troubleshoot
+
+<details>
+<summary>Terraform apply fails with API not enabled</summary>
+
+The template requires several GCP APIs (Compute Engine, Cloud Storage, IAM). Enable them with `gcloud services enable compute.googleapis.com storage.googleapis.com iam.googleapis.com` on the target project.
+</details>
+
+<details>
+<summary>Permission errors during apply</summary>
+
+Verify `gcloud auth application-default login` is authenticated with a principal that has Owner access on the target project. Run `gcloud config get-value project` to confirm the active project.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/03-infra-setup/add-users)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks Terraform provider](https://registry.terraform.io/providers/databricks/databricks/latest/docs)
