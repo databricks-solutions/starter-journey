@@ -37,4 +37,5 @@ cd docs/starter-journey && npm install && npm run start -- --port 3000
 - Create feature branches from `main` for all changes.
 - PRs to `main` run a build check via GitHub Actions (`test-deploy.yml`).
 - Merges to `main` auto-deploy to GitHub Pages (`deploy.yml`).
+- Weekly section freshness runs via `section-freshness.yml`; bump `docs/starter-journey/section-freshness.csv` when you update a journey section.
 - Do not commit `node_modules/`, `build/`, or `.docusaurus/`.
