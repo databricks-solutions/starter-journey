@@ -1,0 +1,77 @@
+---
+sidebar_position: 0
+sidebar_label: 5. Data Governance Strategy
+description: Define how your organization structures catalogs, schemas, and permissions in Unity Catalog.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+
+# 5. Data Governance Strategy
+
+> **You'll define** your organization's catalog, schema, and permission model on Unity Catalog in ~15 min.
+>
+> **Prereqs:** [Infra Setup](/docs/03-infra-setup) (workspaces, users, groups, and metastore admin configured)
+
+## Why this matters
+
+Workspaces are running and users have access. The next decision — how you structure catalogs, schemas, and grants — determines whether teams can find, trust, and safely share data. A poorly designed governance model leads to permission creep, duplicated tables, and no clear ownership. Fixing it after hundreds of tables exist is painful.
+
+This section covers two patterns. Pick the one that matches your organization size.
+
+## Journey checklist
+
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
+- [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
+- [ ] **Data Governance Strategy.**
+- [ ] Access your data.
+- [ ] Build the first pipeline.
+- [ ] Automation and orchestration.
+- [ ] Query and explore.
+- [ ] Databricks AI/BI.
+- [ ] Business semantics.
+
+## How it works
+
+:::warning
+Before choosing a pattern, review **[Add Groups — How it works](/docs/03-infra-setup/add-groups/#how-it-works)** to understand the expected group structure that your data governance model will build on.
+:::
+
+:::tip
+The two approaches listed in this section are based on:
+
+- **[Part 1: Modeling a Medallion Architecture on Unity Catalog for your Organizational Structure](https://blog.databricksforstartups.com/part-1-modeling-a-medallion-architecture-on-unity-catalog-for-your-organizational-structure-b8f0f9918c26?gi=fbb044a81513)**
+- <Button label="Deck - UC best practices deck" link={useBaseUrl('/pdfs/UC Best Practices and Patterns from accumulated STS experiences.pdf')} />
+
+:::
+
+### Get Started
+
+Unity Catalog organizes data into a three-level namespace: **catalog > schema > object**. Your governance strategy defines how you map that hierarchy to your organization's teams, environments, and projects.
+
+Two patterns cover most organizations:
+
+| Pattern | Best for |
+|---|---|
+| [Small organizations](/docs/05-data-governance-strategy/small-organizations) | One or two data teams, a single business unit, fewer moving parts |
+| [Medium-large organizations](/docs/05-data-governance-strategy/medium-large-organizations) | Multiple business units, teams with different data boundaries, stricter isolation requirements |
+
+Both patterns use the same building blocks (catalogs per environment, medallion schemas, group-based grants). The difference is how many layers of prefixing and isolation you add.
+
+## Common pitfalls
+
+### Skipping governance entirely
+
+Teams that jump straight to building pipelines without defining catalog and schema structure end up with ad-hoc tables scattered across default catalogs. Retroactively organizing them requires rewriting every reference.
+
+### Over-engineering for a small team
+
+A five-person team does not need business-unit prefixed catalogs. Start with the small-organization pattern. You can add prefixes and split catalogs later if the team grows.
+
+## Next
+
+- **Do next:** [Small organizations](/docs/05-data-governance-strategy/small-organizations)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Unity Catalog best practices](https://docs.databricks.com/aws/en/data-governance/unity-catalog/best-practices.html)

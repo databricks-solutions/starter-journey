@@ -1,0 +1,65 @@
+---
+sidebar_label: Single-tenant setup
+description: Deploy all Databricks workspaces and cloud resources into a single cloud account.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Single-tenant setup
+
+> **You'll understand** the single-tenant deployment model and when it fits your organization in ~3 min.
+>
+> **Prereqs:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
+
+## Why this matters
+
+Choosing the wrong tenant model means either unnecessary infrastructure overhead (multi-tenant when you didn't need it) or a painful migration later (single-tenant when you should have split). If your organization operates within one cloud account, start here.
+
+## Mental model
+
+One cloud account. All Databricks workspaces — dev, staging, and production — deploy into that account alongside their backing resources (IAM roles, storage buckets, networking). Unity Catalog governs data access across workspaces within the same account.
+
+<img src={useBaseUrl('/img/single-tenant.png')} alt="Single-tenant architecture: all workspaces in one cloud account" width="800"/>
+
+## How it works
+
+### Organization context
+
+This model applies when:
+
+- Your organization uses a single cloud account (e.g., one AWS account).
+- There is no plan to create additional cloud accounts.
+- All Databricks-related cloud resources must live in that account.
+
+### Deployment layout
+
+All three recommended workspaces (development, staging, production) and their cloud resources are created inside the same account. Environment isolation is handled by workspace boundaries and Unity Catalog grants, not by cloud-account separation.
+
+## When to use / when not to
+
+**Use single-tenant when:**
+
+- You have one cloud account with no plans to add more.
+- Your compliance requirements do not mandate account-level isolation between environments.
+- You want the simplest possible operational setup.
+
+**Consider multi-tenant instead when:**
+
+- Your organization already has separate cloud accounts for different environments or business units.
+- Compliance or security policies require hard IAM and network boundaries between production and non-production.
+
+## Common pitfalls
+
+### Assuming single-tenant means no isolation
+
+Workspaces still provide environment separation. Unity Catalog grants control data access. Single-tenant does not mean everything runs in one flat space — it means the cloud account is shared.
+
+### Outgrowing the model without a plan
+
+Organizations that start single-tenant sometimes need to split later when compliance requirements change. Document the decision and the conditions that would trigger a move to multi-tenant.
+
+## Next
+
+- **Do next:** [Multi-tenant setup](/docs/02-before-you-start/cloud-tenant-ready/multi-tenant-setup)
+- **Learn why:** [Workspace foundations](/docs/02-before-you-start/foundations/workspace)
+- **Reference:** [Databricks account architecture](https://docs.databricks.com/aws/en/admin/account-settings/)

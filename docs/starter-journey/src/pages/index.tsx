@@ -27,7 +27,7 @@ function HomepageHero() {
           <div className={styles.buttons}>
             <Link
               className="button button--primary button--lg"
-              to="/docs/get-started">
+              to="/docs/01-get-started">
               Start the Journey →
             </Link>
           </div>

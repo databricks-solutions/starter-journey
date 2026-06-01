@@ -1,0 +1,67 @@
+---
+sidebar_label: Query federation
+description: Create a foreign catalog to run federated queries against an external data source without copying data.
+---
+
+# Query Federation
+
+> **You'll create** a foreign catalog to run pushdown queries against an external data source in ~10 min.
+>
+> **Prereqs:** [Create connection](/docs/06-access-your-data/managed-connectors/create-connection)
+
+## What you'll build
+
+A foreign catalog in Unity Catalog that lets you query an external system (PostgreSQL, MySQL, Snowflake, etc.) directly from Databricks. Queries are pushed down to the source — no data is copied into Databricks.
+
+## Prerequisites
+
+- A Unity Catalog connection to the target system (see [Create connection](/docs/06-access-your-data/managed-connectors/create-connection)).
+- The connected system must support pushdown queries via Lakehouse Federation.
+
+:::tip
+A foreign catalog is only needed if you want to run pushdown queries from Databricks. If your goal is to ingest data into UC tables, skip this page and go to [Create ingestion pipeline](/docs/06-access-your-data/managed-connectors/create-ingestion-pipeline) instead.
+:::
+
+## Steps
+
+### 1. Create a foreign catalog
+
+Follow the official guide to create a foreign catalog from your connection:
+
+[Create a Foreign Catalog — Databricks docs](https://docs.databricks.com/gcp/en/query-federation/database-federation#create-a-foreign-catalog)
+
+The foreign catalog maps to the external system's schema structure. Once created, you can query its tables using standard SQL from any Databricks notebook or SQL warehouse.
+
+### 2. Video walkthrough (optional)
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/LJ8XdJu_zw0"
+></iframe>
+
+## Verify
+
+1. In the Databricks workspace, navigate to **Catalog**.
+2. Confirm the foreign catalog appears in the catalog list.
+3. Expand it and run a `SELECT` query against one of its tables to confirm pushdown works.
+
+## Troubleshoot
+
+<details>
+<summary>Foreign catalog creation fails</summary>
+
+Verify the underlying connection is still active by testing it in **External Data** > **Connections**. The external system must be reachable and the connection credentials must be valid.
+</details>
+
+<details>
+<summary>Query returns an error or no results</summary>
+
+Pushdown queries run on the source system. If the source user does not have read access to the target schemas or tables, the query will fail. Check the permissions on the source system.
+</details>
+
+## Next
+
+- **Do next:** [Create ingestion pipeline](/docs/06-access-your-data/managed-connectors/create-ingestion-pipeline)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Lakehouse Federation — Databricks docs](https://docs.databricks.com/aws/en/query-federation/)

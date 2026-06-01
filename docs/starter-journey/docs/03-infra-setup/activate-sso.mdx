@@ -1,0 +1,102 @@
+---
+sidebar_label: Activate SSO
+description: Configure single sign-on so users authenticate to Databricks through your identity provider.
+---
+
+# Activate SSO
+
+> **You'll configure** SSO so users sign in to Databricks with your identity provider in ~10 min.
+>
+> **Prereqs:** [Add Users](/docs/03-infra-setup/add-users), [Add Groups](/docs/03-infra-setup/add-groups), identity provider admin access
+
+## What you'll build
+
+Single sign-on configured at the Databricks account level. Users authenticate through your existing identity provider instead of managing separate Databricks credentials.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- Admin access to your identity provider (Entra ID, Okta, or another SAML/OIDC provider).
+
+## Journey checklist
+
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
+- [ ] Infra setup
+    - [x] ~~Create workspaces.~~
+    - [x] ~~Add users.~~
+    - [x] ~~Add groups.~~
+    - [x] ~~Change ownership to metastore admins.~~
+    - [ ] **Activate SSO.**
+- [ ] Cost monitoring.
+- [ ] Data Governance Strategy.
+- [ ] Access your data.
+- [ ] Build the first pipeline.
+- [ ] Automation and orchestration.
+- [ ] Query and explore.
+- [ ] Databricks AI/BI.
+- [ ] Business semantics.
+
+## Steps
+
+### 1. Check your cloud provider
+
+SSO configuration varies by cloud. Follow the instructions for your platform.
+
+#### Azure
+
+No action needed. Entra ID (Azure AD) SSO is enabled by default for Azure Databricks.
+
+#### AWS
+
+Configure SSO with your identity provider:
+
+1. Follow the guide: [Configure SSO for AWS](https://docs.databricks.com/aws/en/security/auth/single-sign-on/).
+2. Set up the SAML or OIDC application in your IdP.
+3. Register the IdP configuration in the Databricks account console under **Settings** > **Single sign-on**.
+
+#### GCP
+
+Google SSO may be enabled by default. If it is not:
+
+1. Follow the guide: [Configure SSO for GCP](https://docs.databricks.com/gcp/en/security/auth/single-sign-on/).
+2. Set up the SAML or OIDC application in your IdP.
+3. Register the IdP configuration in the Databricks account console.
+
+### 2. Test SSO login
+
+1. Open a private/incognito browser window.
+2. Navigate to the workspace URL.
+3. Confirm the login redirects to your identity provider.
+4. Sign in and verify you land in the workspace.
+
+## Verify
+
+1. Log in to a workspace using SSO from a private browser window.
+2. In the account console, navigate to **Settings** > **Single sign-on** and confirm the SSO configuration shows as active.
+
+## Troubleshoot
+
+<details>
+<summary>SSO redirect fails or loops</summary>
+
+Check the SAML/OIDC reply URL configured in your IdP. It must match the URL registered in the Databricks account console exactly. Trailing slashes and protocol mismatches are common causes.
+</details>
+
+<details>
+<summary>User authenticates but cannot access a workspace</summary>
+
+SSO handles authentication, not authorization. The user must also be assigned to the workspace. Verify their assignment in the account console under the workspace's permission settings.
+</details>
+
+<details>
+<summary>Azure: Entra ID SSO not working</summary>
+
+Entra ID SSO is enabled by default, but the user must exist in the linked Entra ID directory. If using a guest account or B2B user, verify the account has been invited and accepted.
+</details>
+
+## Next
+
+- **Do next:** [Data Governance Strategy](/docs/05-data-governance-strategy)
+- **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
+- **Reference:** [Databricks SSO configuration](https://docs.databricks.com/aws/en/security/auth/single-sign-on/)
