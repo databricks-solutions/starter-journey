@@ -1,68 +1,107 @@
 ---
 sidebar_label: Terraform
-description: Deploy a Databricks workspace on Azure with VNet injection using Terraform.
+description: Deploy a Databricks workspace and Unity Catalog on Azure using Terraform with VNet injection.
 ---
 
 # Azure — Terraform
 
-> **You'll deploy** a Databricks workspace with VNet injection on Azure using Terraform in ~20 min.
+> **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
 >
 > **Prereqs:** [Azure subscription](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
 
 ## What you'll build
 
-A Databricks workspace deployed into your Azure subscription with VNet injection. The Terraform template handles the managed resource group, VNet, subnets, NSG rules, and workspace configuration.
+A Databricks workspace with VNet injection on Azure and Unity Catalog resources, deployed with Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below — you do not need a separate workspace step and catalog step unless you choose split templates.
+
+The **Workspace + Catalog** template creates a new VNet only. The **Workspace** template supports a new or existing VNet.
 
 ## Prerequisites
 
-- An Azure subscription with Contributor permissions.
+- An Azure subscription with **Contributor** at subscription scope (not resource-group only — Databricks creates a managed resource group).
 - A Databricks account with account-admin privileges.
 - Terraform CLI installed locally.
 - Azure CLI authenticated (`az login`).
+- A service principal with workspace-admin access (required for the **Catalog** template and when attaching to an existing metastore on the combined template).
 
-## Steps
+## YouTube Walkthrough
 
-### 1. Deploy the workspace
-
-1. Go to the template repository: [Azure VNet Injection Workspace Setup Guide](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection).
-2. Follow the **README.md** instructions.
-3. Copy `tf/terraform.tfvars.example` and fill in your values — subscription ID, resource group, region, and workspace name.
-4. Run `terraform init && terraform apply`.
-5. Repeat for **staging** and **production** workspaces.
-
-### 2. Video walkthrough (optional)
-
-The video below is a good reference but uses an older version of the template. The steps are similar.
+The video below walks through an older **Workspace** flow. The steps match the current templates: copy `tf/terraform.tfvars.example`, configure variables, then run `terraform init`, `plan`, and `apply` per the repo README.
 
 :::warning
-The video references a deprecated version of the Terraform template. Use the repository linked in Step 1 for the current version.
+The video references a deprecated version of the Terraform template. Use the repositories linked in [Terraform resources](#terraform-resources) for the current version.
 :::
 
 <iframe
   width="560"
   height="315"
   src="https://www.youtube.com/embed/jVMgw0_Z3h8"
-  title="YouTube video player"
+  title="Azure VNet injection workspace Terraform walkthrough"
 ></iframe>
+
+## Terraform resources
+
+Open the linked repository for your scenario and follow its **README.md**. In each repo, run commands from the `tf/` directory: copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
+
+Repeat for **development**, **staging**, and **production** workspaces. Use `workspace_name`, `resource_group_name`, or your naming prefix to distinguish environments (for example `dev`, `staging`, `prod`).
+
+If you are **new to Databricks**, start with **Workspace + Catalog** (first row).
+
+| Terraform template | What it creates | URL |
+| --- | --- | --- |
+| 💎 **Workspace + Catalog** | <ul><li>Resource groups (workspace + VNet)</li><li>VNet, public/private subnets, NSG, NAT Gateway</li><li>Databricks workspace (VNet injection, No Public IP)</li><li>Unity Catalog metastore (new or existing)</li><li>Storage credential, external location, user-defined catalog</li><li>Single-node UC cluster (Personal Compute policy)</li></ul> | [azure-vnet-injection-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc) |
+| **Workspace** | <ul><li>VNet (new or existing)</li><li>Subnets, NSG, NAT Gateway (when creating a new VNet)</li><li>Databricks workspace (VNet injection)</li><li>Unity Catalog metastore (optional, new or existing)</li></ul> | [azure-vnet-injection](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection) |
+| **Catalog** | <ul><li>Storage account and container</li><li>Managed identity and role assignments</li><li>Unity Catalog storage credential, external location, catalog</li><li>Targets an **existing** workspace</li></ul> | [uc-quickstart/azure](https://github.com/databrickslabs/sandbox/tree/main/uc-quickstart/azure) |
+
+:::danger
+For the **Catalog** template only: the Terraform provider must use a **workspace-level** connection, not account-level. See [Authenticating with Databricks-managed Service Principal](https://registry.terraform.io/providers/databricks/databricks/latest/docs#authenticating-with-databricks-managed-service-principal). The service principal needs workspace-admin access or the apply will fail.
+:::
+
+:::warning
+When using an **existing** metastore with **Workspace + Catalog**, `admin_user` must have `CREATE EXTERNAL LOCATION` on that metastore.
+:::
+
+:::tip
+Pin the Databricks provider to Azure CLI auth before apply: `export DATABRICKS_AUTH_TYPE=azure-cli`
+:::
 
 ## Verify
 
 1. Log in to the [Databricks account console](https://accounts.azuredatabricks.net/).
 2. Navigate to **Workspaces** and confirm the new workspace shows a **Running** status.
-3. In the Azure portal, verify the managed resource group was created with the expected VNet and NSG resources.
+3. Open the workspace and navigate to **Catalog** to confirm the new catalog appears (for **Workspace + Catalog** or **Catalog** templates).
+4. In the Azure portal, verify the managed resource group, VNet, and NSG resources exist in the expected subscription.
 
 ## Troubleshoot
 
 <details>
+<summary>PERMISSION_DENIED: User is not an owner of Metastore while creating catalog</summary>
+
+The identity running Terraform does not have metastore-level permissions. Fix with one of:
+
+- **Option 1:** Add the user or service principal to the metastore admins group.
+- **Option 2:** Grant catalog creation on the metastore:
+
+```sql
+GRANT CREATE CATALOG ON METASTORE TO `principal_name`;
+```
+</details>
+
+<details>
 <summary>Terraform apply fails with permission errors</summary>
 
-Confirm the Azure CLI is authenticated with a principal that has Contributor access on the target subscription. Run `az account show` to verify the active subscription.
+Confirm `az login` (or your service principal) has Contributor access on the target subscription. Run `az account show` to verify the active subscription.
 </details>
 
 <details>
 <summary>VNet injection fails with subnet errors</summary>
 
-The subnets must be delegated to `Microsoft.Databricks/workspaces` and must not overlap with existing address spaces. Check the template's subnet CIDR values against your existing network layout.
+Subnets must be delegated to `Microsoft.Databricks/workspaces` and must not overlap existing address spaces. Ensure `subnet_public_cidr` and `subnet_private_cidr` fit inside the VNet `cidr`. `vnet_resource_group_name` must differ from `resource_group_name`.
+</details>
+
+<details>
+<summary>Workspace created but catalog module cannot connect</summary>
+
+The catalog module needs a workspace-level Databricks provider, not an account-level one. Confirm the provider block uses the workspace URL and a principal with workspace-admin access.
 </details>
 
 ## Next

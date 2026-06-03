@@ -1,6 +1,6 @@
 ---
 sidebar_label: Terraform
-description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform.
+description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (standalone or shared VPC).
 ---
 
 # GCP — Terraform
@@ -11,43 +11,81 @@ description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform.
 
 ## What you'll build
 
-A Databricks workspace deployed into your GCP project with a customer-managed VPC. The Terraform template handles service accounts, GCS buckets, VPC networking, and workspace configuration.
+A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed with Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below.
+
+The **Standalone** template creates a new VPC, subnet, Cloud Router, and NAT. The **Shared VPC** template attaches a workspace to an **existing** VPC and subnet (same project or Shared VPC host project).
+
+There is no combined workspace-and-catalog template in this repo yet. Unity Catalog metastore assignment on **Shared VPC** is optional via `metastore_id`; add catalogs later in the workspace or with separate UC automation.
 
 ## Prerequisites
 
-- A GCP project with Owner permissions.
-- A Databricks account with account-admin privileges.
-- Terraform CLI installed locally.
-- GCP CLI authenticated (`gcloud auth application-default login`).
+- A GCP project with a Google service account that has `roles/Owner` on the project (or tighter roles per the template README).
+- A Databricks account with account-admin privileges (GCP Marketplace subscription).
+- Terraform CLI v1.3+ installed locally.
+- Google Cloud SDK authenticated; the templates use GSA impersonation and `GOOGLE_OAUTH_ACCESS_TOKEN` (see each repo README and `service-account-impersonation.md`).
+- The GSA added to the Databricks account console as an account user with account-admin role.
 
-## Steps
+## Terraform resources
 
-### 1. Deploy the workspace
+Open the linked repository for your scenario and follow its **README.md**. Run Terraform from the **repository root** (not a `tf/` subdirectory): copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
 
-1. Go to the template repository: [GCP BYOVPC Terraform Deployment](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone).
-2. Follow the **README.md** instructions.
-3. Copy `tf/terraform.tfvars.example` and fill in your values — project ID, region, and workspace name.
-4. Run `terraform init && terraform apply`.
-5. Repeat for **staging** and **production** workspaces.
+Repeat for **development**, **staging**, and **production** workspaces. Use `databricks_workspace_name` (and separate GCP projects or subnets) to distinguish environments.
+
+If you are **new to Databricks** and do not already have a VPC, start with **Standalone** (first row).
+
+| Terraform template | What it creates | URL |
+| --- | --- | --- |
+| 💎 **Standalone (new VPC)** | <ul><li>VPC, subnet (`private_ip_google_access`)</li><li>Cloud Router and Cloud NAT</li><li>Databricks MWS network and workspace</li><li>Workspace admin user in `admins` group</li><li>GCS buckets for workspace storage (Databricks-managed)</li></ul> | [gcp-byovpc-standalone](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone) |
+| **Shared VPC (existing network)** | <ul><li>Databricks MWS network referencing existing VPC/subnet</li><li>Databricks workspace</li><li>Workspace admin user in `admins` group</li><li>Optional Unity Catalog metastore assignment (`metastore_id`)</li></ul> | [gcp-byovpc-shared-vpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-shared-vpc) |
+
+:::warning
+For **Shared VPC** when the VPC lives in a **host project**, grant the GSA `roles/compute.networkUser` and `roles/compute.networkViewer` on the host project. Enable Shared VPC and attach the service project per the template README.
+:::
+
+:::tip
+Enable the Compute API before apply: `gcloud services enable compute.googleapis.com --project <PROJECT_ID>`. For least-privilege auth, see `service-account-impersonation.md` in each template repo.
+:::
 
 ## Verify
 
 1. Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
 2. Navigate to **Workspaces** and confirm the new workspace shows a **Running** status.
-3. In the GCP console, verify the VPC and service accounts were created in the target project.
+3. Open `terraform output -raw workspace_url` and confirm you reach the workspace landing page.
+4. In the GCP console, confirm the VPC/subnet (Standalone) or that the existing network is referenced (Shared VPC).
+5. If you set `metastore_id`, open **Catalog** in the workspace and confirm the metastore is attached.
 
 ## Troubleshoot
 
 <details>
 <summary>Terraform apply fails with API not enabled</summary>
 
-The template requires several GCP APIs (Compute Engine, Cloud Storage, IAM). Enable them with `gcloud services enable compute.googleapis.com storage.googleapis.com iam.googleapis.com` on the target project.
+Enable required APIs on the target project:
+
+```bash
+gcloud services enable compute.googleapis.com --project <PROJECT_ID>
+```
 </details>
 
 <details>
 <summary>Permission errors during apply</summary>
 
-Verify `gcloud auth application-default login` is authenticated with a principal that has Owner access on the target project. Run `gcloud config get-value project` to confirm the active project.
+Confirm the GSA has `roles/Owner` on the service project (Standalone) and the required network roles on the host project (Shared VPC). Refresh the access token:
+
+```bash
+export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+```
+</details>
+
+<details>
+<summary>VPC/Subnet not found (Shared VPC)</summary>
+
+Verify `vpc_name`, `subnet_name`, `vpc_network_project_id`, and `google_region`. The subnet must exist in the region you deploy the workspace to.
+</details>
+
+<details>
+<summary>`terraform destroy` fails — network still in use</summary>
+
+Databricks may leave firewall rules on the VPC. Destroy in order per the Standalone README: workspace first, then NAT/router, then remaining resources. Delete orphaned firewall rules with `gcloud compute firewall-rules delete` if needed.
 </details>
 
 ## Next
