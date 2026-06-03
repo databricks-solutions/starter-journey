@@ -1,41 +1,366 @@
-# Cursor Rules — Starter Journey
+# Agent instructions — Starter Journey
 
-Read CLAUDE.md at the repo root for full project context. This file adds Cursor-specific guidance.
+Guidance for AI coding agents (Claude Code, Cursor, and similar tools) working in this repository.
 
-## Quick start
+## Keep these files in sync
 
-The Docusaurus project is at `docs/starter-journey/` (not the repo root). To start the dev server:
+- **Cursor** loads [.cursorrules](.cursorrules) at the repo root.
+- **Claude Code** loads [CLAUDE.md](CLAUDE.md) at the repo root.
 
-```bash
-cd docs/starter-journey && npm install && npm run start -- --port 3000
+**When you change agent guidance, update both files in the same commit.** CI runs `scripts/check_agent_instructions_sync.sh` to ensure they stay identical.
+
+## Behavioral guidelines
+
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
+### 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+### 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+### 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+### 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
 ```
 
-## Before editing documentation
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-1. Read `docs/STYLE.md` for the two page templates (Technical and Educational) and writing rules.
-2. Check `docs/starter-journey/sidebars.ts` to understand the current section numbering and structure.
-3. After any doc or sidebar change, run `npm run build` from `docs/starter-journey/` to catch broken links.
+### 5. Honest Collaboration
 
-## File patterns
+**Be a partner, not a yes-man. Push back when it matters.**
 
-- **Doc pages:** `docs/starter-journey/docs/**/*.md` — use markdown, not MDX, unless you need React imports.
-- **Sidebar config:** `docs/starter-journey/sidebars.ts` — manually managed. Every new page must be registered here.
-- **Site config:** `docs/starter-journey/docusaurus.config.ts` — plugins, navbar, footer, gtag.
-- **Images:** `docs/starter-journey/static/img/` — prefix with section slug (e.g., `infra-*.png`).
-- **Blog posts:** `docs/starter-journey/blog/YYYY-MM-DD-<slug>.mdx`.
+You are too agreeable by default. I want objective, honest collaboration — not validation.
 
-## Rules for generated content
+- If my idea is bad, say so directly and explain why. Don't soften it into meaninglessness.
+- If I'm wrong, tell me I'm wrong. Don't reframe my mistake as "a good start" or bury the correction.
+- Never open with "You're absolutely right!", "Great idea!", or similar empty affirmations. If I'm right, just proceed. If I'm not, say so.
+- Give your genuine assessment first, without mirroring my tone or enthusiasm. Anchoring bias kills honest feedback.
+- When pushing back, always offer a concrete alternative or path forward. Criticism without a solution is just noise.
+- If a better approach exists, name it upfront — not buried at the end after you've already validated my direction.
 
-- Only use `:::tip`, `:::warning`, `:::danger` admonitions. No `:::info`, `:::success`, `:::note`.
-- Every page needs the shared top chrome (frontmatter + value prop + prereqs) and bottom chrome (`## Next` with Do next / Learn why / Reference).
-- Internal links use `/docs/<path>` format. Never use relative file paths.
-- No filler phrases. See the banned-phrases list in `docs/STYLE.md`.
-- One idea per sentence. Paragraphs under 4 sentences. Active voice.
+The test: Would a senior engineer with no incentive to flatter me give this same response? If not, revise it.
 
-## Git workflow
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## Agent workflow (repository)
+
+### Git and GitHub
 
 - Create feature branches from `main` for all changes.
 - PRs to `main` run a build check via GitHub Actions (`test-deploy.yml`).
 - Merges to `main` auto-deploy to GitHub Pages (`deploy.yml`).
-- Weekly section freshness runs via `section-freshness.yml`; bump `docs/starter-journey/section-freshness.csv` when you update a journey section.
+- Weekly section freshness runs via `section-freshness.yml`; bump `docs/starter-journey/section-freshness.csv` when you meaningfully update a journey section.
 - Do not commit `node_modules/`, `build/`, or `.docusaurus/`.
+- Create commits and push to remote only when the user explicitly asks.
+- Use `gh` for GitHub tasks (issues, PRs, checks) when the user requests them.
+
+### Doc change checklist
+
+Before and after editing documentation:
+
+1. Read [docs/STYLE.md](docs/STYLE.md) for page templates and writing rules.
+2. Check [docs/starter-journey/sidebars.ts](docs/starter-journey/sidebars.ts) for section numbering and doc IDs.
+3. Edit `.mdx` files under `docs/starter-journey/docs/` (register new pages in `sidebars.ts`).
+4. **Section freshness (required):** After you meaningfully update docs in a top-level journey section, bump that section's `last_update` in [`docs/starter-journey/section-freshness.csv`](docs/starter-journey/section-freshness.csv) to today's date (`YYYY-MM-DD`) in the **same change**. Infer the section from the doc path prefix (e.g. `docs/starter-journey/docs/03-infra-setup/...` → `3. Infra Setup`). The `section_name` value must match the category `label` in `sidebars.ts` exactly.
+5. Run `npm run build` from `docs/starter-journey/` to catch broken links and doc IDs.
+
+**Doc ID vs URL:** Sidebar and frontmatter use Docusaurus doc `id` values without extension (e.g. `03-infra-setup/index`). Published site links use `/docs/<path>` (e.g. `/docs/03-infra-setup/`). Do not use repo-relative file paths in doc content.
+
+## Project overview
+
+Starter Journey is a Docusaurus 3 documentation site deployed to GitHub Pages at `https://databricks-solutions.github.io/starter-journey/`. It guides organizations through their first Databricks setup — from account creation through production pipelines and BI.
+
+## Repository layout
+
+```
+starter-journey/
+├── CLAUDE.md                          ← agent instructions (Claude Code)
+├── .cursorrules                       ← agent instructions (Cursor; keep in sync)
+├── docs/
+│   ├── STYLE.md                       ← writing style guide (read before editing docs)
+│   └── starter-journey/               ← Docusaurus project root
+│       ├── package.json
+│       ├── docusaurus.config.ts
+│       ├── sidebars.ts                ← sidebar navigation (manually managed)
+│       ├── section-freshness.csv      ← last-updated date per journey section
+│       ├── src/                       ← React components, CSS, pages
+│       ├── static/img/                ← images (prefixed by section)
+│       ├── blog/                      ← blog posts (.mdx)
+│       └── docs/                      ← all documentation pages (.mdx)
+│           ├── 01-get-started.mdx
+│           ├── 02-before-you-start/
+│           ├── 03-infra-setup/
+│           ├── 04-cost-monitoring/
+│           ├── 05-data-governance-strategy/
+│           ├── 06-access-your-data/
+│           ├── 07-build-first-pipeline/
+│           ├── 08-orchestration/
+│           ├── 09-query-and-explore.mdx
+│           ├── 10-databricks-aibi/
+│           ├── 11-business-semantics/
+│           ├── 12-data-access-control/
+│           ├── 13-ci-cd-devops/
+│           └── 14-mlops/
+├── scripts/
+│   ├── check_section_freshness.py
+│   └── check_agent_instructions_sync.sh
+└── .github/workflows/
+    ├── deploy.yml                     ← pushes to main → build → GitHub Pages
+    ├── test-deploy.yml                ← PRs to main → build only (no deploy)
+    └── section-freshness.yml          ← weekly stale-section check
+```
+
+Key: the Docusaurus project lives at `docs/starter-journey/`, not the repo root. All `npm` commands run from that directory.
+
+## Running the project locally
+
+```bash
+cd docs/starter-journey
+npm install
+npm run start -- --port 3000
+```
+
+The site opens at `http://localhost:3000/starter-journey/`. Hot-reload is enabled — saved changes appear immediately.
+
+Other useful commands (all from `docs/starter-journey/`):
+
+| Command | Purpose |
+|---|---|
+| `npm run build` | Production build (catches broken links) |
+| `npm run serve` | Serve the production build locally |
+| `npm run typecheck` | Run TypeScript type checking |
+
+## CI/CD
+
+- **PRs to `main`** trigger `test-deploy.yml` — runs `docusaurus build` to verify the site compiles. Broken links fail the build (`onBrokenLinks: 'throw'` in `docusaurus.config.ts`).
+- **Pushes to `main`** trigger `deploy.yml` — builds and deploys to GitHub Pages.
+- **Mondays 14:00 UTC** — `section-freshness.yml` checks that every top-level journey section was updated within the last 60 days (see below).
+- npm packages are fetched from a JFrog registry via OIDC in CI. Locally, the default npm registry works.
+
+## Section freshness tracker
+
+Top-level sidebar sections (1–14 in `sidebars.ts`) must stay current. Dates live in `docs/starter-journey/section-freshness.csv` (`section_name`, `last_update` as `YYYY-MM-DD`).
+
+**When you meaningfully update docs in a section**, bump that section's `last_update` in the same PR.
+
+**Agent rule:** Do not finish a doc edit without updating `section-freshness.csv` when the change is meaningful. Map the edited file to its top-level section via the numbered folder under `docs/starter-journey/docs/` (for example `07-build-first-pipeline/` → `7. Build the first pipeline`). If you touch pages in multiple top-level sections, update every affected row. Skip the CSV bump only for trivial fixes (typos, formatting) that do not change reader-facing guidance.
+
+```bash
+python scripts/check_section_freshness.py
+```
+
+If any section is older than 60 days, the weekly workflow fails and opens or updates a GitHub issue labeled `section-freshness`. The issue @mentions every human [repo contributor](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) (bots excluded) so they get a GitHub notification; repeat failures add a new comment with mentions again. When all sections are fresh again, that issue is closed automatically.
+
+When adding a new numbered section, add a row to the CSV and to `REQUIRED_SECTIONS` in `scripts/check_section_freshness.py` (label must match `sidebars.ts` exactly).
+
+## File patterns
+
+- **Doc pages:** `docs/starter-journey/docs/**/*.mdx` — numbered section prefixes (e.g. `03-infra-setup/`) matching sidebar doc IDs.
+- **Sidebar config:** `docs/starter-journey/sidebars.ts` — manually managed. Every new page must be registered here (IDs omit the `.mdx` extension).
+- **Site config:** `docs/starter-journey/docusaurus.config.ts` — plugins, navbar, footer, gtag.
+- **Images:** `docs/starter-journey/static/img/` — prefix with section slug (e.g., `infra-*.png`).
+- **Blog posts:** `docs/starter-journey/blog/YYYY-MM-DD-<slug>.mdx`.
+
+## Documentation authoring
+
+When creating or editing content under `docs/starter-journey/docs/`, follow **[docs/STYLE.md](docs/STYLE.md)**. The key rules are summarized below, but read the full style guide before writing.
+
+### Page templates
+
+| Template | Use for | Goal |
+|---|---|---|
+| **Template A — Technical** | Setup, how-to, step-by-step guides | Reader finishes with a working thing |
+| **Template B — Educational** | Concepts, architecture, decision guides | Reader can make an informed decision |
+
+### Shared chrome (every page)
+
+**Top** — YAML frontmatter + value prop + prereqs:
+
+```md
+---
+sidebar_label: <short label>
+description: <one line — used by search and social previews>
+---
+
+# <Page title>
+
+> **You'll <verb> ...** in ~<N> min.
+>
+> **Prereqs:** [<link>](...)
+```
+
+**Bottom** — always a `## Next` block:
+
+```md
+## Next
+- **Do next:** [<link>](...)
+- **Learn why:** [<link>](...)
+- **Reference:** [<official docs>](...)
+```
+
+Cross-link every technical page to its educational counterpart and vice versa via this block.
+
+### Admonitions
+
+Only three are allowed:
+
+| Admonition | When to use |
+|---|---|
+| `:::tip` | Optional improvement, not required for steps to work |
+| `:::warning` | Reader will hit a problem if they skip this |
+| `:::danger` | Irreversible, security-impacting, or costs-money action |
+
+Do **not** use `:::info`, `:::success`, or `:::note`. Convert those to prose or numbered steps.
+
+### Writing voice
+
+- **Technical pages:** imperative, direct language. Commands, expected output, done.
+- **Educational pages:** explain the *why* tied to real engineering or business problems.
+- One idea per sentence. Paragraphs under 4 sentences. Active voice.
+- **No AI slop.** Banned phrases: "In today's data-driven world", "It's important to note", "Let's dive in", "seamlessly", "robust", "This powerful feature enables". Every sentence must carry new information. See the full banned-phrases list in `docs/STYLE.md`.
+
+### Images
+
+Place images under `docs/starter-journey/static/img/` with a section prefix (e.g., `uc-*.png`, `infra-*.png`, `aibi-*.png`).
+
+### YouTube videos
+
+Embed using a raw `<iframe>` tag:
+
+```html
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/<VIDEO_ID>"
+  title="<descriptive title>"
+></iframe>
+```
+
+## Adding a new section
+
+Follow these steps when adding a numbered section to the journey:
+
+### 1. Create the directory and index page
+
+Create a new directory under `docs/starter-journey/docs/<NN-section-slug>/` with an `index.mdx` file. Use Template B (Educational) for the index page. Include:
+
+- Frontmatter with `sidebar_position: 0`, `sidebar_label`, and `description`
+- The section number in the title (e.g., `# 10. DevOps and CI/CD`)
+- A journey checklist showing all prior sections checked off
+- An `## In this section` block linking to subpages (if any)
+
+### 2. Create subpages
+
+Add `.mdx` files in the same directory. Each subpage needs the shared chrome (frontmatter, value prop, prereqs, `## Next` block). Use Template A or B depending on whether it is a how-to or a concept page.
+
+### 3. Register in the sidebar
+
+Edit `docs/starter-journey/sidebars.ts`. Add a new entry to the `docsSidebar` array. Follow the existing pattern:
+
+```typescript
+{
+  type: 'category',
+  label: '<N>. <Section Name>',
+  collapsed: true,
+  link: {type: 'doc', id: '<NN-section-slug>/index'},
+  items: [
+    '<NN-section-slug>/subpage-1',
+    '<NN-section-slug>/subpage-2',
+  ],
+},
+```
+
+For a standalone page with no subpages, use a simple doc entry instead:
+
+```typescript
+{type: 'doc', id: '<NN-section-slug>', label: '<N>. <Section Name>'},
+```
+
+### 4. Wire navigation links
+
+- Update the **previous section's last page** to add a `Do next:` link pointing to the new section.
+- Ensure the new section's `## Next` block links forward (to subpages or the next section) and backward (to the previous section).
+
+### 5. Validate
+
+Run `npm run build` from `docs/starter-journey/` to verify no broken links. The build will throw on any dead internal link.
+
+Add a row to `docs/starter-journey/section-freshness.csv` and to `REQUIRED_SECTIONS` in `scripts/check_section_freshness.py` (label must match `sidebars.ts` exactly).
+
+## Adding a blog post
+
+Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming convention: `YYYY-MM-DD-<slug>.mdx`. Authors are defined in `blog/authors.yml` and tags in `blog/tags.yml`.
+
+## Configuration files reference
+
+| File | Purpose |
+|---|---|
+| `docs/starter-journey/docusaurus.config.ts` | Site config (URL, presets, plugins, navbar, footer, gtag) |
+| `docs/starter-journey/sidebars.ts` | Sidebar navigation — manually managed, not auto-generated |
+| `docs/starter-journey/package.json` | Dependencies and scripts |
+| `docs/STYLE.md` | Writing style guide for all doc pages |
+| `.github/workflows/deploy.yml` | Production deployment workflow |
+| `.github/workflows/test-deploy.yml` | PR build-check workflow |
+| `.github/workflows/section-freshness.yml` | Weekly stale-section check |
+| `docs/starter-journey/section-freshness.csv` | Last-updated date per journey section |
+| `scripts/check_section_freshness.py` | Freshness checker (stdlib only) |
+| `scripts/check_agent_instructions_sync.sh` | Ensures CLAUDE.md and .cursorrules match |
+
+## Common mistakes to avoid
+
+- **Editing `sidebars.ts` without building** — always run `npm run build` after sidebar changes to catch broken doc IDs.
+- **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/10-databricks-aibi/dashboards`). Do not use relative file paths.
+- **Adding admonitions beyond the allowed three** — the build won't catch this, but it violates the style guide.
+- **Forgetting the `## Next` block** — every page needs it. Technical pages link to educational counterparts and vice versa.
+- **Images without section prefix** — `static/img/` is flat. Prefix images to avoid name collisions.
+- **Updating only one agent instructions file** — change `CLAUDE.md` and `.cursorrules` together.
+
+If a style-guide rule conflicts with an instruction in the conversation, ask before deviating.
