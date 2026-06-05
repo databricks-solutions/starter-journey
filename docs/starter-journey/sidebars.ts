@@ -229,7 +229,6 @@ const sidebars: SidebarsConfig = {
         'mlops/model-training',
         'mlops/model-deployment',
         'mlops/inference',
-        'mlops/dabs',
       ],
     },
   ],

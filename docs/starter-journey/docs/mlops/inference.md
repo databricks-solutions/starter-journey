@@ -10,48 +10,59 @@ description: Run batch and streaming inference and monitor production traffic wi
 >
 > **Prereqs:** [Model deployment](/docs/mlops/model-deployment)
 
-## What you'll build
+## What this stage does
 
-A defined **inference path** (batch or streaming) that writes scores to a Delta table or downstream system, plus optional **AI Gateway inference tables** that capture request/response payloads from your serving endpoint.
+The inference stage turns a deployed model into predictions — in bulk (batch) or as events arrive (streaming) — and optionally logs production traffic to **AI Gateway inference tables** for monitoring. The quickstart illustrates the batch path: scoring samples with the Champion model and writing results to a Delta table.
 
 ## How it works
 
 ### Batch inference
 
-Score large volumes at rest:
+You have 10 million rows that need scores by 6 AM. Calling a serving endpoint one row at a time would take hours and generate unnecessary per-request overhead. The right path is to load the model directly and score in bulk.
 
-1. Read input rows from a **Delta table** or other Unity Catalog table (often joined to offline features from the [Feature Store](/docs/mlops/feature-engineering)).
-2. Run scoring in a **Lakeflow Job** — call the model with MLflow `pyfunc`, Spark UDF, or batch requests to the **Model Serving** endpoint.
-3. Write predictions to an output Delta table for downstream analytics or reverse ETL.
+The quickstart's `batch_inference.ipynb` loads the **Champion** model by alias, scores new samples, tags each row with the model version and a timestamp, and writes to the `iris_inferences` table:
 
-Batch fits nightly refreshes, backfills, and workloads where minutes or hours of latency are acceptable.
+```python
+model = load_model(f"models:/{full_model_name}@champion")
+predictions = model.predict(df_samples)
+df_samples['prediction'] = predictions
+df_samples['model_id'] = mlflow_client.get_model_version_by_alias(full_model_name, "champion").version
+df_samples['prediction_timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+# Enable Change Data Feed so Lakehouse Monitoring can track only newly appended rows
+spark.sql(f"ALTER TABLE {catalog}.{schema}.iris_inferences SET TBLPROPERTIES (delta.enableChangeDataFeed = true)")
+```
+
+Loading by the `@champion` alias means this job automatically picks up whatever model was last approved and promoted — promotion never requires editing the inference code. The `model_id` and `prediction_timestamp` columns plus Change Data Feed set the table up for drift monitoring later.
+
+Each scored row keeps the input features alongside the `prediction`, the `model_id` that produced it, and a `prediction_timestamp`:
+
+![Catalog Explorer Sample Data view of the iris_inferences table, showing the four iris feature columns with prediction, actual_label, prediction_timestamp, and model_id for each row.](/img/mlops-inference-table.png)
 
 ### Streaming inference
 
-Score data in motion when events must drive predictions within seconds:
+A fraud signal is only useful if it arrives before the transaction clears. A nightly batch job is too slow. Streaming inference scores data as it moves:
 
 1. Ingest with **Structured Streaming** (Kafka, Kinesis, Auto Loader, or another streaming source).
 2. Apply transformations in Spark.
-3. Call a **Model Serving endpoint** per micro-batch (or use built-in integration patterns documented for your source) and write results to a streaming sink (Delta table, another bus, etc.).
-
-Streaming fits fraud detection, recommendation refreshes, and IoT pipelines where batch latency is too high.
+3. Call a **Model Serving endpoint** per micro-batch and write results to a streaming sink (Delta table, another bus, etc.).
 
 ### Monitor with AI Gateway inference tables
 
-Enable **inference tables** on the serving endpoint (Unity AI Gateway). Databricks logs requests and responses to a Delta table in Unity Catalog. Use that table for drift checks, debugging bad predictions, and building retraining datasets — without building a separate logging pipeline.
+Once a model is live, you lose visibility into what it is actually seeing and predicting. Bugs, drift, and bad inputs are invisible until users complain. Enable **inference tables** on the serving endpoint (Unity AI Gateway) and Databricks logs every request and response to a Delta table in Unity Catalog automatically. Use that table for drift checks, debugging bad predictions, and building retraining datasets — without writing a separate logging pipeline.
 
 :::warning
 Do not rename, alter the schema of, or delete an inference table managed by the endpoint. Doing so can stop logging or corrupt the table.
 :::
 
-## Verify
+## What to check
 
-- **Batch:** Query the output table and confirm row counts and prediction columns match the input batch.
-- **Streaming:** Confirm the query is **Active** and output table row counts increase as events arrive.
-- **Inference tables:** On the endpoint page, open the linked inference table and confirm recent requests appear after test traffic.
+- **Batch:** the output table's row count and prediction columns match the scored input.
+- **Streaming:** the query stays **Active** and the output row count grows as events arrive.
+- **Inference tables:** recent requests appear in the linked table after test traffic.
 
 ## Next
 
-- **Do next:** [DABs for MLOps](/docs/mlops/dabs)
+- **Do next:** [14. MLOps overview](/docs/mlops/) — section complete for now
 - **Learn why:** [Model deployment](/docs/mlops/model-deployment)
-- **Reference:** [AI Gateway inference tables](https://docs.databricks.com/aws/en/ai-gateway/inference-tables), [Model Serving](https://docs.databricks.com/aws/en/machine-learning/model-serving)
+- **Reference:** [AI Gateway inference tables](https://docs.databricks.com/aws/en/ai-gateway/inference-tables), [Model Serving](https://docs.databricks.com/aws/en/machine-learning/model-serving), [batch_inference.ipynb](https://github.com/databricks-solutions/mlops-quickstart/blob/master/notebooks/3_inference/batch_inference.ipynb), [realtime_inference.ipynb](https://github.com/databricks-solutions/mlops-quickstart/blob/master/notebooks/3_inference/realtime_inference.ipynb)
