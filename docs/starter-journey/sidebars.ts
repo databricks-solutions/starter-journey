@@ -210,7 +210,9 @@ const sidebars: SidebarsConfig = {
       label: '12. Data Access Control',
       collapsed: true,
       link: {type: 'doc', id: '12-data-access-control/index'},
-      items: [],
+      items: [
+        '12-data-access-control/lab',
+      ],
     },
     {
       type: 'category',
