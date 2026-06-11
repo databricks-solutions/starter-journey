@@ -16,7 +16,7 @@ You know you need MLOps when you hit one of these three situations:
 
 - **The model broke and nobody knows why.** It worked last quarter. Now it's degrading. The training notebook was overwritten, the hyperparameters were never saved, and the data it trained on has since changed. There is no way to reproduce the previous version.
 - **Two teams, two answers.** Two pipelines compute the same input feature — say, `customer_30d_spend` — with slightly different logic. The models trained on each definition disagree, and both teams think theirs is correct.
-- **Deploying a model update is a manual ritual.** Updating a serving endpoint means editing configs by hand across dev, staging, and prod, running undocumented CLI commands, and hoping nothing breaks. If it does break, there is no rollback.
+- **Updating the production model is a manual ritual.** Promoting a new version means editing version numbers by hand across notebooks and jobs, and hoping nothing breaks. If it does break, there is no clean rollback.
 
 The subpages that follow address these failure modes.
 
@@ -24,7 +24,31 @@ The subpages that follow address these failure modes.
 
 The MLOps lifecycle on Databricks flows in one direction: features feed training, training produces a registered model, the model gets served, inference generates predictions, and observability data feeds retraining. [MLflow](https://docs.databricks.com/aws/en/mlflow/) is the tracking layer throughout. Unity Catalog governs every artifact — feature tables, model versions, and inference outputs — with the same permissions and lineage you already applied to data pipelines.
 
+This section follows the official Databricks [Manage model lifecycle](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/) guidance.
+
 ![Databricks-managed MLflow manages the ML model lifecycle — Feature Store feeds Model training, Tracking logs every run, Model Registry centralizes versioned artifacts, Model Serving exposes the endpoint, and Monitoring captures requests and responses. Unity Catalog governs all assets.](/img/mlops-lifecycle.png)
+
+## Watch first
+
+Watch "From Notebook to Production: MLOps Quickstart" before you read the subpages. It walks the full lifecycle end to end, so the steps on each page slot into a process you have already seen.
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/8lUbYTXJHe4"
+  title="From Notebook to Production: MLOps Quickstart"
+></iframe>
+
+## Deploy the MLOps quickstart
+
+Run it yourself before reading the subpages. The [mlops-quickstart repo](https://github.com/databricks-solutions/mlops-quickstart) trains, registers, and promotes a model in a few minutes.
+
+1. In your workspace, open **Repos** and clone `https://github.com/databricks-solutions/mlops-quickstart`.
+2. Open the data ingestion notebook and set your catalog and schema.
+3. Run the training notebook to log an experiment run and register the model in Unity Catalog.
+4. Run the deployment notebook to promote the model to the alias your inference jobs load.
+
+After it finishes you have a registered model with an alias, an MLflow experiment with logged metrics, and a model version ready for inference.
 
 ## Journey checklist
 
@@ -42,29 +66,25 @@ The MLOps lifecycle on Databricks flows in one direction: features feed training
 - [ ] 12. Data Access Control (in progress)
 - [ ] 13. CI/CD and DevOps (in progress)
 - [ ] **14. MLOps**
-    - [ ] [Feature engineering](/docs/mlops/feature-engineering)
-    - [ ] [Model training](/docs/mlops/model-training)
-    - [ ] [Model deployment](/docs/mlops/model-deployment)
-    - [ ] [Inference](/docs/mlops/inference)
-
-## Watch first
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/8lUbYTXJHe4"
-  title="From Notebook to Production: MLOps Quickstart"
-></iframe>
+    - [ ] [Prepare Datasets](/docs/mlops/prepare-datasets)
+    - [ ] [Save a Model to Unity Catalog](/docs/mlops/save-model-to-unity-catalog)
+    - [ ] [Batch Inference](/docs/mlops/batch-inference)
 
 ## In this section
 
-- **[Feature engineering](/docs/mlops/feature-engineering)** — define feature tables in Unity Catalog for offline training and online serving.
-- **[Model training](/docs/mlops/model-training)** — track experiments with MLflow and register the winning model in UC with the Challenger alias.
-- **[Model deployment](/docs/mlops/model-deployment)** — create a Model Serving endpoint from a UC model version; compare endpoint vs Databricks App.
-- **[Inference](/docs/mlops/inference)** — run batch and streaming scoring; log production traffic with AI Gateway inference tables.
+- **[Prepare Datasets](/docs/mlops/prepare-datasets)** — create a governed feature table in Unity Catalog, reference it from a training set, and set up an MLflow experiment.
+- **[Save a Model to Unity Catalog](/docs/mlops/save-model-to-unity-catalog)** — train and register a model in UC, and register existing models from a Volume or Hugging Face.
+- **[Batch Inference](/docs/mlops/batch-inference)** — score data with the challenger model in pandas and Spark batch jobs, and run large-scale tracked inference.
+
+## Useful resources
+
+- [Example notebook](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/#example-notebook)
+- [MLflow 3 ML workflow](https://docs.databricks.com/aws/en/mlflow/mlflow3-ml-workflow)
+- [MLflow 3 DL workflow](https://docs.databricks.com/aws/en/mlflow/mlflow3-dl-workflow)
+- [Model Registry 3](https://docs.databricks.com/aws/en/mlflow/model-registry-3)
 
 ## Next
 
-- **Do next:** [Feature engineering](/docs/mlops/feature-engineering)
+- **Do next:** [Prepare Datasets](/docs/mlops/prepare-datasets)
 - **Learn why:** [13. CI/CD and DevOps](/docs/ci-cd-devops/)
 - **Reference:** [MLflow on Databricks](https://docs.databricks.com/aws/en/mlflow/)
