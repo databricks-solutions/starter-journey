@@ -8,9 +8,9 @@ description: Install the dbdemos system-tables package for optional forecasting 
 
 > **You'll install** the community **`system-tables`** demo so optional AI/BI dashboards run against your real billing data in ~15 min.
 
-## What you'll build
+## What you'll walk away with
 
-Multiple dashboards plus notebooks: consumption tracking, **DBU** forecast, model-endpoint cost attribution, warehouse attribution, and UC/volume analysis. Intermediate tables land in a **Unity Catalog catalog and schema you choose** (not necessarily `main`).
+A set of AI/BI dashboards and notebooks running on your own billing data: consumption tracking, a **DBU** forecast, model-endpoint cost attribution, warehouse attribution, and UC/volume analysis. The intermediate tables land in a Unity Catalog catalog and schema you pick, which does not have to be `main`.
 
 **Official source (Demo Center):** [System Tables: Billing Forecast, Usage Analytics, and Access Auditing with Unity Catalog](https://www.databricks.com/resources/demos/tutorials/governance/system-tables?itm_data=demo_center&itm_source=www&itm_category=home&itm_page=home&itm_component=card&itm_offer=system-tables)
 
@@ -20,13 +20,13 @@ Confirm the demo slug is still **`system-tables`** on PyPI or GitHub before you 
 
 :::
 
-<!-- TODO: verify before publishing — dbdemos demo name drift -->
+<!-- TODO: verify before publishing: dbdemos demo name drift -->
 
 ## Steps
 
-### 1. Install the dashboard from dbdemos library.
+### 1. Install the dashboards from the dbdemos library
 
-Run the following cells on a new Python notebook.
+Run these cells in a new Python notebook.
 
 ```python
 %pip install dbdemos
@@ -45,9 +45,7 @@ schema = "myschema"
 dbdemos.install("uc-04-system-tables", catalog=catalog, schema=schema)
 ```
 
-Set **`catalog`** and **`schema`** to your existing UC assets, example:
-
-Wait until the notebook finishes and prints status for notebooks and dashboards.
+Set **`catalog`** and **`schema`** to UC assets you already have. Then wait until the notebook finishes and prints status for the notebooks and dashboards it created.
 
 ![dbdemos install notebook showing the system tables demo setup with catalog and schema configuration](/img/usage-demo-1.webp)
 
@@ -56,39 +54,39 @@ Wait until the notebook finishes and prints status for notebooks and dashboards.
 
 ## Verify
 
-Open **Dashboards** and **Genie Spaces** sections to verify the new assets.
+Open the **Dashboards** and **Genie Spaces** sections and confirm the new assets are there.
 
 ![Dashboards list showing the installed dbdemos System Tables dashboards in a Databricks workspace](/img/verify-demo-1.webp)
 
 ![Genie Spaces page showing the installed Databricks System Table Genie Space](/img/verify-demo-2.webp)
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>ModuleNotFoundError: dbdemos</summary>
 
-Run `%pip install dbdemos`, then `dbutils.library.restartPython()` before importing.
+Run `%pip install dbdemos`, then `dbutils.library.restartPython()`, before you import.
 
 </details>
 
 <details>
 <summary>Permission denied writing catalog or schema</summary>
 
-Pick a catalog and schema where your user may create tables, or ask a metastore admin to grant **CREATE**.
+Pick a catalog and schema where your user can create tables, or ask a metastore admin to grant **CREATE**.
 
 </details>
 
 <details>
 <summary>Permission denied on system tables</summary>
 
-An admin must grant **SELECT** on **`system.billing`** (and **`system.access`** for audit-backed tiles).
+An admin has to grant **SELECT** on **`system.billing`** (and **`system.access`** for the audit-backed tiles).
 
 </details>
 
 <details>
 <summary>Empty charts</summary>
 
-New accounts need accumulated usage. Forecast tiles may stay thin until enough daily history exists.
+New accounts have no history yet. Forecast tiles stay thin until enough daily usage accumulates.
 
 </details>
 

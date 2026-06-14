@@ -7,15 +7,15 @@ description: Define and deploy a Lakeflow Connect ingestion pipeline using Datab
 
 > **You'll deploy** a Lakeflow Connect ingestion pipeline with a classic compute gateway using DABs in ~15 min.
 >
-> **Prereqs:** [Create ingestion pipeline overview](/docs/06-access-your-data/managed-connectors/create-ingestion-pipeline), [Create connection](/docs/06-access-your-data/managed-connectors/create-connection), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
+> **Prereqs:** [Databases and SaaS ingestion overview](/docs/06-access-your-data/managed-connectors), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
 
 ## What you'll build
 
-A Lakeflow Connect ingestion pipeline defined as code using Databricks Asset Bundles (DABs). The definition includes a gateway pipeline on classic compute (for network access to the source system) and a serverless ingestion pipeline that writes into UC tables.
+A Lakeflow Connect ingestion pipeline defined as code with Databricks Asset Bundles (DABs). The definition has two parts: a gateway pipeline on classic compute, so it can reach the source over the network, and a serverless ingestion pipeline that writes into UC tables.
 
 ## Prerequisites
 
-- A Unity Catalog connection to the source database (see [Create connection](/docs/06-access-your-data/managed-connectors/create-connection)).
+- A Unity Catalog connection to the source database (see [Manage connections](https://docs.databricks.com/aws/en/connect/unity-catalog/manage-connections)).
 - Databricks CLI installed and configured.
 - A service principal or user with permissions to create pipelines in the target workspace.
 - Check [feature availability](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/?language=PostgreSQL#feature-availability) for your data source.
@@ -24,9 +24,9 @@ A Lakeflow Connect ingestion pipeline defined as code using Databricks Asset Bun
 
 ### 1. Define the pipeline in your DABs YAML
 
-The example below is based on [Create pipeline for PostgreSQL](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-pipeline#create-the-gateway-and-ingestion-pipeline). The key difference from the default setup is the explicit classic compute specification on the gateway pipeline.
+The example below comes from [Create pipeline for PostgreSQL](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-pipeline#create-the-gateway-and-ingestion-pipeline). The one thing it adds over the default is the explicit classic compute block on the gateway pipeline; that is the whole reason to go the DABs route.
 
-Check the [Databricks documentation left panel](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect) for other connectors (MySQL, SQL Server, Salesforce, etc.).
+For other connectors (MySQL, SQL Server, Salesforce, and more), see the [Databricks docs left panel](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect).
 
 Add this to your DABs `resources` block:
 
@@ -55,9 +55,9 @@ resources:
 
       clusters:
         - label: default
-          # AWS instance types — for Azure use Standard_DS3_v2 / Standard_DS4_v2
+          # AWS instance types. For Azure use Standard_DS3_v2 / Standard_DS4_v2
           driver_node_type_id: r5.xlarge
-          # AWS instance types — for Azure use Standard_E8ds_v4 / Standard_E16ds_v4
+          # AWS instance types. For Azure use Standard_E8ds_v4 / Standard_E16ds_v4
           node_type_id: m5.xlarge
           autoscale:
             min_workers: 2
@@ -94,7 +94,7 @@ resources:
 ```
 
 :::danger
-The provider must use a workspace-level connection. The service principal deploying the pipeline needs workspace-admin access. See [REST API — Create a pipeline](https://docs.databricks.com/api/workspace/pipelines/create) for attribute definitions.
+The provider must use a workspace-level connection. The service principal deploying the pipeline needs workspace-admin access. See [REST API: Create a pipeline](https://docs.databricks.com/api/workspace/pipelines/create) for attribute definitions.
 :::
 
 ### 2. Replace placeholders
@@ -122,28 +122,28 @@ databricks bundle run pipeline_postgresql
 2. Confirm both the gateway pipeline and the ingestion pipeline show a **Running** or **Completed** status.
 3. Navigate to **Catalog** > the target catalog and schema. Confirm the ingested tables appear with data.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Gateway pipeline fails to start</summary>
 
-The gateway runs on classic compute in your VPC. Verify the cluster configuration (instance types, autoscale settings) and that the workspace has permission to launch clusters with those instance types.
+The gateway runs on classic compute in your VPC. Check the cluster config (instance types, autoscale settings) and confirm the workspace is allowed to launch clusters with those instance types.
 </details>
 
 <details>
 <summary>Ingestion pipeline cannot connect to the source</summary>
 
-The gateway cluster must have network access to the source database. Verify VPC peering, security group rules, and firewall settings. The connection object must also have valid credentials.
+The gateway cluster needs network access to the source database. Check VPC peering, security group rules, and firewall settings, and confirm the connection object still has valid credentials.
 </details>
 
 <details>
 <summary>Permission error when creating the pipeline</summary>
 
-The service principal or user running `databricks bundle deploy` needs workspace-admin access or explicit permission to create pipelines. Verify permissions in the workspace admin settings.
+Whoever runs `databricks bundle deploy`, user or service principal, needs workspace-admin access or explicit permission to create pipelines. Check the workspace admin settings.
 </details>
 
 ## Next
 
 - **Do next:** [Build the first pipeline](/docs/07-build-first-pipeline)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Lakeflow Connect — Databricks docs](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect)
+- **Reference:** [Lakeflow Connect (Databricks docs)](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect)

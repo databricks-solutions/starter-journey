@@ -6,52 +6,53 @@ description: Create Databricks workspaces with dedicated networking on AWS, Azur
 
 # Create Workspaces
 
-> **You'll create** Databricks workspaces with dedicated VPC/VNet isolation in ~15–30 min per workspace.
+> **You'll create** Databricks workspaces with dedicated VPC/VNet isolation in ~15 to 30 min per workspace.
 >
 > **Prereqs:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
 
 ## Why this matters
 
-Workspaces are the compute and collaboration boundary in Databricks. Each workspace runs inside a dedicated VPC (AWS), VNet (Azure), or VPC (GCP) that isolates network traffic. Getting the workspace and network layout right at creation time avoids costly re-deployments later.
+Build three workspaces, one each for development, staging, and production, and give each its own network. That is the layout most teams land on, and it is much cheaper to set up that way now than to untangle later. A workspace is the compute and collaboration boundary in Databricks, and it cannot move regions or merge with another once it exists. The choices you make in the creation wizard are the choices you live with.
 
-## Mental model
+Each workspace runs inside its own VPC on AWS, VNet on Azure, or VPC on GCP. That network boundary is what keeps a runaway experiment in dev from reaching production data, and it lets you apply different access rules per environment without them leaking into each other.
 
-The industry standard is three workspaces aligned to the software development lifecycle:
+## The three-workspace layout
 
-1. **Development** — where engineers iterate on code and test changes.
-2. **Staging** — integration testing and user acceptance before production.
-3. **Production** — stable workloads serving the business.
+Think of the three workspaces as the three rooms a change passes through before it ships:
 
-Each workspace should be isolated at the network level. Isolating environments at the workspace level prevents a failing experiment from touching production data and makes it easier to enforce different access policies per environment. 
+1. **Development** is where engineers write and test code.
+2. **Staging** is integration testing and user acceptance before anything goes live.
+3. **Production** is the stable workloads the business depends on.
 
-* For more isolation information, see [Data Governance Strategy - Medium-Large Organizations](/docs/05-data-governance-strategy/medium-large-organizations)
-* For the workspace mental model and foundations, see [Workspace foundations](/docs/02-before-you-start/foundations/workspace#mental-model).
+Keep them isolated at the network level, not just by folder or permission. The whole point is that a mistake in one room stays in that room.
 
+For more on isolation choices, see [Data Governance Strategy for medium-large organizations](/docs/05-data-governance-strategy/medium-large-organizations). For the workspace mental model, see [Workspace foundations](/docs/02-before-you-start/foundations/workspace#mental-model).
 
+## Manual or Terraform
 
-## How it works
+Every cloud gives you two ways to deploy:
 
-Each cloud provider has two deployment paths:
+- **Manual** is point-and-click through the account console or cloud portal. Use it for your first workspace or a proof of concept, when seeing the resources appear teaches you what the code will later automate.
+- **Terraform** is infrastructure as code: repeatable and version-controlled. Use it for staging and production, where you want the same workspace every time and a record of what changed.
 
-- **Manual** — point-and-click through the account console or cloud portal. Good for a first workspace or proof of concept.
-- **Terraform** — infrastructure as code for repeatable, version-controlled deployments. Use this for staging and production.
+A common path is to click the first workspace by hand, then Terraform the rest once you know what the wizard built.
 
 ## Pick your cloud provider
 
 ### AWS
 
-- [Manual](/docs/03-infra-setup/create-workspaces/aws/manual) — account console wizard with automated IAM, S3, and VPC resource creation.
-- [Terraform](/docs/03-infra-setup/create-workspaces/aws/terraform) — IaC deployment with customer-managed VPC (BYOVPC).
+- [Manual](/docs/03-infra-setup/create-workspaces/aws/manual): account console wizard that creates IAM, S3, and VPC resources for you.
+- [Terraform](/docs/03-infra-setup/create-workspaces/aws/terraform): IaC with a customer-managed VPC (BYOVPC).
 
 ### Azure
 
-- [Manual](/docs/03-infra-setup/create-workspaces/azure/manual) — Azure portal deployment with managed resource group and VNet.
-- [Terraform](/docs/03-infra-setup/create-workspaces/azure/terraform) — IaC deployment with VNet injection.
+- [Manual](/docs/03-infra-setup/create-workspaces/azure/manual): Azure portal deployment with a managed resource group and VNet.
+- [Terraform](/docs/03-infra-setup/create-workspaces/azure/terraform): IaC with VNet injection.
 
 ### GCP
 
-- [Manual](/docs/03-infra-setup/create-workspaces/gcp/manual) — account console wizard with automated service account and GCS configuration.
-- [Terraform](/docs/03-infra-setup/create-workspaces/gcp/terraform) — IaC deployment with customer-managed VPC (BYOVPC).
+- [Manual](/docs/03-infra-setup/create-workspaces/gcp/manual): account console wizard that configures the service account and GCS for you.
+- [Terraform](/docs/03-infra-setup/create-workspaces/gcp/terraform): IaC with a customer-managed VPC (BYOVPC).
 
 ## Next
 

@@ -11,21 +11,21 @@ description: Create, share, and embed AI/BI dashboards that visualize lakehouse 
 
 ## Why this matters
 
-Dashboards are the most common way stakeholders consume data. Databricks AI/BI dashboards query Unity Catalog tables directly — no data extracts, no stale copies. Row- and column-level security from Unity Catalog applies automatically, so every viewer sees only the data they are authorized to access.
+A dashboard is how most people in your org actually see the data. AI/BI dashboards query Unity Catalog tables directly, so there are no extracts to refresh and no stale copies drifting out of sync with the source. The other win is governance: row- and column-level security from Unity Catalog carries straight through, so a viewer sees only the rows they are allowed to see. You don't rebuild access rules in the BI layer.
 
 ## How it works
 
-A dashboard is a collection of visualizations (charts, tables, counters) backed by SQL queries. You build them in a drag-and-drop editor, add filters and parameters, and publish to share with your team. Dashboards can run on a schedule to keep cached results fresh.
+You assemble a dashboard from charts, tables, and counters, each backed by a SQL query. The editor is drag-and-drop. Add filters and parameters, then publish to share. You can schedule a dashboard to run on its own so viewers land on fresh cached results instead of waiting on a query.
 
 ### Create the first dashboard
 
-This video walks through building a dashboard from scratch:
+This video builds a dashboard from scratch:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mEmnp1B6PUU"></iframe>
 
 ### Embed dashboards in external applications
 
-Dashboards can be embedded in internal portals, wikis, or custom apps using iframe embedding. This extends their reach beyond the Databricks workspace.
+You can embed a dashboard in an internal portal, a wiki, or a custom app with an iframe, which puts it in front of people who never open the Databricks workspace.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hr-1N_QBobQ"></iframe>
 
@@ -33,22 +33,22 @@ Dashboards can be embedded in internal portals, wikis, or custom apps using ifra
 
 **Use dashboards when:**
 
-- Stakeholders need a visual, regularly refreshed view of key metrics.
-- You want governance (row/column security) to carry through to the presentation layer.
-- The audience is comfortable with a standard reporting experience (charts, tables, filters).
+- Stakeholders need a visual, regularly refreshed view of the same key metrics.
+- You want Unity Catalog row and column security to apply at the presentation layer for free.
+- The audience expects a standard reporting experience: charts, tables, filters.
 
 **Use Genie Spaces instead when:**
 
-- Users want to ask ad-hoc questions rather than browse a fixed set of charts.
-- The questions change frequently and a static dashboard would require constant rebuilding.
+- Users want to ask their own ad-hoc questions, not browse a fixed set of charts.
+- The questions change often enough that a static dashboard would need constant rebuilding.
 
 ## Common pitfalls
 
-- **Too many queries on one dashboard** — each visualization runs its own query. A dashboard with 20+ charts can be slow to load. Group related metrics and split large dashboards into focused pages.
-- **Not scheduling refreshes** — by default, dashboards query live data on every page load. For stable reporting, schedule periodic refreshes so viewers hit cached results instead of queuing warehouse compute on every visit.
+- **Too many queries on one dashboard.** Every visualization runs its own query, so a board with 20-plus charts crawls on load. Group related metrics and split a big board into focused pages.
+- **No scheduled refresh.** By default a dashboard queries live data on every page load, which queues warehouse compute each visit. For stable reporting, schedule a periodic refresh so viewers hit cached results instead.
 
 ## Next
 
 - **Do next:** [Genie Spaces](/docs/10-databricks-aibi/genie-spaces)
 - **Learn why:** [Query and explore](/docs/09-query-and-explore)
-- **Reference:** [AI/BI Dashboards — Databricks docs](https://docs.databricks.com/aws/en/dashboards/index.html)
+- **Reference:** [AI/BI Dashboards (Databricks docs)](https://docs.databricks.com/aws/en/dashboards/index.html)

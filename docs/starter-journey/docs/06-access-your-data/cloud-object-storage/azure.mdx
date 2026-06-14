@@ -5,7 +5,7 @@ description: Create an access connector, storage credential, storage account, an
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Azure — ADLS
+# Azure ADLS
 
 > **You'll create** an access connector, storage credential, storage account, and external location to connect Databricks to ADLS Gen2 in ~25 min.
 >
@@ -13,7 +13,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## What you'll build
 
-An Azure ADLS Gen2 storage account connected to Databricks through an access connector, a Unity Catalog storage credential, and one or more external locations.
+An ADLS Gen2 storage account Databricks can reach, wired up through an access connector, a Unity Catalog storage credential, and one or more external locations. Azure has the most moving parts of the three clouds, so expect a few more steps here.
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ For environments that require private networking, see [Configure private connect
 
 ### 1. Create an access connector
 
-The access connector provides the managed identity that Databricks uses to authenticate to your storage account.
+The access connector is the managed identity Databricks uses to authenticate to your storage account. Create it first; everything else points back to it.
 
 1. In the [Azure portal](https://portal.azure.com/), search for **Access Connector for Azure Databricks** and select it.
 
@@ -156,7 +156,7 @@ Hierarchical namespace must be enabled at creation time. It cannot be enabled on
 
 ### 4. Assign IAM permissions to the access connector
 
-The access connector's managed identity needs the **Storage Blob Data Contributor** role on the storage account.
+The connector's managed identity has no access to the storage account yet. Grant it the **Storage Blob Data Contributor** role, or the Test Connection in Step 6 will fail.
 
 1. In the Azure portal, navigate to the storage account.
 2. Click **Access control (IAM)** in the left sidebar.
@@ -209,12 +209,12 @@ The access connector's managed identity needs the **Storage Blob Data Contributo
 
 ### 6. Mark the external location as read-only
 
-After the external location is created, mark it as read-only. This prevents any Databricks workload from writing to the storage path, protecting your source data from accidental modifications.
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
 
 Follow the guide: [Mark an external location as read-only](https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 
 :::warning
-Skipping this step leaves the external location writable by any principal with write grants. Always set it to read-only unless your pipeline explicitly needs to write back to this path.
+Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
 :::
 
 ## Verify
@@ -227,24 +227,24 @@ Skipping this step leaves the external location writable by any principal with w
   <img src={useBaseUrl('/img/azure/test_connection.png')} alt="Test Connection button" style={{width: '70%', height: 'auto'}} />
 </div>
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Test Connection fails with permission denied</summary>
 
-The access connector's managed identity does not have the Storage Blob Data Contributor role on the storage account. Verify the IAM role assignment in the Azure portal under the storage account's Access control (IAM) section.
+The connector's managed identity is missing the Storage Blob Data Contributor role. Check the role assignment under the storage account's Access control (IAM) section in the Azure portal. This is Step 4, and it is the most common one to skip.
 </details>
 
 <details>
 <summary>External location creation fails with invalid URL</summary>
 
-The URL format must be `abfss://<container>@<storage_account>.dfs.core.windows.net/<path>`. Verify the container exists, the storage account name is correct, and hierarchical namespace is enabled on the storage account.
+The URL has to be `abfss://<container>@<storage_account>.dfs.core.windows.net/<path>`. Confirm the container exists, the storage account name is right, and hierarchical namespace is on.
 </details>
 
 <details>
 <summary>Storage credential creation fails</summary>
 
-Confirm the Access Connector Resource ID is correct (copy it from the Azure portal overview page). The access connector must be in the same region as the Databricks workspace.
+Recopy the Access Connector Resource ID from the Azure portal overview page; a truncated paste is the usual cause. The connector also has to be in the same region as the workspace.
 </details>
 
 ## Next

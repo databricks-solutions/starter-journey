@@ -9,46 +9,35 @@ description: Deploy a complete medallion pipeline as code using Databricks Asset
 >
 > **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
 
-## Why this matters
+## What you'll walk away with
 
-The UI is great for prototyping, but production pipelines need to be version-controlled, testable, and deployable across environments. Databricks Asset Bundles (DABs) let you define pipelines, jobs, schemas, and compute as code in a single project. One `databricks bundle deploy` command provisions everything.
+A full medallion pipeline running in your workspace, deployed from a Git repo with one command. The bundle provisions the job, the pipeline, the schemas, the landing volume, and the warehouse, so everything the pipeline touches comes up together and you can tear it down the same way.
 
-## How it works
+## What the bundle deploys
 
-The example project below deploys a complete medallion architecture pipeline, including:
+Clone the repo below and a single `databricks bundle deploy` brings up:
 
-- **1 job** with 2 tasks: a notebook task that generates sample data, followed by a pipeline task that runs the transformation.
-- **1 Spark Declarative Pipeline** — the bronze-silver-gold transformation chain.
-- **3 schemas** — bronze, silver, and gold.
-- **1 volume** — a landing zone for raw files.
-- **1 DBSQL warehouse** — for querying the output.
+- A job with two tasks: a notebook that generates sample data, then a pipeline task that runs the transformation once the data lands.
+- One Spark Declarative Pipeline running the bronze, silver, gold chain.
+- Three schemas: bronze, silver, gold.
+- One volume as the landing zone for raw files.
+- One DBSQL warehouse for querying the output.
 
-See all [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
+For everything a bundle can manage, see [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
 
-### Medallion Architecture on Unity Catalog using DABs
-
-The GitHub repository is ready to clone and deploy:
-
-[github.com/ivancalvo-dbxs/medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs)
+The repo is ready to clone and deploy: [github.com/ivancalvo-dbxs/medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs)
 
 ### Video walkthrough
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/W8ucHwzwdhc"></iframe>
 
-## When to use / when not to
+## When to reach for DABs
 
-**Use DABs when:**
+Use DABs once the pipeline is more than an experiment: you want it version-controlled, you need the same thing in dev, staging, and prod, and you want the schemas, volumes, and warehouse defined next to the pipeline code instead of clicked together by hand.
 
-- You want version-controlled, repeatable deployments.
-- The pipeline needs to run in dev, staging, and production.
-- You want to define all resources (schemas, volumes, warehouses) alongside the pipeline code.
-
-**Use the UI + agent instead when:**
-
-- You are exploring data and prototyping transformations.
-- You want fast iteration without setting up a local development environment.
+Stay in the UI with the agent while you are still exploring the data and reshaping transformations. Setting up a local bundle for a throwaway prototype is friction you do not need yet.
 
 ## Next
 
 - **Learn why:** [Spark Declarative Pipelines overview](/docs/07-build-first-pipeline)
-- **Reference:** [Databricks Asset Bundles — Databricks docs](https://docs.databricks.com/aws/en/dev-tools/bundles/)
+- **Reference:** [Databricks Asset Bundles (Databricks docs)](https://docs.databricks.com/aws/en/dev-tools/bundles/)

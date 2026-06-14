@@ -10,9 +10,9 @@ description: Attribute spend with custom tags on classic compute and serverless 
 >
 > **Prereqs:** [Infra setup](/docs/03-infra-setup)
 
-## What you'll build
+## What you'll walk away with
 
-Consistent **`custom_tags`** on billable rows: classic clusters, warehouses, and pools via **custom tags**; serverless notebooks, jobs, Lakeflow pipelines, and serving endpoints via **serverless usage policies** (docs also call these **budget policies** — the billing column is **`usage_metadata.budget_policy_id`**).
+Consistent **`custom_tags`** on your billable rows. Classic clusters, warehouses, and pools get tagged with **custom tags**. Serverless notebooks, jobs, Lakeflow pipelines, and serving endpoints get tagged through **serverless usage policies** (the docs also call these **budget policies**, and the billing column is **`usage_metadata.budget_policy_id`**).
 
 ## Prerequisites
 
@@ -27,16 +27,16 @@ Tags apply **from creation forward**. Historical rows stay untagged. Start early
 
 ## Serverless compute
 
-**Public Preview — serverless usage policies**
+**Public Preview: serverless usage policies**
 
-Serverless notebooks, jobs, Lakeflow pipelines, and model serving pick up tags from policies instead of cluster tags.
+Serverless notebooks, jobs, Lakeflow pipelines, and model serving pick up tags from policies, not from cluster tags.
 
 1. Avatar → **Settings** → **Compute**.
 2. Next to **Serverless usage policies**, click **Manage**.
 3. **Create** → name the policy → add tag pairs (for example `team:data-engineering`).
 4. **Permissions** → **Grant access** → assign **User** or **Manager** roles.
 
-One assigned policy auto-attaches; multiple policies force an explicit pick at creation; if none is chosen, the UI may default to the first alphabetical policy; changes affect **new** usage only.
+If a user has one policy assigned, it auto-attaches. With more than one, they pick at creation time. If they pick nothing, the UI may default to the first policy alphabetically. Either way, only **new** usage gets the tags.
 
 <iframe
   width="560"
@@ -53,24 +53,24 @@ One assigned policy auto-attaches; multiple policies force an explicit pick at c
 
 **SQL warehouse:** **SQL Warehouses** → warehouse → **Edit** → **Tags** → save.
 
-**Pools / jobs:** Use the Pools UI or Jobs compute tags; bundles allow up to **25** tags per job definition.
+**Pools and jobs:** use the Pools UI or Jobs compute tags. Bundles allow up to **25** tags per job definition.
 
-**Workspace tags:** Account admins only — Account API `PATCH` workspaces with `custom_tags`.
+**Workspace tags:** account admins only. `PATCH` workspaces with `custom_tags` through the Account API.
 
-Default tags (`Vendor`, `ClusterId`, `ClusterName`, `Creator`, `RunName`, `JobId` on job compute) remain automatic.
+The default tags (`Vendor`, `ClusterId`, `ClusterName`, `Creator`, `RunName`, and `JobId` on job compute) stay automatic.
 
-**Video:** [Tagging clusters for cost attribution](https://www.youtube.com/watch?v=0fRmMBe4vxE) — the walkthrough uses **Azure** in the title; the same tagging flow applies on **AWS** and **GCP** workspaces.
+**Video:** [Tagging clusters for cost attribution](https://www.youtube.com/watch?v=0fRmMBe4vxE). The walkthrough says **Azure** in the title, but the same tagging flow applies on **AWS** and **GCP** workspaces.
 
-**Compute policies** can **require** tags at cluster creation (**Compute** → **Policies**). For policy JSON and limits, see [Create and manage compute policies](https://docs.databricks.com/aws/en/admin/clusters/policies) and the [policy reference](https://docs.databricks.com/aws/en/admin/clusters/policy-definition).
+**Compute policies** can **require** tags at cluster creation (**Compute** → **Policies**). For the policy JSON and the limits, see [Create and manage compute policies](https://docs.databricks.com/aws/en/admin/clusters/policies) and the [policy reference](https://docs.databricks.com/aws/en/admin/clusters/policy-definition).
 
 ### Limits and cloud rules
 
-- Characters: letters, digits, `+ - = . , _ : @` (no spaces or `/`).
-- Up to **20** custom tags per workspace-managed compute resource; bundles extend jobs separately.
-- Do **not** use reserved key **`Name`** for custom tags.
-- Cluster tag edits often need restarts to reach cloud instances; workspace tags may lag up to **one hour**.
-- Pool workloads propagate **workspace + pool** tags to cloud VMs — cluster-only tags still appear in Databricks billing.
-- Matching default keys may gain an **`x_`** prefix in the cloud; policy conflicts can hard-fail cluster creation instead.
+- Allowed characters: letters, digits, and `+ - = . , _ : @`. No spaces, no `/`.
+- Up to **20** custom tags per workspace-managed compute resource. Bundles extend jobs separately.
+- Do **not** use the reserved key **`Name`** for custom tags.
+- Cluster tag edits often need a restart to reach the cloud instances. Workspace tags can lag up to **one hour**.
+- Pool workloads propagate **workspace and pool** tags to the cloud VMs. Cluster-only tags still show up in Databricks billing.
+- A key that matches a default key may gain an **`x_`** prefix in the cloud. A policy conflict can hard-fail cluster creation instead.
 
 :::tip
 
@@ -136,11 +136,11 @@ More patterns: [Top 10 queries to use with System Tables](https://community.data
 
 ## Verify
 
-1. Tag a cluster `test_tag:verification`, run work, wait **2–4 hours**, then filter **`system.billing.usage`** on that map key.
+1. Tag a cluster `test_tag:verification`, run some work, wait **2 to 4 hours**, then filter **`system.billing.usage`** on that map key.
 2. Assign yourself a serverless usage policy, run serverless work, then confirm **`budget_policy_id`** is populated.
-3. In **AWS Cost Explorer** (or equivalent), confirm propagated tags when classic compute backs the bill.
+3. In **AWS Cost Explorer** (or its equivalent), confirm the propagated tags when classic compute backs the bill.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Tags missing on serverless rows</summary>
@@ -152,21 +152,21 @@ Classic tags never apply to fully serverless runs. Use a **serverless usage poli
 <details>
 <summary>Cluster creation fails inside a policy</summary>
 
-Rename conflicting keys (for example use `x_vendor` instead of colliding with defaults).
+Rename the conflicting keys. For example, use `x_vendor` instead of colliding with the defaults.
 
 </details>
 
 <details>
 <summary>Cloud billing lacks cluster tags on pooled workloads</summary>
 
-Move tags to **pool** or **workspace**, or rely on Databricks **`system.billing.usage`** for attribution.
+Move the tags to the **pool** or the **workspace**, or rely on Databricks **`system.billing.usage`** for attribution.
 
 </details>
 
 <details>
 <summary>Policy never attaches to an old notebook</summary>
 
-Policies are not retroactive — update the notebook compute selector (**More…**) to pick the policy.
+Policies are not retroactive. Update the notebook compute selector (**More…**) to pick the policy.
 
 </details>
 

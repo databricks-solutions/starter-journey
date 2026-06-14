@@ -1,18 +1,20 @@
 ---
 sidebar_position: 0
 sidebar_label: 13. CI/CD and DevOps
-description: Split platform infra from workspace projects — Terraform for accounts and networks, DABs for everything inside the workspace.
+description: Split platform infra from workspace projects. Terraform for accounts and networks, DABs for everything inside the workspace.
 ---
 
 # 13. CI/CD and DevOps
 
 > **You'll learn** how to split DevOps responsibilities between Terraform and Declarative Automation Bundles (DABs), and how to run CI/CD for Databricks projects in ~15 min.
 >
-> **Prereqs:** [7. Build the first pipeline — DABs](/docs/07-build-first-pipeline/dabs), [8. Automation & orchestration — DABs](/docs/08-orchestration/dabs), [3. Infra setup](/docs/03-infra-setup/)
+> **Prereqs:** [7. Build the first pipeline: DABs](/docs/07-build-first-pipeline/dabs), [8. Automation & orchestration: DABs](/docs/08-orchestration/dabs), [3. Infra setup](/docs/03-infra-setup/)
 
 ## Why this matters
 
-Ad-hoc changes in the Workspace do not scale. Teams need repeatable deployments, review gates, and environment promotion — the same practices that keep application code reliable. Databricks DevOps splits into two layers: platform infrastructure outside the workspace, and project assets inside it. Confusing the two leads to brittle scripts, drift between environments, and deployments that only one person knows how to run.
+Draw one line and most of the confusion goes away: anything outside the workspace is Terraform's job, anything inside it is the DABs job. Get that line wrong and you end up with brittle scripts, environments that drift apart, and a deploy only one person knows how to run.
+
+Clicking changes into the Workspace by hand works until it doesn't. The moment a second person needs to ship, or you need staging to match prod, you want repeatable deploys, a review gate, and a way to promote a change from dev to prod. That is the same discipline that keeps application code sane, applied to data work.
 
 ## Journey checklist
 
@@ -30,25 +32,32 @@ Ad-hoc changes in the Workspace do not scale. Teams need repeatable deployments,
 - [x] ~~12. Data Access Control (in progress)~~
 - [ ] **13. CI/CD and DevOps**
 
-## How to DevOps and CI/CD in Databricks
+## The two layers
 
-Think of Databricks DevOps as two separate concerns. Each has its own tool and lifecycle.
+Databricks DevOps is two separate concerns, each with its own tool and lifecycle.
 
 | Layer | What it covers | Tool | Example |
 |---|---|---|---|
-| **Platform infrastructure** (external - AWS and Databricks Account related)| Accounts, networks, metastores, workspaces, IAM — anything outside a Databricks workspace | Terraform | [Terraform Examples](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples) |
-| **Databricks Projects** (internal - within the Workspace)| Jobs, pipelines, schemas, dashboards and [other assets required in a Databricks project](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build your first pipeline with DABs](/docs/07-build-first-pipeline/dabs)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
+| **Platform infrastructure** (external, AWS and Databricks account related)| Accounts, networks, metastores, workspaces, and IAM: anything that lives outside a Databricks workspace | Terraform | [Terraform Examples](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples) |
+| **Databricks Projects** (internal, within the Workspace)| Jobs, pipelines, schemas, dashboards, and [other assets a Databricks project needs](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build your first pipeline with DABs](/docs/07-build-first-pipeline/dabs)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
 
 ## What is DABs?
 
+[Declarative Automation Bundles (DABs)](https://docs.databricks.com/aws/en/dev-tools/bundles/) is infrastructure-as-code for Databricks. The simplest way to think about it: Databricks as code. Project assets live in Git as YAML and source files instead of as clicks someone made in the Workspace and hoped to remember.
 
-
-[Declarative Automation Bundles (DABs)](https://docs.databricks.com/aws/en/dev-tools/bundles/) is Databricks infrastructure-as-code. You can also think of it as **Databricks as Code**: project assets live in Git as YAML and source files instead of manual Workspace clicks.
-
-- **IaC for the workspace.** DABs defines jobs, pipelines, schemas, and [related resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources) in configuration files. The bundle is the deployable unit — one repo, one project, multiple environment targets.
-- **Software-engineering workflow.** A Databricks project follows the same lifecycle as application code: branches, pull requests, and CI/CD pipelines. Your DevOps team chooses the branching model; [trunk-based development](https://www.travis-ci.com/blog/explaining-trunk-based-development/) is the recommended default because it keeps main always deployable and reduces long-lived merge conflicts.
-- **CLI-native.** DABs ships with the Databricks CLI. Install the CLI on a CI/CD runner — for example, a GitHub Actions worker — in one step, then run `databricks bundle deploy` from the pipeline.
+- **IaC for the workspace.** DABs defines jobs, pipelines, schemas, and [related resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources) in config files. The bundle is what you deploy: one repo, one project, several environment targets.
+- **A software-engineering workflow.** A Databricks project lives the same way application code does, with branches, pull requests, and CI/CD. Your team picks the branching model. Default to [trunk-based development](https://www.travis-ci.com/blog/explaining-trunk-based-development/), since it keeps main deployable and spares you long-lived branches that fight to merge.
+- **CLI-native.** DABs ships with the Databricks CLI. Install the CLI on a CI/CD runner such as a GitHub Actions worker in one step, then run `databricks bundle deploy` from the pipeline.
 - **CI/CD in practice.** A typical pipeline validates the bundle, runs tests, and deploys to a target workspace. See [Create a GitHub Actions workflow for CI/CD](https://docs.databricks.com/aws/en/dev-tools/ci-cd/github#create-the-action-1) for a full example.
+
+## DABs in the Workspace
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/kpUNTU7iy5M"
+  title="Databricks VS Code Extension v2"
+></iframe>
 
 ### DABs in VSCode
 
@@ -68,14 +77,15 @@ Think of Databricks DevOps as two separate concerns. Each has its own tool and l
   title="Declarative Automation Bundles in VS Code"
 ></iframe>
 
-## DABs in the Workspace
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/kpUNTU7iy5M"
-  title="Databricks VS Code Extension v2"
-></iframe>
+
+## GitHub code examples
+
+| Repo | What's inside |
+|------|--------------|
+| [bundle-examples / knowledge_base](https://github.com/databricks/bundle-examples/tree/main/knowledge_base) | Official Databricks reference library. Covers **Genie Agents**, **Metric Views**, **Apps**, **Lakebase**, **Jobs**, **Pipelines**, **Models**, **Model Serving Endpoints**, and **Vector Search indexes**. Good first stop for any bundle pattern. |
+| [databricks-dab-examples / flights](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/flights) | End-to-end worked example built around a flights dataset. Comes in three tiers (simple, advanced, bundle template) so you can follow the progression from a minimal bundle to a production-ready project. |
+| [databricks-dab-examples / knowledge-base](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/knowledge-base) | Solutions-team reference examples. Includes an Azure DevOps CI/CD pipeline, a React + Lakebase app, metric views, a uv-managed bundle, and a DAIS 2024 modular orchestration template. |
 
 ## How to migrate existing Workspace assets to DABs?
 
@@ -98,45 +108,35 @@ The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)
 
 ## Monolithic-repo or multiple repos?
 
-Use **one Git repo per Databricks project** — one bundle, one deployment boundary, one owning team.
+Use **one Git repo per Databricks project**: one bundle, one deployment boundary, one owning team.
 
-A monolithic repo that holds all the Databricks projects in the organization looks convenient at first. As more teams commit to the same repo, operational overhead grows fast:
+A single repo that holds every Databricks project in the org looks tidy. It isn't. The cost shows up as soon as a second team starts committing to it:
 
 - ❌ **Merge conflicts** pile up when unrelated teams touch shared folders, CI configs, or bundle targets.
-- ❌ **CI runs become slow and noisy** — a change to one team's pipeline triggers validation for every project in the repo.
-- ❌ **Ownership blurs** — no clear code owner for a failing deployment, and rollback affects assets another team did not change.
-- ❌ **Release cadences collide** — Team A cannot ship a hotfix while Team B has a long-running feature branch blocking main.
+- ❌ **CI gets slow and noisy.** A change to one team's pipeline kicks off validation for every project in the repo.
+- ❌ **Ownership blurs.** When a deploy fails, there is no clear owner, and a rollback drags in assets another team never touched.
+- ❌ **Release cadences collide.** Team A can't ship a hotfix while Team B is sitting on a long-running feature branch that's holding main.
 
 ### Example
 
-At **Awesome123** corp, two teams start separate Databricks projects at the same time. Each gets its own repo, bundle, and CI/CD pipeline.
+At **Awesome123** corp, two teams kick off separate Databricks projects at the same time. Each gets its own repo, bundle, and CI/CD pipeline.
 
-**Data Engineering — marketing C360** project
+| Team | Project | Repo | Assets |
+|------|---------|------|--------|
+| Data Engineering | Marketing C360 | `databricks-marketing-c360` | Jobs, pipelines, schemas, SQL warehouses, dashboards |
+| Data Science | Finance revenue prediction | `databricks-finance-revenue-prediction` | Training jobs, registered models, serving endpoints, dashboards |
 
-The Data Engineering team is going to launch a Customer 360 project for Marketing. They create `databricks-marketing-c360` **repository** and manage every Databricks asset for that project here: jobs, pipelines, schemas, SQL warehouses, and dashboards. The team owns approvals, branch protection, and the GitHub Actions workflow that deploys the bundle to dev, staging, and prod.
-
-**Data Science — finance revenue prediction** project
-
-The Data Science team starts a revenue prediction ML project for Finance. They request a repo from IT or the platform Data Engineering team, who provisions `databricks-finance-revenue-prediction`. That repo is going to manage all the training, testing, and deployment jobs, registered models, model serving endpoints, and Project-facing dashboards. The Data Science team manages their own CI/CD and release cadence — without blocking or depending on the marketing C360 repo.
-
-Neither team shares a monolithic repo. A pipeline change in marketing C360 does not trigger CI for the finance ML project, and each team can ship on its own schedule.
+A pipeline change in marketing C360 does not trigger CI for the finance ML project. Each team ships on its own schedule.
 
 ## When to use / when not to
 
-**Use Terraform when:**
-
-- You provision or change workspaces, networks, or cloud IAM.
-- Platform settings must match across accounts or regions.
-
-**Use DABs when:**
-
-- The plan is to deploy and promote Databricks projects (jobs, pipelines, notebooks, or schemas).
-- Multiple engineers need to review changes before they reach production.
-
-**Skip formal CI/CD when:**
-
-- You are exploring a one-off notebook or prototype that will not be promoted.
-- Only one person touches the asset and it has no downstream consumers.
+| Situation | Use |
+|-----------|-----|
+| Provision workspaces, networks, or cloud IAM | Terraform |
+| Platform settings must match across accounts or regions | Terraform |
+| Deploy Databricks projects (jobs, pipelines, notebooks, schemas) | DABs |
+| Changes need review before reaching production | DABs |
+| One-off notebook or prototype, single owner, nothing downstream depends on it | Neither |
 
 ## Next
 

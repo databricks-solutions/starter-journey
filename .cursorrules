@@ -213,12 +213,17 @@ When adding a new numbered section, add a row to the CSV and to `REQUIRED_SECTIO
 
 When creating or editing content under `docs/starter-journey/docs/`, follow **[docs/STYLE.md](docs/STYLE.md)**. The key rules are summarized below, but read the full style guide before writing.
 
-### Page templates
+### Page voices
 
-| Template | Use for | Goal |
-|---|---|---|
-| **Template A — Technical** | Setup, how-to, step-by-step guides | Reader finishes with a working thing |
-| **Template B — Educational** | Concepts, architecture, decision guides | Reader can make an informed decision |
+Two voices, one per page type. Pick the voice from the type. Full spec in [docs/STYLE.md](docs/STYLE.md).
+
+| Page type | Use for | Voice | Goal |
+|---|---|---|---|
+| **Technical** | Setup, how-to, step-by-step | **Build Log** | Reader finishes with the thing built |
+| **Educational** | Concepts, architecture, decisions | **Field Notes** | Reader can make the call themselves |
+
+- **Build Log** (technical): a practitioner writing up how they got it working. Lead with the outcome, steps read like a log, failure modes go in a "Where people trip" section. One informative first-person aside allowed.
+- **Field Notes** (educational): an experienced engineer explaining a decision. Open with the call, one plain analogy, tradeoffs stated straight, opinions welcome.
 
 ### Shared chrome (every page)
 
@@ -260,12 +265,17 @@ Only three are allowed:
 
 Do **not** use `:::info`, `:::success`, or `:::note`. Convert those to prose or numbered steps.
 
-### Writing voice
+### Anti-slop rules
 
-- **Technical pages:** imperative, direct language. Commands, expected output, done.
-- **Educational pages:** explain the *why* tied to real engineering or business problems.
-- One idea per sentence. Paragraphs under 4 sentences. Active voice.
-- **No AI slop.** Banned phrases: "In today's data-driven world", "It's important to note", "Let's dive in", "seamlessly", "robust", "This powerful feature enables". Every sentence must carry new information. See the full banned-phrases list in `docs/STYLE.md`.
+All prose runs through the `humanizer` skill (`~/.claude/skills/humanizer/SKILL.md`) before it ships: draft, ask "what still sounds AI here?", fix it. The mechanical rules a build cannot catch:
+
+- **No em dashes or en dashes.** Zero. Replace with a period, comma, colon, or parentheses. Scan for `—` and `–` before finishing.
+- **Cut AI vocabulary:** leverage, robust, seamless, pivotal, crucial, delve, vibrant, landscape (figurative), testament, underscore, foster, "powerful feature," "in today's data-driven world."
+- **Use is/are/has,** not "serves as," "boasts," "features."
+- No significance inflation, no `-ing` padding, no forced rule of three, no promotional language, no generic upbeat conclusions, no signposting ("Let's dive in").
+- Vary sentence length. One idea per sentence. Sentence case in headings.
+
+See the full list in [docs/STYLE.md](docs/STYLE.md).
 
 ### Images
 

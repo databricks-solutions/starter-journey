@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 sidebar_label: 4. Cost monitoring
-description: Day-zero cost visibility after infra setup—import usage dashboards, optional dbdemos dashboards, tags, and budgets.
+description: Day-zero cost visibility after infra setup. Import usage dashboards, optional dbdemos dashboards, tags, and budgets.
 ---
 
 # 4. Cost monitoring
@@ -10,20 +10,22 @@ description: Day-zero cost visibility after infra setup—import usage dashboard
 >
 > **Prereqs:** [Infra setup](/docs/03-infra-setup)
 
-## Why this matters
+## Set this up before you have anything to monitor
 
-Organizations that wait on cost monitoring inherit two predictable problems: **surprise invoices** when usage scales before anyone is watching, and **no credible story** when finance asks who drove which spend. Day-zero monitoring fixes that by making consumption visible **while** you still have a small number of workspaces and owners. You align expectations before teams multiply, pipelines land in production, and tags become painful to retrofit.
+Turn on cost visibility now, while the account is small. Teams that wait pay for it twice: a surprise invoice when usage scales past whoever was supposed to be watching, and an awkward silence when finance asks who spent what and nobody can say. Both go away if consumption is already visible when you have a handful of workspaces and known owners.
 
-## Mental model (system tables)
+The other reason to do it early is tags. They only apply to usage created after you set them, so every week you wait is a week of spend you can never attribute. Retrofitting attribution is not a thing.
 
-**System tables** are the read-only billing and operations tables in the **`system`** catalog (for example **`system.billing.usage`** and **`system.billing.list_prices`**). Imported dashboards and SQL you write later both read from them. You do not need to master the schema on day zero; you need to know they are the **source of truth** for consumption and list-price dollars.
+## How to think about system tables
+
+System tables are read-only billing and operations tables in the `system` catalog, for example `system.billing.usage` and `system.billing.list_prices`. Every dashboard you import and every cost query you write later reads from them. You do not need to learn the schema on day zero. You need to know these tables are the source of truth for consumption and list-price dollars, and everything else in this section is a view on top of them.
 
 For depth, use the official references:
 
 - [System tables reference](https://docs.databricks.com/aws/en/admin/system-tables/)
 - [Billable usage system table reference](https://docs.databricks.com/aws/en/admin/system-tables/billing)
 - [Monitor costs using system tables](https://docs.databricks.com/aws/en/admin/usage/system-tables)
-- [Top 10 queries to use with System Tables](https://community.databricks.com/t5/technical-blog/top-10-queries-to-use-with-system-tables/bc-p/89393) (community walkthrough)
+- [Top 10 queries to use with System Tables](https://community.databricks.com/t5/technical-blog/top-10-queries-to-use-with-system-tables/bc-p/89393)
 
 ## Journey checklist
 
@@ -47,7 +49,7 @@ For depth, use the official references:
 
 | Step | Topic | Why this slot |
 |------|-------|----------------|
-| 1 | [Import usage dashboard](/docs/04-cost-monitoring/import-usage-dashboard) | Fast visibility from the account console—no SQL. |
+| 1 | [Import usage dashboard](/docs/04-cost-monitoring/import-usage-dashboard) | Fastest visibility, straight from the account console, no SQL. |
 | 2 | [Additional dashboards](/docs/04-cost-monitoring/additional-dashboards) | Optional packaged dashboards on your catalog and schema. |
 | 3 | [Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs) | Forward-only labels for team and project rollups. |
 | 4 | [Budget alerts](/docs/04-cost-monitoring/budget-alerts) | Account-level monthly monitors with email. |

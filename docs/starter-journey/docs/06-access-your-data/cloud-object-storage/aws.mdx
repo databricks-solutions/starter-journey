@@ -5,7 +5,7 @@ description: Create a storage credential and external location to connect Databr
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# AWS — S3
+# AWS S3
 
 > **You'll create** an S3 bucket, storage credential, and external location to connect Databricks to S3 in ~15 min.
 >
@@ -13,7 +13,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## What you'll build
 
-An S3 bucket connected to Databricks through a Unity Catalog storage credential and external location. The QuickStart wizard handles IAM role creation via CloudFormation.
+An S3 bucket Databricks can read through a Unity Catalog storage credential and external location. You will not hand-write an IAM policy: the QuickStart wizard fires a CloudFormation stack that creates the role for you.
 
 ## Prerequisites
 
@@ -106,12 +106,12 @@ This is the process covered in the video walkthrough above.
 
 ### 3. Mark the external location as read-only
 
-After the external location is created, mark it as read-only. This prevents any Databricks workload from writing to the storage path, protecting your source data from accidental modifications.
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
 
 Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 
 :::warning
-Skipping this step leaves the external location writable by any principal with write grants. Always set it to read-only unless your pipeline explicitly needs to write back to this path.
+Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
 :::
 
 ## Verify
@@ -120,18 +120,18 @@ Skipping this step leaves the external location writable by any principal with w
 2. Click the new external location and click **Test Connection**.
 3. Confirm the test returns a success status.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>CloudFormation stack fails to create</summary>
 
-Check the CloudFormation Events tab for the specific error. Common causes: the IAM user running the template lacks permission to create roles, or the S3 bucket name is misspelled in the QuickStart form.
+Open the CloudFormation Events tab for the exact error. Two usual suspects: the IAM user running the template cannot create roles, or the S3 bucket name is misspelled in the QuickStart form.
 </details>
 
 <details>
 <summary>External location test fails after creation</summary>
 
-The CloudFormation stack creates an IAM role with a trust policy scoped to the Databricks account. Verify the stack completed successfully in the AWS console and that the role ARN matches what Databricks expects.
+The stack creates an IAM role whose trust policy is scoped to the Databricks account. Confirm the stack finished cleanly in the AWS console and that the role ARN matches what Databricks expects.
 </details>
 
 ## Next

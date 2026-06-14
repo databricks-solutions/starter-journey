@@ -9,13 +9,13 @@ description: A Databricks workspace is the cloud environment where teams build, 
 >
 > **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console)
 
-## Why this matters
+## The call
 
-A workspace is where all the actual work happens — notebooks, jobs, dashboards, SQL queries, ML experiments. Choosing the wrong number of workspaces or misunderstanding their boundaries leads to permission sprawl, environment contamination, or unnecessary cost.
+Start with three workspaces (dev, staging, prod) and resist the urge to spin up one per team. A workspace is where the real work happens: notebooks, jobs, dashboards, SQL, ML experiments. Misjudge how many you need, or misread their boundaries, and you end up with permission sprawl, environments stepping on each other, or a bill bigger than it should be.
 
 ## Mental model
 
-A workspace is a cloud-based environment tied to a single region in your cloud account. It groups compute, storage references, code, and user permissions into one boundary. Multiple workspaces share identity and governance through the account console and Unity Catalog.
+A workspace is a cloud environment tied to a single region in your cloud account. It bundles compute, storage references, code, and user permissions into one boundary. Several workspaces share identity and governance through the account console and Unity Catalog.
 
 ![Workspace organization](/img/workspace-organization.png)
 
@@ -25,12 +25,12 @@ A workspace is a cloud-based environment tied to a single region in your cloud a
 
 Each workspace contains:
 
-- **Notebooks and repos** — code authoring and version control.
-- **Jobs** — scheduled or automatic orchestration (DAGs).
-- **Pipelines** - ingestion and transformation pipelines.
-- **Clusters and SQL warehouses** — compute for engineering, analytics, and ML.
-- **Dashboards** — visualizations and BI artifacts.
-- **ML experiments and models** — tracked via MLflow.
+- **Notebooks and repos**: code authoring and version control.
+- **Jobs**: scheduled or automatic orchestration (DAGs).
+- **Pipelines**: ingestion and transformation pipelines.
+- **Clusters and SQL warehouses**: compute for engineering, analytics, and ML.
+- **Dashboards**: visualizations and BI artifacts.
+- **ML experiments and models**: tracked via MLflow.
 
 For the full list of workspace objects and their access controls, see:
 
@@ -41,36 +41,36 @@ For the full list of workspace objects and their access controls, see:
 
 Start with three, aligned to the software development lifecycle:
 
-1. **Development** — where engineers iterate on code and test changes.
-2. **Staging** — integration testing and user acceptance before production.
-3. **Production** — stable workloads serving the business.
+1. **Development**: where engineers iterate on code and test changes.
+2. **Staging**: integration testing and user acceptance before production.
+3. **Production**: stable workloads serving the business.
 
-You do not need a separate workspace per team or business unit. Add teams to an existing workspace as groups with the appropriate permissions.
+You do not need a separate workspace per team or business unit. Add teams to an existing workspace as groups with the right permissions.
 
 :::tip
-If required, every team or business unit can have a dedicated workspace and catalog.
+If required, every team or business unit can have a dedicated set of workspaces and catalogs.
 :::
 
 ### Data isolation
 
-Workspaces alone do not isolate data. Physical and logical data isolation is handled by **Unity Catalog**, covered in the next section. A workspace can access any data its attached metastore governs, subject to grants.
+Workspaces don't isolate data on their own. Physical and logical isolation comes from **Unity Catalog**, covered next. A workspace can reach any data its attached metastore governs, subject to grants.
 
 ## Common pitfalls
 
 ### One workspace for everything
 
-Running dev and production workloads in the same workspace means an untested job can impact production pipelines. The dev/staging/prod split costs little and prevents a lot of incidents.
+Run dev and production in the same workspace and an untested job can take down production pipelines. The dev/staging/prod split costs little and heads off a lot of incidents.
 
 ### One workspace per team
 
-Over-splitting creates admin overhead and makes cross-team collaboration harder. Add teams as groups to shared workspaces unless there is a hard compliance reason to separate.
+Over-split and you create admin overhead and make cross-team collaboration harder. Add teams as groups to shared workspaces unless a hard compliance rule forces you to separate them.
 
 ## Key terms
 
 | Term | Definition |
 |---|---|
 | **Workspace** | A cloud-based Databricks environment scoped to a region, containing notebooks, jobs, compute, and dashboards. |
-| **Workspace admin** | A role with admin privileges scoped to a single workspace — manages users, clusters, and workspace settings. |
+| **Workspace admin** | A role with admin privileges scoped to a single workspace: manages users, clusters, and workspace settings. |
 
 ## Next
 

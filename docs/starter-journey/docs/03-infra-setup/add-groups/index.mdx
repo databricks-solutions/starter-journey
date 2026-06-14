@@ -14,7 +14,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Why this matters
 
-Individual user permissions do not scale. Groups let you assign access once to a role (Data Engineer, Data Analyst, etc.) and then add or remove people without touching every permission. Without groups, permission management becomes a per-user, per-asset chore that drifts fast.
+Grant access to groups, not to people. Per-user permissions feel fine on day one and turn into a mess by month three: every new hire means re-granting the same twenty things, and every leaver means hunting down what they could touch. Assign access to a role once (Data Engineer, Data Analyst, and so on), then the only thing you ever change is who is in the group.
 
 ## Journey checklist
 
@@ -39,7 +39,7 @@ Individual user permissions do not scale. Groups let you assign access once to a
 
 ### Standard data personas
 
-The groups below reflect the standard roles involved in Databricks projects. Customize the names to match your organization's conventions, but keep the role boundaries.
+These groups cover the roles on most Databricks projects. Rename them to match your house conventions, but keep the boundaries between roles. The lines are where access control happens.
 
 <div style={{ textAlign: 'center', marginTop: 24, marginBottom: 8 }}>
   <img
@@ -59,46 +59,46 @@ The groups below reflect the standard roles involved in Databricks projects. Cus
 | **Data Engineers** | Build and maintain transformation pipelines. Read and write access on project schemas and tables. | Python, Spark, SQL, Dashboards, CI/CD |
 | **Data Scientists** | Train and deploy ML models and GenAI agents. Read-only access on specific schemas and tables. | Python, Pandas, MLflow, ML/GenAI frameworks |
 | **Data Analysts** | Build business metrics, analytics, and dashboards. Read-only data access. | SQL, Dashboards, Visualizations |
-| **Business Users** | View dashboards and Genie spaces. View-only access — typically do not log in to workspaces directly. | Excel, embedded dashboards |
+| **Business Users** | View dashboards and Genie spaces. View-only access, and usually they never log into a workspace directly. | Excel, embedded dashboards |
 
 ### Workspace admin groups
 
-Create a separate admin group per workspace:
+Give each workspace its own admin group:
 
-- `dev-ws-admins` — Development workspace admins.
-- `stg-ws-admins` — Staging workspace admins.
-- `prod-ws-admins` — Production workspace admins.
+- `dev-ws-admins` for the development workspace.
+- `stg-ws-admins` for staging.
+- `prod-ws-admins` for production.
 
-This prevents a single admin group from having blanket access to every environment.
+That way no single group holds the keys to every environment, and an accidental grant in dev does not reach prod.
 
 ### When you need more granularity
 
-For medium-to-large organizations where a single `Data Engineers` group does not provide enough isolation, prefix groups with the business unit or project name:
+At a small company, one `Data Engineers` group is plenty. Once different teams need different data, that flat group stops working: everyone in it can see everything any engineer can see. Prefix groups with the business unit or project name before you hit that wall:
 
 - `[bu-or-project]-data-engineers`
 - `[bu-or-project]-data-scientists`
 - `[bu-or-project]-data-analysts`
 - `[bu-or-project]-bi-users`
 
-This lets you grant different data access per project through Unity Catalog while keeping group membership clean.
+Now you can hand each project its own slice of data through Unity Catalog, and group membership stays readable.
 
 ## Common pitfalls
 
 ### One flat group for all engineers
 
-A single `Data Engineers` group works at small scale but breaks when different teams need different data access. Plan for project-level groups early to avoid a painful migration later.
+A single `Data Engineers` group is fine until two teams need to be walled off from each other's data, and by then splitting it is a migration with permissions to re-grant and people to re-sort. Plan for project-level groups before you need them.
 
 ### Creating groups inside workspaces
 
-Groups created at the workspace level do not propagate to other workspaces or to Unity Catalog. Always create groups at the account level (or via SCIM) so they are available everywhere.
+A group made at the workspace level stays at that workspace. It does not reach other workspaces and it does not show up in Unity Catalog. Create groups at the account level or through SCIM so they exist everywhere you might want to grant against them.
 
 ## Create the groups
 
-- **[Manual](/docs/03-infra-setup/add-groups/manual)** — Add groups through the account console UI.
-- **[SCIM](/docs/03-infra-setup/add-groups/scim)** — Automate group provisioning from your identity provider.
+- **[Manual](/docs/03-infra-setup/add-groups/manual):** add groups through the account console UI.
+- **[SCIM](/docs/03-infra-setup/add-groups/scim):** automate group provisioning from your identity provider.
 
 ## Next
 
-- **Do next:** [Add Groups — Manual](/docs/03-infra-setup/add-groups/manual)
+- **Do next:** [Add Groups: Manual](/docs/03-infra-setup/add-groups/manual)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 - **Reference:** [Manage groups](https://docs.databricks.com/aws/en/admin/users-groups/)

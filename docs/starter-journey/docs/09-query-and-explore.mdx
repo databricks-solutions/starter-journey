@@ -1,17 +1,17 @@
 ---
 sidebar_label: 9. Query and Explore
-description: Run interactive SQL queries against your lakehouse data using the Databricks SQL Editor and serverless warehouses.
+description: Run interactive SQL against your lakehouse data using the Databricks SQL Editor and a serverless warehouse.
 ---
 
 # 9. Query and explore
 
-> **You'll learn** how to query and explore your lakehouse data using the Databricks SQL Editor in ~5 min.
+> **You'll run** interactive SQL against your lakehouse tables in the Databricks SQL Editor in ~5 min.
 >
 > **Prereqs:** [Automation & Orchestration](/docs/08-orchestration/workspace)
 
 ## Why this matters
 
-A pipeline that writes data is only half the story. Analysts and engineers need to query that data interactively — validate transformations, explore distributions, and answer ad-hoc questions. The Databricks SQL Editor paired with a serverless warehouse gives you a zero-infrastructure query environment that starts in seconds.
+Once a pipeline writes data, someone has to look at it. You check that the transforms did what you meant, eyeball a few distributions, and answer the one-off question your stakeholder just asked. The SQL Editor plus a serverless warehouse gives you a place to do that. No cluster to size, no waiting on startup. You open the editor and run a query against any table your Unity Catalog grants let you see.
 
 ## Journey checklist
 
@@ -27,12 +27,15 @@ A pipeline that writes data is only half the story. Analysts and engineers need 
 - [ ] Databricks AI/BI.
 - [ ] Business semantics.
 
-## How it works
+## Run your first query
 
-Every workspace comes with a **Starter Serverless Warehouse** — a managed compute endpoint optimized for interactive SQL. Open the SQL Editor, write a query, and run it against any table your identity has access to through Unity Catalog grants.
+1. Open the SQL Editor from the left nav. Every workspace ships with a **Starter Serverless Warehouse**, a managed endpoint built for interactive SQL, so you do not have to create compute first.
+2. Pick the Starter Serverless Warehouse in the warehouse dropdown if it is not already selected.
+3. Set the catalog and schema in the context bar so you can use plain table names instead of `catalog.schema.table` everywhere.
+4. Type a query and run it. The warehouse spins up in a few seconds and returns results in the grid below.
 
 :::tip
-You can drag and drop tables from the schema browser directly into the editor. No need to type fully qualified names by hand.
+Drag a table from the schema browser straight into the editor and it drops in the fully qualified name for you.
 :::
 
 ### Video walkthrough
@@ -43,10 +46,10 @@ You can drag and drop tables from the schema browser directly into the editor. N
   src="https://www.youtube.com/embed/0XWf1V40SdI"
 ></iframe>
 
-## Common pitfalls
+## Where people trip
 
-- **Running queries on a pro warehouse when serverless is available** — serverless warehouses start faster and scale automatically. Use them for interactive work unless your admin has configured a specific warehouse for your team.
-- **Querying without schema context** — always select a catalog and schema in the editor's context bar. Without it, every query needs fully qualified three-part names (`catalog.schema.table`).
+- **Reaching for a pro warehouse out of habit.** Serverless starts faster and scales on its own, so use it for interactive work unless your admin set up a specific warehouse for your team.
+- **Querying with no context set.** If you skip the catalog and schema in the context bar, every query needs the full three-part name (`catalog.schema.table`). Set it once and the editor fills in the rest.
 
 ## Next
 

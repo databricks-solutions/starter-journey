@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 sidebar_label: 11. Business Semantics
-description: Define KPIs once in Unity Catalog metric views — same number in SQL, AI/BI, and Genie.
+description: Define KPIs once in Unity Catalog metric views so SQL, AI/BI, and Genie all return the same number.
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -9,7 +9,7 @@ import Button from '@site/src/components/Button';
 
 # 11. Business Semantics
 
-> **You'll** stop arguing about whose revenue number is right by defining KPIs once as Unity Catalog **metric views** — usable from SQL, dashboards, and Genie. Budget about **1 hour**: 20 min reading, 30–45 min hands-on.
+> **You'll** stop arguing about whose revenue number is right by defining KPIs once as Unity Catalog **metric views**, usable from SQL, dashboards, and Genie. Budget about **1 hour**: 20 min reading, 30 to 45 min hands-on.
 >
 > **Prereqs:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [Data governance strategy](/docs/05-data-governance-strategy/), [Databricks AI/BI](/docs/10-databricks-aibi/dashboards)
 
@@ -28,7 +28,7 @@ import Button from '@site/src/components/Button';
 - [ ] **Business Semantics**
     - [ ] Understand the metric drift problem
     - [ ] Read and write a metric view in YAML
-    - [ ] [Hands-on lab](/docs/11-business-semantics/lab) — same KPI returns the same number in SQL, AI/BI, and Genie
+    - [ ] [Hands-on lab](/docs/11-business-semantics/lab): the same KPI returns the same number in SQL, AI/BI, and Genie
 - [ ] [12. Data Access Control](/docs/12-data-access-control/) (in progress)
 - [ ] [13. CI/CD and DevOps](/docs/13-ci-cd-devops/) (in progress)
 - [ ] [14. MLOps](/docs/14-mlops/) (in progress)
@@ -36,7 +36,7 @@ import Button from '@site/src/components/Button';
 ## UC Metric Views reference
 
 :::tip
-Review this deck before proceeding. It covers the full metric views surface — motivation, architecture, dimensions, measures, and querying patterns.
+Read this deck first. It walks the whole metric views surface: why they exist, how they're put together, and how dimensions, measures, and queries fit.
 :::
 
 <Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
@@ -44,17 +44,17 @@ Review this deck before proceeding. It covers the full metric views surface — 
 
 ## The problem: same KPI, different numbers
 
-Three teams report Q1 revenue. Three different numbers.
+Three teams report Q1 revenue. You get three numbers.
 
-- **Sales:** `SUM(amount) WHERE status = 'closed'` → $4.2M
-- **Finance:** `SUM(amount) WHERE invoice_date >= '2026-01-01'` → $4.0M
-- **BI dashboard:** `SUM(net_amount)` joined to a refunds table → $3.8M
+- **Sales:** `SUM(amount) WHERE status = 'closed'` returns $4.2M
+- **Finance:** `SUM(amount) WHERE invoice_date >= '2026-01-01'` returns $4.0M
+- **BI dashboard:** `SUM(net_amount)` joined to a refunds table returns $3.8M
 
-Each is reasonable. Each lives in a different SQL file or BI tool. Nobody owns the canonical definition. Leadership picks the one they trust most this week.
+None of them is wrong. Each definition lives in a separate SQL file or BI tool, and nobody owns the canonical one. So leadership goes with whichever number they trust most that week.
 
 ## The fix: define metrics once, in the catalog
 
-A **metric view** is a Unity Catalog object that holds the formula, the grain, and the filters for a KPI. SQL editors, notebooks, AI/BI dashboards, and Genie all call the same object — they cannot drift.
+A **metric view** is a Unity Catalog object that holds the formula, the grain, and the filters for a KPI. SQL editors, notebooks, AI/BI dashboards, and Genie all call the same object, so they can't drift apart.
 
 ```sql
 SELECT `Order Month`, MEASURE(`Total Revenue`)
@@ -62,17 +62,17 @@ FROM main.sales.orders_metrics
 WHERE `Order Month` >= '2026-01-01';
 ```
 
-Same query in any tool. Same number, every time.
+Run that query in any tool. You get the same number every time.
 
 ## Where it sits
 
-* **Unity Catalog:** 
+* **Unity Catalog:**
 
-    * A metric view is a first-class Unity Catalog object — discoverable, permissioned, and audited like a table. The body is YAML wrapped in a `CREATE VIEW … WITH METRICS LANGUAGE YAML` statement.
-    * Contained inside a schema. Same level as tables, views, functions and models: [UC three-level namespace](/docs/02-before-you-start/foundations/unity-catalog#the-three-level-namespace).
+    * A metric view is a first-class Unity Catalog object. You discover it, permission it, and audit it the same way you would a table. The body is YAML wrapped in a `CREATE VIEW … WITH METRICS LANGUAGE YAML` statement.
+    * It lives inside a schema, at the same level as tables, views, functions, and models: [UC three-level namespace](/docs/02-before-you-start/foundations/unity-catalog#the-three-level-namespace).
 
-* **BI Analytics and Reports:** Source of truth for first-party AI/BI or third-party apps.
-    * Dashboard or Genie Space or Third-party app → Metric View(s) → UC tables.
+* **BI analytics and reports:** the source of truth for first-party AI/BI or third-party apps.
+    * Dashboard, Genie space, or third-party app reads the metric view, which reads the UC tables.
 
 ## Watch first
 
@@ -88,16 +88,16 @@ Same query in any tool. Same number, every time.
 | Part | What it does | Example |
 |---|---|---|
 | **Source** | The Unity Catalog table or SQL query the metric reads from | `samples.tpch.orders` |
-| **Measures** | Aggregate expressions — the numbers | `SUM(o_totalprice)` |
-| **Dimensions** | Slice/group columns | `DATE_TRUNC('MONTH', o_orderdate)` |
-| **Filter** | Optional row scoping before aggregation | `o_orderdate > '1990-01-01'` |
+| **Measures** | Aggregate expressions, the numbers themselves | `SUM(o_totalprice)` |
+| **Dimensions** | Columns you slice and group by | `DATE_TRUNC('MONTH', o_orderdate)` |
+| **Filter** | Optional row scoping applied before aggregation | `o_orderdate > '1990-01-01'` |
 
-## In conclusion, are Metric Views basically an OLAP cube?
+## So is a metric view just an OLAP cube?
 
-Not exactly. They share the **conceptual DNA**: measures + dimensions + filters but differ fundamentally in implementation:
+No, though the family resemblance is real. Both think in measures, dimensions, and filters. The difference is where the work happens.
 
-* **OLAP cubes** pre-aggregate and materialize data into a multidimensional structure. You pay storage and build time upfront for fast slice-and-dice at query time.
-* **Metric views** are a semantic layer, not a physical structure. They define reusable metric logic (aggregations, dimensions, time grains) as SQL-based definitions in Unity Catalog. At query time, the engine generates and executes SQL against the underlying tables — no pre-aggregation, no materialization [(unless it's configured)](https://docs.databricks.com/aws/en/business-semantics/metric-views/materialization).
+* **OLAP cubes** pre-aggregate and materialize data into a multidimensional structure. You pay storage and build time upfront, and you get fast slice-and-dice at query time.
+* **Metric views** are a semantic layer, not a physical structure. They hold the metric logic (aggregations, dimensions, time grains) as SQL definitions in Unity Catalog. At query time the engine generates SQL and runs it against the underlying tables. There's no pre-aggregation and nothing materialized [unless you configure it](https://docs.databricks.com/aws/en/business-semantics/metric-views/materialization).
 
 
 
