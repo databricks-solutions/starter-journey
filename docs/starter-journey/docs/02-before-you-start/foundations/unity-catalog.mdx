@@ -12,23 +12,23 @@ import Button from '@site/src/components/Button';
 >
 > **Prereqs:** [Workspace](/docs/02-before-you-start/foundations/workspace)
 
-## Why this matters
+## The call
 
-Without a central governance layer, teams end up with fragmented access controls spread across workspaces, hardcoded credentials buried in notebooks, and zero visibility into how data flows between systems. Unity Catalog (UC) solves this by providing a single place to manage permissions, lineage, and discovery for every data and AI asset in your Databricks environment.
+Route everything through Unity Catalog. Skip it and access controls fragment across workspaces, credentials end up hardcoded in notebooks, and nobody can see how data moves between systems. Unity Catalog (UC) gives you one place to manage permissions, lineage, and discovery for every data and AI asset in your environment. Default to it even when a quick experiment doesn't strictly need it.
 
 ## Mental model
 
-UC sits between your workspaces and your data lake. Workspaces connect to a shared **metastore**, and every interaction with data, models, or functions is routed through UC so that permissions, lineage, and audit logs are enforced automatically.
+UC sits between your workspaces and your data lake. Workspaces connect to a shared **metastore**, and every interaction with data, models, or functions routes through UC so permissions, lineage, and audit logs are enforced for you.
 
 ![Unity Catalog sits between workspaces and the data lake](/img/uc-top-level.jpg)
 
-Your data, metadata, and AI models always remain in your organization's cloud account. UC never moves data out—it only governs access to it.
+Your data, metadata, and AI models stay in your organization's cloud account. UC never moves data out. It only governs access to it.
 
 ## How it works
 
 ### The three-level namespace
 
-Every asset in UC is addressed as **catalog.schema.object**. This convention keeps names unique across the entire organization and makes it easy to separate environments (dev vs. prod) or teams.
+Every asset in UC is addressed as **catalog.schema.object**. The convention keeps names unique across the whole organization and makes it easy to separate environments (dev vs. prod) or teams.
 
 ![Unity Catalog objects and namespaces](/img/uc-objects.png)
 
@@ -47,34 +47,21 @@ SELECT * FROM sales;
 
 ### Governance of all interactions
 
-Whenever a user or service principal creates, reads, updates, deletes, or runs a UC object—whether it is a table, view, volume, function, or model—UC checks the associated grants before allowing the operation.
+Whenever a user or service principal creates, reads, updates, deletes, or runs a UC object, whether it's a table, view, volume, function, or model, UC checks the associated grants before it allows the operation.
 
 ![Unity Catalog governance and federation](/img/uc-and-federation.png)
 
-This means every data and AI interaction should flow through UC. If it does, you get fine-grained access control, full lineage, and a complete audit trail for free.
-
-## When to use / when not to
-
-**Use UC when:**
-
-- You need a single permission model across multiple workspaces.
-- You want automatic lineage tracking for tables, views, and ML models.
-- You need to share data or AI assets across teams without duplicating them.
-- You want centralized audit logs for compliance or security reviews.
-
-**Not the right tool when:**
-
-- You are running a quick local experiment that doesn't touch shared data—but even then, defaulting to UC avoids credential sprawl.
+So every data and AI interaction should flow through UC. When it does, you get fine-grained access control, full lineage, and a complete audit trail without extra work.
 
 ## Common pitfalls
 
 ### Hardcoded credentials
 
-Bypassing UC with connection strings or secrets embedded in notebooks defeats every governance guarantee. If a credential is hardcoded, UC can't audit or revoke access.
+Bypass UC with connection strings or secrets buried in a notebook and you've thrown away every governance guarantee. A hardcoded credential is one UC can't audit or revoke.
 
 ### Cluster-level data access via environment variables
 
-Configuring data access at the cluster level using external libraries and environment variables is another way to sidestep UC. It creates hidden dependencies that are invisible to lineage and impossible to audit.
+Wiring up data access at the cluster level with external libraries and environment variables is another way around UC. It creates hidden dependencies that lineage can't see and nobody can audit.
 
 ## Key terms
 
@@ -90,4 +77,4 @@ Configuring data access at the cluster level using external libraries and enviro
 
 - **Do next:** [Create your first workspace on AWS](/docs/03-infra-setup/create-workspaces/aws/manual)
 - **Learn why:** [Workspace foundations](/docs/02-before-you-start/foundations/workspace)
-- **Reference:** [What is Unity Catalog? — Databricks docs](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)
+- **Reference:** [What is Unity Catalog? (Databricks docs)](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)

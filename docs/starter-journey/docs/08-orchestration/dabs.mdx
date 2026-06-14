@@ -7,54 +7,47 @@ description: Define and deploy Lakeflow Jobs as code using Databricks Asset Bund
 
 > **You'll learn** how to define a Lakeflow Job using Databricks Asset Bundles (DABs) for repeatable, code-first orchestration in ~10 min.
 >
-> **Prereqs:** [Automation & Orchestration — Workspace](/docs/08-orchestration/workspace)
+> **Prereqs:** [Automation & Orchestration: Workspace](/docs/08-orchestration/workspace)
 
-## Why this matters
+## What you'll walk away with
 
-Jobs created through the UI are quick to set up, but they don't travel well across environments. DABs define jobs, pipelines, schemas, volumes, and compute in YAML files that live in version control. One `databricks bundle deploy` command provisions everything — the same way, every time, in dev, staging, or prod.
+A Lakeflow Job defined in YAML, in version control, that you deploy with one command and get back the same way in dev, staging, or prod. The job, its tasks and schedule, and the pipeline and storage it runs against all come up from the same bundle.
 
 ## How it works
 
-A DABs project includes a `databricks.yml` file that declares all the Databricks resources the project needs. For orchestration, this means defining a job with tasks, dependencies, and a schedule alongside the pipeline and storage resources it operates on.
+A DABs project has a `databricks.yml` file that declares every resource the project needs. For orchestration that means a job with its tasks, dependencies, and schedule, defined right next to the pipeline and storage it operates on.
 
 ### Example: medallion pipeline with DABs
 
-The [medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs) repository is a ready-to-deploy example that provisions:
+The [medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs) repo is ready to deploy and provisions:
 
 | Resource | Details |
 |---|---|
-| 1 job | 2 tasks — Task 1: notebook (generate fake data), Task 2: pipeline (run after Task 1 completes) |
+| 1 job | 2 tasks. Task 1: notebook (generate fake data). Task 2: pipeline (runs after Task 1 completes) |
 | 1 pipeline | Spark Declarative Pipeline for the medallion architecture |
 | 3 schemas | `bronze`, `silver`, `gold` |
 | 1 volume | Landing zone for raw files |
 | 1 SQL warehouse | For downstream queries |
 
-For the full list of resource types DABs can manage, see [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
+For every resource type a bundle can manage, see [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
 
 ### Video walkthrough
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/W8ucHwzwdhc"></iframe>
 
-## When to use / when not to
+## When to reach for DABs
 
-**Use DABs when:**
+Use DABs when the same job has to run across dev, staging, and prod, when the definition should be code-reviewed and version-controlled, or when you want the schemas, volumes, and compute living next to the orchestration logic.
 
-- You need the same job deployed across multiple environments (dev, staging, prod).
-- The job definition should be code-reviewed and version-controlled.
-- You want to co-locate infrastructure (schemas, volumes, compute) with orchestration logic.
+Stay in the UI while you are prototyping a new workflow and iterating fast, or when the job is a one-off you will never need to reproduce.
 
-**Use the UI instead when:**
+## Where people trip
 
-- You are prototyping a new workflow and iterating quickly.
-- The job is a one-off execution that doesn't need to be reproduced.
-
-## Common pitfalls
-
-- **Forgetting to run `databricks bundle validate`** before deploy. Syntax errors in `databricks.yml` fail at deploy time with cryptic messages. Validate first.
-- **Hardcoding catalog or schema names** — use DABs variable substitution (`${var.catalog}`) so the same bundle works across environments.
-- **Not setting task dependencies** — without explicit `depends_on`, tasks run in parallel. If Task 2 reads data written by Task 1, define the dependency or you get empty results.
+- Skipping `databricks bundle validate` before a deploy. A syntax slip in `databricks.yml` fails at deploy time with a message that tells you very little. Validate first.
+- Hardcoding catalog or schema names. Use variable substitution (`${var.catalog}`) so the same bundle works in every environment.
+- Leaving task dependencies off. Without an explicit `depends_on`, tasks run in parallel. If Task 2 reads what Task 1 writes, declare the dependency or Task 2 reads an empty table.
 
 ## Next
 
-- **Learn why:** [Automation & Orchestration — Workspace](/docs/08-orchestration/workspace)
-- **Reference:** [Databricks Asset Bundles — Databricks docs](https://docs.databricks.com/aws/en/dev-tools/bundles/index.html)
+- **Learn why:** [Automation & Orchestration: Workspace](/docs/08-orchestration/workspace)
+- **Reference:** [Databricks Asset Bundles (Databricks docs)](https://docs.databricks.com/aws/en/dev-tools/bundles/index.html)

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 sidebar_label: Add Users
-description: Add and manage users in your Databricks account — manually or via SCIM provisioning.
+description: Add and manage users in your Databricks account, manually or via SCIM provisioning.
 ---
 
 # Add Users
@@ -12,14 +12,14 @@ description: Add and manage users in your Databricks account — manually or via
 
 ## Why this matters
 
-Workspaces exist, but nobody can use them until users are registered at the account level. Users created here propagate to any workspace they are assigned to. Skipping centralized user management leads to duplicated identities and inconsistent permissions.
+The workspaces are up, but nobody can log in yet. Users live at the account level, and from there they get assigned down into whichever workspaces they need. If you skip the account level and start creating people inside individual workspaces, you end up with the same person registered three different ways and permissions that never quite line up. Do it once, at the top.
 
 ## How it works
 
-Databricks supports two approaches:
+There are two ways to get users in, and the right one depends on how many people you have.
 
-- **Manual** — add users one at a time through the account console UI. Good for initial setup or small teams.
-- **SCIM** — sync users automatically from your identity provider (Entra ID, Okta, OneLogin). Required for organizations with more than a handful of users.
+- **Manual:** add users one at a time in the account console. Fine for the first few admins or a small team.
+- **SCIM:** sync users from your identity provider (Entra ID, Okta, OneLogin) on a schedule. Once you are past a handful of people, this is the one you want. Nobody should be hand-typing emails for a hundred employees.
 
 ## Journey checklist
 
@@ -42,11 +42,11 @@ Databricks supports two approaches:
 
 ## Choose your path
 
-- **[Manual](/docs/03-infra-setup/add-users/manual)** — Add users through the account console UI.
-- **[SCIM](/docs/03-infra-setup/add-users/scim)** — Automate user provisioning from your identity provider.
+- **[Manual](/docs/03-infra-setup/add-users/manual):** add users through the account console UI.
+- **[SCIM](/docs/03-infra-setup/add-users/scim):** automate user provisioning from your identity provider.
 
 ## Next
 
-- **Do next:** [Add Users — Manual](/docs/03-infra-setup/add-users/manual)
+- **Do next:** [Add Users: Manual](/docs/03-infra-setup/add-users/manual)
 - **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
 - **Reference:** [Manage users in your account](https://docs.databricks.com/aws/en/admin/users-groups/)

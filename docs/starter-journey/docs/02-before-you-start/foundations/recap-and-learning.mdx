@@ -9,17 +9,17 @@ description: Quick-check questions to confirm you understand the account console
 >
 > **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console), [Workspace](/docs/02-before-you-start/foundations/workspace), [Unity Catalog](/docs/02-before-you-start/foundations/unity-catalog)
 
-## Why this matters
+## The call
 
-The infrastructure setup section assumes you know these concepts. Gaps here surface later as misconfigured workspaces, broken permissions, or ungoverned data paths. Use the questions below to check yourself before moving on.
+Infrastructure setup assumes you already know these three concepts. A gap here doesn't show up now. It shows up later as a misconfigured workspace, a broken permission, or an ungoverned data path. Answer the questions below before you move on, and if any answer feels shaky, go back a page.
 
 ## Account Console
 
 **What is it?**
-A central admin portal — similar to the AWS console or Azure portal — where you manage workspaces, Unity Catalog metastores, users, groups, service principals, billing, SCIM, and SSO.
+A central admin portal, similar to the AWS console or Azure portal, where you manage workspaces, Unity Catalog metastores, users, groups, service principals, billing, SCIM, and SSO.
 
 **When do you use it?**
-When provisioning or deleting workspaces, setting up identity, assigning metastores, or reviewing billing. Day-to-day data work happens inside a workspace, not here.
+When you provision or delete workspaces, set up identity, assign metastores, or review billing. Day-to-day data work happens inside a workspace, not here.
 
 ## Workspace
 
@@ -27,10 +27,10 @@ When provisioning or deleting workspaces, setting up identity, assigning metasto
 A cloud-based environment scoped to a region where teams run notebooks, jobs, SQL queries, dashboards, and ML experiments.
 
 **How many do I need?**
-Start with three: development, staging, and production. This follows the standard software development lifecycle. You do not need one workspace per team — use groups and permissions instead.
+Start with three: development, staging, and production. That follows the standard software development lifecycle. You do not need one workspace per team. Use groups and permissions instead.
 
 **How do I isolate data between workspaces?**
-You don't — at least not at the workspace level. Data isolation is handled by Unity Catalog grants. A workspace can access any data its attached metastore governs, subject to the permissions you define.
+You don't, at least not at the workspace level. Data isolation comes from Unity Catalog grants. A workspace can reach any data its attached metastore governs, subject to the permissions you define.
 
 ## Unity Catalog
 
@@ -38,10 +38,10 @@ You don't — at least not at the workspace level. Data isolation is handled by 
 The centralized governance layer that manages permissions, lineage, and discovery for all data and AI assets across workspaces.
 
 **Where is the data stored?**
-In your cloud account's object storage. Unity Catalog governs access — it does not store or move your data.
+In your cloud account's object storage. Unity Catalog governs access to your data. It does not store or move it.
 
 **How should every data and AI interaction be done?**
-Through Unity Catalog. Every read, write, and execution should flow through UC so that grants, lineage, and audit logs are enforced.
+Through Unity Catalog. Route every read, write, and execution through UC so grants, lineage, and audit logs are enforced.
 
 **What should be avoided?**
 
@@ -49,7 +49,7 @@ Through Unity Catalog. Every read, write, and execution should flow through UC s
 - Accessing data with hardcoded credentials in notebooks or scripts.
 - Configuring data access at the cluster level using external libraries and environment variables.
 
-Both approaches bypass UC governance, making access invisible to lineage and impossible to audit or revoke centrally.
+Both approaches bypass UC governance. Access becomes invisible to lineage and impossible to audit or revoke centrally.
 :::
 
 ## Next

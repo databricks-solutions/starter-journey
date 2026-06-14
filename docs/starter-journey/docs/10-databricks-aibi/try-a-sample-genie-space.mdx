@@ -10,7 +10,7 @@ description: Install the AI/BI Analytics in Capital Markets dbdemo to explore a 
 
 ## What you'll build
 
-A ready-to-use Genie Space ("DBDemos - AI-BI - Portfolio Assistant") plus a companion AI/BI dashboard and notebook, all loaded with sample portfolio holdings, market sentiment, and stock data. Use it to test natural-language questions like *"What is the market sentiment for companies in my portfolio in the retail industry?"* without modeling your own data first.
+A working Genie Space ("DBDemos - AI-BI - Portfolio Assistant") with a companion AI/BI dashboard and notebook, all loaded with sample portfolio holdings, market sentiment, and stock data. You get to test natural-language questions like *"What is the market sentiment for companies in my portfolio in the retail industry?"* without modeling any of your own data first.
 
 **Official source (Demo Center):** [Demo Center: Data Warehouse and AI/BI](https://www.databricks.com/resources/demos/tutorials?itm_data=demo_center#data-warehouse-and-bi)
 
@@ -18,7 +18,7 @@ A ready-to-use Genie Space ("DBDemos - AI-BI - Portfolio Assistant") plus a comp
 
 ### 1. Install the demo from the dbdemos library.
 
-Run the following cells in a new Python notebook.
+Run these cells in a new Python notebook.
 
 ```python
 %pip install dbdemos
@@ -48,36 +48,36 @@ Swap `MY_CATALOG` and `MY_SCHEMA` for any UC catalog and schema where your user 
 
 ### 2. Wait for the installer to finish.
 
-The notebook lists the installed assets: a notebook, an AI/BI dashboard, and a Genie Space.
+When it's done, the notebook lists what it created: a notebook, an AI/BI dashboard, and a Genie Space.
 
 ![dbdemos ready screen listing the AI-BI Portfolio Assistant notebook, dashboard, and Genie Space](/img/aibi-portfolio-install-2.png)
 
 ## Verify
 
-Open **Genie Spaces** in the workspace nav and confirm **DBDemos - AI-BI - Portfolio Assistant** appears. Click in and try one of the suggested questions.
+Open **Genie Spaces** in the workspace nav and check that **DBDemos - AI-BI - Portfolio Assistant** is there. Click in and try one of the suggested questions. You should get an answer with a result table, not an error.
 
 ![DBDemos AI-BI Portfolio Assistant Genie Space landing page with suggested questions](/img/aibi-portfolio-genie.png)
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>ModuleNotFoundError: dbdemos</summary>
 
-Run `%pip install dbdemos`, then `dbutils.library.restartPython()` before importing.
+You imported before installing. Run `%pip install dbdemos`, then `dbutils.library.restartPython()`, and only then import.
 
 </details>
 
 <details>
 <summary>Permission denied writing catalog or schema</summary>
 
-Pick a catalog and schema where your user can create tables, or ask a metastore admin to grant **CREATE**.
+Your user can't create tables there. Pick a catalog and schema where you can, or ask a metastore admin to grant **CREATE**.
 
 </details>
 
 <details>
 <summary>Install hangs</summary>
 
-Confirm the cluster has internet egress to PyPI and enough resources.
+The cluster can't reach PyPI or is out of resources. Confirm it has internet egress and enough capacity.
 
 </details>
 

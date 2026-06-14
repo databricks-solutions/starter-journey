@@ -140,28 +140,17 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'category',
-          label: 'Managed connectors',
+          label: 'Databases and SaaS ingestion',
           link: {type: 'doc', id: '06-access-your-data/managed-connectors/index'},
           items: [
-            {
-              type: 'category',
-              label: 'Create connection',
-              link: {type: 'doc', id: '06-access-your-data/managed-connectors/create-connection'},
-              items: ['06-access-your-data/managed-connectors/create-connection/query-federation'],
-            },
-            {
-              type: 'category',
-              label: 'Create ingestion pipeline',
-              link: {type: 'doc', id: '06-access-your-data/managed-connectors/create-ingestion-pipeline/index'},
-              items: ['06-access-your-data/managed-connectors/create-ingestion-pipeline/dabs-definition'],
-            },
+            '06-access-your-data/managed-connectors/dabs-definition',
           ],
         },
       ],
     },
     {
       type: 'category',
-      label: '7. Build the first pipeline',
+      label: '7. Build the first ETL pipeline',
       collapsed: true,
       link: {type: 'doc', id: '07-build-first-pipeline/index'},
       items: [

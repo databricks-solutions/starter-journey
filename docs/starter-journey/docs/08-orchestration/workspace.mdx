@@ -9,33 +9,26 @@ description: Create and configure Lakeflow Jobs using the Databricks Workspace.
 >
 > **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline)
 
-## Why this matters
+## What you'll walk away with
 
-The Workspace is the fastest path to a running job. You can define tasks, set dependencies, configure a schedule, and monitor execution — all without writing configuration files. This is the recommended starting point before moving to DABs for production deployments.
+A scheduled Lakeflow Job running in your workspace, built entirely in the browser. You add the tasks, wire up their order, set a schedule, and watch it run, with no config files to write. Start here before moving to DABs for production.
 
 ## How it works
 
-The Databricks Workspace includes a Jobs page where you create workflows visually. You add tasks (notebooks, pipelines, SQL), define their execution order, set a schedule, and configure retry and notification settings.
+The Jobs page in the Workspace is where you build workflows visually. You add tasks (notebooks, pipelines, SQL), set the order they run in, attach a schedule, and configure retries and notifications.
 
 ### Video walkthrough
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zQ8YOrD_f8c"></iframe>
 
-## When to use / when not to
+## When to reach for the Workspace
 
-**Use the Workspace when:**
+Build here when you are setting up your first job and want to see it run quickly, when you need an ad-hoc or one-off workflow, or when you want to prototype a task graph before writing it as code.
 
-- You are setting up your first job and want to see results quickly.
-- You need to run an ad-hoc or one-off workflow.
-- You want to prototype a task graph before defining it in code.
-
-**Use DABs instead when:**
-
-- The job needs to be version-controlled and deployed across environments.
-- You want infrastructure (pipelines, schemas, compute) defined alongside the job.
+Switch to DABs when the job has to be version-controlled and deployed across environments, or when you want the pipelines, schemas, and compute defined alongside the job.
 
 ## Next
 
-- **Do next:** [Orchestration — DABs](/docs/08-orchestration/dabs)
+- **Do next:** [Orchestration: DABs](/docs/08-orchestration/dabs)
 - **Learn why:** [Build the first pipeline](/docs/07-build-first-pipeline)
-- **Reference:** [Create and manage jobs — Databricks docs](https://docs.databricks.com/aws/en/jobs/create-run-jobs.html)
+- **Reference:** [Create and manage jobs (Databricks docs)](https://docs.databricks.com/aws/en/jobs/create-run-jobs.html)

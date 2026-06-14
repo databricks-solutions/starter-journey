@@ -8,9 +8,9 @@ description: Account admins import the pre-built AI/BI usage dashboard and read 
 
 > **You'll import** the account-console usage dashboard into a workspace and know how to read the **Usage** page in ~10 min.
 
-## What you'll build
+## What you'll walk away with
 
-A pre-built, editable dashboard in **AI/BI Dashboards**, scoped to your account or one workspace. Charts break down spend by product, SKU, and tags without authoring SQL first.
+An editable dashboard in **AI/BI Dashboards**, scoped to your whole account or a single workspace, that breaks spend down by product, SKU, and tag. No SQL to write. You import it from the account console and land on a working dashboard.
 
 :::warning
 
@@ -34,9 +34,9 @@ Open the account console for your cloud:
 
 1. Click **Usage** in the left sidebar.
 2. Click **Setup dashboard**.
-3. Choose the dashboard version. **Usage Dashboard version 2.0** is in **Public Preview**; it adds cost forecasting and object-level drill-down. The standard version covers usage by product, SKU, tags, and top usage sources.
+3. Choose the dashboard version. **Usage Dashboard version 2.0** is in **Public Preview** and adds cost forecasting and object-level drill-down. The standard version covers usage by product, SKU, tags, and top usage sources.
 
-<!-- TODO: verify before publishing — Usage Dashboard v2.0 GA / replacement of standard version -->
+<!-- TODO: verify before publishing: Usage Dashboard v2.0 GA / replacement of standard version -->
 
 4. Choose scope: **entire account** or **single workspace**.
 5. Pick the **target workspace** that should receive the dashboard.
@@ -52,13 +52,13 @@ Open the account console for your cloud:
 
 Still under **Usage** (same sidebar entry):
 
-- **Usage graph** — Filter by workspace, SKU, or tag; toggle **USD** vs **DBU**; set the date range (UTC).
-- **Usage details** — Tabular workspace breakdown aligned to the graph’s range.
-- **Pricing settings** — Adjust per-SKU **list** rates so console estimates move closer to your contract. Invoices still include discounts and credits the UI does not model.
-- **Budgets** — Account budgets live here too; follow [Budget alerts](/docs/04-cost-monitoring/budget-alerts) and the [official budgets guide](https://docs.databricks.com/aws/en/admin/account-settings/budgets).
-- **Download** — Export aggregated or raw usage (**CSV**). Large exports may hit row caps; use **`system.billing.usage`** for full fidelity when you outgrow exports.
+- **Usage graph:** filter by workspace, SKU, or tag, toggle **USD** vs **DBU**, and set the date range (UTC).
+- **Usage details:** a tabular workspace breakdown aligned to the graph's range.
+- **Pricing settings:** adjust per-SKU **list** rates so console estimates land closer to your contract. Invoices still include discounts and credits the UI does not model.
+- **Budgets:** account budgets live here too. Follow [Budget alerts](/docs/04-cost-monitoring/budget-alerts) and the [official budgets guide](https://docs.databricks.com/aws/en/admin/account-settings/budgets).
+- **Download:** export aggregated or raw usage as **CSV**. Large exports can hit row caps, so query **`system.billing.usage`** directly when you outgrow them.
 
-Some tenants split legacy visuals under **Consumption (Legacy)**. If you only see **Setup dashboard** on **Consumption**, open **Consumption (Legacy)** (or equivalent) for the graph, details, pricing, and downloads.
+Some tenants split legacy visuals under **Consumption (Legacy)**. If **Consumption** only shows **Setup dashboard**, open **Consumption (Legacy)** (or its equivalent) for the graph, details, pricing, and downloads.
 
 :::tip
 
@@ -68,19 +68,19 @@ Graphs and downloads reconcile to **`system.billing.usage`**. When numbers diver
 
 ### 5. Optional: build your own dashboard in AI/BI Dashboards
 
-Add datasets from SQL on **`system.billing.usage`** and joined **`system.billing.list_prices`**. Start from [Databricks AI/BI dashboards](/docs/10-databricks-aibi/dashboards) and [Dashboards (AI/BI)](https://docs.databricks.com/aws/en/dashboards).
+Add datasets from SQL on **`system.billing.usage`** joined to **`system.billing.list_prices`**. Start from [Databricks AI/BI dashboards](/docs/10-databricks-aibi/dashboards) and [Dashboards (AI/BI)](https://docs.databricks.com/aws/en/dashboards).
 
 ## Verify
 
 ![Dashboards page in a Databricks workspace showing the imported Account Usage Dashboard featured at the top of the list](/img/verify-usage-dashboard.webp)
 
 1. Open the imported dashboard and confirm charts return data for a recent date range.
-2. Open the **Custom tags** view — untagged usage looks sparse until you tag compute ([Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs)).
+2. Open the **Custom tags** view. Untagged usage looks sparse until you tag compute ([Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs)).
 3. Ask a colleague with **SELECT** on **`system.billing`** (and warehouse access if you published with viewer credentials) to open the published dashboard.
 
 
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Dashboard tiles show permission denied</summary>
@@ -92,7 +92,7 @@ Grant **SELECT** on **`system.billing.usage`** and **`system.billing.list_prices
 <details>
 <summary>Imported dashboard only shows one workspace</summary>
 
-You chose single-workspace scope. Re-import with entire-account scope or edit datasets.
+You picked single-workspace scope. Re-import with entire-account scope, or edit the datasets.
 
 </details>
 
@@ -106,7 +106,7 @@ Run a small job or notebook, then wait a few hours for usage rows to land.
 <details>
 <summary>Cannot find the dashboard after import</summary>
 
-Open the workspace you selected and search the workspace **Dashboards** list for **Usage**.
+Open the workspace you selected and search its **Dashboards** list for **Usage**.
 
 </details>
 

@@ -20,7 +20,7 @@ REQUIRED_SECTIONS: tuple[str, ...] = (
     "4. Cost monitoring",
     "5. Data Governance Strategy",
     "6. Access your data",
-    "7. Build the first pipeline",
+    "7. Build the first ETL pipeline",
     "8. Automation & Orchestration",
     "9. Query and Explore",
     "10. Databricks AI/BI",

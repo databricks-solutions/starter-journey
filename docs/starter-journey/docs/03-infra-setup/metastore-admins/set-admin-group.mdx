@@ -13,7 +13,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## What you'll build
 
-A metastore owned by a group instead of an individual user or service principal. This ensures shared responsibility and prevents a single point of failure.
+A metastore owned by a group, not by one person or service principal. Ownership then survives anyone leaving, and the responsibility is shared.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ A metastore owned by a group instead of an individual user or service principal.
 - A metastore admin group already created (see [Add Groups](/docs/03-infra-setup/add-groups)).
 
 :::danger
-The metastore admin must be a group. Avoid assigning individuals or service principals as the metastore owner — if the individual leaves or the principal is deleted, governance operations stop.
+The metastore owner must be a group. If you assign an individual or a service principal and that person leaves or that principal is deleted, governance operations stop.
 :::
 
 ## Steps
@@ -39,35 +39,35 @@ Go to the account console for your cloud provider:
 1. On the left panel, click **Catalog**.
 2. Click on the available metastore.
 
-### 3. Verify the current owner
+### 3. Check the current owner
 
-Check who currently owns the metastore. If it is already a group (e.g., `metastore-admins`), no change is needed.
+Look at who owns the metastore now. If it is already a group (for example `metastore-admins`), you are done, skip the next step.
 
 ### 4. Transfer ownership
 
 If the owner is a user or service principal:
 
 1. Click the owner field to edit it.
-2. Assign the metastore admin group (e.g., `metastore-admins` or `unity-admins`) as the new owner.
+2. Set the metastore admin group (for example `metastore-admins` or `unity-admins`) as the new owner.
 
 ### 5. Configure metastore settings
 
-1. Enable **auto-assignment** for new workspaces if you want the metastore attached automatically.
-2. (Optional) Activate **Delta Sharing** if required for your projects.
+1. Turn on **auto-assignment** for new workspaces if you want the metastore attached to them automatically.
+2. Activate **Delta Sharing** if your projects need it. This one is optional.
 
 <img src={useBaseUrl('/img/account-metastore-owner.png')} alt="Metastore owner configuration in the account console"/>
 
 ## Verify
 
-1. In the account console, navigate to **Catalog** and click the metastore.
-2. Confirm the **Owner** field shows the admin group name, not an individual user.
+1. In the account console, open **Catalog** and click the metastore.
+2. Confirm the **Owner** field shows the admin group name, not a person.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Cannot change the metastore owner</summary>
 
-Only the current metastore owner or an account admin can transfer ownership. Verify you have account-admin privileges. If the current owner is a user who has left the organization, contact Databricks support.
+Only the current owner or an account admin can transfer ownership. Confirm you have account-admin privileges. If the current owner already left the organization, contact Databricks support.
 </details>
 
 ## Next

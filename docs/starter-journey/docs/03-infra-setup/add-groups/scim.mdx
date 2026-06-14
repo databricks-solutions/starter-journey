@@ -3,26 +3,26 @@ sidebar_label: SCIM
 description: Automate group provisioning into Databricks using SCIM from your identity provider.
 ---
 
-# Add Groups — SCIM
+# Add Groups: SCIM
 
 > **You'll configure** SCIM to automatically sync groups from your identity provider into Databricks in ~10 min.
 >
-> **Prereqs:** [Add Users — SCIM](/docs/03-infra-setup/add-users/scim) (SCIM connector already configured)
+> **Prereqs:** [Add Users: SCIM](/docs/03-infra-setup/add-users/scim) (SCIM connector already configured)
 
-## What you'll build
+## What you'll walk away with
 
-Groups from your identity provider synced into the Databricks account automatically. Group membership changes in your IdP propagate to Databricks without manual intervention.
+Your identity provider's groups synced into the Databricks account. When membership changes in the IdP, it changes in Databricks too, with no manual step in between.
 
 ## Prerequisites
 
-- SCIM connector already configured (see [Add Users — SCIM](/docs/03-infra-setup/add-users/scim)).
+- SCIM connector already configured (see [Add Users: SCIM](/docs/03-infra-setup/add-users/scim)).
 - Admin access to your identity provider.
 
 ## Steps
 
 ### 1. Configure group sync in your IdP
 
-If you already configured SCIM for users, group sync uses the same connector. Follow the guide for your identity provider:
+If you already set up SCIM for users, groups ride on the same connector. Follow the guide for your identity provider:
 
 | Identity provider | Guide |
 |---|---|
@@ -30,34 +30,34 @@ If you already configured SCIM for users, group sync uses the same connector. Fo
 | Okta | [Configure SCIM provisioning for Okta](https://docs.databricks.com/aws/en/admin/users-groups/scim/okta) |
 | OneLogin | [Configure SCIM provisioning for OneLogin](https://docs.databricks.com/aws/en/admin/users-groups/scim/onelogin) |
 
-Select your cloud provider at the top-right of the Databricks docs page if the instructions differ by cloud.
+If the steps differ by cloud, select your cloud provider at the top right of the Databricks docs page.
 
 ### 2. Assign groups in the IdP
 
-In your identity provider, assign the groups you want synced to the Databricks SCIM application. Only assigned groups will sync.
+In your identity provider, assign the groups you want to the Databricks SCIM application. Only assigned groups sync, so anything you leave out simply will not show up.
 
 ### 3. Trigger a sync
 
-Run a manual sync from your IdP or wait for the next scheduled sync cycle. Verify the groups appear in the Databricks account console.
+Run a manual sync from your IdP, or wait for the next scheduled cycle. The groups should appear in the Databricks account console.
 
 ## Verify
 
-1. In the Databricks account console, navigate to **User management** > **Groups**.
-2. Confirm the synced groups appear with the correct names and members.
-3. In your IdP, verify the SCIM application shows a successful provisioning status for groups.
+1. Go to **User management** > **Groups** in the account console.
+2. Confirm the synced groups have the right names and members.
+3. In your IdP, check that the SCIM application reports a successful provisioning status for groups.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Groups not appearing after sync</summary>
 
-Verify the groups are assigned to the SCIM application in your IdP. Unassigned groups are not pushed. Check the SCIM application provisioning logs for errors.
+Check that the groups are assigned to the SCIM application in your IdP. Unassigned groups never get pushed. If they are assigned and still missing, read the SCIM application provisioning logs for errors.
 </details>
 
 <details>
 <summary>Group members missing after sync</summary>
 
-SCIM syncs group membership at the IdP level. If a user is in the group in your IdP but not appearing in Databricks, check that the user is also assigned to the SCIM application individually.
+SCIM syncs membership from the IdP side. If someone is in the group in your IdP but not in Databricks, check that the user is also assigned to the SCIM application on their own, not just through the group.
 </details>
 
 ## Next

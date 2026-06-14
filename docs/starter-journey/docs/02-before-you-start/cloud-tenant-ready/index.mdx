@@ -10,27 +10,23 @@ description: Decide whether your Databricks deployment maps to one cloud account
 >
 > **Prereqs:** [Foundations](/docs/02-before-you-start/foundations)
 
-## Why this matters
+## The call
 
-Databricks workspaces run inside cloud accounts (AWS accounts, Azure subscriptions, or GCP projects). How you distribute workspaces across those accounts determines your blast radius, network boundaries, billing separation, and long-term operational complexity. Changing this layout after workspaces are running is costly.
+If you have one cloud account and no compliance rule forcing you to split, go single-tenant. Reach for multiple accounts only when you need a real boundary: separate billing, separate network and IAM, or a regulator who put it in writing. Most teams overestimate how much separation they need, and the layout is painful to unwind once workspaces are live.
 
 ## Mental model
 
-A cloud tenant is a single AWS account, Azure subscription, or GCP project. Your organization might have one or many. Databricks does not require a specific layout — it works in both single-tenant and multi-tenant setups. The right choice depends on your isolation requirements.
+A cloud tenant is one AWS account, one Azure subscription, or one GCP project. Think of it as the building your workspaces live in. You can keep everything under one roof, or rent space in several. Databricks runs fine either way, so the question is how much wall you want between your environments, not what the platform supports.
 
-## How it works
+## The two layouts
 
 ### Single-tenant
 
-All Databricks workspaces and their backing cloud resources (IAM roles, storage, networking) live in one cloud account. Simpler to manage, fewer moving parts.
-
-Best for organizations with a single cloud account and no requirement to isolate environments at the cloud-account level.
+Every workspace and its backing resources (IAM roles, storage, networking) sit in one cloud account. Fewer moving parts, one set of cloud permissions to reason about. This fits organizations with a single cloud account and no requirement to wall off environments at the account level.
 
 ### Multi-tenant
 
-Databricks workspaces are spread across multiple cloud accounts — typically one per environment (dev, staging, prod) or one per business unit. Each account has its own IAM boundary, storage, and network.
-
-Best for organizations that need hard isolation between environments or divisions, either for compliance or blast-radius control.
+Workspaces are spread across several cloud accounts, usually one per environment (dev, staging, prod) or one per business unit. Each account carries its own IAM boundary, storage, and network. This fits organizations that need hard isolation between environments or divisions, whether for compliance or to contain blast radius.
 
 ### Which one are you?
 
@@ -47,28 +43,21 @@ Before moving to infrastructure setup, confirm the following:
 - [ ] Decided single-tenant or multi-tenant layout.
 - [ ] Verified you have admin access to each target cloud account.
 
-## When to use / when not to
+## When to use which
 
-**Go multi-tenant when:**
+Go multi-tenant when a regulator or internal policy requires hard account-level boundaries, when you need billing separated at the cloud-account level, or when different business units already run their own cloud accounts.
 
-- Regulatory or compliance rules require hard account-level boundaries.
-- You need separate billing at the cloud-account level.
-- Different business units manage their own cloud accounts independently.
-
-**Stay single-tenant when:**
-
-- You only have one cloud account and no plans to add more.
-- Data isolation can be handled through Unity Catalog grants rather than account boundaries.
+Stay single-tenant when you have one cloud account with no plans to add more, and when Unity Catalog grants cover your data isolation needs.
 
 ## Common pitfalls
 
 ### Splitting too early
 
-Creating multiple cloud accounts just to separate teams adds overhead with little benefit. Unity Catalog handles data isolation. Cloud-account separation is for cases where you need network, IAM, or billing boundaries.
+Spinning up extra cloud accounts just to keep teams apart buys you overhead and little else. Unity Catalog already isolates data. Save account separation for the cases that actually need a network, IAM, or billing boundary.
 
 ### Not splitting when you should
 
-Running production workloads in the same cloud account as development means a misconfigured IAM policy or a runaway Spark job can impact production. If your organization already has separate accounts for prod, use them.
+Run production in the same cloud account as development and a single misconfigured IAM policy or a runaway Spark job can take prod down with it. If your organization already keeps prod in its own account, use it.
 
 ## Next
 

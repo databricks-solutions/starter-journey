@@ -3,28 +3,28 @@ sidebar_label: Terraform
 description: Deploy a Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
 ---
 
-# AWS — Terraform
+# AWS Terraform
 
 > **You'll deploy** a Databricks workspace and catalog on AWS using Terraform in ~20 min.
 >
 > **Prereqs:** [AWS account](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
 
-## What you'll build
+## What you'll walk away with
 
-A Databricks workspace with a customer-managed VPC (BYOVPC) on AWS and Unity Catalog resources, deployed with Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below — you do not need a separate workspace step and catalog step unless you choose split templates.
+A Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below. You do not need a separate workspace step and catalog step unless you choose the split templates.
 
-The **Workspace + Catalog** template creates a new VPC only. The **Workspace** template supports a new or existing VPC.
+The **Workspace + Catalog** template creates a new VPC only. The **Workspace** template takes a new or existing VPC.
 
 ## Prerequisites
 
-- An AWS account with permissions to create IAM roles, S3 buckets, and VPC resources.
+- An AWS account with permission to create IAM roles, S3 buckets, and VPC resources.
 - A Databricks account with account-admin privileges.
 - Terraform CLI installed locally.
-- A service principal with workspace-admin access (required for the **Catalog** template and when attaching to an existing metastore on the combined template).
+- A service principal with workspace-admin access. This is required for the **Catalog** template, and for attaching to an existing metastore on the combined template.
 
-## YouTube Walkthrough
+## YouTube walkthrough
 
-The video below walks through the **Workspace** template ([aws-byovpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc)). The flow is the same for **Workspace + Catalog**: copy `tf/terraform.tfvars.example`, configure variables, then run `terraform init`, `plan`, and `apply` per the repo README.
+The video walks through the **Workspace** template ([aws-byovpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc)). The flow is the same for **Workspace + Catalog**: copy `tf/terraform.tfvars.example`, set your variables, then run `terraform init`, `plan`, and `apply` per the repo README.
 
 <iframe
   width="560"
@@ -35,9 +35,9 @@ The video below walks through the **Workspace** template ([aws-byovpc](https://g
 
 ## Terraform resources
 
-Open the linked repository for your scenario and follow its **README.md**. In each repo, run commands from the `tf/` directory: copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
+Open the repository for your scenario and follow its **README.md**. In each repo, run commands from the `tf/` directory: copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
 
-Repeat for **development**, **staging**, and **production** workspaces. Use the `prefix` or `resource_prefix` variable to name each environment (for example `dev`, `staging`, `prod`, or a business-unit prefix such as `finance_dev`).
+Repeat for **development**, **staging**, and **production**. Use the `prefix` or `resource_prefix` variable to name each environment (for example `dev`, `staging`, `prod`, or a business-unit prefix such as `finance_dev`).
 
 If you are **new to Databricks**, start with **Workspace + Catalog** (first row).
 
@@ -52,21 +52,21 @@ For the **Catalog** template only: the Terraform provider must use a **workspace
 :::
 
 :::tip
-For production setups, isolate catalog storage on different AWS accounts rather than deploying all catalogs from a single account.
+For production, put catalog storage on separate AWS accounts rather than deploying every catalog from one account.
 :::
 
 ## Verify
 
 1. Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
-2. Navigate to **Workspaces** and confirm the new workspace shows a **Running** status.
-3. Open the workspace and navigate to **Catalog** to confirm the new catalog appears.
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Open the workspace, go to **Catalog**, and confirm the new catalog appears.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>PERMISSION_DENIED: User is not an owner of Metastore while creating catalog</summary>
 
-The service principal running Terraform does not have metastore-level permissions. Fix with one of:
+The service principal running Terraform lacks metastore-level permissions. Fix it one of two ways:
 
 - **Option 1:** Add the service principal to the metastore admins group.
 - **Option 2:** Grant just the catalog creation privilege:
@@ -79,7 +79,7 @@ GRANT CREATE CATALOG ON METASTORE TO `service_principal_name`;
 <details>
 <summary>Terraform apply fails with VPC or IAM errors</summary>
 
-Verify the AWS credentials used by Terraform have permission to create IAM roles, S3 buckets, and VPC resources. If using an existing VPC, confirm the subnet CIDRs and security groups match the template requirements.
+Confirm the AWS credentials Terraform uses can create IAM roles, S3 buckets, and VPC resources. If you are using an existing VPC, check that the subnet CIDRs and security groups match the template requirements.
 </details>
 
 <details>

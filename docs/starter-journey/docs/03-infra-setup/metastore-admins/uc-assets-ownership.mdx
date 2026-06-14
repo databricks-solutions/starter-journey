@@ -13,7 +13,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## What you'll build
 
-All existing Unity Catalog assets owned by the metastore admin group instead of individual users. This aligns with the governance model where the admin group controls infrastructure-level assets and project teams own their schemas.
+Every existing Unity Catalog asset owned by the metastore admin group rather than by individual users. That matches the governance model: the admin group owns infrastructure-level assets, and project teams own their own schemas.
 
 ## Prerequisites
 
@@ -26,13 +26,13 @@ All existing Unity Catalog assets owned by the metastore admin group instead of 
 
 1. In the workspace left panel, click **Catalog**.
 2. Click the gear icon (⚙️) to open **External Locations**.
-3. For each tab — **External Locations**, **Credentials**, **Connections**, **External Metadata** — change the owner of every asset to the admin group:
+3. Work through each tab in turn (**External Locations**, **Credentials**, **Connections**, **External Metadata**) and change the owner of every asset to the admin group:
     - Click the asset.
     - On the far right, click the edit icon (✏️) next to the owner name.
     - Set the owner to `Metastore Admins` or `Unity Admins`.
 
 :::warning
-If the External Locations or Credentials tab appears empty, you are likely not a member of the metastore admin group. Verify your group membership before proceeding.
+An empty External Locations or Credentials tab almost always means you are not a member of the metastore admin group. Check your group membership before going further.
 :::
 
 <img src={useBaseUrl('/img/uc-owners-1.jpg')} alt="Navigate to external locations via the gear icon"/>
@@ -49,13 +49,13 @@ If the External Locations or Credentials tab appears empty, you are likely not a
 
 <img src={useBaseUrl('/img/uc-owners-4.jpg')} alt="Catalog owner transfer"/>
 
-### 3. Schema ownership (different rule)
+### 3. Leave schema ownership to the project team
 
-Schemas follow a different ownership rule. The group responsible for a project should own that project's schemas.
+Schemas are the exception. Don't hand these to the admin group. The team that owns a project should own that project's schemas.
 
-Example: if `data-engineers` owns the `c360` project, they should own `c360_bronze`, `c360_silver`, and `c360_gold` schemas.
+For example, if `data-engineers` owns the `c360` project, they own the `c360_bronze`, `c360_silver`, and `c360_gold` schemas.
 
-Governance best practices for schema-level ownership are covered in **[Data Governance Strategy](/docs/05-data-governance-strategy/)**.
+[Data Governance Strategy](/docs/05-data-governance-strategy/) covers schema-level ownership in full.
 
 ## Verify
 
@@ -71,18 +71,18 @@ Confirm each catalog shows the admin group as the owner:
 
 <img src={useBaseUrl('/img/uc-ss-output-2.jpg')} alt="Expected output: catalogs owned by admin group"/>
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>Cannot see external locations or credentials</summary>
 
-You must be a member of the metastore admin group to view these assets. Ask a current metastore admin to add you, or check your group membership in the account console.
+You have to be a member of the metastore admin group to see these assets. Ask a current metastore admin to add you, or check your membership in the account console.
 </details>
 
 <details>
 <summary>Cannot change ownership of a catalog</summary>
 
-Only the current owner or a metastore admin can transfer catalog ownership. If the current owner is a user who no longer has access, a metastore admin can reassign ownership from the account console.
+Only the current owner or a metastore admin can transfer catalog ownership. If the current owner no longer has access, a metastore admin can reassign it from the account console.
 </details>
 
 ## Next

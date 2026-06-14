@@ -5,7 +5,7 @@ description: A straightforward governance model with three catalogs, medallion s
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Small Organizations
+# Small organizations
 
 > **You'll understand** how to structure catalogs, schemas, and permissions for a small data team in ~10 min.
 >
@@ -13,11 +13,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Why this matters
 
-A small team still needs clear boundaries between development and production data. Without them, an experimental query can corrupt a table that feeds executive dashboards. The model below gives you environment isolation, a consistent schema structure, and least-privilege access — without the overhead of business-unit prefixes.
+Small does not mean no boundaries. You still need a wall between the data people are experimenting on and the data feeding executive dashboards, or one stray query takes down a report someone trusts. This model gives you that wall, a consistent schema layout, and least-privilege access, and it skips the business-unit prefixes that a small team does not need yet.
 
 ## Mental model
 
-Three catalogs map 1:1 to your three workspaces. Inside each catalog, schemas follow the medallion architecture (bronze, silver, gold) per project. Groups control who can read, write, or own each schema.
+Three catalogs, one per workspace. Inside each catalog, schemas follow the medallion architecture (bronze, silver, gold), one set per project. Groups decide who can read, write, or own each schema. That is the whole model.
 
 ## How it works
 
@@ -29,43 +29,25 @@ Three catalogs map 1:1 to your three workspaces. Inside each catalog, schemas fo
 Add a `sandbox` catalog for ad-hoc exploration and demos that should not interfere with any project schema.
 :::
 
-**Development** — the playground where teams build and experiment. All data teams have access. Mistakes here are expected and do not affect production. Bound to the development workspace.
+Development is the playground. All data teams have access, mistakes are expected, and nothing here touches production. It is bound to the development workspace.
 
-**Staging** — the final checkpoint before production. Developers push finished work here for integration testing. DevOps or QA teams validate the output. Bound to the staging workspace.
+Staging is the last checkpoint before production. Developers push finished work here for integration testing, and DevOps or QA validates the output. It is bound to the staging workspace.
 
-**Production** — the official, high-quality data. Business users consume dashboards and reports from this catalog. Modifications happen exclusively through automation and service principals — no manual writes. Bound to the production workspace.
+Production is the real, trusted data. Business users read their dashboards and reports from here. The only thing that writes to it is automation running as a service principal. No manual writes, ever. It is bound to the production workspace.
 
-### Schemas — the medallion architecture
+### Schemas: the medallion architecture
 
-Each project gets three schemas that reflect the data refinement stages: bronze, silver, and gold.
+Each project gets three schemas, one per refinement stage: bronze, silver, and gold.
 
 <img src={useBaseUrl('/img/ucblog-simple-schemas.jpg')} alt="Medallion schemas: bronze, silver, gold per project"/>
 
 For a detailed explanation of this pattern, see [Modeling a Medallion Architecture on Unity Catalog](https://blog.databricksforstartups.com/part-1-modeling-a-medallion-architecture-on-unity-catalog-for-your-organizational-structure-b8f0f9918c26).
 
-#### Bronze
-
-Raw data from external sources, ingested as-is. Nothing is edited, filtered, or deduplicated at this layer.
-
-- **Naming:** `[project]_bronze`
-- **Purpose:** Historical record of source data. If a downstream transformation breaks, you reprocess from bronze instead of re-extracting from the source.
-- **Typical objects:** Streaming tables reading from cloud object storage, tables created by Lakeflow ingestion pipelines.
-
-#### Silver
-
-Cleaned and conformed data. Bronze records are deduplicated, data types are standardized, and related tables are joined into a coherent model.
-
-- **Naming:** `[project]_silver`
-- **Purpose:** Single source of truth for analysts running ad-hoc queries. Data here is reliable and consistently formatted.
-- **Typical objects:** Streaming tables with transformations from bronze, standard tables with batch transformations.
-
-#### Gold
-
-Business-level aggregates and metrics built on top of silver. Structured to answer specific questions — total sales by region, monthly active users, churn rates.
-
-- **Naming:** `[project]_gold`
-- **Purpose:** Powers dashboards, executive reports, and BI tools. Optimized for query speed and clarity, not raw detail.
-- **Typical objects:** Materialized views, metric views, summary tables.
+| Layer | Naming | What goes in | Purpose |
+|-------|--------|-------------|---------|
+| **Bronze** | `[project]_bronze` | Streaming tables from cloud object storage; Lakeflow ingestion pipelines | Raw data landed exactly as it arrived. Nothing edited, filtered, or deduplicated. Reprocess from here when a downstream transformation breaks. |
+| **Silver** | `[project]_silver` | Streaming tables with bronze transformations; batch transformation tables | Cleaned, deduped, and conformed data. The single source of truth for analysts running ad-hoc queries. |
+| **Gold** | `[project]_gold` | Materialized views, metric views, summary tables | Business-level aggregates built on silver. What dashboards, executive reports, and BI tools read from. |
 
 ### Permissions and grants
 
@@ -80,41 +62,35 @@ Business-level aggregates and metrics built on top of silver. Structured to answ
   </div>
 </div>
 
-The rules are straightforward:
-
-**Ownership** — the group responsible for a project owns that project's schemas. If `marketing-data-engineers` builds the C360 pipeline, they own `c360_bronze`, `c360_silver`, and `c360_gold`.
-
-**Sharing** — when another team needs access, the owners grant it at the schema level:
-- **Data Reader** — read-only access to all tables in the schema.
-- **Data Editor** — read and write access.
-
-Grant at the schema level, not per table. Per-table grants do not scale and are easy to forget when new tables are added.
-
-**Least privilege** — only grant the access a team actually needs. Read-only for analysts, read-write for engineers working on the project, view-only for business users consuming dashboards.
+| Rule | What it means |
+|------|--------------|
+| **Ownership** | The group that builds a project owns its schemas. If `marketing-data-engineers` builds the C360 pipeline, they own `c360_bronze`, `c360_silver`, and `c360_gold`. |
+| **Sharing** | When another team needs access, owners grant at the schema level. Data Reader is read-only on every table in the schema; Data Editor adds write access. Per-table grants do not scale and break the moment someone adds a new table. |
+| **Least privilege** | Grant only what a team actually needs. Read-only for analysts, read-write for engineers on the project, view-only for business users reading dashboards. |
 
 ## When to use / when not to
 
-**Use this model when:**
+Use this model when:
 
 - You have one or two data teams.
-- All teams work within a single business unit or share the same data boundaries.
-- You want the simplest governance model that still enforces environment isolation and least-privilege access.
+- Everyone works in a single business unit or shares the same data boundaries.
+- You want the simplest model that still enforces environment isolation and least privilege.
 
-**Consider the medium-large model when:**
+Move to the medium-large model when:
 
 - Multiple business units need separate catalog namespaces.
 - Teams from different departments must not see each other's development data.
-- You need workspace-level or catalog-level prefixes for organizational clarity.
+- You need workspace or catalog prefixes to keep things organized.
 
 ## Common pitfalls
 
 ### Granting permissions on individual tables
 
-Per-table grants are tedious and brittle. New tables do not inherit them. Always grant at the schema level so new objects automatically pick up the correct permissions.
+Per-table grants are tedious and break the first time someone adds a table, because new tables do not inherit them. Grant at the schema level so new objects pick up the right permissions on their own.
 
 ### Manual writes to production
 
-Production data should only be modified by automated pipelines running as service principals. If a human can write directly to production, a fat-finger query can break a dashboard the CEO checks every morning.
+Only automated pipelines running as service principals should touch production. The day a human can write to it directly is the day one fat-fingered query breaks the dashboard the CEO checks every morning.
 
 ## Next
 

@@ -5,15 +5,15 @@ description: Add users to Databricks manually through the account console.
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Add Users — Manual
+# Add Users: Manual
 
 > **You'll add** users to the Databricks account through the console in ~2 min per user.
 >
 > **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console), account-admin privileges
 
-## What you'll build
+## What you'll walk away with
 
-Users registered at the Databricks account level, available for assignment to any workspace.
+Users registered at the account level, ready to assign to any workspace.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ Users registered at the Databricks account level, available for assignment to an
 
 ### 1. Open the account console
 
-Go to the account console for your cloud provider:
+Go to the account console for your cloud:
 
 - [AWS](https://accounts.cloud.databricks.com)
 - [Azure](https://accounts.azuredatabricks.net)
@@ -31,32 +31,34 @@ Go to the account console for your cloud provider:
 
 ### 2. Add a user
 
-1. On the left panel, click **User management**.
+1. In the left panel, click **User management**.
 2. On the **Users** tab, click **Add user**.
 3. Enter the user's **email** and **full name**.
 4. Click **Add**.
 
+The user now shows up in the Users list.
+
 <img src={useBaseUrl('/img/account-users.png')} alt="Account console user management screen"/>
 
-### 3. Repeat for additional users
+### 3. Repeat for the rest
 
-Add each team member that needs access. You will assign them to workspaces and groups in the next steps.
+Add everyone who needs access. You assign them to workspaces and groups in the next steps, so for now you are just getting the names into the account.
 
 ## Verify
 
-1. In the account console, navigate to **User management** > **Users**.
-2. Confirm each new user appears in the list with the correct email.
+1. Go to **User management** > **Users**.
+2. Check that each new user is in the list with the right email.
 
-## Troubleshoot
+## Where people trip
 
 <details>
 <summary>User already exists error</summary>
 
-The email is already registered in the account. Search for the user in the Users tab — they may have been added by a previous admin or via SCIM sync.
+The email is already in the account. Search the Users tab for it: a previous admin may have added that person by hand, or a SCIM sync already pulled them in.
 </details>
 
 ## Next
 
-- **Do next:** [Add Users — SCIM](/docs/03-infra-setup/add-users/scim)
+- **Do next:** [Add Users: SCIM](/docs/03-infra-setup/add-users/scim)
 - **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
 - **Reference:** [Add users to your account](https://docs.databricks.com/aws/en/admin/users-groups/)

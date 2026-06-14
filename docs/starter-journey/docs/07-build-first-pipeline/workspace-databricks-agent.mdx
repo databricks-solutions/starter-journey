@@ -9,42 +9,34 @@ description: Build a Spark Declarative Pipeline using the Databricks Workspace a
 >
 > **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline)
 
-## Why this matters
+## What you'll walk away with
 
-The fastest way to go from raw data to a working pipeline is the Databricks Workspace combined with Genie Code. Genie Code generates pipeline code from natural-language prompts, and the Workspace lets you validate, edit, and run it without leaving the browser. This is the recommended starting point before moving to code-first approaches like DABs.
+A working Spark Declarative Pipeline you built without leaving the browser. You describe the transformation to Genie Code in plain language, it writes the pipeline code, and you validate and run it in the Workspace editor. This is where most people should start before going code-first with DABs.
 
 ## How it works
 
-The Databricks workspace includes a pipeline editor where you can create Spark Declarative Pipelines visually. Genie Code assists by generating transformation code, suggesting data quality expectations, and auto-completing schema definitions based on your data.
+The Workspace has a pipeline editor for building Spark Declarative Pipelines visually. Genie Code sits alongside it: tell it what you want, and it generates the transformation code, suggests data quality expectations, and auto-completes schema definitions from your actual data.
 
 ### Getting started
 
-This video walks through creating a pipeline from scratch using the Workspace and Genie Code:
+This video builds a pipeline from scratch in the Workspace with Genie Code:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/krzr52wd4nM"></iframe>
 
-### Take Genie Code to the next level
+### Take Genie Code further
 
-Once the basics are working, Genie Code can help with more complex transformations, joins, and data quality rules:
+Once the basics run, Genie Code handles the harder parts: multi-table joins, layered transformations, and data quality rules.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/h56NiaDDPE0"></iframe>
 
-## When to use / when not to
+## When to reach for this
 
-**Use the Workspace + Genie Code when:**
+Build here when you want fast feedback on your first pipeline, when you are prototyping a transformation before committing it to code, or when you just prefer working in a visual editor.
 
-- You are building your first pipeline and want fast feedback.
-- You want to prototype a transformation before committing to code.
-- You prefer a visual, interactive workflow.
-
-**Use DABs instead when:**
-
-- You need version-controlled, repeatable deployments.
-- The pipeline will run in staging and production environments.
-- You want to define infrastructure (schemas, volumes, warehouses) alongside the pipeline.
+Switch to DABs once you need version-controlled, repeatable deployments, the pipeline has to run in staging and prod, or you want the schemas, volumes, and warehouses defined alongside the pipeline.
 
 ## Next
 
 - **Do next:** [DABs pipeline](/docs/07-build-first-pipeline/dabs)
 - **Learn why:** [Spark Declarative Pipelines overview](/docs/07-build-first-pipeline)
-- **Reference:** [Create a pipeline — Databricks docs](https://docs.databricks.com/aws/en/ldp/)
+- **Reference:** [Create a pipeline (Databricks docs)](https://docs.databricks.com/aws/en/ldp/)

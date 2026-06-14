@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 sidebar_label: 6. Access your data
-description: Connect Databricks to your data sources — cloud object storage and external systems via managed connectors.
+description: Connect Databricks to your data sources, cloud object storage and external systems via managed connectors.
 ---
 
 # 6. Access your data
@@ -12,7 +12,7 @@ description: Connect Databricks to your data sources — cloud object storage an
 
 ## Why this matters
 
-Workspaces, users, groups, and governance are configured. But Databricks cannot process data it cannot reach. This section covers the two paths for connecting to data: direct access to cloud object storage and managed connectors for external systems like databases and SaaS platforms.
+Your workspaces, users, groups, and governance are set up. None of that helps until Databricks can actually reach your data. There are two ways in: direct access to cloud object storage, or ingestion from an external database or SaaS app. This section sets up both.
 
 ## Journey checklist
 
@@ -30,17 +30,17 @@ Workspaces, users, groups, and governance are configured. But Databricks cannot 
 
 ## How it works
 
-Databricks accesses external data through Unity Catalog. Every connection — whether to an S3 bucket or a PostgreSQL database — is registered as a UC object with its own permissions and audit trail.
+Every path runs through Unity Catalog. An S3 bucket or a PostgreSQL database, it does not matter: each connection is a UC object with its own permissions and audit trail. That is the whole point. You govern access in one place instead of chasing credentials scattered across notebooks.
 
-Two categories cover the most common scenarios:
+Which path you take depends on where the data sits:
 
 | Category | Use when |
 |---|---|
-| [Cloud object storage](/docs/06-access-your-data/cloud-object-storage) | Your data lives in S3, ADLS, or GCS and you need Databricks to read/write it directly |
-| [Managed connectors](/docs/06-access-your-data/managed-connectors) | You need to query or ingest data from external databases, SaaS platforms, or other systems |
+| [Cloud object storage](/docs/06-access-your-data/cloud-object-storage) | Your data lives in S3, ADLS, or GCS and you need Databricks to read or write it directly |
+| [Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors) | You need to ingest data from external databases or SaaS platforms into UC tables |
 
 ## Next
 
 - **Do next:** [Cloud object storage](/docs/06-access-your-data/cloud-object-storage)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Connect to data sources — Databricks docs](https://docs.databricks.com/aws/en/connect/)
+- **Reference:** [Connect to data sources (Databricks docs)](https://docs.databricks.com/aws/en/connect/)
