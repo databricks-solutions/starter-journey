@@ -39,20 +39,11 @@ A common path is to click the first workspace by hand, then Terraform the rest o
 
 ## Pick your cloud provider
 
-### AWS
-
-- [Manual](/docs/03-infra-setup/create-workspaces/aws/manual): account console wizard that creates IAM, S3, and VPC resources for you.
-- [Terraform](/docs/03-infra-setup/create-workspaces/aws/terraform): IaC with a customer-managed VPC (BYOVPC).
-
-### Azure
-
-- [Manual](/docs/03-infra-setup/create-workspaces/azure/manual): Azure portal deployment with a managed resource group and VNet.
-- [Terraform](/docs/03-infra-setup/create-workspaces/azure/terraform): IaC with VNet injection.
-
-### GCP
-
-- [Manual](/docs/03-infra-setup/create-workspaces/gcp/manual): account console wizard that configures the service account and GCS for you.
-- [Terraform](/docs/03-infra-setup/create-workspaces/gcp/terraform): IaC with a customer-managed VPC (BYOVPC).
+| Method | AWS | Azure | GCP |
+|---|---|---|---|
+| Manual | [Console wizard](/docs/03-infra-setup/create-workspaces/aws/manual) | [Azure portal](/docs/03-infra-setup/create-workspaces/azure/manual) | [Console wizard](/docs/03-infra-setup/create-workspaces/gcp/manual) |
+| Terraform | [BYOVPC](/docs/03-infra-setup/create-workspaces/aws/terraform) | [VNet injection](/docs/03-infra-setup/create-workspaces/azure/terraform) | [BYOVPC](/docs/03-infra-setup/create-workspaces/gcp/terraform) |
+| Private Link + Terraform (SRA) | [AWS SRA](/docs/03-infra-setup/create-workspaces/aws/sra) | [Azure SRA](/docs/03-infra-setup/create-workspaces/azure/sra) | [GCP SRA](/docs/03-infra-setup/create-workspaces/gcp/sra) |
 
 ## Next
 

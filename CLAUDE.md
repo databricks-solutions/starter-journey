@@ -267,7 +267,7 @@ Do **not** use `:::info`, `:::success`, or `:::note`. Convert those to prose or 
 
 ### Anti-slop rules
 
-All prose runs through the `humanizer` skill (`~/.claude/skills/humanizer/SKILL.md`) before it ships: draft, ask "what still sounds AI here?", fix it. The mechanical rules a build cannot catch:
+All prose runs through the `humanizer` skill (`skills/humanizer/SKILL.md`) before it ships: draft, ask "what still sounds AI here?", fix it. The mechanical rules a build cannot catch:
 
 - **No em dashes or en dashes.** Zero. Replace with a period, comma, colon, or parentheses. Scan for `—` and `–` before finishing.
 - **Cut AI vocabulary:** leverage, robust, seamless, pivotal, crucial, delve, vibrant, landscape (figurative), testament, underscore, foster, "powerful feature," "in today's data-driven world."

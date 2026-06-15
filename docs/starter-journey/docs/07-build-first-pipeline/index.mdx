@@ -51,16 +51,11 @@ Three Databricks tools split the work, each at a different stage of the data's l
 
 SDP is the Databricks implementation of [Apache Spark Declarative Pipelines](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html). You write Python (PySpark) or SQL declarations. The engine reads them, works out the execution plan and the order tables depend on each other, and runs the whole thing incrementally.
 
-What that gets you in practice:
-
-- One pipeline can stream from Kafka, batch-load from cloud storage, and query an external database at the same time. You do not split that across three jobs.
-- It tracks what has changed and reprocesses only the new or modified rows. On a large table that is the difference between a few minutes and a full rebuild.
-- Data quality lives in the code. You write expectations (constraints and business rules) next to the transformation, and rows that fail get quarantined or flagged without extra wiring.
-- Every table, view, and pipeline is governed by Unity Catalog, so the permissions and lineage you already set up still apply.
+For core concepts (streaming tables, materialized views, flows, expectations) and why SDP over plain Spark, see [What is Lakeflow Spark Declarative Pipelines](https://docs.databricks.com/aws/en/ldp/concepts/).
 
 ## SDP reference material
 
-Worth skimming before you write the first pipeline:
+Awesome pages to have open while you build:
 
 - [Load data in pipelines](https://docs.databricks.com/aws/en/ldp/load), which covers [AutoLoader](https://docs.databricks.com/aws/en/ingestion/cloud-object-storage/auto-loader/) for incremental ingestion from cloud object storage.
 - [Transform data with pipelines](https://docs.databricks.com/aws/en/ldp/transform): when to reach for views, materialized views, or streaming tables.
@@ -70,13 +65,16 @@ Worth skimming before you write the first pipeline:
 
 ## Create the first pipeline
 
-There are two ways to build it. Pick by where you are right now, not by which is "better."
+Pick by where you are right now, not by which is "better."
 
-- **[Workspace + Genie Code](/docs/07-build-first-pipeline/workspace-databricks-agent)**: build interactively in the browser. Start here when you are still figuring out the transformation.
-- **[DABs](/docs/07-build-first-pipeline/dabs)**: deploy a full medallion pipeline as code. Reach for this once the shape is settled and you want it reproducible.
+| Path | What it does | When to use it |
+|---|---|---|
+| **[Hands-on lab](/docs/07-build-first-pipeline/hands-on-lab)** | Install a pre-built demo pipeline with dashboards | You want to see a working pipeline before writing one yourself |
+| **[Workspace + Genie Code](/docs/07-build-first-pipeline/workspace-databricks-agent)** | Build interactively in the browser | You are still figuring out the transformation |
+| **[DABs](/docs/07-build-first-pipeline/dabs)** | Deploy a full medallion pipeline as code | The shape is settled and you want it reproducible |
 
 ## Next
 
-- **Do next:** [Workspace + Genie Code](/docs/07-build-first-pipeline/workspace-databricks-agent)
+- **Do next:** [Hands-on lab](/docs/07-build-first-pipeline/hands-on-lab)
 - **Learn why:** [Data Governance Strategy](/docs/05-data-governance-strategy)
 - **Reference:** [Spark Declarative Pipelines (Databricks docs)](https://docs.databricks.com/aws/en/ldp/)

@@ -48,6 +48,7 @@ const sidebars: SidebarsConfig = {
               items: [
                 '03-infra-setup/create-workspaces/aws/manual',
                 '03-infra-setup/create-workspaces/aws/terraform',
+                '03-infra-setup/create-workspaces/aws/sra',
               ],
             },
             {
@@ -57,6 +58,7 @@ const sidebars: SidebarsConfig = {
               items: [
                 '03-infra-setup/create-workspaces/azure/manual',
                 '03-infra-setup/create-workspaces/azure/terraform',
+                '03-infra-setup/create-workspaces/azure/sra',
               ],
             },
             {
@@ -66,6 +68,7 @@ const sidebars: SidebarsConfig = {
               items: [
                 '03-infra-setup/create-workspaces/gcp/manual',
                 '03-infra-setup/create-workspaces/gcp/terraform',
+                '03-infra-setup/create-workspaces/gcp/sra',
               ],
             },
           ],
@@ -154,6 +157,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: '07-build-first-pipeline/index'},
       items: [
+        '07-build-first-pipeline/hands-on-lab',
         '07-build-first-pipeline/workspace-databricks-agent',
         '07-build-first-pipeline/dabs',
       ],
