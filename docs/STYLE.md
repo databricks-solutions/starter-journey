@@ -16,7 +16,7 @@ Every page is one or the other. Pick the voice from the type, then write.
 
 ## Run the humanizer before you ship
 
-All prose goes through the `humanizer` skill (`~/.claude/skills/humanizer/SKILL.md`) before it lands.
+All prose goes through the `humanizer` skill (`skills/humanizer/SKILL.md`) before it lands.
 Do the skill's loop, not a vibe check: draft, then ask "what still sounds AI here?", then fix what
 you find. The mechanical rules below are the part a build can't catch, so they are on you.
 
