@@ -154,6 +154,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: '07-build-first-pipeline/index'},
       items: [
+        '07-build-first-pipeline/hands-on-lab',
         '07-build-first-pipeline/workspace-databricks-agent',
         '07-build-first-pipeline/dabs',
       ],
