@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 sidebar_label: Prepare Datasets
 description: Create a governed feature table in Unity Catalog, reference it from a training set, and set up an MLflow experiment.
 ---
@@ -114,6 +114,6 @@ The lookup key must be unique per entity. Check for duplicate `id` values in the
 
 ## Next
 
-- **Do next:** [Save a Model to Unity Catalog](/docs/mlops/save-model-to-unity-catalog)
+- **Do next:** [14. MLOps overview](/docs/mlops/) — section complete
 - **Learn why:** [14. MLOps](/docs/mlops/)
 - **Reference:** [Feature tables in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/feature-store/uc/feature-tables-uc), [Train models with Feature Store](https://docs.databricks.com/aws/en/machine-learning/feature-store/train-models-with-feature-store), [MLflow experiments](https://docs.databricks.com/aws/en/mlflow/experiments)

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 sidebar_label: Batch Inference
 description: Score data with the challenger model in pandas and Spark batch jobs, and run large-scale tracked inference.
 ---
@@ -106,6 +106,6 @@ Confirm the input column order and names match the model signature. `spark_udf` 
 
 ## Next
 
-- **Do next:** [14. MLOps overview](/docs/mlops/) — section complete for now
+- **Do next:** [Prepare Datasets](/docs/mlops/prepare-datasets)
 - **Learn why:** [14. MLOps](/docs/mlops/)
 - **Reference:** [Load a model version by alias](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/#load-model-version-by-alias-for-inference-workloads), [How to speed up inference](https://community.databricks.com/t5/machine-learning/how-to-speed-up-inference/td-p/135900), [Image ETL and inference](https://docs.databricks.com/aws/en/machine-learning/reference-solutions/images-etl-inference)
