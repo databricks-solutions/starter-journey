@@ -1,0 +1,141 @@
+---
+sidebar_label: "Hands-on lab"
+description: Apply RBAC, row filters, column masks, and ABAC to a sample employees table in Unity Catalog.
+---
+
+# Hands-on: Data Access Control
+
+> **You'll** apply RBAC grants, a row filter, a column mask, and an ABAC tag-driven policy to a sample table — in **45–60 min**.
+>
+> **Prereqs:** [12. Data Access Control](/docs/12-data-access-control/), a SQL warehouse or serverless cluster, `CREATE SCHEMA` on `main`
+
+Run all steps in a SQL editor. Steps 1–4 work on any supported DBR. Step 5 (ABAC) requires **DBR 16.4+ or serverless**.
+
+## 1. Set up the sample table
+
+Create the schema and table, then insert four employees across three regions.
+
+```sql
+CREATE SCHEMA IF NOT EXISTS main.lab_dac;
+
+CREATE OR REPLACE TABLE main.lab_dac.employees (
+  employee_id INT,
+  name        STRING,
+  region      STRING,
+  ssn         STRING,
+  salary      DOUBLE
+);
+
+INSERT INTO main.lab_dac.employees VALUES
+  (1, 'Alice',  'EMEA', '123-45-6789', 95000.0),
+  (2, 'Bob',    'AMER', '234-56-7890', 87000.0),
+  (3, 'Carlos', 'APAC', '345-67-8901', 91000.0),
+  (4, 'Diana',  'EMEA', '456-78-9012', 102000.0);
+```
+
+**Checkpoint:** `SELECT * FROM main.lab_dac.employees` returns 4 rows.
+
+## 2. RBAC — grant read access
+
+Grant the `analysts` group the minimum privileges needed to read the table.
+
+```sql
+GRANT USE CATALOG ON CATALOG main                    TO `analysts`;
+GRANT USE SCHEMA  ON SCHEMA  main.lab_dac            TO `analysts`;
+GRANT SELECT      ON TABLE   main.lab_dac.employees  TO `analysts`;
+```
+
+Verify the grants were written correctly.
+
+```sql
+SHOW GRANTS ON TABLE main.lab_dac.employees;
+```
+
+**Checkpoint:** The output shows `SELECT` on `main.lab_dac.employees` granted to `analysts`.
+
+## 3. RLS — restrict rows by region
+
+Create a UDF that hides rows from users outside their own region group. Members of `data_admins` see all rows.
+
+```sql
+CREATE OR REPLACE FUNCTION main.lab_dac.rls_region(region STRING)
+RETURNS BOOLEAN
+RETURN is_account_group_member(region)
+    OR is_account_group_member('data_admins');
+
+ALTER TABLE main.lab_dac.employees
+  SET ROW FILTER main.lab_dac.rls_region ON (region);
+```
+
+**Checkpoint:** A user who belongs to `EMEA` but not `AMER` or `APAC` sees only the 2 EMEA rows. A user in `data_admins` still sees all 4.
+
+## 4. CLS — mask the SSN column
+
+Create a UDF that shows real SSNs only to `hr_admin`. All other users see a redacted placeholder.
+
+```sql
+CREATE OR REPLACE FUNCTION main.lab_dac.cls_ssn(ssn STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('hr_admin') THEN ssn
+  ELSE 'XXX-XX-XXXX'
+END;
+
+ALTER TABLE main.lab_dac.employees
+  ALTER COLUMN ssn SET MASK main.lab_dac.cls_ssn;
+```
+
+**Checkpoint:** An `analysts` user running `SELECT ssn FROM main.lab_dac.employees` sees `XXX-XX-XXXX` in every row. A user in `hr_admin` sees real values.
+
+## 5. ABAC — tag-driven salary mask (optional, DBR 16.4+)
+
+Apply a column mask to every `salary` column across the schema via a governed tag — no per-table wiring.
+
+```sql
+-- Masking UDF
+CREATE OR REPLACE FUNCTION main.lab_dac.abac_mask_salary(salary DOUBLE)
+RETURNS DOUBLE
+RETURN IF(is_account_group_member('hr_admin'), salary, NULL);
+
+-- Security policy
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.salary_mask_policy
+  COLUMN MASK main.lab_dac.abac_mask_salary;
+
+-- Tag the schema
+ALTER SCHEMA main.lab_dac SET TAGS ('sensitivity' = 'high');
+
+-- Bind the policy to the schema via tag
+ALTER SECURITY POLICY main.lab_dac.salary_mask_policy
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'high'
+  ON COLUMN salary;
+```
+
+**Checkpoint:** Create a second table in `main.lab_dac` with a `salary` column. Without any `SET MASK` call, an `analysts` user sees `NULL` for salary. A user in `hr_admin` sees real values.
+
+## 6. Clean up
+
+Remove all access-control objects and the test schema.
+
+```sql
+-- Remove the row filter and column mask
+ALTER TABLE main.lab_dac.employees DROP ROW FILTER;
+ALTER TABLE main.lab_dac.employees ALTER COLUMN ssn DROP MASK;
+
+-- Remove ABAC objects (if Step 5 was run)
+DROP SECURITY POLICY IF EXISTS main.lab_dac.salary_mask_policy;
+
+-- Drop UDFs, table, and schema
+DROP FUNCTION IF EXISTS main.lab_dac.rls_region;
+DROP FUNCTION IF EXISTS main.lab_dac.cls_ssn;
+DROP FUNCTION IF EXISTS main.lab_dac.abac_mask_salary;
+DROP TABLE   IF EXISTS main.lab_dac.employees;
+DROP SCHEMA  IF EXISTS main.lab_dac;
+```
+
+**Checkpoint:** `SHOW SCHEMAS IN main` no longer lists `lab_dac`.
+
+## Next
+
+- **Do next:** [13. CI/CD and DevOps](/docs/13-ci-cd-devops/)
+- **Learn why:** [Data Access Control overview](/docs/12-data-access-control/)
+- **Reference:** [Row filters and column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/), [ABAC](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/)

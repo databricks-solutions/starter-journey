@@ -1,18 +1,14 @@
 ---
 sidebar_position: 0
 sidebar_label: 12. Data Access Control
-description: Row, column, and object-level access patterns in Unity Catalog. Work in progress.
+description: Scope who can read and write which data in Unity Catalog with RBAC, row filters, column masks, and tag-driven ABAC policies.
 ---
 
 # 12. Data Access Control
 
-> **You'll** learn how to scope who can read and write which data in Unity Catalog. This section is **work in progress**, with pages still being drafted.
+> **You'll** learn how to scope who can read and write which data in Unity Catalog in **~1.5 hours** (30 min reading, 45 to 60 min hands-on).
 >
-> **Prereqs:** [5. Data governance strategy](/docs/05-data-governance-strategy/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [3. Infra setup: Add Groups](/docs/03-infra-setup/add-groups/)
-
-## Status
-
-This section is being written. Pages planned here cover grants and how they inherit down the catalog tree, row filters, column masks, dynamic views, and the service principals that pipelines run as.
+> **Prereqs:** [5. Data Governance Strategy](/docs/05-data-governance-strategy/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [3. Infra Setup: Add Groups](/docs/03-infra-setup/add-groups/)
 
 ## Journey checklist
 
@@ -27,10 +23,164 @@ This section is being written. Pages planned here cover grants and how they inhe
 - [x] ~~Query and explore.~~
 - [x] ~~Databricks AI/BI.~~
 - [x] ~~Business semantics.~~
-- [ ] **12. Data Access Control** (in progress)
+- [ ] **12. Data Access Control** ← you are here
+
+---
+
+## RBAC: Role-Based Access Control
+
+RBAC controls which users and groups can perform actions on **securable objects**: catalogs, schemas, tables, views, volumes, and functions. Privileges inherit downward through the hierarchy. A `SELECT` grant at the catalog level cascades to every table inside it.
+
+```
+Account Admin
+  └── Metastore Admin
+        └── Catalog  (USE CATALOG)
+              └── Schema  (USE SCHEMA)
+                    └── Table / View / Volume  (SELECT, MODIFY, …)
+```
+
+To read a table, a principal needs `USE CATALOG`, `USE SCHEMA`, and `SELECT`. Grant all three explicitly or let them flow from a parent.
+
+```sql
+GRANT USE CATALOG ON CATALOG main          TO `analysts`;
+GRANT USE SCHEMA  ON SCHEMA  main.sales    TO `analysts`;
+GRANT SELECT      ON TABLE   main.sales.orders TO `analysts`;
+```
+
+**Grant to groups, not individual users.** When a person changes teams, you update one group membership instead of hunting down individual grants.
+
+### Common privileges
+
+| Privilege | Scope | What it allows |
+|---|---|---|
+| `USE CATALOG` | Catalog | Enumerate and access objects in the catalog |
+| `USE SCHEMA` | Schema | Enumerate and access objects in the schema |
+| `SELECT` | Table, view, volume | Read rows |
+| `MODIFY` | Table | Insert, update, and delete rows |
+| `CREATE TABLE` | Schema | Create new tables in the schema |
+| `CREATE SCHEMA` | Catalog | Create new schemas in the catalog |
+| `ALL PRIVILEGES` | Any | All applicable privileges on that object |
+
+Reference: [Unity Catalog privileges and securable objects](https://docs.databricks.com/aws/en/security/auth/)
+
+---
+
+## RLS and CLS: Row Filters and Column Masks
+
+RBAC grants or denies access to an entire table. Row-level security (RLS) and column-level security (CLS) let you control **which rows** a user sees and **which column values** are returned, for users who already hold `SELECT`.
+
+### Row filters
+
+A row filter is a SQL UDF that Unity Catalog evaluates per row. Rows where the UDF returns `FALSE` are invisible to the caller.
+
+```sql
+-- 1. UDF: allow rows only if the caller belongs to the row's region group
+--    or is a data admin
+CREATE OR REPLACE FUNCTION main.lab_dac.rls_region(region STRING)
+RETURNS BOOLEAN
+RETURN is_account_group_member(region)
+    OR is_account_group_member('data_admins');
+
+-- 2. Attach to the table
+ALTER TABLE main.lab_dac.employees
+  SET ROW FILTER main.lab_dac.rls_region ON (region);
+```
+
+A user in the `EMEA` group sees only rows where `region = 'EMEA'`. A user in `data_admins` sees all rows.
+
+### Column masks
+
+A column mask is a SQL UDF attached to a single column. It returns either the real value or a substitute depending on who is asking.
+
+```sql
+-- 1. UDF: return the real SSN for hr_admin, redact for everyone else
+CREATE OR REPLACE FUNCTION main.lab_dac.cls_ssn(ssn STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('hr_admin') THEN ssn
+  ELSE 'XXX-XX-XXXX'
+END;
+
+-- 2. Attach to the column
+ALTER TABLE main.lab_dac.employees
+  ALTER COLUMN ssn SET MASK main.lab_dac.cls_ssn;
+```
+
+### When to use RLS/CLS
+
+Row filters and column masks work well for a **small number of tables** with **table-specific logic**. When you have many tables, or when new tables should inherit a policy automatically, use ABAC instead.
+
+Reference: [Row filters and column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)
+
+---
+
+## ABAC: Attribute-Based Access Control
+
+ABAC removes the per-table wiring problem. Instead of attaching a filter to each table individually, you create a **security policy** and bind it to a schema or catalog. Any table in that scope that carries the matching governed tag inherits the policy automatically, with no per-table setup required.
+
+Three building blocks:
+
+1. **Governed tags:** metadata labels applied to schemas and tables via `ALTER ... SET TAGS`
+2. **UDFs:** the same masking or filtering functions used in RLS/CLS
+3. **Security policies:** objects that link a UDF to a governed-tag condition
+
+```sql
+-- 1. Create the masking UDF
+CREATE OR REPLACE FUNCTION main.lab_dac.abac_mask_salary(salary DOUBLE)
+RETURNS DOUBLE
+RETURN IF(is_account_group_member('hr_admin'), salary, NULL);
+
+-- 2. Create the security policy
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.salary_mask_policy
+  COLUMN MASK main.lab_dac.abac_mask_salary;
+
+-- 3. Tag the schema
+ALTER SCHEMA main.lab_dac SET TAGS ('sensitivity' = 'high');
+
+-- 4. Attach the policy to the schema for tables carrying the tag
+ALTER SECURITY POLICY main.lab_dac.salary_mask_policy
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'high'
+  ON COLUMN salary;
+```
+
+Any table added to `main.lab_dac` that carries `sensitivity = 'high'` automatically masks `salary`. No developer needs to remember to call `ALTER COLUMN ... SET MASK`.
+
+:::warning
+ABAC security policies require **DBR 16.4+** or **serverless compute**. Clusters on older runtimes cannot evaluate policies and will fail with a permission error.
+:::
+
+### RLS/CLS vs. ABAC
+
+| | Table-level RLS/CLS | ABAC |
+|---|---|---|
+| Setup effort | Per-table wiring | Once at schema or catalog level |
+| New table coverage | Manual. Developer must add the filter | Automatic. Tag applies the policy |
+| Separation of duties | Developer controls each table directly | Policy owner is separate from data owner |
+| Recommended scale | Few tables, table-specific logic | Many tables, consistent data classification |
+
+Reference: [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/)
+
+---
+
+:::tip Unity Catalog: Data Access Control
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/EH208ljANzo"
+  title="Unity Catalog: Data Access Control"
+></iframe>
+
+:::
+
+---
+
+## In this section
+
+- [Hands-on lab](/docs/12-data-access-control/lab): apply RBAC grants, a row filter, a column mask, and an ABAC tag-driven policy to a sample employees table (~45 to 60 min)
 
 ## Next
 
-- **Do next:** [13. CI/CD and DevOps](/docs/13-ci-cd-devops/) (also in progress)
-- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Data access control in Unity Catalog](https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control)
+- **Do next:** [Hands-on lab](/docs/12-data-access-control/lab)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [Data Governance Strategy](/docs/05-data-governance-strategy/)
+- **Reference:** [Unity Catalog privileges](https://docs.databricks.com/aws/en/security/auth/), [Row filters and column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/), [ABAC](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/)
