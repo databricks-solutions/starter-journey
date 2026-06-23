@@ -225,9 +225,9 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: 'mlops/index'},
       items: [
-        'mlops/prepare-datasets',
         'mlops/save-model-to-unity-catalog',
         'mlops/batch-inference',
+        'mlops/prepare-datasets',
       ],
     },
   ],

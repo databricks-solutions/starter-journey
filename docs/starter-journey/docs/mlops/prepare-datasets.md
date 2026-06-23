@@ -1,119 +1,83 @@
 ---
-sidebar_position: 1
-sidebar_label: Prepare Datasets
-description: Create a governed feature table in Unity Catalog, reference it from a training set, and set up an MLflow experiment.
+sidebar_position: 3
+sidebar_label: Datasets as Feature Tables
+description: Install the Feature Store and Online Inference dbdemo to explore feature engineering with Unity Catalog, online tables, and Lakeflow Declarative Pipelines.
 ---
 
-# Prepare Datasets
+# Datasets as Feature Tables
 
-> **You'll create** a governed feature table in Unity Catalog, reference it from a training set, and set up an MLflow experiment in ~15 min.
+> **You'll install** the **Feature Store and Online Inference** dbdemo and explore three notebooks that cover feature engineering from basics to production patterns in ~15 min.
 >
 > **Prereqs:** [14. MLOps](/docs/mlops/), [Unity Catalog foundations](/docs/before-you-start/foundations/unity-catalog)
 
 ## What you'll build
 
-A feature table at `<catalog>.<schema>.<feature_table>` with a primary key on its entity column, a training set that joins those features by key, and an MLflow experiment to hold the runs you log during training. Training and serving both read from the one feature table, so the feature logic never diverges between them.
+A working Feature Store demo with three notebooks, sample travel data, and feature tables registered in Unity Catalog. The demo covers the full lifecycle from feature creation through online serving.
 
-## Prerequisites
-
-- A Unity Catalog catalog and schema where you have `CREATE TABLE`.
-- A notebook on serverless or a cluster with `databricks-feature-engineering` and `mlflow` available.
-- A source dataset you can load into a Spark or pandas DataFrame.
+**Official source (Demo Center):** [Feature Store and Online Inference](https://www.databricks.com/resources/demos/tutorials/data-science-and-ai/feature-store-and-online-inference)
 
 ## Steps
 
-### 1. Create a feature table in Unity Catalog
+### 1. Install the demo from the dbdemos library.
 
-Compute the columns your model needs into a DataFrame with an entity column that uniquely identifies each row. Then create the feature table in one governed call with the Feature Engineering client — it sets the primary key and records feature metadata for you.
-
-```python
-import pandas as pd
-from databricks.feature_engineering import FeatureEngineeringClient
-
-# Replace with your own feature logic
-df = pd.DataFrame({
-    "feature_1": [...],
-    "feature_2": [...],
-    "label": [...],
-})
-df["id"] = range(1, len(df) + 1)
-spark_df = spark.createDataFrame(df)
-
-catalog, schema, table = "<catalog>", "<schema>", "<feature_table>"
-full_name = f"{catalog}.{schema}.{table}"
-
-fe = FeatureEngineeringClient()
-fe.create_table(
-    name=full_name,
-    primary_keys=["id"],
-    df=spark_df,
-    description="<what these features represent>",
-)
-```
-
-Recompute features on a schedule and write them back with `fe.write_table`. Use `mode="merge"` to update only changed entities.
+Run the following cells in a new Python notebook.
 
 ```python
-fe.write_table(name=full_name, df=new_features, mode="merge")
+%pip install dbdemos
 ```
-
-Once the table is created, it appears in **Catalog Explorer** with your feature columns and the `id` column marked as the primary key:
-
-![Catalog Explorer showing a feature table with feature columns and an id column marked as a primary key (PK).](/img/mlops-feature-table-schema.png)
-
-### 2. Reference features in a training set
-
-In your training code, look up features by primary key with `FeatureLookup` and build a training set. The join is automatic — you never hand-write it, and serving reads the same definitions.
 
 ```python
-from databricks.feature_engineering import FeatureLookup
-
-training_set = fe.create_training_set(
-    df=labels_df,                      # rows with the entity key + label
-    feature_lookups=[FeatureLookup(
-        table_name=full_name,
-        feature_names=["feature_1", "feature_2"],
-        lookup_key="id",
-    )],
-    label="label",
-    exclude_columns=["id"],            # keep the key out of the feature matrix
-)
-training_df = training_set.load_df()
+dbutils.library.restartPython()
 ```
-
-### 3. Create an MLflow experiment for training
-
-An **experiment** is the container for your training runs. Each **run** records the parameters, metrics, and model from one training attempt. Point MLflow at Unity Catalog, then name the experiment — MLflow creates it on first use.
 
 ```python
-import mlflow
-
-mlflow.set_registry_uri("databricks-uc")
-mlflow.set_experiment("/Users/<you>/<experiment_name>")
+import dbdemos
+dbdemos.install('feature-store', catalog='main', schema='dbdemos_fs_travel')
 ```
 
-Open the experiment from the **Experiments** tab. Each run lists its metrics; select two or more runs to compare them side by side.
+Swap `main` and `dbdemos_fs_travel` for any Unity Catalog catalog and schema where your user has **CREATE** privileges.
 
-![Databricks Experiments page with Create model training options and an experiments list filtered to names starting with mlflow-.](/img/mlops-experiments-list.png)
+### 2. Explore the installed notebooks.
 
-![MLflow experiment runs view for mlflow-classic-ml-e2e-mlflow-3, showing nested runs with duration, source, and metric columns such as best_rmse.](/img/mlops-experiment-runs.png)
+The demo installs three notebooks that build on each other:
+
+| Notebook | What it covers |
+|---|---|
+| [`01_Feature_store_introduction`](https://notebooks.databricks.com/demos/feature-store/01_Feature_store_introduction.html) | Ingest data, create and register Feature Tables in Unity Catalog, use `FeatureLookup` to join features, train a model with the Feature Engineering Client. |
+| [`02_Feature_store_advanced`](https://notebooks.databricks.com/demos/feature-store/02_Feature_store_advanced.html) | Point-in-time lookups to prevent data leakage, Online Tables for real-time serving, Feature Specs, Feature Serving endpoints. |
+| [`03_Feature_store_pipeline`](https://notebooks.databricks.com/demos/feature-store/03_Feature_store_pipeline.html) | Build and manage feature tables declaratively using a Lakeflow Declarative Pipeline. |
+
+:::tip
+Feature engineering is a data engineering task — not an ML task. Notebook 03 shows the recommended approach: define feature tables as a **Lakeflow Declarative Pipeline** so they refresh automatically and stay governed in Unity Catalog. Start there before writing any model training code.
+:::
+
+## Watch the walkthrough
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/SXvVj_pSAXU"
+  title="Feature Store and Online Inference walkthrough"
+></iframe>
 
 ## Troubleshoot
 
 <details>
-<summary>`create_table` fails on the primary key column</summary>
+<summary>`ModuleNotFoundError: dbdemos`</summary>
 
-The primary key column must be non-null and unique. Remove null `id` values from the DataFrame before calling `create_table`, and confirm `primary_keys` names a real column.
+Run `%pip install dbdemos`, then `dbutils.library.restartPython()` before importing.
+
 </details>
 
 <details>
-<summary>Feature lookup returns duplicate or missing rows</summary>
+<summary>Permission denied writing catalog or schema</summary>
 
-The lookup key must be unique per entity. Check for duplicate `id` values in the feature table, and confirm the `lookup_key` matches the primary key column name.
+Pick a catalog and schema where your user can create tables, or ask a metastore admin to grant **CREATE**.
+
 </details>
 
 ## Next
 
-- **Do next:** [Save a Model to Unity Catalog](/docs/mlops/save-model-to-unity-catalog)
+- **Do next:** [14. MLOps overview](/docs/mlops/)
 - **Learn why:** [14. MLOps](/docs/mlops/)
-- **Reference:** [Feature tables in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/feature-store/uc/feature-tables-uc), [Train models with Feature Store](https://docs.databricks.com/aws/en/machine-learning/feature-store/train-models-with-feature-store), [MLflow experiments](https://docs.databricks.com/aws/en/mlflow/experiments)
+- **Reference:** [Feature Store and Online Inference (Demo Center)](https://www.databricks.com/resources/demos/tutorials/data-science-and-ai/feature-store-and-online-inference), [Feature tables in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/feature-store/uc/feature-tables-uc)
