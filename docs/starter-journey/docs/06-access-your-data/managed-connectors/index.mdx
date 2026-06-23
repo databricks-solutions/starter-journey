@@ -1,0 +1,58 @@
+---
+sidebar_position: 0
+sidebar_label: Databases and SaaS ingestion
+description: Use Lakeflow Connect to ingest data from external databases and SaaS platforms into Unity Catalog tables.
+---
+
+# Databases and SaaS Ingestion
+
+> **You'll understand** how Lakeflow Connect ingestion pipelines work and choose a deployment method in ~5 min.
+>
+> **Prereqs:** [Access your data](/docs/06-access-your-data)
+
+## Why this matters
+
+A connection lets Databricks reach an external system. An ingestion pipeline puts it to work: it replicates data continuously, change data capture included, into Unity Catalog tables. No pipeline, and the connection just sits there while your data stays in the source.
+
+## How it works
+
+A Lakeflow Connect ingestion pipeline is two pieces, and the split matters because they run in different places:
+
+- The **ingestion gateway** pulls data from the source and stages it in cloud storage. It runs on classic compute inside your VPC, because that is what can reach the source over the network.
+- The **ingestion pipeline** reads the staged data and writes it into UC tables. It can run serverless, since it only touches UC default storage.
+
+See [Managed connector in Lakeflow Connect](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect#database-connector-components) for details on which component runs where.
+
+## Video tutorials
+
+### Lakeflow Connect overview
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7uHLVQSHVAw"></iframe>
+
+### SQL Server change data capture (CDC)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/g1srOFsD59I"></iframe>
+
+### Salesforce
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/neH6vJv8AbE"></iframe>
+
+### SharePoint
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YbB8CGMfJl4"></iframe>
+
+### ServiceNow
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/436IaP-R8SM"></iframe>
+
+## Deploy with DABs
+
+Reach for this when the gateway needs classic compute, or when you want the pipeline version-controlled and repeatable instead of clicked together in the UI:
+
+- **[DABs definition](/docs/06-access-your-data/managed-connectors/dabs-definition)**: define and deploy an ingestion pipeline with Databricks Asset Bundles.
+
+## Next
+
+- **Do next:** [DABs definition](/docs/06-access-your-data/managed-connectors/dabs-definition)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Lakeflow Connect (Databricks docs)](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect)

@@ -1,0 +1,40 @@
+---
+sidebar_position: 1
+---
+
+# 1. Get Started
+
+Starter Journey is your roadmap for setting up Databricks the right way.
+
+## All about data
+
+Get the data foundation right first. Every dashboard, ML model, and GenAI agent reads from the same tables, so when those tables are wrong, everything downstream is wrong too: reports mislead, models train on noise, and agents fill the gaps with fiction.
+
+The three workload families on Databricks each lean on the foundation in a slightly different way:
+
+- **BI & Analytics** needs reliable data: accurate, complete, and served through a governed pipeline so reports match reality.
+- **Predictive AI & ML** needs high-quality data: deduplicated, correctly typed, and versioned so models train on facts and experiments stay reproducible.
+- **GenAI & Agents** needs curated data: structured, current, and indexed so the LLM stays grounded.
+
+All three run on the same platform, answer to the same catalog, and read from the same tables. The foundation is identical. Only the workload on top changes.
+
+So the Starter Journey is a reference guide. It sits between the Databricks docs, your cloud setup, and the governance calls you have to make, and it gives you the shortest path to a working MVP: the minimum steps, in the right order, with links to the official docs where the details live. The goal is to get you from an empty account to a production-ready environment without the detours.
+
+## What you'll build
+
+Each section starts where the last one left off, taking you from an empty Databricks account to a production-ready environment:
+
+| # | Section | What you'll have when done |
+|---|---|---|
+| 2 | **[Before you start](/docs/02-before-you-start/foundations)** | A clear understanding of workspaces, Unity Catalog, and your cloud tenant model |
+| 3 | **[Infra setup](/docs/03-infra-setup)** | Workspaces provisioned, users and groups added, SSO activated |
+| 4 | **[Cost monitoring](/docs/04-cost-monitoring)** | Day-zero visibility: imported usage dashboard, optional packaged dashboards, tags, and account budgets |
+| 5 | **[Data governance strategy](/docs/05-data-governance-strategy)** | A catalog/schema structure that fits your organization's size |
+| 6 | **[Access your data](/docs/06-access-your-data)** | Cloud storage connected, external systems accessible via managed connectors |
+| 7 | **[Build the first pipeline](/docs/07-build-first-pipeline)** | A working medallion pipeline (bronze → silver → gold) |
+| 8 | **[Automation & orchestration](/docs/08-orchestration/workspace)** | The pipeline running on a schedule with retries and notifications |
+| 9 | **[Query and explore](/docs/09-query-and-explore)** | Interactive SQL queries running against your lakehouse data |
+| 10 | **[Databricks AI/BI](/docs/10-databricks-aibi/dashboards)** | Dashboards, Genie Spaces, and apps surfacing data to business users |
+| 11 | **[Business semantics](/docs/11-business-semantics/)** | **Self-paced** path to **activate** governed **metric views** and Genie-ready metadata, with a hands-on checkpoint across SQL, AI/BI, and Genie |
+
+Work through the sidebar in order, or jump straight to the topic you need.

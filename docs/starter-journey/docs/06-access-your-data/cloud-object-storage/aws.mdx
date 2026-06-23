@@ -1,0 +1,141 @@
+---
+sidebar_label: AWS - S3
+description: Create a storage credential and external location to connect Databricks to Amazon S3.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# AWS S3
+
+> **You'll create** an S3 bucket, storage credential, and external location to connect Databricks to S3 in ~15 min.
+>
+> **Prereqs:** [Cloud Object Storage overview](/docs/06-access-your-data/cloud-object-storage), AWS account with IAM and S3 permissions
+
+## What you'll build
+
+An S3 bucket Databricks can read through a Unity Catalog storage credential and external location. You will not hand-write an IAM policy: the QuickStart wizard fires a CloudFormation stack that creates the role for you.
+
+## Prerequisites
+
+- An AWS account with permissions to run CloudFormation templates and create IAM roles and policies.
+- A Databricks workspace with metastore-admin or account-admin privileges.
+
+## Video walkthrough
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/1V7LgriMgJg"
+></iframe>
+
+## Steps
+
+### 1. Create an S3 bucket
+
+:::warning
+This step is only required if no S3 bucket exists as a landing zone for your data. If your data already lives in an existing S3 bucket, skip to [Step 2](#2-create-an-external-location-using-the-quickstart).
+:::
+
+1. Navigate to the [AWS console](https://console.aws.amazon.com/).
+2. Search for **S3** and select it.
+3. Click **Create bucket**.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/aws_create_buttom_s3bucket.png')} alt="Create S3 bucket button" style={{width: '50%', height: 'auto'}} />
+</div>
+
+4. Configure the bucket:
+   - **Bucket name:** a descriptive name for the bucket.
+   - **Object ownership:** ACLs disabled.
+   - **Block public access:** block all public access.
+   - **Bucket versioning:** disabled.
+   - **Tags:** optional but recommended.
+   - **Default encryption:** SSE-S3 (server-side encryption with Amazon S3 managed keys).
+   - **Bucket key:** disabled.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/s3bucketoptoins_part1.png')} alt="S3 bucket configuration part 1" style={{width: '70%', height: 'auto'}} />
+</div>
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/s3bucketoptoins_part2.png')} alt="S3 bucket configuration part 2" style={{width: '70%', height: 'auto'}} />
+</div>
+
+### 2. Create an external location using the QuickStart
+
+:::tip
+This is the process covered in the video walkthrough above.
+:::
+
+1. In the Databricks workspace, click **Catalog** in the left sidebar, then click **External Data**.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/aws_external_data_buttom.png')} alt="External Data button in Databricks" style={{width: '80%', height: 'auto'}} />
+</div>
+
+2. Click **Create external location**.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/create_externallocation_buttom.png')} alt="Create external location button" style={{width: '70%', height: 'auto'}} />
+</div>
+
+3. Select **AWS QuickStart** and click **Next**.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/external_location_quickstart_option.png')} alt="QuickStart option" style={{width: '70%', height: 'auto'}} />
+</div>
+
+4. Enter the bucket name (`s3://<existing-bucket-name>`).
+5. Click **Generate new token** and copy the token.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/s3_quickstart_form.png')} alt="QuickStart form with token" style={{width: '50%', height: 'auto'}} />
+</div>
+
+6. In the CloudFormation page, paste the token in the **Databricks Personal Access Token** field.
+7. Check **I acknowledge that AWS CloudFormation might create IAM resources with custom names**.
+8. Click **Create stack**.
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/quickstarttemplate_part1.png')} alt="CloudFormation template part 1" style={{width: '80%', height: 'auto'}} />
+</div>
+
+<div style={{textAlign: 'left'}}>
+  <img src={useBaseUrl('/img/aws/quickstarttemplate_part2.png')} alt="CloudFormation template part 2" style={{width: '80%', height: 'auto'}} />
+</div>
+
+### 3. Mark the external location as read-only
+
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
+
+Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
+
+:::warning
+Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
+:::
+
+## Verify
+
+1. In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
+2. Click the new external location and click **Test Connection**.
+3. Confirm the test returns a success status.
+
+## Where people trip
+
+<details>
+<summary>CloudFormation stack fails to create</summary>
+
+Open the CloudFormation Events tab for the exact error. Two usual suspects: the IAM user running the template cannot create roles, or the S3 bucket name is misspelled in the QuickStart form.
+</details>
+
+<details>
+<summary>External location test fails after creation</summary>
+
+The stack creates an IAM role whose trust policy is scoped to the Databricks account. Confirm the stack finished cleanly in the AWS console and that the role ARN matches what Databricks expects.
+</details>
+
+## Next
+
+- **Do next:** [Managed connectors](/docs/06-access-your-data/managed-connectors)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Create a storage credential and external location for S3](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/s3/s3-external-location-manual)

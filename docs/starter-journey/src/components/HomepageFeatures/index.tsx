@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     image: require('@site/static/img/build-by-bricksters.webp').default,
     description: (
       <>
-        Skip the guesswork - Get the "insider playbook" built by Databricks employees who have guided hundreds of global customers to success.
+        Written by Databricks employees who have set up hundreds of customer accounts. You get the choices we'd make ourselves, with the reasons behind them.
       </>
     ),
   },
@@ -24,16 +24,16 @@ const FeatureList: FeatureItem[] = [
     image: require('@site/static/img/your-first-chapter.webp').default,
     description: (
       <>
-        No Experience Required - Master the platform through simple storytelling. We've traded jargon for a clear, step-by-step path that anyone can follow.
+        No prior Databricks experience needed. Each step is plain language, in order, with the command to run and what you should see back.
       </>
     ),
   },
   {
-    title: 'Accelerate to win',
+    title: 'Get Past Setup',
     image: require('@site/static/img/accelerate-to-win.webp').default,
     description: (
       <>
-        Don't get stuck in setup. Use our optimized resources to launch use cases faster and drive organizational value immediately.
+        Setup is where most teams stall. Follow the path and you end up with a working pipeline instead of a half-configured account.
       </>
     ),
   },

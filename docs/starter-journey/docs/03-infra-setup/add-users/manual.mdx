@@ -1,0 +1,64 @@
+---
+sidebar_label: Manual
+description: Add users to Databricks manually through the account console.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Add Users: Manual
+
+> **You'll add** users to the Databricks account through the console in ~2 min per user.
+>
+> **Prereqs:** [Account Console](/docs/02-before-you-start/foundations/account-console), account-admin privileges
+
+## What you'll walk away with
+
+Users registered at the account level, ready to assign to any workspace.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+
+## Steps
+
+### 1. Open the account console
+
+Go to the account console for your cloud:
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+### 2. Add a user
+
+1. In the left panel, click **User management**.
+2. On the **Users** tab, click **Add user**.
+3. Enter the user's **email** and **full name**.
+4. Click **Add**.
+
+The user now shows up in the Users list.
+
+<img src={useBaseUrl('/img/account-users.png')} alt="Account console user management screen"/>
+
+### 3. Repeat for the rest
+
+Add everyone who needs access. You assign them to workspaces and groups in the next steps, so for now you are just getting the names into the account.
+
+## Verify
+
+1. Go to **User management** > **Users**.
+2. Check that each new user is in the list with the right email.
+
+## Where people trip
+
+<details>
+<summary>User already exists error</summary>
+
+The email is already in the account. Search the Users tab for it: a previous admin may have added that person by hand, or a SCIM sync already pulled them in.
+</details>
+
+## Next
+
+- **Do next:** [Add Users: SCIM](/docs/03-infra-setup/add-users/scim)
+- **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
+- **Reference:** [Add users to your account](https://docs.databricks.com/aws/en/admin/users-groups/)

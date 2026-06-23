@@ -1,0 +1,48 @@
+---
+sidebar_label: Databricks Apps
+description: Build and deploy custom web applications on Databricks with built-in authentication and direct data access.
+---
+
+# Databricks Apps
+
+> **You'll learn** how Databricks Apps let you build custom web applications that run on Databricks with native auth and data access in ~5 min.
+>
+> **Prereqs:** [Query and explore](/docs/09-query-and-explore)
+
+## Why this matters
+
+Dashboards and Genie Spaces cover the common cases: standard reporting and ad-hoc questions. But some things need a real UI of their own, an approval workflow, a data quality monitor, a customer-facing portal. That is what Databricks Apps is for. You deploy a web app (Streamlit, Dash, Gradio, or any framework) that runs inside Databricks, with authentication and direct access to Unity Catalog tables already wired up.
+
+## How it works
+
+A Databricks App is a containerized web app running on a Databricks-managed endpoint. It inherits the deployer's service principal credentials, so it reads and writes tables without you juggling connection strings. Users sign in through workspace SSO, so there is no separate login to build.
+
+You define an app with an `app.yaml` file and deploy it through the Databricks CLI or the UI.
+
+:::tip
+The [Databricks Apps Cookbook](https://apps-cookbook.dev/) has ready-to-deploy examples for Streamlit, Dash, Gradio, and React.
+:::
+
+## When to use / when not to
+
+**Use Databricks Apps when:**
+
+- You need a UI that goes past charts and tables: forms, workflows, interactive tools.
+- The app needs direct, governed access to lakehouse data and you'd rather not ETL it out to a separate database.
+- You want workspace single sign-on instead of standing up your own auth.
+
+**Use dashboards or Genie Spaces instead when:**
+
+- It's standard reporting or ad-hoc questions.
+- You don't need custom interactivity.
+
+## Common pitfalls
+
+- **Building an app when a dashboard would do.** Apps cost you development and maintenance. If the ask is "show charts with filters," a dashboard is faster and cheaper.
+- **Running under a personal identity.** Give the app a service principal with the minimum grants it needs. Tie it to one person's account and you've built a single point of failure for the day they leave or rotate credentials.
+
+## Next
+
+- **Learn why:** [Query and explore](/docs/09-query-and-explore)
+- **Reference:** [Databricks Apps (Databricks docs)](https://docs.databricks.com/aws/en/apps/index.html)
+- **Resource:** [Databricks Apps Cookbook](https://apps-cookbook.dev/)

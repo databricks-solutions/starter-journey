@@ -1,0 +1,105 @@
+---
+sidebar_position: 4
+sidebar_label: Budget alerts
+description: Account admins configure monthly budgets with email thresholds; follow the official budgets guide and use the example Development Workspace budget.
+---
+
+# Budget alerts
+
+> **You'll configure** account-level budgets that email stakeholders when spend crosses list-price thresholds.
+>
+> **Prereqs:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+Monthly **USD** budgets driven by **list prices**, platform add-ons included. When spend crosses a threshold, the budget emails the recipients you name. It never throttles a workload.
+
+## Prerequisites
+
+- **Account admin** role.
+- Optional: live **custom tags** if you want to filter budgets per team ([Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs)).
+
+:::warning
+
+Only **account admins** create budgets. A budget only watches. Usage keeps accruing after you cross a threshold.
+
+:::
+
+Budgets are in **Public Preview**, so the limits may change before GA.
+
+## Open the account console
+
+Sign in as an account admin:
+
+- **AWS:** [accounts.cloud.databricks.com](https://accounts.cloud.databricks.com)
+- **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
+- **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
+
+## Steps
+
+Follow the official guide end to end: **[Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)**.
+
+It covers **Usage** → **Budgets** → **Add budget**, plus definitions, thresholds, and email recipients.
+
+## Example: Development Workspace budget
+
+Use this pattern when you want to watch a development slice of the account with two early-warning thresholds:
+
+- **Budget name:** `Development Workspace budget`
+- **Definitions:** restrict to your non-production workspace, with optional tag filters if you set them up on [Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs).
+- **Alert thresholds:** add **$500** and **$1000** as two separate monthly lines, each with the right distribution list.
+
+![Create budget form showing name, workspace scope, and two monthly alert thresholds at $500 and $1000](/img/create-budget.webp)
+
+Expect some lag. Alerts can trail actual usage by up to **24 hours**, and a brand-new budget may show **$0** for a while as telemetry catches up.
+
+## Verify
+
+1. **Usage** → **Budgets** lists the new budget.
+2. Open it. Cumulative spend plots against the dotted threshold lines.
+3. To force a dry-run email, set a threshold below month-to-date spend and wait. Check spam.
+
+![Budget detail panel showing the Development Workspace budget with monthly thresholds and alert email addresses](/img/verify-budget.webp)
+
+## Where people trip
+
+<details>
+<summary>Budget stuck at zero</summary>
+
+Wait up to a day for telemetry, and confirm the account actually generated usage this month.
+
+</details>
+
+<details>
+<summary>No email</summary>
+
+Check the addresses and the spam folders, and confirm spend crossed the threshold once you account for the latency.
+
+</details>
+
+<details>
+<summary>Totals mismatch invoices</summary>
+
+Budgets ignore credits and discounts on purpose. Model your contract in SQL or an external tool if you need invoice-accurate thresholds.
+
+</details>
+
+<details>
+<summary>Cannot create budgets</summary>
+
+Only **account admins** manage budgets.
+
+</details>
+
+<details>
+<summary>Tag filters empty</summary>
+
+Confirm the resources emitted that tag before the budget month ([Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs)).
+
+</details>
+
+## Next
+
+- **Do next:** [Data governance strategy](/docs/05-data-governance-strategy)
+- **Learn why:** [Account Console foundations](/docs/02-before-you-start/foundations/account-console)
+- **Reference:** [Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)

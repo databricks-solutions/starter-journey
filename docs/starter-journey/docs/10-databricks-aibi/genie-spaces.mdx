@@ -1,0 +1,73 @@
+---
+sidebar_label: Genie Spaces
+description: Create Genie Spaces so business users can ask data questions in natural language without writing SQL.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+
+# Genie Spaces
+
+> **You'll learn** how to create and configure a Genie Space for natural-language analytics in ~10 min.
+>
+> **Prereqs:** [Query and explore](/docs/09-query-and-explore)
+
+## Why this matters
+
+Most of the people who want answers from your data don't write SQL. A Genie Space lets them type a question in plain English, "What were total sales last quarter?", and get back a real answer from governed lakehouse tables. Genie translates the question into SQL, runs it, and formats the result. That takes the steady stream of ad-hoc requests off your analysts' plates.
+
+## How it works
+
+A Genie Space is a chat interface pointed at a set of Unity Catalog tables. You pick which tables it can see, add instructions if you want (a business glossary, metric definitions), and share it. Genie writes the SQL, runs it on a serverless warehouse, and returns a table or chart.
+
+
+<Button label="Deck - Genie Best Practices" link={useBaseUrl('/pdfs/Genie Best Practices.pdf')} />
+
+### Create a Genie Space
+
+This video creates a Genie Space from scratch:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/okcSana8bsg"></iframe>
+
+### Configure and tune a Genie Space
+
+Genie is only as good as the context you give it: metric definitions, column descriptions, sample questions. This video covers how to configure it well:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YysLV-hycDM"></iframe>
+
+### Configure Genie instructions
+
+Instructions teach Genie your domain vocabulary, your metric definitions, and the query patterns you expect. This video explains the difference between global instructions, which always apply, and chat context, which is per-conversation, and when to reach for each:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KlSfyeymXeU"></iframe>
+
+### Optimize tables with liquid clustering
+
+Liquid clustering on the tables a Genie Space reads cuts query latency and warehouse cost, most of all on the columns Genie filters on. This video walks through applying it:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KMpWs4N2360"></iframe>
+
+## When to use / when not to
+
+**Use Genie Spaces when:**
+
+- Business users need ad-hoc answers without waiting for an analyst to write a query.
+- The questions vary often enough that a static dashboard would need constant updates.
+- You want self-service on the data while Unity Catalog governance stays in place.
+
+**Use dashboards instead when:**
+
+- The audience needs a fixed, repeatable view of the same metrics.
+- Layout matters more than flexibility: you care about specific chart types and positioning.
+
+## Common pitfalls
+
+- **Skipping table and column descriptions.** Genie turns words into SQL. Without clear column descriptions and a glossary, it guesses at what your terms mean and gets them wrong. The metadata is the work.
+- **Exposing too many tables.** A space scoped to 50 tables writes worse SQL than one scoped to 5. Keep each space on a single domain, like sales or product usage.
+- **No sample questions.** Sample questions show Genie the patterns you expect. Add 5 to 10 representative ones when you set the space up.
+
+## Next
+
+- **Do next:** [Try a sample Genie Space](/docs/10-databricks-aibi/try-a-sample-genie-space)
+- **Learn why:** [Query and explore](/docs/09-query-and-explore)
+- **Reference:** [Genie Spaces (Databricks docs)](https://docs.databricks.com/aws/en/genie/index.html)

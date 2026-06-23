@@ -1,0 +1,69 @@
+---
+sidebar_label: Manual
+description: Create a Databricks workspace on AWS using the automated configuration wizard.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+
+# AWS manual workspace creation
+
+> **You'll create** a Databricks workspace on AWS in ~10 min.
+>
+> **Prereqs:** [AWS account](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+A running Databricks workspace in your AWS account. The configuration wizard creates the IAM roles, the S3 bucket, and the networking it needs, so you click through it rather than wiring those up by hand.
+
+## Prerequisites
+
+- An AWS account with permission to create IAM roles and S3 buckets.
+- A Databricks account with account-admin privileges.
+- The AWS region that hosts your data sources. Deploy the workspace there.
+
+## Steps
+
+### 1. Create the development workspace
+
+:::tip
+Deploy the workspace in the same AWS region as your data sources. Cross-region traffic adds egress fees that pile up fast.
+:::
+
+<Button label="Deck - Create AWS Workspace" link={useBaseUrl('/pdfs/AWS-Automated-Configuration-Classic-Workspace-Deployment.pdf')} />
+
+### 2. Repeat for staging and production
+
+Run through the same PDF once more for each additional workspace. A standard setup has three: development, staging, and production.
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Click the workspace URL and confirm the landing page loads.
+
+## Where people trip
+
+<details>
+<summary>Workspace stuck in "Provisioning" status</summary>
+
+The wizard is still creating AWS resources. Give it 5 to 10 minutes. If the status does not change, check AWS CloudFormation in the target region for stack errors and confirm your IAM permissions.
+</details>
+
+<details>
+<summary>IAM permission errors during creation</summary>
+
+The account launching the wizard needs permission to create IAM roles, S3 buckets, and VPC resources. Ask your AWS administrator to attach the required policies, or use an account with `AdministratorAccess` for the initial setup.
+</details>
+
+<details>
+<summary>Workspace created in the wrong region</summary>
+
+A workspace cannot move between regions after creation. Delete it from the account console, then re-run the wizard and pick the correct region.
+</details>
+
+## Next
+
+- **Do next:** [Configure Unity Catalog](/docs/02-before-you-start/foundations/unity-catalog)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Create a workspace, Databricks docs](https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html)

@@ -1,0 +1,80 @@
+---
+sidebar_label: Unity Catalog
+description: Understand what Unity Catalog is, how it governs data and AI assets, and when to use it.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+
+# Unity Catalog
+
+> **You'll understand** how Unity Catalog centralizes governance for data and AI in ~5 min.
+>
+> **Prereqs:** [Workspace](/docs/02-before-you-start/foundations/workspace)
+
+## The call
+
+Route everything through Unity Catalog. Skip it and access controls fragment across workspaces, credentials end up hardcoded in notebooks, and nobody can see how data moves between systems. Unity Catalog (UC) gives you one place to manage permissions, lineage, and discovery for every data and AI asset in your environment. Default to it even when a quick experiment doesn't strictly need it.
+
+## Mental model
+
+UC sits between your workspaces and your data lake. Workspaces connect to a shared **metastore**, and every interaction with data, models, or functions routes through UC so permissions, lineage, and audit logs are enforced for you.
+
+![Unity Catalog sits between workspaces and the data lake](/img/uc-top-level.jpg)
+
+Your data, metadata, and AI models stay in your organization's cloud account. UC never moves data out. It only governs access to it.
+
+## How it works
+
+### The three-level namespace
+
+Every asset in UC is addressed as **catalog.schema.object**. The convention keeps names unique across the whole organization and makes it easy to separate environments (dev vs. prod) or teams.
+
+![Unity Catalog objects and namespaces](/img/uc-objects.png)
+
+```sql
+-- catalog.schema.table
+SELECT * FROM my_catalog.my_schema.my_table;
+
+-- Example: select the gold table "sales" from the galaxy project in the dev catalog
+SELECT * FROM dev.galaxy_gold.sales;
+
+-- Set defaults to shorten queries
+USE CATALOG dev;
+USE SCHEMA galaxy_gold;
+SELECT * FROM sales;
+```
+
+### Governance of all interactions
+
+Whenever a user or service principal creates, reads, updates, deletes, or runs a UC object, whether it's a table, view, volume, function, or model, UC checks the associated grants before it allows the operation.
+
+![Unity Catalog governance and federation](/img/uc-and-federation.png)
+
+So every data and AI interaction should flow through UC. When it does, you get fine-grained access control, full lineage, and a complete audit trail without extra work.
+
+## Common pitfalls
+
+### Hardcoded credentials
+
+Bypass UC with connection strings or secrets buried in a notebook and you've thrown away every governance guarantee. A hardcoded credential is one UC can't audit or revoke.
+
+### Cluster-level data access via environment variables
+
+Wiring up data access at the cluster level with external libraries and environment variables is another way around UC. It creates hidden dependencies that lineage can't see and nobody can audit.
+
+## Key terms
+
+| Term | Definition |
+|---|---|
+| **Unity Catalog** | The centralized governance layer that manages permissions, lineage, and discovery for all data and AI assets across Databricks workspaces. |
+| **Metastore** | The top-level container for UC metadata. Each Databricks account region has one metastore shared by all workspaces in that region. |
+| **Catalog** | The first level of the three-level namespace. Typically maps to an environment (dev, staging, prod) or a business domain. |
+| **Schema** | The second level of the namespace, grouping related tables, views, volumes, and functions within a catalog. |
+| **Grants** | Permissions assigned to principals (users, groups, service principals) that control what operations they can perform on UC objects. |
+
+## Next
+
+- **Do next:** [Create your first workspace on AWS](/docs/03-infra-setup/create-workspaces/aws/manual)
+- **Learn why:** [Workspace foundations](/docs/02-before-you-start/foundations/workspace)
+- **Reference:** [What is Unity Catalog? (Databricks docs)](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)

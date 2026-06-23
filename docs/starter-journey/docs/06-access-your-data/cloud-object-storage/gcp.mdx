@@ -1,0 +1,65 @@
+---
+sidebar_label: GCP - GCS
+description: Create a storage credential and external location to connect Databricks to Google Cloud Storage.
+---
+
+# GCP GCS
+
+> **You'll create** a storage credential and external location to connect Databricks to GCS in ~10 min.
+>
+> **Prereqs:** [Cloud Object Storage overview](/docs/06-access-your-data/cloud-object-storage), GCP project with Owner permissions
+
+## What you'll build
+
+A Google Cloud Storage bucket Databricks can read through a Unity Catalog storage credential and external location.
+
+## Prerequisites
+
+- A GCP project with Owner or Storage Admin permissions.
+- A Databricks workspace with metastore-admin or account-admin privileges.
+
+## Steps
+
+### 1. Follow the official guide
+
+GCS is the one cloud where the Databricks docs already do the whole job end to end, so this page hands you off rather than duplicating it:
+
+[Connect to a Google Cloud Storage (GCS) external location](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs)
+
+The guide creates a service account, grants it access to your bucket, registers the storage credential, and creates the external location.
+
+### 2. Mark the external location as read-only
+
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
+
+Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
+
+:::warning
+Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
+:::
+
+## Verify
+
+1. In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
+2. Click the new external location and click **Test Connection**.
+3. Confirm the test returns a success status.
+
+## Where people trip
+
+<details>
+<summary>Test Connection fails with permission denied</summary>
+
+The service account behind the storage credential needs the `storage.objectAdmin` role (or equivalent) on the target bucket. Grant it and test again.
+</details>
+
+<details>
+<summary>Storage credential creation fails</summary>
+
+Check the service account key or workload identity federation setup. The service account has to live in the same GCP project as the Databricks workspace.
+</details>
+
+## Next
+
+- **Do next:** [Managed connectors](/docs/06-access-your-data/managed-connectors)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [GCS external locations (Databricks docs)](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs)

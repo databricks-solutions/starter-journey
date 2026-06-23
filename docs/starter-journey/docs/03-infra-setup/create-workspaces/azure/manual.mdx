@@ -1,0 +1,69 @@
+---
+sidebar_label: Manual
+description: Create a Databricks workspace on Azure manually through the Azure portal.
+---
+
+# Azure manual workspace creation
+
+> **You'll create** a Databricks workspace on Azure in ~10 min.
+>
+> **Prereqs:** [Azure subscription](/docs/02-before-you-start/cloud-tenant-ready), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+A running Databricks workspace in your Azure subscription, created from the Azure portal. The portal sets up the managed resource group, the VNet resources, and the workspace configuration for you.
+
+## Prerequisites
+
+- An Azure subscription with Contributor on the target resource group.
+- A Databricks account with account-admin privileges.
+- The subscription and resource group the workspace belongs to (for example, the dev workspace on the dev subscription).
+
+## Steps
+
+### 1. Create the development workspace
+
+Follow the video below. As you deploy:
+
+- Pick the right **subscription** and **resource group** for the environment.
+- For example, put the dev workspace in the dev subscription and dev Databricks resource group.
+
+:::warning
+Match the subscription and resource group to the environment. A dev workspace dropped into a production subscription is hard to untangle later.
+:::
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/hb_cQ8d3750"
+></iframe>
+
+### 2. Repeat for staging and production
+
+Run the same process for each additional workspace, picking the matching subscription and resource group each time.
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.azuredatabricks.net/).
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Click the workspace URL and confirm the landing page loads.
+
+## Where people trip
+
+<details>
+<summary>Workspace deployment fails in the Azure portal</summary>
+
+Check the Azure Activity Log for the resource group. Common causes: insufficient permissions on the subscription, the `Microsoft.Databricks` resource provider not registered, or a quota limit in the target region.
+</details>
+
+<details>
+<summary>Cannot access the workspace after creation</summary>
+
+Confirm your user account was added to the workspace. If you use Entra ID (Azure AD), check that the user exists in the linked directory and is assigned to the Databricks enterprise application.
+</details>
+
+## Next
+
+- **Do next:** [Azure Terraform deployment](/docs/03-infra-setup/create-workspaces/azure/terraform)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Azure Databricks workspace setup](https://learn.microsoft.com/en-us/azure/databricks/getting-started/)

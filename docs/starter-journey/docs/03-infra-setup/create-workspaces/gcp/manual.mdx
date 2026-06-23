@@ -1,0 +1,66 @@
+---
+sidebar_label: Manual
+description: Create a Databricks workspace on GCP manually through the account console.
+---
+
+# GCP manual workspace creation
+
+> **You'll create** a Databricks workspace on GCP in ~10 min.
+>
+> **Prereqs:** [GCP project](/docs/02-before-you-start/cloud-tenant-ready), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+A running Databricks workspace in your GCP project, created from the Databricks account console. The wizard handles the service account, GCS storage, and workspace configuration for you.
+
+## Prerequisites
+
+- A GCP project with Owner permissions.
+- A Databricks account with account-admin privileges.
+- The GCP project the workspace belongs to (for example, the dev workspace in the dev project).
+
+## Steps
+
+### 1. Create the development workspace
+
+Follow the video below. As you deploy, pick the right GCP project for the environment.
+
+:::warning
+Deploy each workspace into the matching GCP project. A dev workspace in a production project causes confusion and makes cleanup harder.
+:::
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/4XMMXBbE-tg"
+></iframe>
+
+### 2. Repeat for staging and production
+
+Run the same process for each additional workspace, picking the matching GCP project each time.
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Click the workspace URL and confirm the landing page loads.
+
+## Where people trip
+
+<details>
+<summary>Workspace stuck in provisioning</summary>
+
+Check the GCP console for API enablement issues. The workspace needs several GCP APIs enabled on the project: Compute Engine, Cloud Storage, and IAM.
+</details>
+
+<details>
+<summary>Permission errors during creation</summary>
+
+Confirm the authenticated account has Owner on the target GCP project. Viewer and Editor are not enough for the initial workspace creation.
+</details>
+
+## Next
+
+- **Do next:** [GCP Terraform deployment](/docs/03-infra-setup/create-workspaces/gcp/terraform)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [GCP workspace administration](https://docs.gcp.databricks.com/en/admin/account-settings-gcp/workspaces.html)

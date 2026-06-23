@@ -1,0 +1,46 @@
+---
+sidebar_position: 0
+sidebar_label: 6. Access your data
+description: Connect Databricks to your data sources, cloud object storage and external systems via managed connectors.
+---
+
+# 6. Access your data
+
+> **You'll connect** Databricks to your organization's data sources in this section.
+>
+> **Prereqs:** [Data Governance Strategy](/docs/05-data-governance-strategy)
+
+## Why this matters
+
+Your workspaces, users, groups, and governance are set up. None of that helps until Databricks can actually reach your data. There are two ways in: direct access to cloud object storage, or ingestion from an external database or SaaS app. This section sets up both.
+
+## Journey checklist
+
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
+- [x] ~~Infra setup.~~
+- [x] ~~Cost monitoring.~~
+- [x] ~~Data Governance Strategy.~~
+- [ ] **Access your data.**
+- [ ] Build the first pipeline.
+- [ ] Automation and orchestration.
+- [ ] Query and explore.
+- [ ] Databricks AI/BI.
+- [ ] Business semantics.
+
+## How it works
+
+Every path runs through Unity Catalog. An S3 bucket or a PostgreSQL database, it does not matter: each connection is a UC object with its own permissions and audit trail. That is the whole point. You govern access in one place instead of chasing credentials scattered across notebooks.
+
+Which path you take depends on where the data sits:
+
+| Category | Use when |
+|---|---|
+| [Cloud object storage](/docs/06-access-your-data/cloud-object-storage) | Your data lives in S3, ADLS, or GCS and you need Databricks to read or write it directly |
+| [Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors) | You need to ingest data from external databases or SaaS platforms into UC tables |
+
+## Next
+
+- **Do next:** [Cloud object storage](/docs/06-access-your-data/cloud-object-storage)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Connect to data sources (Databricks docs)](https://docs.databricks.com/aws/en/connect/)

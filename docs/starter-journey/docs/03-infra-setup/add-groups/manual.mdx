@@ -1,0 +1,72 @@
+---
+sidebar_label: Manual
+description: Add groups to Databricks manually through the account console.
+---
+
+# Add Groups: Manual
+
+> **You'll create** groups in the Databricks account console and assign users in ~5 min.
+>
+> **Prereqs:** [Add Users](/docs/03-infra-setup/add-users), [Add Groups overview](/docs/03-infra-setup/add-groups)
+
+## What you'll walk away with
+
+Account-level groups with members assigned, ready to grant permissions against in any workspace.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- Users already added (see [Add Users](/docs/03-infra-setup/add-users)).
+
+## Steps
+
+### 1. Open the account console
+
+Go to the account console for your cloud:
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+### 2. Create a group
+
+1. In the left panel, click **User management**.
+2. On the **Groups** tab, click **Add group**.
+3. Enter the group name (for example, `data-engineers` or `dev-ws-admins`).
+4. Click **Add Group**.
+
+### 3. Add members
+
+1. Click the group you just made.
+2. Click **Add members**.
+3. Pick the users you added earlier.
+4. Click **Add**.
+
+### 4. Repeat for each group
+
+Create the full set your org needs. The [standard data personas](/docs/03-infra-setup/add-groups) list the recommended ones.
+
+## Verify
+
+1. Go to **User management** > **Groups**.
+2. Open each group and confirm the right people are in it.
+
+## Where people trip
+
+<details>
+<summary>Group not visible in a workspace</summary>
+
+An account-level group has to be assigned to a workspace before it shows up there. In the account console, open the workspace settings and add the group under **Permissions**.
+</details>
+
+<details>
+<summary>Cannot add a user to a group</summary>
+
+The user has to exist at the account level first. Check that they appear under **User management** > **Users** before you try to add them.
+</details>
+
+## Next
+
+- **Do next:** [Add Groups: SCIM](/docs/03-infra-setup/add-groups/scim)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Manage groups](https://docs.databricks.com/aws/en/admin/users-groups/)

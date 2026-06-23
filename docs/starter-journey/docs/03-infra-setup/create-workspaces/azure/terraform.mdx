@@ -1,0 +1,95 @@
+---
+sidebar_label: Terraform
+description: Deploy a Databricks workspace and Unity Catalog on Azure using Terraform with VNet injection.
+---
+
+# Azure Terraform
+
+> **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
+>
+> **Prereqs:** [Azure subscription](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+A Databricks workspace with VNet injection on Azure plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below.
+
+The **Workspace + Catalog** template creates a new VNet. The **Workspace** template takes a new or existing VNet. The **Private Link** template adds backend private endpoints for control plane and DBFS traffic.
+
+## Prerequisites
+
+- An Azure subscription with **Contributor** at subscription scope (not resource-group only, because Databricks creates a managed resource group).
+- A Databricks account with account-admin privileges.
+- Terraform CLI installed locally.
+- Azure CLI authenticated (`az login`).
+
+## YouTube walkthrough
+
+The video walks through the **Workspace + Catalog** template ([azure-vnet-injection-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc)). The flow is the same for all templates: copy `tf/terraform.tfvars.example`, set your variables, then run `terraform init`, `plan`, and `apply` per the repo README.
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/0PbMicR_loQ"
+  title="Azure VNet injection workspace Terraform walkthrough"
+></iframe>
+
+## Terraform resources
+
+Open the repository for your scenario and follow its **README.md**. In each repo, run commands from the `tf/` directory: copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
+
+Repeat for **development**, **staging**, and **production**. Use `workspace_name`, `resource_group_name`, or your naming prefix to tell environments apart (for example `dev`, `staging`, `prod`).
+
+If you are **new to Databricks**, start with **Workspace + Catalog** (first row).
+
+| Terraform template | What it creates | URL |
+| --- | --- | --- |
+| 💎 **Workspace + Catalog** | <ul><li>Resource groups (workspace + VNet)</li><li>VNet, public/private subnets, NSG, NAT Gateway</li><li>Databricks workspace (VNet injection, No Public IP)</li><li>Unity Catalog metastore (new or existing)</li><li>Storage credential, external location, user-defined catalog</li><li>Single-node UC cluster (Personal Compute policy)</li></ul> | [azure-vnet-injection-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc) |
+| **Workspace** | <ul><li>VNet (new or existing)</li><li>Subnets, NSG, NAT Gateway (when creating a new VNet)</li><li>Databricks workspace (VNet injection)</li><li>Unity Catalog metastore (optional, new or existing)</li></ul> | [azure-vnet-injection](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection) |
+| **Private Link** | <ul><li>Resource group (new or existing)</li><li>VNet, subnets, NSG, NAT Gateway</li><li>Databricks workspace (VNet injection, public access enabled)</li><li>Private DNS zones, private endpoints (control plane + DBFS)</li><li>Network Connectivity Config for serverless Private Link</li><li>Unity Catalog metastore assignment (optional)</li></ul> | [azure-privatelink-classic](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-privatelink-classic) |
+
+:::warning
+When you use an **existing** metastore with **Workspace + Catalog**, `admin_user` must have `CREATE EXTERNAL LOCATION` on that metastore.
+:::
+
+:::tip
+Pin the Databricks provider to Azure CLI auth before apply: `export DATABRICKS_AUTH_TYPE=azure-cli`
+:::
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.azuredatabricks.net/).
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Open the workspace, go to **Catalog**, and confirm the new catalog appears (for the **Workspace + Catalog** template).
+
+## Where people trip
+
+<details>
+<summary>PERMISSION_DENIED: User is not an owner of Metastore while creating catalog</summary>
+
+The identity running Terraform lacks metastore-level permissions. Fix it one of two ways:
+
+- **Option 1:** Add the user or service principal to the metastore admins group.
+- **Option 2:** Grant catalog creation on the metastore:
+
+```sql
+GRANT CREATE CATALOG ON METASTORE TO `principal_name`;
+```
+</details>
+
+<details>
+<summary>Terraform apply fails with permission errors</summary>
+
+Confirm `az login` (or your service principal) has Contributor access on the target subscription. Run `az account show` to check the active subscription.
+</details>
+
+<details>
+<summary>VNet injection fails with subnet errors</summary>
+
+Subnets must be delegated to `Microsoft.Databricks/workspaces` and must not overlap existing address spaces. Make sure `subnet_public_cidr` and `subnet_private_cidr` fit inside the VNet `cidr`. `vnet_resource_group_name` must differ from `resource_group_name`.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/03-infra-setup/add-users)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks Terraform provider](https://registry.terraform.io/providers/databricks/databricks/latest/docs)

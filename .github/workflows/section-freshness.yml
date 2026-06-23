@@ -1,0 +1,43 @@
+name: Section freshness
+
+on:
+  schedule:
+    # Mondays 14:00 UTC
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-section-freshness:
+    name: Check documentation section freshness
+    runs-on: linux-ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Check section freshness
+        id: freshness
+        run: |
+          set -euo pipefail
+          python3 scripts/check_section_freshness.py \
+            --report-file stale-sections-report.md
+        continue-on-error: true
+
+      - name: Create or update stale-sections issue
+        if: steps.freshness.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/notify_stale_sections_issue.sh stale-sections-report.md
+
+      - name: Close stale-sections issue when all sections are fresh
+        if: steps.freshness.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/close_stale_sections_issue.sh
+
+      - name: Fail job if sections are stale
+        if: steps.freshness.outcome == 'failure'
+        run: exit 1

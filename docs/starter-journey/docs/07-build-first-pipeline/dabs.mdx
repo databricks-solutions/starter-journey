@@ -1,0 +1,43 @@
+---
+sidebar_label: DABs
+description: Deploy a complete medallion pipeline as code using Databricks Asset Bundles.
+---
+
+# DABs
+
+> **You'll learn** how to deploy a full medallion pipeline using Databricks Asset Bundles in ~15 min.
+>
+> **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
+
+## What you'll walk away with
+
+A full medallion pipeline running in your workspace, deployed from a Git repo with one command. The bundle provisions the job, the pipeline, the schemas, the landing volume, and the warehouse, so everything the pipeline touches comes up together and you can tear it down the same way.
+
+## What the bundle deploys
+
+Clone the repo below and a single `databricks bundle deploy` brings up:
+
+- A job with two tasks: a notebook that generates sample data, then a pipeline task that runs the transformation once the data lands.
+- One Spark Declarative Pipeline running the bronze, silver, gold chain.
+- Three schemas: bronze, silver, gold.
+- One volume as the landing zone for raw files.
+- One DBSQL warehouse for querying the output.
+
+For everything a bundle can manage, see [DABs supported resources](https://docs.databricks.com/aws/en/dev-tools/bundles/resources).
+
+The repo is ready to clone and deploy: [github.com/ivancalvo-dbxs/medallion-pipeline-dabs](https://github.com/ivancalvo-dbxs/medallion-pipeline-dabs)
+
+### Video walkthrough
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/W8ucHwzwdhc"></iframe>
+
+## When to reach for DABs
+
+Use DABs once the pipeline is more than an experiment: you want it version-controlled, you need the same thing in dev, staging, and prod, and you want the schemas, volumes, and warehouse defined next to the pipeline code instead of clicked together by hand.
+
+Stay in the UI with the agent while you are still exploring the data and reshaping transformations. Setting up a local bundle for a throwaway prototype is friction you do not need yet.
+
+## Next
+
+- **Learn why:** [Spark Declarative Pipelines overview](/docs/07-build-first-pipeline)
+- **Reference:** [Databricks Asset Bundles (Databricks docs)](https://docs.databricks.com/aws/en/dev-tools/bundles/)

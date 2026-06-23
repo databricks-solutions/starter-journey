@@ -1,0 +1,95 @@
+---
+sidebar_label: Terraform
+description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (standalone or shared VPC).
+---
+
+# GCP Terraform
+
+> **You'll deploy** a Databricks workspace with BYOVPC on GCP using Terraform in ~20 min.
+>
+> **Prereqs:** [GCP project](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## What you'll walk away with
+
+A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below.
+
+The **Standalone** template creates a new VPC, subnet, Cloud Router, and NAT. The **Shared VPC** template attaches a workspace to an **existing** VPC and subnet, in the same project or a Shared VPC host project.
+
+There is no combined workspace-and-catalog template in this repo yet. On **Shared VPC**, Unity Catalog metastore assignment is optional via `metastore_id`. Add catalogs later in the workspace or with separate UC automation.
+
+## Prerequisites
+
+- A GCP project with a Google service account that has `roles/Owner` on the project (or the tighter roles in the template README).
+- A Databricks account with account-admin privileges (GCP Marketplace subscription).
+- Terraform CLI v1.3+ installed locally.
+- Google Cloud SDK authenticated. The templates use GSA impersonation and `GOOGLE_OAUTH_ACCESS_TOKEN` (see each repo README and `service-account-impersonation.md`).
+- The GSA added to the Databricks account console as an account user with the account-admin role.
+
+## Terraform resources
+
+Open the repository for your scenario and follow its **README.md**. Run Terraform from the **repository root** (not a `tf/` subdirectory): copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
+
+Repeat for **development**, **staging**, and **production**. Use `databricks_workspace_name` (and separate GCP projects or subnets) to tell environments apart.
+
+If you are **new to Databricks** and do not already have a VPC, start with **Standalone** (first row).
+
+| Terraform template | What it creates | URL |
+| --- | --- | --- |
+| 💎 **Standalone (new VPC)** | <ul><li>VPC, subnet (`private_ip_google_access`)</li><li>Cloud Router and Cloud NAT</li><li>Databricks MWS network and workspace</li><li>Workspace admin user in `admins` group</li><li>GCS buckets for workspace storage (Databricks-managed)</li></ul> | [gcp-byovpc-standalone](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone) |
+| **Shared VPC (existing network)** | <ul><li>Databricks MWS network referencing existing VPC/subnet</li><li>Databricks workspace</li><li>Workspace admin user in `admins` group</li><li>Optional Unity Catalog metastore assignment (`metastore_id`)</li></ul> | [gcp-byovpc-shared-vpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-shared-vpc) |
+
+:::warning
+For **Shared VPC** when the VPC lives in a **host project**, grant the GSA `roles/compute.networkUser` and `roles/compute.networkViewer` on the host project. Enable Shared VPC and attach the service project per the template README.
+:::
+
+:::tip
+Enable the Compute API before apply: `gcloud services enable compute.googleapis.com --project <PROJECT_ID>`. For least-privilege auth, see `service-account-impersonation.md` in each template repo.
+:::
+
+## Verify
+
+1. Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
+2. Open **Workspaces** and confirm the new workspace shows **Running**.
+3. Run `terraform output -raw workspace_url` and confirm you reach the workspace landing page.
+4. In the GCP console, confirm the VPC/subnet (Standalone) or that the existing network is referenced (Shared VPC).
+5. If you set `metastore_id`, open **Catalog** in the workspace and confirm the metastore is attached.
+
+## Where people trip
+
+<details>
+<summary>Terraform apply fails with API not enabled</summary>
+
+Enable the required APIs on the target project:
+
+```bash
+gcloud services enable compute.googleapis.com --project <PROJECT_ID>
+```
+</details>
+
+<details>
+<summary>Permission errors during apply</summary>
+
+Confirm the GSA has `roles/Owner` on the service project (Standalone) and the required network roles on the host project (Shared VPC). Refresh the access token:
+
+```bash
+export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+```
+</details>
+
+<details>
+<summary>VPC/Subnet not found (Shared VPC)</summary>
+
+Check `vpc_name`, `subnet_name`, `vpc_network_project_id`, and `google_region`. The subnet must exist in the region you deploy the workspace to.
+</details>
+
+<details>
+<summary>`terraform destroy` fails because the network is still in use</summary>
+
+Databricks may leave firewall rules on the VPC. Destroy in order per the Standalone README: workspace first, then NAT/router, then the rest. Delete orphaned firewall rules with `gcloud compute firewall-rules delete` if needed.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/03-infra-setup/add-users)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks Terraform provider](https://registry.terraform.io/providers/databricks/databricks/latest/docs)

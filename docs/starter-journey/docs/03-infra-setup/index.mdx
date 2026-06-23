@@ -1,0 +1,50 @@
+---
+sidebar_position: 0
+sidebar_label: 3. Infra Setup
+description: Set up workspaces, users, groups, metastore administration, and SSO for your Databricks deployment.
+---
+
+# 3. Infra Setup
+
+> **You'll deploy** the core Databricks infrastructure (workspaces, identity, and governance) in this section.
+>
+> **Prereqs:** [Before you Start](/docs/02-before-you-start/foundations)
+
+## Why this matters
+
+Do this part in order, and do it before anyone starts loading data. Skip the workspace layout, central identity, and metastore ownership now and you will be untangling them later, with real users and real tables in the way. The pieces below build on each other, so each section assumes the last one is done.
+
+## Journey checklist
+
+- [x] ~~Get started.~~
+- [x] ~~Before you start.~~
+- [ ] **Infra setup**
+    - [ ] Create workspaces.
+    - [ ] Add users.
+    - [ ] Add groups.
+    - [ ] Change ownership to metastore admins.
+    - [ ] Activate SSO.
+- [ ] Cost monitoring.
+- [ ] Data Governance Strategy.
+- [ ] Access your data.
+- [ ] Build the first pipeline.
+- [ ] Automation and orchestration.
+- [ ] Query and explore.
+- [ ] Databricks AI/BI.
+- [ ] Business semantics.
+
+## What you'll set up
+
+Work through these in order. Each one assumes the previous is done.
+
+- **[Create Workspaces](/docs/03-infra-setup/create-workspaces)**: deploy workspaces on AWS, Azure, or GCP, by hand or with Terraform.
+- **[Add Users](/docs/03-infra-setup/add-users)**: register users by hand or through SCIM provisioning.
+- **[Add Groups](/docs/03-infra-setup/add-groups)**: create groups that map to data personas and assign users to them.
+- **[Metastore Admins](/docs/03-infra-setup/metastore-admins)**: set the admin group and move UC asset ownership to it.
+- **[Activate SSO](/docs/03-infra-setup/activate-sso)**: wire single sign-on to your identity provider.
+
+## Next
+
+- **Do next:** [Create Workspaces](/docs/03-infra-setup/create-workspaces)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks administration overview](https://docs.databricks.com/aws/en/admin/)
