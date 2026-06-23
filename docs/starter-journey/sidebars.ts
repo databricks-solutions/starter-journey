@@ -217,7 +217,11 @@ const sidebars: SidebarsConfig = {
       label: '14. MLOps',
       collapsed: true,
       link: {type: 'doc', id: '14-mlops/index'},
-      items: [],
+      items: [
+        '14-mlops/save-model-to-unity-catalog',
+        '14-mlops/batch-inference',
+        '14-mlops/prepare-datasets',
+      ],
     },
   ],
 };
