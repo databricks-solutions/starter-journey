@@ -30,6 +30,34 @@
    with the full-width rows. */
 .fork .block {
   min-width: 0;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+/* Fork columns are a third of the width, so shrink the contents to keep the
+   label, tag, and check inside the block and aligned. Labels wrap between
+   words; break-word only splits a word as a last resort. */
+.fork .icon {
+  width: 18px;
+  height: 18px;
+}
+.fork .label {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.fork .tag {
+  font-size: 0.56rem;
+  padding: 2px 7px;
+}
+.fork .check {
+  width: 16px;
+  height: 16px;
+}
+.fork .currentDot {
+  width: 10px;
+  height: 10px;
 }
 
 /* State classes only declare custom props, no direct visual styles. */
