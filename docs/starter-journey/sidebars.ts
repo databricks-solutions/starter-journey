@@ -76,7 +76,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Add Users',
-          link: {type: 'doc', id: '03-infra-setup/add-users/index'},
+          collapsed: true,
           items: [
             '03-infra-setup/add-users/manual',
             '03-infra-setup/add-users/scim',
@@ -94,7 +94,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Metastore Admins',
-          link: {type: 'doc', id: '03-infra-setup/metastore-admins/index'},
+          collapsed: true,
           items: [
             '03-infra-setup/metastore-admins/set-admin-group',
             '03-infra-setup/metastore-admins/uc-assets-ownership',
@@ -166,7 +166,8 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '9. Unified Analytics',
-      collapsed: true,
+      collapsed: false,
+      className: 'sidebar-track-da',
       items: [
         {
           type: 'category',
@@ -200,6 +201,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '10. Predictive Analytics',
       collapsed: true,
+      className: 'sidebar-track-ml',
       link: {type: 'doc', id: '10-predictive-analytics/index'},
       items: [
         '10-predictive-analytics/save-model-to-unity-catalog',
@@ -211,6 +213,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '11. Agents',
       collapsed: true,
+      className: 'sidebar-track-ai',
       link: {type: 'doc', id: '11-agents/index'},
       items: [],
     },
@@ -218,8 +221,8 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '12. Automation & Orchestration',
       collapsed: true,
+      link: {type: 'doc', id: '12-orchestration/index'},
       items: [
-        '12-orchestration/workspace',
         '12-orchestration/dabs',
       ],
     },
@@ -237,7 +240,6 @@ const sidebars: SidebarsConfig = {
       link: {type: 'doc', id: '14-ci-cd-devops/index'},
       items: [],
     },
-    {type: 'doc', id: '15-journey-progress-demo/index', label: '15. Journey Progress (demo)'},
   ],
 };
 

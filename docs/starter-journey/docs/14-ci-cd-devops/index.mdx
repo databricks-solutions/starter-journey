@@ -3,6 +3,7 @@ sidebar_position: 0
 sidebar_label: 14. CI/CD and DevOps
 description: Split platform infra from workspace projects. Terraform for accounts and networks, DABs for everything inside the workspace.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
 # 14. CI/CD and DevOps
 
@@ -16,21 +17,7 @@ Draw one line and most of the confusion goes away: anything outside the workspac
 
 Clicking changes into the Workspace by hand works until it doesn't. The moment a second person needs to ship, or you need staging to match prod, you want repeatable deploys, a review gate, and a way to promote a change from dev to prod. That is the same discipline that keeps application code sane, applied to data work.
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [x] ~~Data governance strategy.~~
-- [x] ~~Access your data.~~
-- [x] ~~Build the first pipeline.~~
-- [x] ~~Automation and orchestration.~~
-- [x] ~~Query and explore.~~
-- [x] ~~Databricks AI/BI.~~
-- [x] ~~Business semantics.~~
-- [x] ~~13. Data Access Control (in progress)~~
-- [ ] **14. CI/CD and DevOps**
+<StarterJourneyProgress currentLevel={9}/>
 
 ## The two layers
 
