@@ -142,13 +142,14 @@ starter-journey/
 │           ├── 05-data-governance-strategy/
 │           ├── 06-access-your-data/
 │           ├── 07-build-first-pipeline/
-│           ├── 08-orchestration/
-│           ├── 09-query-and-explore.mdx
-│           ├── 10-databricks-aibi/
-│           ├── 11-business-semantics/
-│           ├── 12-data-access-control/
-│           ├── 13-ci-cd-devops/
-│           └── 14-mlops/
+│           ├── 08-query-and-explore.mdx
+│           ├── 09-unified-analytics/
+│           ├── 10-predictive-analytics/
+│           ├── 11-agents/
+│           ├── 12-orchestration/
+│           ├── 13-data-access-control/
+│           ├── 14-ci-cd-devops/
+│           └── 15-journey-progress-demo/
 ├── scripts/
 │   ├── check_section_freshness.py
 │   └── check_agent_instructions_sync.sh
@@ -367,7 +368,7 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 ## Common mistakes to avoid
 
 - **Editing `sidebars.ts` without building** — always run `npm run build` after sidebar changes to catch broken doc IDs.
-- **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/10-databricks-aibi/dashboards`). Do not use relative file paths.
+- **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/09-unified-analytics/databricks-aibi/dashboards`). Do not use relative file paths.
 - **Adding admonitions beyond the allowed three** — the build won't catch this, but it violates the style guide.
 - **Forgetting the `## Next` block** — every page needs it. Technical pages link to educational counterparts and vice versa.
 - **Images without section prefix** — `static/img/` is flat. Prefix images to avoid name collisions.
