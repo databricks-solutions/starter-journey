@@ -11,12 +11,13 @@ interface SandboxState {
 }
 
 const STATES: SandboxState[] = [
-  { title: 'Level 1 · Cost Monitoring (DE): early progress', currentLevel: 1 },
-  { title: 'Level 4 · Build the First Pipeline (DE)', currentLevel: 4 },
-  { title: 'Level 6 · ML fork · Feature Store (current)', currentLevel: 6, currentForkColumn: 'ml' },
-  { title: 'Level 7 · GenAI fork · Agents (current)', currentLevel: 7, currentForkColumn: 'genai' },
-  { title: 'Level 7 · DA fork · Unified Analytics (current)', currentLevel: 7, currentForkColumn: 'da' },
-  { title: 'Level 9 · CI/CD: journey complete', currentLevel: 9 },
+  { title: 'Level 1 - Cost Monitoring: early progress', currentLevel: 1 },
+  { title: 'Level 4 - Build the First Pipeline', currentLevel: 4 },
+  { title: 'Level 5 - Query and Explore', currentLevel: 5 },
+  { title: 'Level 6 - DA fork - Unified Analytics (current)', currentLevel: 6, currentForkColumn: 'da' },
+  { title: 'Level 6 - ML fork - Predictive Analytics (current)', currentLevel: 6, currentForkColumn: 'ml' },
+  { title: 'Level 6 - AI fork - Agents (current)', currentLevel: 6, currentForkColumn: 'genai' },
+  { title: 'Level 9 - CI/CD: journey complete', currentLevel: 9 },
 ];
 
 export default function JourneySandbox(): React.ReactElement {
