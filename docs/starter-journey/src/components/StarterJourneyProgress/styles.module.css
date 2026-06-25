@@ -210,6 +210,41 @@
   }
 }
 
+/* Fork connectors: split (below fork) and merge (above fork).
+   The stack is column-reverse so "split" renders visually below the fork
+   and "merge" renders above it. */
+.connector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  position: relative;
+}
+
+.connectorSvg {
+  width: 100%;
+  max-width: 400px;
+  height: 32px;
+  overflow: visible;
+}
+
+.connectorLine {
+  stroke: var(--sj-connector);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Track-specific fork block tints */
+.trackDa {
+  border-left: 3px solid var(--sj-track-da);
+}
+.trackMl {
+  border-left: 3px solid var(--sj-track-ml);
+}
+.trackAi {
+  border-left: 3px solid var(--sj-track-ai);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .block,
   .block.current {

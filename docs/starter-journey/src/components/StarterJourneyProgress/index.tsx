@@ -1,4 +1,3 @@
-// src/components/StarterJourneyProgress/index.tsx
 import React from 'react';
 import clsx from 'clsx';
 import {
@@ -20,6 +19,12 @@ const STATE_CLASS: Record<ProgressState, string> = {
   pending: styles.pending,
 };
 
+const TRACK_CLASS: Record<ForkColumn, string> = {
+  da: styles.trackDa,
+  ml: styles.trackMl,
+  genai: styles.trackAi,
+};
+
 interface BlockRowProps {
   block: JourneyBlock;
   state: ProgressState;
@@ -30,7 +35,12 @@ interface BlockRowProps {
 function BlockRow({ block, state, isFoundation, index }: BlockRowProps) {
   return (
     <div
-      className={clsx(styles.block, STATE_CLASS[state], isFoundation && styles.foundation)}
+      className={clsx(
+        styles.block,
+        STATE_CLASS[state],
+        isFoundation && styles.foundation,
+        block.forkColumn && TRACK_CLASS[block.forkColumn],
+      )}
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <span className={styles.icon}>{BLOCK_ICONS[block.icon]}</span>
@@ -72,6 +82,30 @@ function BlockRow({ block, state, isFoundation, index }: BlockRowProps) {
   );
 }
 
+function SplitConnector() {
+  return (
+    <div className={styles.connector}>
+      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none">
+        <path className={styles.connectorLine} d="M200,0 L200,8 M200,8 L67,24 L67,32" />
+        <path className={styles.connectorLine} d="M200,8 L200,32" />
+        <path className={styles.connectorLine} d="M200,8 L333,24 L333,32" />
+      </svg>
+    </div>
+  );
+}
+
+function MergeConnector() {
+  return (
+    <div className={styles.connector}>
+      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none">
+        <path className={styles.connectorLine} d="M67,0 L67,8 L200,24 M200,24 L200,32" />
+        <path className={styles.connectorLine} d="M200,0 L200,24" />
+        <path className={styles.connectorLine} d="M333,0 L333,8 L200,24" />
+      </svg>
+    </div>
+  );
+}
+
 export interface StarterJourneyProgressProps {
   currentLevel?: number;
   currentForkColumn?: ForkColumn;
@@ -104,16 +138,20 @@ export default function StarterJourneyProgress({
 
           if (isFork) {
             return (
-              <div key={level} className={styles.fork}>
-                {blocksAtLevel.map((block) => (
-                  <BlockRow
-                    key={block.id}
-                    block={block}
-                    state={getBlockState(block, currentLevel, currentForkColumn)}
-                    index={rowIndex++}
-                  />
-                ))}
-              </div>
+              <React.Fragment key={level}>
+                <MergeConnector />
+                <div className={styles.fork}>
+                  {blocksAtLevel.map((block) => (
+                    <BlockRow
+                      key={block.id}
+                      block={block}
+                      state={getBlockState(block, currentLevel, currentForkColumn)}
+                      index={rowIndex++}
+                    />
+                  ))}
+                </div>
+                <SplitConnector />
+              </React.Fragment>
             );
           }
 
