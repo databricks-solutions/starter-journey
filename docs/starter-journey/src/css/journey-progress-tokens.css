@@ -24,6 +24,12 @@
   --sj-dev: #00a9a5;
   --sj-staging: #d4a843;
   --sj-prod: #ff6f00;
+
+  --sj-track-da: #1b73e8;
+  --sj-track-ml: #9334e6;
+  --sj-track-ai: #0d9488;
+
+  --sj-connector: #9ca3af;
 }
 
 [data-theme='dark'] {
@@ -49,4 +55,10 @@
   --sj-dev: #2dd4ce;
   --sj-staging: #e5c063;
   --sj-prod: #ff8a3d;
+
+  --sj-track-da: #4d9cff;
+  --sj-track-ml: #b388ff;
+  --sj-track-ai: #2dd4bf;
+
+  --sj-connector: #4b5563;
 }
