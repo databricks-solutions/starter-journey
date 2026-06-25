@@ -23,11 +23,11 @@ export const JOURNEY_BLOCKS: JourneyBlock[] = [
   { id: "access-data",         label: "Access Your Data",           level: 3, tag: "DE",    icon: "cloud-download" },
   { id: "first-pipeline",      label: "Build the First Pipeline",   level: 4, tag: "DE",    icon: "pipeline" },
   { id: "automation",          label: "Automation & Orchestration", level: 5, tag: "DE",    icon: "gear" },
-  // Fork row — level 6
+  // Fork row, level 6
   { id: "metric-views",        label: "Business Semantics",         level: 6, forkColumn: "da",    tag: "DA",    icon: "tag" },
   { id: "feature-store",       label: "Feature Store",              level: 6, forkColumn: "ml",    tag: "ML",    icon: "database" },
   { id: "vector-search",       label: "Document Intelligence",      level: 6, forkColumn: "genai", tag: "GenAI", icon: "search" },
-  // Fork row — level 7
+  // Fork row, level 7
   { id: "aibi",                label: "Unified Analytics",          level: 7, forkColumn: "da",    tag: "DA",    icon: "dashboard" },
   { id: "mlops",               label: "Predictive Analytics",       level: 7, forkColumn: "ml",    tag: "ML",    icon: "brain" },
   { id: "agentbricks",         label: "Agents",                     level: 7, forkColumn: "genai", tag: "GenAI", icon: "bot" },

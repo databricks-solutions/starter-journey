@@ -25,7 +25,7 @@
   gap: 10px;
 }
 
-/* State classes only declare custom props — no direct visual styles. */
+/* State classes only declare custom props, no direct visual styles. */
 .completed {
   --state-border: var(--sj-completed-border);
   --state-fill: var(--sj-completed-fill);

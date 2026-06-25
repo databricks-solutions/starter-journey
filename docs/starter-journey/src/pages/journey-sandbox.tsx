@@ -11,12 +11,12 @@ interface SandboxState {
 }
 
 const STATES: SandboxState[] = [
-  { title: 'Level 1 · Cost Monitoring (DE) — early progress', currentLevel: 1 },
+  { title: 'Level 1 · Cost Monitoring (DE): early progress', currentLevel: 1 },
   { title: 'Level 4 · Build the First Pipeline (DE)', currentLevel: 4 },
   { title: 'Level 6 · ML fork · Feature Store (current)', currentLevel: 6, currentForkColumn: 'ml' },
   { title: 'Level 7 · GenAI fork · Agents (current)', currentLevel: 7, currentForkColumn: 'genai' },
   { title: 'Level 7 · DA fork · Unified Analytics (current)', currentLevel: 7, currentForkColumn: 'da' },
-  { title: 'Level 9 · CI/CD — journey complete', currentLevel: 9 },
+  { title: 'Level 9 · CI/CD: journey complete', currentLevel: 9 },
 ];
 
 export default function JourneySandbox(): React.ReactElement {
@@ -26,7 +26,7 @@ export default function JourneySandbox(): React.ReactElement {
       description="Preview of the Starter Journey progress component"
     >
       <main className="container margin-vert--lg">
-        <h1>Starter Journey Progress — Sandbox</h1>
+        <h1>Starter Journey Progress: Sandbox</h1>
         <p>
           Toggle the site light/dark switch (top-right) to verify both themes. Each card below
           renders the component with a different <code>currentLevel</code> /{' '}
