@@ -15,7 +15,7 @@
 
 .stack {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 7px;
 }
 
@@ -23,6 +23,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+}
+
+/* Let fork columns honor their 1fr share instead of expanding to content
+   width (grid items default to min-width: auto), so a fork row lines up
+   with the full-width rows. */
+.fork .block {
+  min-width: 0;
 }
 
 /* State classes only declare custom props, no direct visual styles. */
