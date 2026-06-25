@@ -211,7 +211,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '11. Agents',
       collapsed: true,
-      link: {type: 'generated-index', title: 'Agents', description: 'Coming soon.'},
+      link: {type: 'doc', id: '16-agents/index'},
       items: [],
     },
     {
