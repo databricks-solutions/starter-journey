@@ -1,0 +1,184 @@
+/* src/components/StarterJourneyProgress/styles.module.css */
+.root {
+  font-family: var(--ifm-font-family-base);
+  max-width: 720px;
+  margin: 1.5rem auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--sj-text-primary);
+  margin: 0 0 1rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.fork {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* State classes only declare custom props — no direct visual styles. */
+.completed {
+  --state-border: var(--sj-completed-border);
+  --state-fill: var(--sj-completed-fill);
+  --state-text: var(--sj-text-primary);
+  --state-tag-bg: var(--sj-completed-tag-bg);
+}
+.current {
+  --state-border: var(--sj-current-border);
+  --state-fill: var(--sj-current-fill);
+  --state-text: var(--sj-text-primary);
+  --state-tag-bg: var(--sj-current-tag-bg);
+}
+.pending {
+  --state-border: var(--sj-pending-border);
+  --state-fill: var(--sj-pending-fill);
+  --state-text: var(--sj-pending-text);
+  --state-tag-bg: var(--sj-pending-tag-bg);
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  padding: 0 20px;
+  border: 2px solid var(--state-border);
+  border-radius: 8px;
+  background: var(--state-fill);
+  color: var(--state-text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  animation: sjEnter 0.5s ease-out forwards;
+}
+
+.foundation {
+  min-height: 72px;
+}
+
+.block.current {
+  animation:
+    sjEnter 0.5s ease-out forwards,
+    sjBreathe 1.25s ease-in-out 0.5s infinite;
+}
+
+.icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+}
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  flex: 1;
+  font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  font-weight: 600;
+}
+.block.current .label {
+  font-weight: 700;
+}
+
+.tag {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: var(--state-tag-bg);
+  color: var(--state-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.envBadges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.envBadge {
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--sj-env);
+  background: color-mix(in srgb, var(--sj-env) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sj-env) 38%, transparent);
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--sj-completed-border);
+}
+.currentDot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--sj-current-border);
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 1.25rem;
+}
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--sj-text-secondary);
+}
+.legendSwatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid var(--state-border);
+  background: var(--state-fill);
+}
+
+@keyframes sjEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sjBreathe {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px rgba(var(--sj-current-glow-rgb), 0.25),
+      0 0 16px rgba(var(--sj-current-glow-rgb), 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 24px rgba(var(--sj-current-glow-rgb), 0.6),
+      0 0 48px rgba(var(--sj-current-glow-rgb), 0.24);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block,
+  .block.current {
+    animation: none;
+    opacity: 1;
+  }
+}
