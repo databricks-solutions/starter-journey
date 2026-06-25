@@ -1,0 +1,28 @@
+---
+sidebar_label: 15. Journey Progress (demo)
+description: Live demo of the Starter Journey progress component.
+---
+
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+
+# 15. Journey Progress (demo)
+
+> A demo page to preview the `StarterJourneyProgress` component in context. Toggle the light/dark switch (top right) to see both themes.
+
+This component shows where a reader sits in the Starter Journey. Completed sections are green and checked, the current one glows blue, and upcoming ones stay grey. Levels 6 and 7 fork into the Data Analytics, Machine Learning, and GenAI tracks.
+
+## Early in the journey (Cost Monitoring)
+
+<StarterJourneyProgress currentLevel={1} />
+
+## Mid journey (Build the First Pipeline)
+
+<StarterJourneyProgress currentLevel={4} />
+
+## On the Machine Learning fork (Predictive Analytics)
+
+<StarterJourneyProgress currentLevel={7} currentForkColumn="ml" />
+
+## Journey complete (CI/CD)
+
+<StarterJourneyProgress currentLevel={9} />

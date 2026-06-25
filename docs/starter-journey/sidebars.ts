@@ -223,6 +223,7 @@ const sidebars: SidebarsConfig = {
         '14-mlops/prepare-datasets',
       ],
     },
+    {type: 'doc', id: '15-journey-progress-demo/index', label: '15. Journey Progress (demo)'},
   ],
 };
 
