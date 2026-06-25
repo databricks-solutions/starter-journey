@@ -210,9 +210,9 @@
   }
 }
 
-/* Fork connectors: split (below fork) and merge (above fork).
-   The stack is column-reverse so "split" renders visually below the fork
-   and "merge" renders above it. */
+/* Fork connectors: visual arrows between the pre-fork block and the
+   fork row (split) and between the fork row and the post-fork block
+   (merge). The stack uses column-reverse. */
 .connector {
   display: flex;
   justify-content: center;

@@ -85,7 +85,7 @@ function BlockRow({ block, state, isFoundation, index }: BlockRowProps) {
 function SplitConnector() {
   return (
     <div className={styles.connector}>
-      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none">
+      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none" aria-hidden="true">
         <path className={styles.connectorLine} d="M200,0 L200,8 M200,8 L67,24 L67,32" />
         <path className={styles.connectorLine} d="M200,8 L200,32" />
         <path className={styles.connectorLine} d="M200,8 L333,24 L333,32" />
@@ -97,7 +97,7 @@ function SplitConnector() {
 function MergeConnector() {
   return (
     <div className={styles.connector}>
-      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none">
+      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none" aria-hidden="true">
         <path className={styles.connectorLine} d="M67,0 L67,8 L200,24 M200,24 L200,32" />
         <path className={styles.connectorLine} d="M200,0 L200,24" />
         <path className={styles.connectorLine} d="M333,0 L333,8 L200,24" />
