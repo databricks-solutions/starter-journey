@@ -8,7 +8,7 @@ description: Score data with a registered model using pandas single-node or dist
 
 > **You'll score** data with a registered model — using pandas for quick checks or Spark UDFs for production scale — in ~10 min.
 >
-> **Prereqs:** [Save a Model to Unity Catalog](/docs/14-mlops/save-model-to-unity-catalog)
+> **Prereqs:** [Save a Model to Unity Catalog](/docs/10-predictive-analytics/save-model-to-unity-catalog)
 
 ## What you'll build
 
@@ -16,7 +16,7 @@ A batch job that loads a model from Unity Catalog by alias, scores rows, and wri
 
 ## Prerequisites
 
-- A model registered in Unity Catalog (see [Save a Model to Unity Catalog](/docs/14-mlops/save-model-to-unity-catalog)).
+- A model registered in Unity Catalog (see [Save a Model to Unity Catalog](/docs/10-predictive-analytics/save-model-to-unity-catalog)).
 - Data available in a Delta table or DataFrame to run inference against.
 
 ## Inference methods
@@ -29,6 +29,6 @@ A batch job that loads a model from Unity Catalog by alias, scores rows, and wri
 
 ## Next
 
-- **Do next:** [Datasets as Feature Tables](/docs/14-mlops/prepare-datasets)
-- **Learn why:** [14. MLOps](/docs/14-mlops/)
+- **Do next:** [Datasets as Feature Tables](/docs/10-predictive-analytics/prepare-datasets)
+- **Learn why:** [14. MLOps](/docs/10-predictive-analytics/)
 - **Reference:** [Model lifecycle in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/), [How to speed up inference](https://community.databricks.com/t5/machine-learning/how-to-speed-up-inference/td-p/135900), [Image ETL and inference](https://docs.databricks.com/aws/en/machine-learning/reference-solutions/images-etl-inference)

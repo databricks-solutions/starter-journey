@@ -7,9 +7,9 @@ description: Build a certified sales KPI metric view using the TPC-H dataset and
 
 > **You'll** create a certified metric view and confirm the same number lands in SQL, a dashboard, and Genie, in **30 to 45 min**.
 >
-> **Prereqs:** [Business Semantics overview](/docs/11-business-semantics/), a serverless SQL warehouse, `CREATE` on a target schema
+> **Prereqs:** [Business Semantics overview](/docs/09-unified-analytics/business-semantics/), a serverless SQL warehouse, `CREATE` on a target schema
 
-**What you'll build:** a sales analytics metric view sourced from `samples.tpch.orders`, joined out to customers and geography. By the end you'll have checked `Total Revenue`, `Unique Customers`, and `Avg Order Value` in SQL, in an [AI/BI dashboard](/docs/10-databricks-aibi/dashboards), and in a [Genie space](/docs/10-databricks-aibi/genie-spaces), and confirmed they all agree.
+**What you'll build:** a sales analytics metric view sourced from `samples.tpch.orders`, joined out to customers and geography. By the end you'll have checked `Total Revenue`, `Unique Customers`, and `Avg Order Value` in SQL, in an [AI/BI dashboard](/docs/09-unified-analytics/databricks-aibi/dashboards), and in a [Genie space](/docs/09-unified-analytics/databricks-aibi/genie-spaces), and confirmed they all agree.
 
 ## 1. Create the metric view
 
@@ -205,11 +205,11 @@ Now spot-check it. Run the equivalent raw aggregation against `samples.tpch.orde
 
 ### AI/BI dashboard
 
-In a [dashboard](/docs/10-databricks-aibi/dashboards), add a dataset bound to `my_catalog.my_schema.orders_metrics` and a tile showing `Total Revenue` by `Order Month`. The currency formatting carries over from the YAML, so there's nothing extra to configure.
+In a [dashboard](/docs/09-unified-analytics/databricks-aibi/dashboards), add a dataset bound to `my_catalog.my_schema.orders_metrics` and a tile showing `Total Revenue` by `Order Month`. The currency formatting carries over from the YAML, so there's nothing extra to configure.
 
 ### Genie space
 
-Add `my_catalog.my_schema.orders_metrics` to a [Genie space](/docs/10-databricks-aibi/genie-spaces), then ask it in plain English:
+Add `my_catalog.my_schema.orders_metrics` to a [Genie space](/docs/09-unified-analytics/databricks-aibi/genie-spaces), then ask it in plain English:
 
 - "What was revenue by month in 1995?"
 - "Show me backlog by country." This one leans on your `backlog` synonym for `Open Order Revenue` and the `country` synonym for `Country`.
@@ -245,6 +245,6 @@ Reconcile the time zone, the fiscal vs. calendar boundaries, and any row filters
 
 ## Next
 
-- **Do next:** [12. Data Access Control](/docs/12-data-access-control/) (work in progress)
-- **Learn why:** [Genie spaces](/docs/10-databricks-aibi/genie-spaces), [AI/BI overview](/docs/10-databricks-aibi/dashboards)
+- **Do next:** [12. Data Access Control](/docs/13-data-access-control/) (work in progress)
+- **Learn why:** [Genie spaces](/docs/09-unified-analytics/databricks-aibi/genie-spaces), [AI/BI overview](/docs/09-unified-analytics/databricks-aibi/dashboards)
 - **Reference:** [Create and edit metric views](https://docs.databricks.com/aws/en/business-semantics/metric-views/create-edit), [TPC-H metric view example](https://docs.databricks.com/aws/en/business-semantics/metric-views/tpch-example)

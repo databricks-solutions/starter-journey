@@ -8,7 +8,7 @@ description: Train and register a model in Unity Catalog, and register existing 
 
 > **You'll register** a model in Unity Catalog in ~20 min — whether you train it fresh, load it from a Volume, or pull it from Hugging Face.
 >
-> **Prereqs:** [Prepare Datasets](/docs/14-mlops/prepare-datasets)
+> **Prereqs:** [Prepare Datasets](/docs/10-predictive-analytics/prepare-datasets)
 
 ## What you'll build
 
@@ -137,6 +137,6 @@ Swap `distilbert-base-uncased-finetuned-sst-2-english` for any Hugging Face mode
 
 ## Next
 
-- **Do next:** [Batch Inference](/docs/14-mlops/batch-inference)
-- **Learn why:** [14. MLOps](/docs/14-mlops/)
+- **Do next:** [Batch Inference](/docs/10-predictive-analytics/batch-inference)
+- **Learn why:** [14. MLOps](/docs/10-predictive-analytics/)
 - **Reference:** [Install MLflow 3](https://docs.databricks.com/aws/en/mlflow/mlflow-3-install), [Manage the model lifecycle](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle), [View training results with MLflow runs](https://docs.databricks.com/aws/en/mlflow/runs)
