@@ -215,6 +215,41 @@
   background: rgba(255, 107, 87, 0.1);
 }
 
+/* Fork-track sidebar highlights (match StarterJourneyProgress track colors).
+   Categories with items use .menu__list-item-collapsible; categories with
+   empty items render a direct .menu__link child instead. */
+.sidebar-track-da > .menu__list-item-collapsible,
+.sidebar-track-da > .menu__link,
+.sidebar-track-ml > .menu__list-item-collapsible,
+.sidebar-track-ml > .menu__link,
+.sidebar-track-ai > .menu__list-item-collapsible,
+.sidebar-track-ai > .menu__link {
+  border-radius: 6px;
+  color: #ffffff !important;
+}
+.sidebar-track-da > .menu__list-item-collapsible .menu__link,
+.sidebar-track-ml > .menu__list-item-collapsible .menu__link,
+.sidebar-track-ai > .menu__list-item-collapsible .menu__link {
+  color: #ffffff !important;
+}
+.sidebar-track-da > .menu__list-item-collapsible .menu__caret::before,
+.sidebar-track-ml > .menu__list-item-collapsible .menu__caret::before,
+.sidebar-track-ai > .menu__list-item-collapsible .menu__caret::before {
+  filter: brightness(0) invert(1);
+}
+.sidebar-track-da > .menu__list-item-collapsible,
+.sidebar-track-da > .menu__link {
+  background: var(--sj-track-da);
+}
+.sidebar-track-ml > .menu__list-item-collapsible,
+.sidebar-track-ml > .menu__link {
+  background: var(--sj-track-ml);
+}
+.sidebar-track-ai > .menu__list-item-collapsible,
+.sidebar-track-ai > .menu__link {
+  background: var(--sj-track-ai);
+}
+
 /* ═══════════════════════════════════════
    TABLE OF CONTENTS (right sidebar)
    ═══════════════════════════════════════ */

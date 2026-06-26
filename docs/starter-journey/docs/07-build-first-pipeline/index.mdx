@@ -2,6 +2,7 @@
 sidebar_label: 7. Build the first ETL pipeline
 description: Build your first Spark Declarative Pipeline on Databricks using Lakeflow for ingestion, transformation, and orchestration.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
 # 7. Build the first ETL pipeline
 
@@ -15,19 +16,7 @@ Raw data in storage answers nothing on its own. The job of a pipeline is to turn
 
 The payoff of "declarative" is that you stop hand-writing the plumbing. You no longer maintain checkpoints by hand or work out which rows are new. You describe the result, and the engine handles incremental processing and dependency order for you.
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [x] ~~Data Governance Strategy.~~
-- [x] ~~Access your data.~~
-- [ ] **Build the first pipeline.**
-- [ ] Automation and orchestration.
-- [ ] Query and explore.
-- [ ] Databricks AI/BI.
-- [ ] Business semantics.
+<StarterJourneyProgress currentLevel={4}/>
 
 ## Data engineering on Databricks
 
@@ -37,7 +26,7 @@ Three Databricks tools split the work, each at a different stage of the data's l
 |---|---|---|
 | **Lakeflow Connect** | Pulls data from external sources into UC tables | [Access your data: Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors/) |
 | **Spark Declarative Pipelines** | Transforms raw data through bronze, silver, and gold layers | This section |
-| **Lakeflow Jobs** | Runs pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/08-orchestration/workspace) |
+| **Lakeflow Jobs** | Runs pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/12-orchestration/) |
 
 ### Lakeflow introduction
 

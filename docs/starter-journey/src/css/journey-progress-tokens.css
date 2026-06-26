@@ -1,0 +1,64 @@
+/* src/css/journey-progress-tokens.css
+   Progress-state palette for <StarterJourneyProgress />.
+   Light values from remotion-framework light-theme.ts; dark from dark-theme.ts. */
+:root {
+  --sj-bg: #f5f5f7;
+  --sj-surface: #ffffff;
+  --sj-text-primary: #1b2631;
+  --sj-text-secondary: #5f6b7a;
+
+  --sj-completed-border: #2ea44f;
+  --sj-completed-fill: #ffffff;
+  --sj-completed-tag-bg: #e6f4ea;
+
+  --sj-current-border: #1b73e8;
+  --sj-current-fill: #ebf5ff;
+  --sj-current-tag-bg: #d6e8fb;
+  --sj-current-glow-rgb: 27, 115, 232;
+
+  --sj-pending-border: #d1d5db;
+  --sj-pending-fill: #f9fafb;
+  --sj-pending-text: #9ca3af;
+  --sj-pending-tag-bg: #f3f4f6;
+
+  --sj-dev: #00a9a5;
+  --sj-staging: #d4a843;
+  --sj-prod: #ff6f00;
+
+  --sj-track-da: #E03E2D;
+  --sj-track-ml: #F97316;
+  --sj-track-ai: #9334E6;
+
+  --sj-connector: #9ca3af;
+}
+
+[data-theme='dark'] {
+  --sj-bg: #111111;
+  --sj-surface: #1a1a1a;
+  --sj-text-primary: #e8e8e8;
+  --sj-text-secondary: #9ba1a6;
+
+  --sj-completed-border: #3fb950;
+  --sj-completed-fill: #1a1a1a;
+  --sj-completed-tag-bg: #16321e;
+
+  --sj-current-border: #4d9cff;
+  --sj-current-fill: #16243a;
+  --sj-current-tag-bg: #1e3354;
+  --sj-current-glow-rgb: 77, 156, 255;
+
+  --sj-pending-border: #3a3a3a;
+  --sj-pending-fill: #161616;
+  --sj-pending-text: #6b6b6b;
+  --sj-pending-tag-bg: #262626;
+
+  --sj-dev: #2dd4ce;
+  --sj-staging: #e5c063;
+  --sj-prod: #ff8a3d;
+
+  --sj-track-da: #FF6B57;
+  --sj-track-ml: #FFB84D;
+  --sj-track-ai: #B388FF;
+
+  --sj-connector: #4b5563;
+}

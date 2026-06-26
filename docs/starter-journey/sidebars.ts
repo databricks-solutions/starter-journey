@@ -76,7 +76,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Add Users',
-          link: {type: 'doc', id: '03-infra-setup/add-users/index'},
+          collapsed: true,
           items: [
             '03-infra-setup/add-users/manual',
             '03-infra-setup/add-users/scim',
@@ -94,7 +94,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Metastore Admins',
-          link: {type: 'doc', id: '03-infra-setup/metastore-admins/index'},
+          collapsed: true,
           items: [
             '03-infra-setup/metastore-admins/set-admin-group',
             '03-infra-setup/metastore-admins/uc-assets-ownership',
@@ -162,66 +162,83 @@ const sidebars: SidebarsConfig = {
         '07-build-first-pipeline/dabs',
       ],
     },
+    {type: 'doc', id: '08-query-and-explore', label: '8. Query and Explore'},
     {
       type: 'category',
-      label: '8. Automation & Orchestration',
-      collapsed: true,
+      label: '9. Unified Analytics',
+      collapsed: false,
+      className: 'sidebar-track-da',
       items: [
-        '08-orchestration/workspace',
-        '08-orchestration/dabs',
-      ],
-    },
-    {type: 'doc', id: '09-query-and-explore', label: '9. Query and Explore'},
-    {
-      type: 'category',
-      label: '10. Databricks AI/BI',
-      collapsed: true,
-      items: [
-        '10-databricks-aibi/dashboards',
         {
           type: 'category',
-          label: 'Genie Spaces',
-          link: {type: 'doc', id: '10-databricks-aibi/genie-spaces'},
+          label: 'Business Semantics',
+          collapsed: true,
+          link: {type: 'doc', id: '09-unified-analytics/business-semantics/index'},
           items: [
-            '10-databricks-aibi/try-a-sample-genie-space',
+            '09-unified-analytics/business-semantics/lab',
           ],
         },
-        '10-databricks-aibi/databricks-apps',
+        {
+          type: 'category',
+          label: 'Databricks AI/BI',
+          collapsed: true,
+          items: [
+            '09-unified-analytics/databricks-aibi/dashboards',
+            {
+              type: 'category',
+              label: 'Genie Spaces',
+              link: {type: 'doc', id: '09-unified-analytics/databricks-aibi/genie-spaces'},
+              items: [
+                '09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
+              ],
+            },
+            '09-unified-analytics/databricks-aibi/databricks-apps',
+          ],
+        },
       ],
     },
     {
       type: 'category',
-      label: '11. Business Semantics',
+      label: '10. Predictive Analytics',
       collapsed: true,
-      link: {type: 'doc', id: '11-business-semantics/index'},
+      className: 'sidebar-track-ml',
+      link: {type: 'doc', id: '10-predictive-analytics/index'},
       items: [
-        '11-business-semantics/lab',
+        '10-predictive-analytics/save-model-to-unity-catalog',
+        '10-predictive-analytics/batch-inference',
+        '10-predictive-analytics/prepare-datasets',
       ],
     },
     {
       type: 'category',
-      label: '12. Data Access Control',
+      label: '11. Agents',
       collapsed: true,
-      link: {type: 'doc', id: '12-data-access-control/index'},
+      className: 'sidebar-track-ai',
+      link: {type: 'doc', id: '11-agents/index'},
       items: [],
     },
     {
       type: 'category',
-      label: '13. CI/CD and DevOps',
+      label: '12. Automation & Orchestration',
       collapsed: true,
-      link: {type: 'doc', id: '13-ci-cd-devops/index'},
+      link: {type: 'doc', id: '12-orchestration/index'},
+      items: [
+        '12-orchestration/dabs',
+      ],
+    },
+    {
+      type: 'category',
+      label: '13. Data Access Control',
+      collapsed: true,
+      link: {type: 'doc', id: '13-data-access-control/index'},
       items: [],
     },
     {
       type: 'category',
-      label: '14. MLOps',
+      label: '14. CI/CD and DevOps',
       collapsed: true,
-      link: {type: 'doc', id: '14-mlops/index'},
-      items: [
-        '14-mlops/save-model-to-unity-catalog',
-        '14-mlops/batch-inference',
-        '14-mlops/prepare-datasets',
-      ],
+      link: {type: 'doc', id: '14-ci-cd-devops/index'},
+      items: [],
     },
   ],
 };

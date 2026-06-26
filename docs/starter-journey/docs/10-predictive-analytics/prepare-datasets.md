@@ -8,7 +8,7 @@ description: Install the Feature Store and Online Inference dbdemo to explore fe
 
 > **You'll install** the **Feature Store and Online Inference** dbdemo and explore three notebooks that cover feature engineering from basics to production patterns in ~15 min.
 >
-> **Prereqs:** [14. MLOps](/docs/14-mlops/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+> **Prereqs:** [14. MLOps](/docs/10-predictive-analytics/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 
 ## What you'll build
 
@@ -78,6 +78,6 @@ Pick a catalog and schema where your user can create tables, or ask a metastore 
 
 ## Next
 
-- **Do next:** [14. MLOps overview](/docs/14-mlops/)
-- **Learn why:** [14. MLOps](/docs/14-mlops/)
+- **Do next:** [14. MLOps overview](/docs/10-predictive-analytics/)
+- **Learn why:** [14. MLOps](/docs/10-predictive-analytics/)
 - **Reference:** [Feature Store and Online Inference (Demo Center)](https://www.databricks.com/resources/demos/tutorials/data-science-and-ai/feature-store-and-online-inference), [Feature tables in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/feature-store/uc/feature-tables-uc)

@@ -1,14 +1,15 @@
 ---
 sidebar_position: 0
-sidebar_label: 14. MLOps
+sidebar_label: Predictive Analytics
 description: Take models from experiment to governed production with Feature Store, MLflow, Model Serving, and batch inference.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
-# 14. MLOps
+# 10. Predictive Analytics
 
 > **You'll understand** how Databricks connects feature engineering, model training, deployment, and inference into a governed production lifecycle.
 >
-> **Prereqs:** [7. Build the first pipeline](/docs/07-build-first-pipeline/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [13. CI/CD and DevOps](/docs/13-ci-cd-devops/)
+> **Prereqs:** [7. Build the first pipeline](/docs/07-build-first-pipeline/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [14. CI/CD and DevOps](/docs/14-ci-cd-devops/)
 
 ## Why this matters
 
@@ -18,27 +19,9 @@ A Databricks MLOps solution is three Ops disciplines working in concert:
 |---|---|---|
 | **DataOps** | Feature tables, training sets, inference outputs | Unity Catalog |
 | **ModelOps** | Experiment tracking, model registry, model serving | MLflow |
-| **DevOps** | Repo structure, CI/CD pipelines, environment promotion | DABs + Git (see [13. CI/CD and DevOps](/docs/13-ci-cd-devops/)) |
+| **DevOps** | Repo structure, CI/CD pipelines, environment promotion | DABs + Git (see [14. CI/CD and DevOps](/docs/14-ci-cd-devops/)) |
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [x] ~~Data governance strategy.~~
-- [x] ~~Access your data.~~
-- [x] ~~Build the first pipeline.~~
-- [x] ~~Automation and orchestration.~~
-- [x] ~~Query and explore.~~
-- [x] ~~Databricks AI/BI.~~
-- [x] ~~Business semantics.~~
-- [x] ~~12. Data Access Control (in progress)~~
-- [x] ~~13. CI/CD and DevOps~~
-- [ ] **14. MLOps**
-    - [ ] [Save a Model to Unity Catalog](/docs/14-mlops/save-model-to-unity-catalog)
-    - [ ] [Batch Inference](/docs/14-mlops/batch-inference)
-    - [ ] [Datasets as Feature Tables](/docs/14-mlops/prepare-datasets)
+<StarterJourneyProgress currentLevel={6} currentForkColumn="ml"/>
 
 ## Mental model
 
@@ -59,7 +42,7 @@ This video is the definitive guide for MLOps on Databricks. It puts into practic
 
 ## Deploy the MLOps quickstart
 
-The [mlops-quickstart repo](https://github.com/databricks-solutions/mlops-quickstart) trains, registers, and promotes a model end to end. Before you deploy it, get familiar with [13. CI/CD and DevOps](/docs/13-ci-cd-devops/). The quickstart uses DABs and GitHub Actions, so understanding those first makes the deployment straightforward.
+The [mlops-quickstart repo](https://github.com/databricks-solutions/mlops-quickstart) trains, registers, and promotes a model end to end. Before you deploy it, get familiar with [14. CI/CD and DevOps](/docs/14-ci-cd-devops/). The quickstart uses DABs and GitHub Actions, so understanding those first makes the deployment straightforward.
 
 Once you have the project running, read the [Adapt this template with Genie Code](https://github.com/databricks-solutions/mlops-quickstart#adapt-this-template-with-genie-code) section in the repo to swap in your own data, model, and inference pipelines using the built-in Databricks Assistant skills.
 
@@ -74,12 +57,12 @@ Once you have the project running, read the [Adapt this template with Genie Code
 
 ## In this section
 
-- **[Save a Model to Unity Catalog](/docs/14-mlops/save-model-to-unity-catalog)**: train and register a model in UC, and register existing models from a Volume or Hugging Face.
-- **[Batch Inference](/docs/14-mlops/batch-inference)**: score data with the challenger model in pandas and Spark batch jobs, and run large-scale tracked inference.
-- **[Datasets as Feature Tables](/docs/14-mlops/prepare-datasets)**: install the Feature Store and Online Inference demo to explore feature engineering, online tables, and Lakeflow Declarative Pipelines.
+- **[Save a Model to Unity Catalog](/docs/10-predictive-analytics/save-model-to-unity-catalog)**: train and register a model in UC, and register existing models from a Volume or Hugging Face.
+- **[Batch Inference](/docs/10-predictive-analytics/batch-inference)**: score data with the challenger model in pandas and Spark batch jobs, and run large-scale tracked inference.
+- **[Datasets as Feature Tables](/docs/10-predictive-analytics/prepare-datasets)**: install the Feature Store and Online Inference demo to explore feature engineering, online tables, and Lakeflow Declarative Pipelines.
 
 ## Next
 
-- **Do next:** [Save a Model to Unity Catalog](/docs/14-mlops/save-model-to-unity-catalog)
-- **Learn why:** [13. CI/CD and DevOps](/docs/13-ci-cd-devops/)
+- **Do next:** [Save a Model to Unity Catalog](/docs/10-predictive-analytics/save-model-to-unity-catalog)
+- **Learn why:** [14. CI/CD and DevOps](/docs/14-ci-cd-devops/)
 - **Reference:** [MLflow on Databricks](https://docs.databricks.com/aws/en/mlflow/)
