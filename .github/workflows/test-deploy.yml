@@ -15,7 +15,7 @@ jobs:
   test-deploy:
     name: Test deployment
     runs-on:
-      group: databricks-protected-runner-group
+      group: databricks-solutions-protected-runner-group
       labels: linux-ubuntu-latest
     defaults:
       run:

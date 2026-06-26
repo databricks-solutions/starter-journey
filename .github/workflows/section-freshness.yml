@@ -14,7 +14,7 @@ jobs:
   check-section-freshness:
     name: Check documentation section freshness
     runs-on:
-      group: databricks-protected-runner-group
+      group: databricks-solutions-protected-runner-group
       labels: linux-ubuntu-latest
 
     steps:

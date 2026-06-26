@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on:
-      group: databricks-protected-runner-group
+      group: databricks-solutions-protected-runner-group
       labels: linux-ubuntu-latest
     defaults:
       run:
@@ -100,7 +100,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on:
-      group: databricks-protected-runner-group
+      group: databricks-solutions-protected-runner-group
       labels: linux-ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
@@ -111,7 +111,7 @@ jobs:
     name: Tag and release
     needs: deploy
     runs-on:
-      group: databricks-protected-runner-group
+      group: databricks-solutions-protected-runner-group
       labels: linux-ubuntu-latest
     permissions:
       contents: write
