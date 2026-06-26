@@ -14,7 +14,9 @@ permissions:
 jobs:
   build:
     name: Build Docusaurus
-    runs-on: linux-ubuntu-latest
+    runs-on:
+      group: databricks-protected-runner-group
+      labels: linux-ubuntu-latest
     defaults:
       run:
         working-directory: ./docs/starter-journey
@@ -29,6 +31,10 @@ jobs:
           set -euo pipefail
 
           # Get GitHub OIDC ID token
+          # IMPORTANT: JFrog is for use from GitHub Actions only.
+          # Do not attempt to use or request access to JFrog
+          # for use outside of Github Actions.
+          # For local dev/testing, see go/registry-access.
           ID_TOKEN=$(curl -sLS \
             -H "User-Agent: actions/oidc-client" \
             -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
@@ -93,7 +99,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: linux-ubuntu-latest
+    runs-on:
+      group: databricks-protected-runner-group
+      labels: linux-ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
@@ -102,7 +110,9 @@ jobs:
   release:
     name: Tag and release
     needs: deploy
-    runs-on: linux-ubuntu-latest
+    runs-on:
+      group: databricks-protected-runner-group
+      labels: linux-ubuntu-latest
     permissions:
       contents: write
     steps:
