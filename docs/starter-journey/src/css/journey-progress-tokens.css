@@ -1,35 +1,42 @@
 /* src/css/journey-progress-tokens.css
    Progress-state palette for <StarterJourneyProgress />.
-   Light values from remotion-framework light-theme.ts; dark from dark-theme.ts. */
+   Light values match the design mockup; dark values are a sensible adaptation. */
 :root {
-  --sj-bg: #f5f5f7;
+  --sj-bg: #f4f5f7;
   --sj-surface: #ffffff;
-  --sj-text-primary: #1b2631;
-  --sj-text-secondary: #5f6b7a;
+  --sj-text-primary: #1b2430;
+  --sj-text-secondary: #5b626c;
 
-  --sj-completed-border: #2ea44f;
+  --sj-completed-border: #1f9d57;
   --sj-completed-fill: #ffffff;
-  --sj-completed-tag-bg: #e6f4ea;
+  --sj-completed-tag-bg: #eef1f5;
 
-  --sj-current-border: #1b73e8;
-  --sj-current-fill: #ebf5ff;
-  --sj-current-tag-bg: #d6e8fb;
-  --sj-current-glow-rgb: 27, 115, 232;
+  --sj-current-border: #2f6bf5;
+  --sj-current-fill: #ffffff;
+  --sj-current-tag-bg: color-mix(in srgb, var(--sj-current-border) 14%, #fff);
+  --sj-current-ring: color-mix(in srgb, var(--sj-current-border) 16%, transparent);
+  --sj-current-glow-rgb: 47, 107, 245;
 
-  --sj-pending-border: #d1d5db;
-  --sj-pending-fill: #f9fafb;
-  --sj-pending-text: #9ca3af;
-  --sj-pending-tag-bg: #f3f4f6;
+  --sj-pending-border: #e4e8ee;
+  --sj-pending-fill: #f8fafc;
+  --sj-pending-text: #aab0b9;
+  --sj-pending-tag-bg: #eef1f5;
+  --sj-pending-tag-text: #9aa1ab;
 
-  --sj-dev: #00a9a5;
-  --sj-staging: #d4a843;
-  --sj-prod: #ff6f00;
+  /* Environment badges (foundation row): explicit bg/fg pairs */
+  --sj-dev-bg: #e3f6ec;
+  --sj-dev-fg: #1f9d57;
+  --sj-staging-bg: #fdf3da;
+  --sj-staging-fg: #bf8a1e;
+  --sj-prod-bg: #fdeae0;
+  --sj-prod-fg: #d2683a;
 
-  --sj-track-da: #E03E2D;
-  --sj-track-ml: #F97316;
-  --sj-track-ai: #9334E6;
+  /* Fork branch (track) colors */
+  --sj-track-da: #ef4444;
+  --sj-track-ml: #f97316;
+  --sj-track-ai: #a855f7;
 
-  --sj-connector: #9ca3af;
+  --sj-connector: #c5ccd5;
 }
 
 [data-theme='dark'] {
@@ -40,25 +47,30 @@
 
   --sj-completed-border: #3fb950;
   --sj-completed-fill: #1a1a1a;
-  --sj-completed-tag-bg: #16321e;
+  --sj-completed-tag-bg: #262b33;
 
   --sj-current-border: #4d9cff;
-  --sj-current-fill: #16243a;
-  --sj-current-tag-bg: #1e3354;
+  --sj-current-fill: #1a1a1a;
+  --sj-current-tag-bg: color-mix(in srgb, var(--sj-current-border) 22%, #1a1a1a);
+  --sj-current-ring: color-mix(in srgb, var(--sj-current-border) 24%, transparent);
   --sj-current-glow-rgb: 77, 156, 255;
 
   --sj-pending-border: #3a3a3a;
   --sj-pending-fill: #161616;
   --sj-pending-text: #6b6b6b;
   --sj-pending-tag-bg: #262626;
+  --sj-pending-tag-text: #7a7f87;
 
-  --sj-dev: #2dd4ce;
-  --sj-staging: #e5c063;
-  --sj-prod: #ff8a3d;
+  --sj-dev-bg: #12281d;
+  --sj-dev-fg: #3fb950;
+  --sj-staging-bg: #2c2410;
+  --sj-staging-fg: #e5c063;
+  --sj-prod-bg: #2c1a12;
+  --sj-prod-fg: #ff8a3d;
 
-  --sj-track-da: #FF6B57;
-  --sj-track-ml: #FFB84D;
-  --sj-track-ai: #B388FF;
+  --sj-track-da: #ff6b57;
+  --sj-track-ml: #ffb84d;
+  --sj-track-ai: #b388ff;
 
   --sj-connector: #4b5563;
 }

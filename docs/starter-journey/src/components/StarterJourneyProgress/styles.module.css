@@ -1,63 +1,30 @@
 /* src/components/StarterJourneyProgress/styles.module.css */
 .root {
   font-family: var(--ifm-font-family-base);
-  max-width: 720px;
+  max-width: 620px;
   margin: 1.5rem auto;
+  color: var(--sj-text-primary);
 }
 
 .title {
   text-align: center;
   font-size: 1.4rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--sj-text-primary);
-  margin: 0 0 1rem;
+  margin: 0 0 1.6rem;
 }
 
 .stack {
   display: flex;
-  flex-direction: column-reverse;
-  gap: 7px;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .fork {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-/* Let fork columns honor their 1fr share instead of expanding to content
-   width (grid items default to min-width: auto), so a fork row lines up
-   with the full-width rows. */
-.fork .block {
-  min-width: 0;
-  gap: 8px;
-  padding: 0 12px;
-}
-
-/* Fork columns are a third of the width, so shrink the contents to keep the
-   label, tag, and check inside the block and aligned. Labels wrap between
-   words; break-word only splits a word as a last resort. */
-.fork .icon {
-  width: 18px;
-  height: 18px;
-}
-.fork .label {
-  font-size: 0.72rem;
-  line-height: 1.2;
-  min-width: 0;
-  overflow-wrap: break-word;
-}
-.fork .tag {
-  font-size: 0.56rem;
-  padding: 2px 7px;
-}
-.fork .check {
-  width: 16px;
-  height: 16px;
-}
-.fork .currentDot {
-  width: 10px;
-  height: 10px;
+  gap: 14px;
 }
 
 /* State classes only declare custom props, no direct visual styles. */
@@ -65,89 +32,131 @@
   --state-border: var(--sj-completed-border);
   --state-fill: var(--sj-completed-fill);
   --state-text: var(--sj-text-primary);
-  --state-tag-bg: var(--sj-completed-tag-bg);
 }
 .current {
   --state-border: var(--sj-current-border);
   --state-fill: var(--sj-current-fill);
   --state-text: var(--sj-text-primary);
-  --state-tag-bg: var(--sj-current-tag-bg);
 }
 .pending {
   --state-border: var(--sj-pending-border);
   --state-fill: var(--sj-pending-fill);
   --state-text: var(--sj-pending-text);
-  --state-tag-bg: var(--sj-pending-tag-bg);
 }
 
 .block {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 56px;
-  padding: 0 20px;
+  gap: 16px;
+  height: 62px;
+  padding: 0 22px;
   border: 2px solid var(--state-border);
-  border-radius: 8px;
+  border-radius: 14px;
   background: var(--state-fill);
   color: var(--state-text);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   opacity: 0;
   animation: sjEnter 0.5s ease-out forwards;
 }
 
-.foundation {
-  min-height: 72px;
-}
-
 .block.current {
+  box-shadow: 0 0 0 4px var(--sj-current-ring);
   animation:
     sjEnter 0.5s ease-out forwards,
-    sjBreathe 1.25s ease-in-out 0.5s infinite;
+    sjBreathe 2s ease-in-out 0.5s infinite;
+}
+
+/* Fork columns are a third of the width; tighten spacing and clamp the label. */
+.fork .block {
+  min-width: 0;
+  gap: 11px;
+  padding: 0 12px 0 24px;
+}
+
+.accent {
+  position: absolute;
+  left: 8px;
+  top: 9px;
+  bottom: 9px;
+  width: 4px;
+  border-radius: 4px;
+  background: var(--sj-accent);
+}
+.trackDa {
+  --sj-accent: var(--sj-track-da);
+}
+.trackMl {
+  --sj-accent: var(--sj-track-ml);
+}
+.trackAi {
+  --sj-accent: var(--sj-track-ai);
 }
 
 .icon {
   flex-shrink: 0;
   display: inline-flex;
-  width: 26px;
-  height: 26px;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
 }
 .icon svg {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 .label {
   flex: 1;
-  font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  font-size: 1.0625rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
-.block.current .label {
-  font-weight: 700;
+.fork .label {
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .tag {
   flex-shrink: 0;
-  padding: 4px 12px;
-  border-radius: 9999px;
-  background: var(--state-tag-bg);
-  color: var(--state-text);
-  font-size: 0.72rem;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--sj-pending-tag-bg);
+  color: var(--sj-pending-tag-text);
+  font-size: 0.625rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.current .tag {
+  background: var(--sj-current-tag-bg);
+  color: var(--sj-current-border);
 }
 
 .envBadges {
   display: flex;
-  gap: 6px;
+  gap: 7px;
   flex-shrink: 0;
 }
 .envBadge {
-  padding: 3px 9px;
-  border-radius: 4px;
-  font-size: 0.66rem;
+  padding: 4px 9px;
+  border-radius: 7px;
+  font-size: 0.6875rem;
   font-weight: 700;
-  color: var(--sj-env);
-  background: color-mix(in srgb, var(--sj-env) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--sj-env) 38%, transparent);
+  letter-spacing: 0.02em;
+}
+.envDev {
+  background: var(--sj-dev-bg);
+  color: var(--sj-dev-fg);
+}
+.envStg {
+  background: var(--sj-staging-bg);
+  color: var(--sj-staging-fg);
+}
+.envPrd {
+  background: var(--sj-prod-bg);
+  color: var(--sj-prod-fg);
 }
 
 .check {
@@ -156,8 +165,8 @@
 }
 .currentDot {
   flex-shrink: 0;
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   border-radius: 9999px;
   background: var(--sj-current-border);
 }
@@ -166,23 +175,23 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  align-items: center;
   gap: 28px;
-  margin-top: 1.25rem;
+  margin-top: 1.6rem;
 }
 .legendItem {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
+  gap: 9px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--sj-text-secondary);
 }
 .legendSwatch {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 4px;
   border: 2px solid var(--state-border);
-  background: var(--state-fill);
 }
 
 @keyframes sjEnter {
@@ -200,49 +209,133 @@
   0%,
   100% {
     box-shadow:
-      0 0 8px rgba(var(--sj-current-glow-rgb), 0.25),
-      0 0 16px rgba(var(--sj-current-glow-rgb), 0.1);
+      0 0 0 3px var(--sj-current-ring),
+      0 0 8px rgba(var(--sj-current-glow-rgb), 0.2);
   }
   50% {
     box-shadow:
-      0 0 24px rgba(var(--sj-current-glow-rgb), 0.6),
-      0 0 48px rgba(var(--sj-current-glow-rgb), 0.24);
+      0 0 0 6px var(--sj-current-ring),
+      0 0 30px rgba(var(--sj-current-glow-rgb), 0.65);
   }
 }
 
-/* Fork connectors: visual arrows between the pre-fork block and the
-   fork row (split) and between the fork row and the post-fork block
-   (merge). The stack uses column-reverse. */
-.connector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 32px;
+/* Merge connector: three branches converge upward into the row above. */
+.merge {
   position: relative;
+  height: 62px;
+}
+.mLeft,
+.mCenter,
+.mRight {
+  position: absolute;
+  top: 23px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--sj-connector);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+.mLeft {
+  left: calc((100% - 28px) / 6);
+}
+.mCenter {
+  left: 50%;
+}
+.mRight {
+  left: calc(100% - (100% - 28px) / 6);
+}
+.mTop {
+  position: absolute;
+  top: 23px;
+  left: calc((100% - 28px) / 6);
+  right: calc((100% - 28px) / 6);
+  height: 2px;
+  background: var(--sj-connector);
+  border-radius: 2px;
+}
+.mStem {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 7px;
+  height: 16px;
+  width: 2px;
+  background: var(--sj-connector);
+  border-radius: 2px;
+}
+.mArrow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -4px;
+  color: var(--sj-connector);
+  display: flex;
 }
 
-.connectorSvg {
-  width: 100%;
-  max-width: 400px;
-  height: 32px;
-  overflow: visible;
+/* Split connector: the trunk fans out into three color-coded arrows. */
+.split {
+  position: relative;
+  height: 64px;
 }
-
-.connectorLine {
-  stroke: var(--sj-connector);
-  stroke-width: 2;
-  fill: none;
+.sCenter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 42px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--sj-connector);
+  border-radius: 2px;
 }
-
-/* Track-specific fork block tints */
-.trackDa {
-  border-left: 3px solid var(--sj-track-da);
+.sTop {
+  position: absolute;
+  top: 42px;
+  left: calc((100% - 28px) / 6);
+  right: calc((100% - 28px) / 6);
+  height: 2px;
+  background: var(--sj-connector);
+  border-radius: 2px;
 }
-.trackMl {
-  border-left: 3px solid var(--sj-track-ml);
+.sBar {
+  position: absolute;
+  top: 3px;
+  height: 39px;
+  width: 2.5px;
+  border-radius: 2px;
+  transform: translateX(-50%);
 }
-.trackAi {
-  border-left: 3px solid var(--sj-track-ai);
+.sArrow {
+  position: absolute;
+  top: -8px;
+  transform: translateX(-50%);
+  display: flex;
+}
+.colDa {
+  left: calc((100% - 28px) / 6);
+}
+.colMl {
+  left: 50%;
+}
+.colAi {
+  left: calc(100% - (100% - 28px) / 6);
+}
+.sBar.colDa,
+.sArrow.colDa {
+  --arr: var(--sj-arr-da);
+}
+.sBar.colMl,
+.sArrow.colMl {
+  --arr: var(--sj-arr-ml);
+}
+.sBar.colAi,
+.sArrow.colAi {
+  --arr: var(--sj-arr-ai);
+}
+.sBar {
+  background: var(--arr);
+}
+.sArrow {
+  color: var(--arr);
 }
 
 @media (prefers-reduced-motion: reduce) {
