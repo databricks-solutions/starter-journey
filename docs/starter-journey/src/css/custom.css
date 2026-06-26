@@ -216,38 +216,101 @@
 }
 
 /* Fork-track sidebar highlights (match StarterJourneyProgress track colors).
-   Categories with items use .menu__list-item-collapsible; categories with
+   A thin colored left accent tip plus a colored bold label on a transparent
+   row. Categories with items use .menu__list-item-collapsible; categories with
    empty items render a direct .menu__link child instead. */
+.sidebar-track-da {
+  --sj-track-color: var(--sj-track-da);
+}
+.sidebar-track-ml {
+  --sj-track-color: var(--sj-track-ml);
+}
+.sidebar-track-ai {
+  --sj-track-color: var(--sj-track-ai);
+}
+
+/* The header row: collapsible category header, or a direct link for empty
+   categories. Transparent background, anchor for the accent tip. */
 .sidebar-track-da > .menu__list-item-collapsible,
 .sidebar-track-da > .menu__link,
 .sidebar-track-ml > .menu__list-item-collapsible,
 .sidebar-track-ml > .menu__link,
 .sidebar-track-ai > .menu__list-item-collapsible,
 .sidebar-track-ai > .menu__link {
+  position: relative;
   border-radius: 6px;
-  color: #ffffff !important;
+  background: transparent;
 }
-.sidebar-track-da > .menu__list-item-collapsible .menu__link,
-.sidebar-track-ml > .menu__list-item-collapsible .menu__link,
-.sidebar-track-ai > .menu__list-item-collapsible .menu__link {
-  color: #ffffff !important;
+
+/* Left accent "tip" bar. */
+.sidebar-track-da > .menu__list-item-collapsible::before,
+.sidebar-track-da > .menu__link::before,
+.sidebar-track-ml > .menu__list-item-collapsible::before,
+.sidebar-track-ml > .menu__link::before,
+.sidebar-track-ai > .menu__list-item-collapsible::before,
+.sidebar-track-ai > .menu__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  border-radius: 0 4px 4px 0;
+  background: var(--sj-track-color);
 }
-.sidebar-track-da > .menu__list-item-collapsible .menu__caret::before,
-.sidebar-track-ml > .menu__list-item-collapsible .menu__caret::before,
-.sidebar-track-ai > .menu__list-item-collapsible .menu__caret::before {
-  filter: brightness(0) invert(1);
+
+/* Section color for the header AND every descendant link. Prefixed with
+   .theme-doc-sidebar-container to outrank the global active/hover brand-red
+   rules above (equal-or-higher specificity, later source order).
+   --sj-track-color cascades from the .sidebar-track-* root. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link {
+  color: var(--sj-track-color) !important;
+  background: transparent !important;
 }
-.sidebar-track-da > .menu__list-item-collapsible,
-.sidebar-track-da > .menu__link {
-  background: var(--sj-track-da);
-}
-.sidebar-track-ml > .menu__list-item-collapsible,
-.sidebar-track-ml > .menu__link {
-  background: var(--sj-track-ml);
-}
-.sidebar-track-ai > .menu__list-item-collapsible,
+
+/* The section header stays bold. */
+.sidebar-track-da > .menu__list-item-collapsible > .menu__link,
+.sidebar-track-da > .menu__link,
+.sidebar-track-ml > .menu__list-item-collapsible > .menu__link,
+.sidebar-track-ml > .menu__link,
+.sidebar-track-ai > .menu__list-item-collapsible > .menu__link,
 .sidebar-track-ai > .menu__link {
-  background: var(--sj-track-ai);
+  font-weight: 600;
+}
+
+/* Hover keeps the section color with a faint tint. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link:hover,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link:hover,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link:hover {
+  color: var(--sj-track-color) !important;
+  background: color-mix(in srgb, var(--sj-track-color) 8%, transparent) !important;
+}
+
+/* Active/selected child uses the section color (not brand red), a tint, and a
+   left tip. The .menu__link.menu__link--active form beats the global active
+   rule on specificity. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link.menu__link--active,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link.menu__link--active,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link.menu__link--active {
+  position: relative;
+  color: var(--sj-track-color) !important;
+  background: color-mix(in srgb, var(--sj-track-color) 12%, transparent) !important;
+}
+.sidebar-track-da .menu__link--active::before,
+.sidebar-track-ml .menu__link--active::before,
+.sidebar-track-ai .menu__link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  border-radius: 0 4px 4px 0;
+  background: var(--sj-track-color);
 }
 
 /* ═══════════════════════════════════════

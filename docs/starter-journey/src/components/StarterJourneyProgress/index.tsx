@@ -10,8 +10,11 @@ import {
 import { BLOCK_ICONS } from './icons';
 import styles from './styles.module.css';
 
-const ENV_BADGES = ['DEV', 'STG', 'PRD'] as const;
-const ENV_VARS = ['--sj-dev', '--sj-staging', '--sj-prod'] as const;
+const ENV_BADGES = [
+  { label: 'DEV', cls: styles.envDev },
+  { label: 'STG', cls: styles.envStg },
+  { label: 'PRD', cls: styles.envPrd },
+] as const;
 
 const STATE_CLASS: Record<ProgressState, string> = {
   completed: styles.completed,
@@ -38,23 +41,20 @@ function BlockRow({ block, state, isFoundation, index }: BlockRowProps) {
       className={clsx(
         styles.block,
         STATE_CLASS[state],
-        isFoundation && styles.foundation,
         block.forkColumn && TRACK_CLASS[block.forkColumn],
       )}
       style={{ animationDelay: `${index * 60}ms` }}
     >
+      {block.forkColumn && <span className={styles.accent} />}
+
       <span className={styles.icon}>{BLOCK_ICONS[block.icon]}</span>
       <span className={styles.label}>{block.label}</span>
 
       {isFoundation && (
         <span className={styles.envBadges}>
-          {ENV_BADGES.map((env, i) => (
-            <span
-              key={env}
-              className={styles.envBadge}
-              style={{ '--sj-env': `var(${ENV_VARS[i]})` } as React.CSSProperties}
-            >
-              {env}
+          {ENV_BADGES.map((env) => (
+            <span key={env.label} className={clsx(styles.envBadge, env.cls)}>
+              {env.label}
             </span>
           ))}
         </span>
@@ -82,26 +82,46 @@ function BlockRow({ block, state, isFoundation, index }: BlockRowProps) {
   );
 }
 
-function SplitConnector() {
+function MergeConnector() {
   return (
-    <div className={styles.connector}>
-      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none" aria-hidden="true">
-        <path className={styles.connectorLine} d="M200,0 L200,8 M200,8 L67,24 L67,32" />
-        <path className={styles.connectorLine} d="M200,8 L200,32" />
-        <path className={styles.connectorLine} d="M200,8 L333,24 L333,32" />
-      </svg>
+    <div className={styles.merge} aria-hidden="true">
+      <span className={styles.mTop} />
+      <span className={styles.mLeft} />
+      <span className={styles.mCenter} />
+      <span className={styles.mRight} />
+      <span className={styles.mStem} />
+      <span className={styles.mArrow}>
+        <svg width="13" height="11" viewBox="0 0 13 11" fill="currentColor">
+          <path d="M6.5 0 13 11 0 11Z" />
+        </svg>
+      </span>
     </div>
   );
 }
 
-function MergeConnector() {
+const SPLIT_COLS = ['colDa', 'colMl', 'colAi'] as const;
+
+function SplitConnector({ colorful }: { colorful: boolean }) {
+  const style = {
+    '--sj-arr-da': colorful ? 'var(--sj-track-da)' : 'var(--sj-connector)',
+    '--sj-arr-ml': colorful ? 'var(--sj-track-ml)' : 'var(--sj-connector)',
+    '--sj-arr-ai': colorful ? 'var(--sj-track-ai)' : 'var(--sj-connector)',
+  } as React.CSSProperties;
+
   return (
-    <div className={styles.connector}>
-      <svg className={styles.connectorSvg} viewBox="0 0 400 32" preserveAspectRatio="none" aria-hidden="true">
-        <path className={styles.connectorLine} d="M67,0 L67,8 L200,24 M200,24 L200,32" />
-        <path className={styles.connectorLine} d="M200,0 L200,24" />
-        <path className={styles.connectorLine} d="M333,0 L333,8 L200,24" />
-      </svg>
+    <div className={styles.split} style={style} aria-hidden="true">
+      <span className={styles.sTop} />
+      <span className={styles.sCenter} />
+      {SPLIT_COLS.map((col) => (
+        <React.Fragment key={col}>
+          <span className={clsx(styles.sBar, styles[col])} />
+          <span className={clsx(styles.sArrow, styles[col])}>
+            <svg width="14" height="12" viewBox="0 0 14 12" fill="currentColor">
+              <path d="M7 0 14 12 0 12Z" />
+            </svg>
+          </span>
+        </React.Fragment>
+      ))}
     </div>
   );
 }
@@ -111,6 +131,7 @@ export interface StarterJourneyProgressProps {
   currentForkColumn?: ForkColumn;
   showTitle?: boolean;
   showLegend?: boolean;
+  colorfulArrows?: boolean;
   title?: string;
   className?: string;
 }
@@ -120,52 +141,43 @@ export default function StarterJourneyProgress({
   currentForkColumn,
   showTitle = true,
   showLegend = true,
+  colorfulArrows = true,
   title = 'Starter Journey Progress',
   className,
 }: StarterJourneyProgressProps) {
-  const levels = Array.from(new Set(JOURNEY_BLOCKS.map((b) => b.level))).sort((a, b) => a - b);
+  const forkBlocks = JOURNEY_BLOCKS.filter((b) => b.level === 6);
+  const upperBlocks = JOURNEY_BLOCKS.filter((b) => b.level >= 7).sort(
+    (a, b) => b.level - a.level,
+  );
+  const lowerBlocks = JOURNEY_BLOCKS.filter((b) => b.level <= 5).sort(
+    (a, b) => b.level - a.level,
+  );
 
   let rowIndex = 0;
+  const renderBlock = (block: JourneyBlock) => (
+    <BlockRow
+      key={block.id}
+      block={block}
+      state={getBlockState(block, currentLevel, currentForkColumn)}
+      isFoundation={block.level === 0}
+      index={rowIndex++}
+    />
+  );
+
   return (
     <section className={clsx(styles.root, className)} aria-label={title}>
       {showTitle && <h3 className={styles.title}>{title}</h3>}
 
       <div className={styles.stack}>
-        {levels.map((level) => {
-          const blocksAtLevel = JOURNEY_BLOCKS.filter((b) => b.level === level);
-          const isFork = blocksAtLevel.length > 1;
-          const isFoundation = level === 0;
+        {upperBlocks.map(renderBlock)}
 
-          if (isFork) {
-            return (
-              <React.Fragment key={level}>
-                <MergeConnector />
-                <div className={styles.fork}>
-                  {blocksAtLevel.map((block) => (
-                    <BlockRow
-                      key={block.id}
-                      block={block}
-                      state={getBlockState(block, currentLevel, currentForkColumn)}
-                      index={rowIndex++}
-                    />
-                  ))}
-                </div>
-                <SplitConnector />
-              </React.Fragment>
-            );
-          }
+        <MergeConnector />
 
-          const block = blocksAtLevel[0];
-          return (
-            <BlockRow
-              key={block.id}
-              block={block}
-              state={getBlockState(block, currentLevel, currentForkColumn)}
-              isFoundation={isFoundation}
-              index={rowIndex++}
-            />
-          );
-        })}
+        <div className={styles.fork}>{forkBlocks.map(renderBlock)}</div>
+
+        <SplitConnector colorful={colorfulArrows} />
+
+        {lowerBlocks.map(renderBlock)}
       </div>
 
       {showLegend && (
