@@ -1,0 +1,258 @@
+---
+sidebar_label: "Hands-on lab"
+description: Apply ABAC tag-driven policies to protect salary, SSN, email, and credit card columns in Unity Catalog, including SHA-256 hashing variants.
+---
+
+# Hands-on: Data Access Control
+
+> **You'll** apply ABAC tag-driven policies to mask salary, SSN, email, and credit card numbers — including SHA-256 hashing variants — on a sample employees table in **~45 min**.
+>
+> **Prereqs:** [13. Data Access Control](/docs/13-data-access-control/), a SQL warehouse or serverless cluster, `CREATE SCHEMA` on `main`
+
+All steps require **DBR 16.4+ or serverless** for ABAC policy evaluation. Run everything in a SQL editor.
+
+## 1. Set up the sample table
+
+Create a schema and a table that includes the most common sensitive column types: salary, SSN, email, credit card, and phone.
+
+```sql
+CREATE SCHEMA IF NOT EXISTS main.lab_dac;
+
+CREATE OR REPLACE TABLE main.lab_dac.employees (
+  employee_id INT,
+  name        STRING,
+  region      STRING,
+  email       STRING,
+  phone       STRING,
+  ssn         STRING,
+  card_number STRING,
+  salary      DOUBLE
+);
+
+INSERT INTO main.lab_dac.employees VALUES
+  (1, 'Alice',  'EMEA', 'alice@acme.com',  '+1-415-555-0101', '123-45-6789', '4111-1111-1111-1001', 95000.0),
+  (2, 'Bob',    'AMER', 'bob@acme.com',    '+1-212-555-0102', '234-56-7890', '4111-1111-1111-1002', 87000.0),
+  (3, 'Carlos', 'APAC', 'carlos@acme.com', '+1-650-555-0103', '345-67-8901', '4111-1111-1111-1003', 91000.0),
+  (4, 'Diana',  'EMEA', 'diana@acme.com',  '+1-312-555-0104', '456-78-9012', '4111-1111-1111-1004', 102000.0);
+```
+
+**Checkpoint:** `SELECT * FROM main.lab_dac.employees` returns 4 rows with all columns populated.
+
+## 2. Create the masking UDFs
+
+Write one masking function per sensitive column type. Each function checks the caller's group membership and returns either the real value or a substitute.
+
+Two strategies are available:
+- **Redaction:** return `NULL` or a fixed placeholder. No information survives. Use for fields where analysts have no legitimate reason to correlate on the value (salary, full SSN).
+- **Hashing (pseudonymization):** return `SHA2(value, 256)`. The hash carries no readable information but is deterministic — the same input always produces the same output. Analysts can join `user_events` to `customers` on the hash token without ever seeing real addresses. Use for fields where cross-dataset joins matter (email, customer ID).
+
+### Salary: visible to HR and finance only (redaction)
+
+```sql
+CREATE OR REPLACE FUNCTION main.lab_dac.mask_salary(salary DOUBLE)
+RETURNS DOUBLE
+RETURN CASE
+  WHEN is_account_group_member('hr_admin') THEN salary
+  WHEN is_account_group_member('finance')  THEN salary
+  ELSE NULL
+END;
+```
+
+### SSN: redaction vs. SHA-256 hash
+
+Full redaction is the safer default. Use a hash only if your compliance requirements allow pseudonymization and you have a cross-reference need.
+
+```sql
+-- Option A: full redaction (recommended for SSNs)
+CREATE OR REPLACE FUNCTION main.lab_dac.mask_ssn(ssn STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('hr_admin')   THEN ssn
+  WHEN is_account_group_member('compliance') THEN ssn
+  ELSE 'XXX-XX-XXXX'
+END;
+
+-- Option B: SHA-256 hash (pseudonymization, for cross-dataset matching)
+-- CREATE OR REPLACE FUNCTION main.lab_dac.hash_ssn(ssn STRING)
+-- RETURNS STRING
+-- RETURN CASE
+--   WHEN is_account_group_member('hr_admin')   THEN ssn
+--   WHEN is_account_group_member('compliance') THEN ssn
+--   ELSE SHA2(ssn, 256)
+-- END;
+```
+
+Run the Option A version for this lab. Swap in Option B to see the hash output instead.
+
+### Email: domain masking vs. SHA-256 hash
+
+The hash lets analysts join across datasets on a consistent token. The domain-only mask is simpler but loses that join-ability.
+
+```sql
+-- Option A: SHA-256 hash (preserves cross-dataset join-ability)
+CREATE OR REPLACE FUNCTION main.lab_dac.hash_email(email STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('data_owners') THEN email
+  ELSE SHA2(email, 256)
+END;
+
+-- Option B: domain-only mask (simpler)
+-- CREATE OR REPLACE FUNCTION main.lab_dac.mask_email(email STRING)
+-- RETURNS STRING
+-- RETURN CASE
+--   WHEN is_account_group_member('data_owners') THEN email
+--   ELSE CONCAT('***@', SPLIT(email, '@')[1])
+-- END;
+```
+
+Run the Option A version. You will verify the hash output in step 4.
+
+### Credit card: show last 4 digits only (redaction)
+
+Fraud teams need partial numbers to match transactions. Everyone else sees a redacted string.
+
+```sql
+CREATE OR REPLACE FUNCTION main.lab_dac.mask_card(card_number STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('fraud_team') THEN card_number
+  ELSE CONCAT('****-****-****-', RIGHT(REGEXP_REPLACE(card_number, '[^0-9]', ''), 4))
+END;
+```
+
+### Phone: keep last 4 digits visible (redaction)
+
+Support teams verify identity with the last 4 digits; full numbers are hidden from analytics.
+
+```sql
+CREATE OR REPLACE FUNCTION main.lab_dac.mask_phone(phone STRING)
+RETURNS STRING
+RETURN CASE
+  WHEN is_account_group_member('support_ops') THEN phone
+  ELSE CONCAT(SPLIT(phone, '-')[0], '-XXX-XXX-', RIGHT(REGEXP_REPLACE(phone, '[^0-9]', ''), 4))
+END;
+```
+
+## 3. Create security policies
+
+Each policy binds a masking UDF to a policy name. Policies are created independently of tables — they are not attached to any specific table at this point.
+
+```sql
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.policy_salary
+  COLUMN MASK main.lab_dac.mask_salary;
+
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.policy_ssn
+  COLUMN MASK main.lab_dac.mask_ssn;
+
+-- References the SHA-256 hash UDF created in step 2
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.policy_email
+  COLUMN MASK main.lab_dac.hash_email;
+
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.policy_card
+  COLUMN MASK main.lab_dac.mask_card;
+
+CREATE OR REPLACE SECURITY POLICY main.lab_dac.policy_phone
+  COLUMN MASK main.lab_dac.mask_phone;
+```
+
+## 4. Tag the schema and bind the policies
+
+Apply a governed tag to the schema, then bind each policy to the matching column name. Any table added to `main.lab_dac` with these column names inherits the policies automatically.
+
+```sql
+-- Tag the schema
+ALTER SCHEMA main.lab_dac SET TAGS ('sensitivity' = 'pii');
+
+-- Bind each policy to its column, scoped to tagged schemas
+ALTER SECURITY POLICY main.lab_dac.policy_salary
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'pii'
+  ON COLUMN salary;
+
+ALTER SECURITY POLICY main.lab_dac.policy_ssn
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'pii'
+  ON COLUMN ssn;
+
+ALTER SECURITY POLICY main.lab_dac.policy_email
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'pii'
+  ON COLUMN email;
+
+ALTER SECURITY POLICY main.lab_dac.policy_card
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'pii'
+  ON COLUMN card_number;
+
+ALTER SECURITY POLICY main.lab_dac.policy_phone
+  SET SCHEMA main.lab_dac FILTER TAG sensitivity = 'pii'
+  ON COLUMN phone;
+```
+
+**Checkpoint:** Run `SELECT * FROM main.lab_dac.employees` as a user who is not in any of the privileged groups. You should see:
+
+| column | expected value |
+|---|---|
+| `salary` | `NULL` |
+| `ssn` | `XXX-XX-XXXX` |
+| `email` | a 64-character hex string (SHA-256 hash) |
+| `card_number` | `****-****-****-1001` (last 4 vary per row) |
+| `phone` | `+1-XXX-XXX-0101` (last 4 vary per row) |
+
+The email hash is deterministic: run the query twice and the same employee always maps to the same token. That means you can safely join this table to another table that also has `SHA2(email, 256)` as a key, without either table exposing the real addresses.
+
+## 5. Verify automatic inheritance
+
+Create a second table with the same column names. It picks up all five policies with no extra steps.
+
+```sql
+CREATE OR REPLACE TABLE main.lab_dac.contractors (
+  contractor_id INT,
+  name          STRING,
+  email         STRING,
+  ssn           STRING,
+  salary        DOUBLE
+);
+
+INSERT INTO main.lab_dac.contractors VALUES
+  (1, 'Eve', 'eve@vendor.com', '567-89-0123', 75000.0);
+```
+
+**Checkpoint:** `SELECT salary, ssn, email FROM main.lab_dac.contractors` as a non-privileged user returns `NULL`, `XXX-XX-XXXX`, and `***@vendor.com`. No policy was attached explicitly to this table.
+
+## 6. Clean up
+
+Remove all policies, UDFs, tables, and the schema.
+
+```sql
+-- Remove policy bindings
+ALTER SECURITY POLICY main.lab_dac.policy_salary   UNSET SCHEMA main.lab_dac;
+ALTER SECURITY POLICY main.lab_dac.policy_ssn       UNSET SCHEMA main.lab_dac;
+ALTER SECURITY POLICY main.lab_dac.policy_email     UNSET SCHEMA main.lab_dac;
+ALTER SECURITY POLICY main.lab_dac.policy_card      UNSET SCHEMA main.lab_dac;
+ALTER SECURITY POLICY main.lab_dac.policy_phone     UNSET SCHEMA main.lab_dac;
+
+-- Drop policies
+DROP SECURITY POLICY IF EXISTS main.lab_dac.policy_salary;
+DROP SECURITY POLICY IF EXISTS main.lab_dac.policy_ssn;
+DROP SECURITY POLICY IF EXISTS main.lab_dac.policy_email;
+DROP SECURITY POLICY IF EXISTS main.lab_dac.policy_card;
+DROP SECURITY POLICY IF EXISTS main.lab_dac.policy_phone;
+
+-- Drop UDFs
+DROP FUNCTION IF EXISTS main.lab_dac.mask_salary;
+DROP FUNCTION IF EXISTS main.lab_dac.mask_ssn;
+DROP FUNCTION IF EXISTS main.lab_dac.hash_email;
+DROP FUNCTION IF EXISTS main.lab_dac.mask_card;
+DROP FUNCTION IF EXISTS main.lab_dac.mask_phone;
+
+-- Drop tables and schema
+DROP TABLE  IF EXISTS main.lab_dac.employees;
+DROP TABLE  IF EXISTS main.lab_dac.contractors;
+DROP SCHEMA IF EXISTS main.lab_dac;
+```
+
+**Checkpoint:** `SHOW SCHEMAS IN main` no longer lists `lab_dac`.
+
+## Next
+
+- **Do next:** [14. CI/CD and DevOps](/docs/14-ci-cd-devops/)
+- **Learn why:** [Data Access Control overview](/docs/13-data-access-control/)
+- **Reference:** [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/), [Column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)

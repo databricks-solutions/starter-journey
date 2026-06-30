@@ -1,24 +1,164 @@
 ---
 sidebar_position: 0
 sidebar_label: 13. Data Access Control
-description: Row, column, and object-level access patterns in Unity Catalog. Work in progress.
+description: Tag-driven ABAC policies in Unity Catalog — protect salaries, PII, and sensitive fields at schema scale without per-table wiring.
 ---
+
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
 # 13. Data Access Control
 
-> **You'll** learn how to scope who can read and write which data in Unity Catalog. This section is **work in progress**, with pages still being drafted.
+> **You'll** learn how to protect sensitive columns at schema scale using Unity Catalog ABAC policies in **~30 min** (plus a 45-min hands-on lab).
 >
-> **Prereqs:** [5. Data governance strategy](/docs/05-data-governance-strategy/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [3. Infra setup: Add Groups](/docs/03-infra-setup/add-groups/)
-
-## Status
-
-This section is being written. Pages planned here cover grants and how they inherit down the catalog tree, row filters, column masks, dynamic views, and the service principals that pipelines run as.
+> **Prereqs:** [5. Data Governance Strategy](/docs/05-data-governance-strategy/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [3. Infra Setup: Add Groups](/docs/03-infra-setup/add-groups/)
 
 <StarterJourneyProgress currentLevel={8}/>
 
+The right approach for column-level access control in Unity Catalog is **ABAC** (Attribute-Based Access Control). You define a masking policy once, attach it to a tag, and every column in every tagged table inherits the policy. No per-table wiring. No risk of a developer forgetting to add the mask when they create a new table.
+
+Think of it like a building's badge system. You set the rule at the door, not at each desk. The right badge gets you in; everyone else is redirected at the entrance, regardless of how many new desks get added.
+
+## How ABAC works
+
+Three building blocks:
+
+1. **Masking UDF:** a SQL function that returns either the real value or a substitute, based on the caller's group membership
+2. **Security policy:** an object that binds the UDF to a column type and a filter condition
+3. **Tag:** a label applied to a schema or table that triggers the policy automatically
+
+```sql
+-- 1. UDF: salary visible to hr_admin and finance, NULL for everyone else
+CREATE OR REPLACE FUNCTION main.security.mask_salary(salary DOUBLE)
+RETURNS DOUBLE
+RETURN CASE
+  WHEN is_account_group_member('hr_admin') THEN salary
+  WHEN is_account_group_member('finance')  THEN salary
+  ELSE NULL
+END;
+
+-- 2. Security policy
+CREATE OR REPLACE SECURITY POLICY main.security.salary_policy
+  COLUMN MASK main.security.mask_salary;
+
+-- 3. Tag the schema
+ALTER SCHEMA main.hr SET TAGS ('sensitivity' = 'high');
+
+-- 4. Bind: any salary column in a tagged schema inherits the policy automatically
+ALTER SECURITY POLICY main.security.salary_policy
+  SET SCHEMA main.hr FILTER TAG sensitivity = 'high'
+  ON COLUMN salary;
+```
+
+Any table added to `main.hr` with a `salary` column picks up the mask with no extra steps.
+
+:::warning
+ABAC security policies require **DBR 16.4+** or **serverless compute**. Clusters on older runtimes will fail with a permission error when the policy is evaluated.
+:::
+
+---
+
+## Tags
+
+Tags are key-value metadata attached to securable objects: catalogs, schemas, tables, and columns. Unity Catalog has three types, and they serve different purposes.
+
+| Type | Who sets it | Safe for ABAC triggers | Use for |
+|---|---|---|---|
+| **Custom** | Data owners, stewards | No — anyone with ALTER can change or remove it | Discovery, search, catalog navigation, team labeling |
+| **Governed** | Authorized users (values policy-controlled) | Yes | Compliance classification, ABAC policy triggers |
+| **System** | Databricks automatically | Yes | PII detection output, automatic classification results |
+
+### Custom tags
+
+Free-form. Any user with `ALTER` privilege on an object can set them. Good for labeling by owner, team, or domain.
+
+```sql
+ALTER TABLE main.hr.employees
+  SET TAGS ('owner' = 'hr-team', 'domain' = 'hr', 'env' = 'prod');
+```
+
+Custom tags can technically appear in a `FILTER TAG` binding on a security policy, but you should not use them there. Because anyone with `ALTER` on the schema can change or remove the tag, the policy becomes bypassable:
+
+```sql
+-- Any data engineer with ALTER on the schema can do this, silently removing the masking policy
+ALTER SCHEMA main.hr UNSET TAGS ('sensitivity');
+```
+
+Use custom tags for discovery and documentation only. For anything a security policy depends on, use a governed tag.
+
+### Governed tags
+
+A governed tag has an admin-defined policy that controls which values are allowed and who can set them. This makes the tag a trusted, controlled signal. Only users the admin has authorized can apply or remove the value, so a security policy that filters on it cannot be quietly bypassed.
+
+It also ensures consistency: every team uses `sensitivity = 'pii'`, not `pii`, `PII`, or `Personally Identifiable`. These are the tags referenced in ABAC `FILTER TAG` bindings.
+
+**To create a tag policy:** go to Data Explorer, select the catalog, open the **Tags** tab, and create a new tag policy. Define the key and the allowed values, then assign which groups can apply it.
+
+```sql
+-- Setting a governed tag value (only valid if 'pii' is an approved value for 'sensitivity',
+-- and only possible if the caller is in a group authorized to apply this tag)
+ALTER SCHEMA main.hr SET TAGS ('sensitivity' = 'pii');
+```
+
+### System tags and automatic data classification
+
+Unity Catalog can scan your tables and apply PII tags without any manual work. When enabled, Databricks samples column data, detects common PII types, and writes system-managed tags to each detected column.
+
+**To enable:** open Data Explorer, select a catalog or schema, open the **Data Classification** tab, and turn on scanning.
+
+After the scan, columns receive a `databricks:columnPiiTypes` tag with values like `EMAIL_ADDRESS`, `PHONE_NUMBER`, `US_SOCIAL_SECURITY_NUMBER`, `CREDIT_CARD_NUMBER`, and `PERSON_NAME`. You can write ABAC policies that filter on these system tags, so new tables are covered the moment they are scanned, with no manual tagging step.
+
+This is the most scalable setup: classification runs on a schedule, finds new PII columns, and the policy covers them automatically.
+
+:::tip
+System tags are read-only. You cannot set or remove a `databricks:` tag manually. They are updated when classification reruns.
+:::
+
+Reference: [Automatic data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification.html)
+
+---
+
+## Common PII patterns
+
+Most organizations protect the same handful of column types. Two strategies exist for what non-privileged users see.
+
+**Redaction** returns `NULL` or a fixed placeholder. No information survives. Use this when analysts have no reason to correlate on the value (salary, diagnosis, full SSN).
+
+**Hashing (pseudonymization)** returns `SHA2(value, 256)`. The hash is unreadable but deterministic: the same input always produces the same output. Data scientists can join `user_events` to `customers` on the hash token without ever seeing real addresses. Use this when cross-dataset joins matter and full anonymization is not required.
+
+| Column | Who sees it | Others see | Common in |
+|---|---|---|---|
+| `salary DOUBLE` | `hr_admin`, `finance` | `NULL` | All industries |
+| `ssn STRING` | `hr_admin`, `compliance` | `'XXX-XX-XXXX'` or SHA-256 | HR, Insurance, Finance |
+| `email STRING` | `data_owners`, `it_support` | SHA-256 or `'***@domain.com'` | Retail, SaaS, Marketing |
+| `card_number STRING` | `fraud_team` | `'****-****-****-1234'` | Retail, Financial Services |
+| `phone STRING` | `support_ops` | `'+X-XXX-XXX-1234'` | Telecom, Retail, Healthcare |
+| `dob DATE` | `medical_staff`, `actuaries` | `NULL` | Healthcare, Insurance |
+| `diagnosis STRING` | `clinical_staff` | `NULL` | Healthcare (HIPAA) |
+| `ip_address STRING` | `security_ops` | `'XXX.XXX.X.X'` | Tech, Security |
+
+See the [hands-on lab](/docs/13-data-access-control/lab) for the full UDF and policy implementation for each column type, including both redaction and SHA-256 variants.
+
+---
+
+:::tip Unity Catalog: Data Access Control
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/EH208ljANzo"
+  title="Unity Catalog: Data Access Control"
+></iframe>
+
+:::
+
+---
+
+## In this section
+
+- [Hands-on lab](/docs/13-data-access-control/lab): apply ABAC tag-driven policies to an employees table with salary, SSN, email, and credit card columns, including SHA-256 hashing variants (~45 min)
+
 ## Next
 
-- **Do next:** [14. CI/CD and DevOps](/docs/14-ci-cd-devops/) (also in progress)
-- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Data access control in Unity Catalog](https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control)
+- **Do next:** [Hands-on lab](/docs/13-data-access-control/lab)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [Data Governance Strategy](/docs/05-data-governance-strategy/)
+- **Reference:** [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/), [Automatic data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification.html), [Column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)
