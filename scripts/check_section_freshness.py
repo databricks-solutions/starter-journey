@@ -21,13 +21,13 @@ REQUIRED_SECTIONS: tuple[str, ...] = (
     "5. Data Governance Strategy",
     "6. Access your data",
     "7. Build the first ETL pipeline",
-    "8. Automation & Orchestration",
-    "9. Query and Explore",
-    "10. Databricks AI/BI",
-    "11. Business Semantics",
-    "12. Data Access Control",
-    "13. CI/CD and DevOps",
-    "14. MLOps",
+    "8. Query and Explore",
+    "9. Unified Analytics",
+    "10. Predictive Analytics",
+    "11. Agents",
+    "12. Automation & Orchestration",
+    "13. Data Access Control",
+    "14. CI/CD and DevOps",
 )
 
 STALE_DAYS = 60

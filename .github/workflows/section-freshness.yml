@@ -13,7 +13,9 @@ permissions:
 jobs:
   check-section-freshness:
     name: Check documentation section freshness
-    runs-on: linux-ubuntu-latest
+    runs-on:
+      group: databricks-solutions-protected-runner-group
+      labels: linux-ubuntu-latest
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

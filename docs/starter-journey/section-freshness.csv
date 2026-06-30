@@ -1,15 +1,15 @@
 section_name,last_update
-1. Get Started,2026-06-14
+1. Get Started,2026-06-29
 2. Before you Start,2026-06-14
 3. Infra Setup,2026-06-15
 4. Cost monitoring,2026-06-14
 5. Data Governance Strategy,2026-06-14
 6. Access your data,2026-06-14
 7. Build the first ETL pipeline,2026-06-15
-8. Automation & Orchestration,2026-06-14
-9. Query and Explore,2026-06-14
-10. Databricks AI/BI,2026-06-14
-11. Business Semantics,2026-06-14
-12. Data Access Control,2026-06-23
-13. CI/CD and DevOps,2026-06-14
-14. MLOps,2026-06-14
+8. Query and Explore,2026-06-14
+9. Unified Analytics,2026-06-25
+10. Predictive Analytics,2026-06-25
+11. Agents,2026-06-25
+12. Automation & Orchestration,2026-06-14
+13. Data Access Control,2026-06-23
+14. CI/CD and DevOps,2026-06-14

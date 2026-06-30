@@ -2,6 +2,7 @@
 sidebar_label: 7. Build the first ETL pipeline
 description: Build your first Spark Declarative Pipeline on Databricks using Lakeflow for ingestion, transformation, and orchestration.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
 # 7. Build the first ETL pipeline
 
@@ -15,19 +16,7 @@ Raw data in storage answers nothing on its own. The job of a pipeline is to turn
 
 The payoff of "declarative" is that you stop hand-writing the plumbing. You no longer maintain checkpoints by hand or work out which rows are new. You describe the result, and the engine handles incremental processing and dependency order for you.
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [x] ~~Data Governance Strategy.~~
-- [x] ~~Access your data.~~
-- [ ] **Build the first pipeline.**
-- [ ] Automation and orchestration.
-- [ ] Query and explore.
-- [ ] Databricks AI/BI.
-- [ ] Business semantics.
+<StarterJourneyProgress currentLevel={4}/>
 
 ## Data engineering on Databricks
 
@@ -37,7 +26,7 @@ Three Databricks tools split the work, each at a different stage of the data's l
 |---|---|---|
 | **Lakeflow Connect** | Pulls data from external sources into UC tables | [Access your data: Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors/) |
 | **Spark Declarative Pipelines** | Transforms raw data through bronze, silver, and gold layers | This section |
-| **Lakeflow Jobs** | Runs pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/08-orchestration/workspace) |
+| **Lakeflow Jobs** | Runs pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/12-orchestration/) |
 
 ### Lakeflow introduction
 
@@ -70,7 +59,7 @@ Pick by where you are right now, not by which is "better."
 | Path | What it does | When to use it |
 |---|---|---|
 | **[Hands-on lab](/docs/07-build-first-pipeline/hands-on-lab)** | Install a pre-built demo pipeline with dashboards | You want to see a working pipeline before writing one yourself |
-| **[Workspace + Genie Code](/docs/07-build-first-pipeline/workspace-databricks-agent)** | Build interactively in the browser | You are still figuring out the transformation |
+| **[Genie Code](/docs/07-build-first-pipeline/genie-code)** | Build interactively in the browser | You are still figuring out the transformation |
 | **[DABs](/docs/07-build-first-pipeline/dabs)** | Deploy a full medallion pipeline as code | The shape is settled and you want it reproducible |
 
 ## Next

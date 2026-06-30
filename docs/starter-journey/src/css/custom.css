@@ -109,31 +109,6 @@
   transform: translateY(-1px);
 }
 
-.button--secondary {
-  background: transparent;
-  border: 2px solid var(--ifm-color-primary);
-  color: var(--ifm-color-primary);
-}
-.button--secondary:hover {
-  background: var(--ifm-color-primary);
-  color: #ffffff;
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-/* ═══════════════════════════════════════
-   FONT UTILITIES
-   ═══════════════════════════════════════ */
-
-.font-mono {
-  font-family: "DM Mono", monospace;
-  font-style: normal;
-}
-.font-sans {
-  font-family: "DM Sans", sans-serif;
-  font-style: normal;
-}
-
 /* ═══════════════════════════════════════
    GITHUB ICON IN NAVBAR
    ═══════════════════════════════════════ */
@@ -142,7 +117,6 @@
   height: 36px;
 }
 
-.header-github-link::before,
 .navbar-item-github::before {
   content: '';
   width: 36px;
@@ -153,11 +127,9 @@
   transition: background-color var(--ifm-transition-fast)
     var(--ifm-transition-timing-default);
 }
-.header-github-link:hover::before,
 .navbar-item-github:hover::before {
   background-color: #FF3621;
 }
-.header-github-link.navbar__link,
 .navbar-item-github.navbar__link {
   font-size: 0;
   color: transparent;
@@ -213,6 +185,104 @@
 }
 [data-theme='dark'] .theme-doc-sidebar-container .menu__link--active {
   background: rgba(255, 107, 87, 0.1);
+}
+
+/* Fork-track sidebar highlights (match StarterJourneyProgress track colors).
+   A thin colored left accent tip plus a colored bold label on a transparent
+   row. Categories with items use .menu__list-item-collapsible; categories with
+   empty items render a direct .menu__link child instead. */
+.sidebar-track-da {
+  --sj-track-color: var(--sj-track-da);
+}
+.sidebar-track-ml {
+  --sj-track-color: var(--sj-track-ml);
+}
+.sidebar-track-ai {
+  --sj-track-color: var(--sj-track-ai);
+}
+
+/* The header row: collapsible category header, or a direct link for empty
+   categories. Transparent background, anchor for the accent tip. */
+.sidebar-track-da > .menu__list-item-collapsible,
+.sidebar-track-da > .menu__link,
+.sidebar-track-ml > .menu__list-item-collapsible,
+.sidebar-track-ml > .menu__link,
+.sidebar-track-ai > .menu__list-item-collapsible,
+.sidebar-track-ai > .menu__link {
+  position: relative;
+  border-radius: 6px;
+  background: transparent;
+}
+
+/* Left accent "tip" bar. */
+.sidebar-track-da > .menu__list-item-collapsible::before,
+.sidebar-track-da > .menu__link::before,
+.sidebar-track-ml > .menu__list-item-collapsible::before,
+.sidebar-track-ml > .menu__link::before,
+.sidebar-track-ai > .menu__list-item-collapsible::before,
+.sidebar-track-ai > .menu__link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  border-radius: 0 4px 4px 0;
+  background: var(--sj-track-color);
+}
+
+/* Section color for the header AND every descendant link. Prefixed with
+   .theme-doc-sidebar-container to outrank the global active/hover brand-red
+   rules above (equal-or-higher specificity, later source order).
+   --sj-track-color cascades from the .sidebar-track-* root. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link {
+  color: var(--sj-track-color) !important;
+  background: transparent !important;
+}
+
+/* The section header stays bold. */
+.sidebar-track-da > .menu__list-item-collapsible > .menu__link,
+.sidebar-track-da > .menu__link,
+.sidebar-track-ml > .menu__list-item-collapsible > .menu__link,
+.sidebar-track-ml > .menu__link,
+.sidebar-track-ai > .menu__list-item-collapsible > .menu__link,
+.sidebar-track-ai > .menu__link {
+  font-weight: 600;
+}
+
+/* Hover keeps the section color with a faint tint. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link:hover,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link:hover,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link:hover {
+  color: var(--sj-track-color) !important;
+  background: color-mix(in srgb, var(--sj-track-color) 8%, transparent) !important;
+}
+
+/* Active/selected child uses the section color (not brand red), a tint, and a
+   left tip. The .menu__link.menu__link--active form beats the global active
+   rule on specificity. */
+.theme-doc-sidebar-container .sidebar-track-da .menu__link.menu__link--active,
+.theme-doc-sidebar-container .sidebar-track-ml .menu__link.menu__link--active,
+.theme-doc-sidebar-container .sidebar-track-ai .menu__link.menu__link--active {
+  position: relative;
+  color: var(--sj-track-color) !important;
+  background: color-mix(in srgb, var(--sj-track-color) 12%, transparent) !important;
+}
+.sidebar-track-da .menu__link--active::before,
+.sidebar-track-ml .menu__link--active::before,
+.sidebar-track-ai .menu__link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  border-radius: 0 4px 4px 0;
+  background: var(--sj-track-color);
 }
 
 /* ═══════════════════════════════════════

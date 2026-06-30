@@ -1,31 +1,20 @@
 ---
-sidebar_label: 9. Query and Explore
+sidebar_label: 8. Query and Explore
 description: Run interactive SQL against your lakehouse data using the Databricks SQL Editor and a serverless warehouse.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
-# 9. Query and explore
+# 8. Query and explore
 
 > **You'll run** interactive SQL against your lakehouse tables in the Databricks SQL Editor in ~5 min.
 >
-> **Prereqs:** [Automation & Orchestration](/docs/08-orchestration/workspace)
+> **Prereqs:** [Automation & Orchestration](/docs/12-orchestration/)
 
 ## Why this matters
 
 Once a pipeline writes data, someone has to look at it. You check that the transforms did what you meant, eyeball a few distributions, and answer the one-off question your stakeholder just asked. The SQL Editor plus a serverless warehouse gives you a place to do that. No cluster to size, no waiting on startup. You open the editor and run a query against any table your Unity Catalog grants let you see.
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [x] ~~Data Governance Strategy.~~
-- [x] ~~Access your data.~~
-- [x] ~~Build the first pipeline.~~
-- [x] ~~Automation and orchestration.~~
-- [ ] **Query and explore.**
-- [ ] Databricks AI/BI.
-- [ ] Business semantics.
+<StarterJourneyProgress currentLevel={5}/>
 
 ## Run your first query
 
@@ -55,6 +44,6 @@ Drag a table from the schema browser straight into the editor and it drops in th
 
 | Page | What you'll do |
 |---|---|
-| [Dashboards](/docs/10-databricks-aibi/dashboards) | Create and share visual reports backed by governed lakehouse tables. |
-| [Genie Spaces](/docs/10-databricks-aibi/genie-spaces) | Let business users ask data questions in natural language. |
-| [Databricks Apps](/docs/10-databricks-aibi/databricks-apps) | Build and deploy custom web applications on Databricks. |
+| [Dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards) | Create and share visual reports backed by governed lakehouse tables. |
+| [Genie Spaces](/docs/09-unified-analytics/databricks-aibi/genie-spaces) | Let business users ask data questions in natural language. |
+| [Databricks Apps](/docs/09-unified-analytics/databricks-aibi/databricks-apps) | Build and deploy custom web applications on Databricks. |

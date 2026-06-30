@@ -62,7 +62,10 @@ const config: Config = {
           onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: [
+            './src/css/custom.css',
+            './src/css/journey-progress-tokens.css',
+          ],
         },
         gtag: {
           trackingID: 'G-QX34J60J8M',

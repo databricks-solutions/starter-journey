@@ -14,7 +14,9 @@ permissions:
 jobs:
   test-deploy:
     name: Test deployment
-    runs-on: linux-ubuntu-latest
+    runs-on:
+      group: databricks-solutions-protected-runner-group
+      labels: linux-ubuntu-latest
     defaults:
       run:
         working-directory: ./docs/starter-journey
@@ -33,6 +35,10 @@ jobs:
           set -euo pipefail
 
           # Get GitHub OIDC ID token
+          # IMPORTANT: JFrog is for use from GitHub Actions only.
+          # Do not attempt to use or request access to JFrog
+          # for use outside of Github Actions.
+          # For local dev/testing, see go/registry-access.
           ID_TOKEN=$(curl -sLS \
             -H "User-Agent: actions/oidc-client" \
             -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \

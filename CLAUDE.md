@@ -142,13 +142,14 @@ starter-journey/
 │           ├── 05-data-governance-strategy/
 │           ├── 06-access-your-data/
 │           ├── 07-build-first-pipeline/
-│           ├── 08-orchestration/
-│           ├── 09-query-and-explore.mdx
-│           ├── 10-databricks-aibi/
-│           ├── 11-business-semantics/
-│           ├── 12-data-access-control/
-│           ├── 13-ci-cd-devops/
-│           └── 14-mlops/
+│           ├── 08-query-and-explore.mdx
+│           ├── 09-unified-analytics/
+│           ├── 10-predictive-analytics/
+│           ├── 11-agents/
+│           ├── 12-orchestration/
+│           ├── 13-data-access-control/
+│           ├── 14-ci-cd-devops/
+│           └── 15-journey-progress-demo/
 ├── scripts/
 │   ├── check_section_freshness.py
 │   └── check_agent_instructions_sync.sh
@@ -304,7 +305,7 @@ Create a new directory under `docs/starter-journey/docs/<NN-section-slug>/` with
 
 - Frontmatter with `sidebar_position: 0`, `sidebar_label`, and `description`
 - The section number in the title (e.g., `# 10. DevOps and CI/CD`)
-- A journey checklist showing all prior sections checked off
+- A `<StarterJourneyProgress currentLevel={N}/>` component call after the intro blockquote (import it at the top of the file: `import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';`)
 - An `## In this section` block linking to subpages (if any)
 
 ### 2. Create subpages
@@ -334,12 +335,29 @@ For a standalone page with no subpages, use a simple doc entry instead:
 {type: 'doc', id: '<NN-section-slug>', label: '<N>. <Section Name>'},
 ```
 
-### 4. Wire navigation links
+### 4. Update the progress component
+
+**This step is required every time a new top-level section is added to the sidebar.**
+
+Open `docs/starter-journey/src/components/StarterJourneyProgress/journey-blocks.ts` and add a new entry to `JOURNEY_BLOCKS`:
+
+- **`id`**: kebab-case slug matching the section (e.g. `"cicd-devops"`)
+- **`label`**: display name shown in the component (e.g. `"CI/CD and DevOps"`)
+- **`level`**: the next integer after the current `MAX_LEVEL`
+- **`icon`**: a key from `BLOCK_ICONS` in `icons.ts` (pick the closest fit, or add a new icon if nothing matches)
+
+Also update `MAX_LEVEL` to match the new block's level.
+
+For fork sections (multiple parallel tracks at the same level, like section 6), add one block per track with the same `level` and a distinct `forkColumn` (`"da"`, `"ml"`, or `"genai"`).
+
+Use the new block's `level` value as the `currentLevel` prop in the `<StarterJourneyProgress>` call on the section's `index.mdx`.
+
+### 5. Wire navigation links
 
 - Update the **previous section's last page** to add a `Do next:` link pointing to the new section.
 - Ensure the new section's `## Next` block links forward (to subpages or the next section) and backward (to the previous section).
 
-### 5. Validate
+### 6. Validate
 
 Run `npm run build` from `docs/starter-journey/` to verify no broken links. The build will throw on any dead internal link.
 
@@ -367,7 +385,7 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 ## Common mistakes to avoid
 
 - **Editing `sidebars.ts` without building** — always run `npm run build` after sidebar changes to catch broken doc IDs.
-- **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/10-databricks-aibi/dashboards`). Do not use relative file paths.
+- **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/09-unified-analytics/databricks-aibi/dashboards`). Do not use relative file paths.
 - **Adding admonitions beyond the allowed three** — the build won't catch this, but it violates the style guide.
 - **Forgetting the `## Next` block** — every page needs it. Technical pages link to educational counterparts and vice versa.
 - **Images without section prefix** — `static/img/` is flat. Prefix images to avoid name collisions.

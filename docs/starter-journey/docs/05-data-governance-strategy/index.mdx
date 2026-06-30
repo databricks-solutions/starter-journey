@@ -6,6 +6,7 @@ description: Define how your organization structures catalogs, schemas, and perm
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Button from '@site/src/components/Button';
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
 # 5. Data Governance Strategy
 
@@ -19,19 +20,7 @@ Decide your catalog, schema, and grant structure now, before anyone builds a pip
 
 This section gives you two patterns. Pick the one that matches your size.
 
-## Journey checklist
-
-- [x] ~~Get started.~~
-- [x] ~~Before you start.~~
-- [x] ~~Infra setup.~~
-- [x] ~~Cost monitoring.~~
-- [ ] **Data Governance Strategy.**
-- [ ] Access your data.
-- [ ] Build the first pipeline.
-- [ ] Automation and orchestration.
-- [ ] Query and explore.
-- [ ] Databricks AI/BI.
-- [ ] Business semantics.
+<StarterJourneyProgress currentLevel={2}/>
 
 ## How it works
 
@@ -43,9 +32,9 @@ Before choosing a pattern, review **[how Add Groups works](/docs/03-infra-setup/
 The two approaches listed in this section are based on:
 
 - **[Part 1: Modeling a Medallion Architecture on Unity Catalog for your Organizational Structure](https://blog.databricksforstartups.com/part-1-modeling-a-medallion-architecture-on-unity-catalog-for-your-organizational-structure-b8f0f9918c26?gi=fbb044a81513)**
-- <Button label="Deck - UC best practices deck" link={useBaseUrl('/pdfs/UC Best Practices and Patterns from accumulated STS experiences.pdf')} />
-
 :::
+
+<Button label="Deck - UC best practices deck" link={useBaseUrl('/pdfs/UC Best Practices and Patterns from accumulated STS experiences.pdf')} />
 
 ### Where to start
 
