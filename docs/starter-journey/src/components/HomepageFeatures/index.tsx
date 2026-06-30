@@ -1,5 +1,4 @@
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
@@ -41,7 +40,7 @@ const FeatureList: FeatureItem[] = [
 
 function Feature({title, image, description}: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className="col col--4">
       <div className={styles.featureCard}>
         <div className={styles.featureImageWrapper}>
           <img className={styles.featureImg} src={image} alt={title} role="img" />

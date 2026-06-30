@@ -109,31 +109,6 @@
   transform: translateY(-1px);
 }
 
-.button--secondary {
-  background: transparent;
-  border: 2px solid var(--ifm-color-primary);
-  color: var(--ifm-color-primary);
-}
-.button--secondary:hover {
-  background: var(--ifm-color-primary);
-  color: #ffffff;
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-/* ═══════════════════════════════════════
-   FONT UTILITIES
-   ═══════════════════════════════════════ */
-
-.font-mono {
-  font-family: "DM Mono", monospace;
-  font-style: normal;
-}
-.font-sans {
-  font-family: "DM Sans", sans-serif;
-  font-style: normal;
-}
-
 /* ═══════════════════════════════════════
    GITHUB ICON IN NAVBAR
    ═══════════════════════════════════════ */
@@ -142,7 +117,6 @@
   height: 36px;
 }
 
-.header-github-link::before,
 .navbar-item-github::before {
   content: '';
   width: 36px;
@@ -153,11 +127,9 @@
   transition: background-color var(--ifm-transition-fast)
     var(--ifm-transition-timing-default);
 }
-.header-github-link:hover::before,
 .navbar-item-github:hover::before {
   background-color: #FF3621;
 }
-.header-github-link.navbar__link,
 .navbar-item-github.navbar__link {
   font-size: 0;
   color: transparent;

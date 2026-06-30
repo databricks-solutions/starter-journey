@@ -2,14 +2,11 @@
    Progress-state palette for <StarterJourneyProgress />.
    Light values match the design mockup; dark values are a sensible adaptation. */
 :root {
-  --sj-bg: #f4f5f7;
-  --sj-surface: #ffffff;
   --sj-text-primary: #1b2430;
   --sj-text-secondary: #5b626c;
 
   --sj-completed-border: #1f9d57;
   --sj-completed-fill: #ffffff;
-  --sj-completed-tag-bg: #eef1f5;
 
   --sj-current-border: #2f6bf5;
   --sj-current-fill: #ffffff;
@@ -40,14 +37,11 @@
 }
 
 [data-theme='dark'] {
-  --sj-bg: #111111;
-  --sj-surface: #1a1a1a;
   --sj-text-primary: #e8e8e8;
   --sj-text-secondary: #9ba1a6;
 
   --sj-completed-border: #3fb950;
   --sj-completed-fill: #1a1a1a;
-  --sj-completed-tag-bg: #262b33;
 
   --sj-current-border: #4d9cff;
   --sj-current-fill: #1a1a1a;
