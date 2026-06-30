@@ -1,0 +1,62 @@
+---
+description: Keep the journey overview table in 01-get-started.mdx in sync with sidebars.ts
+globs: docs/starter-journey/sidebars.ts,docs/starter-journey/docs/01-get-started.mdx
+alwaysApply: false
+---
+
+# Journey overview table sync
+
+The `## What you'll build` table in `docs/starter-journey/docs/01-get-started.mdx` lists every numbered journey section. It must stay in sync with `docs/starter-journey/sidebars.ts`.
+
+## When this rule applies
+
+Whenever you add, remove, rename, or restructure a numbered section in `sidebars.ts`, update the table in `01-get-started.mdx` in the same change.
+
+## What to update
+
+- **Add a row** for every new numbered section. Use the sidebar `label` (e.g. `'9. Unified Analytics'`) for the section number and name.
+- **Remove a row** when a section is deleted from the sidebar.
+- **Update the link** when a section's first doc ID changes.
+- **Update the "What you'll have when done" description** when the section's scope changes meaningfully.
+
+## Table format rules
+
+- Link the section title to its index page (`/docs/<folder>/`). Use the `link.id` value from `sidebars.ts` to derive the URL.
+- If a section has no direct index page (no `link:` property on the category in `sidebars.ts`), write the section title in bold without a link, then list the main sub-sections as bullets using `<br/>` within the table cell.
+- If a sub-section also has no direct link, show it as a bold label and list its pages as indented bullets using `<br/>&nbsp;&nbsp;-`.
+- Keep one row per numbered section. Do not create separate rows for sub-sections.
+
+## Example: section with no top-level link
+
+Sidebar entry:
+
+```ts
+{
+  type: 'category',
+  label: '9. Unified Analytics',
+  items: [
+    {
+      type: 'category',
+      label: 'Business Semantics',
+      link: { type: 'doc', id: '09-unified-analytics/business-semantics/index' },
+      items: [...],
+    },
+    {
+      type: 'category',
+      label: 'Databricks AI/BI',
+      // no link property
+      items: [
+        '09-unified-analytics/databricks-aibi/dashboards',
+        '09-unified-analytics/databricks-aibi/genie-spaces',
+        '09-unified-analytics/databricks-aibi/databricks-apps',
+      ],
+    },
+  ],
+}
+```
+
+Table row:
+
+```md
+| 9 | **Unified Analytics**<br/>- [Business Semantics](/docs/09-unified-analytics/business-semantics/)<br/>- **Databricks AI/BI**<br/>&nbsp;&nbsp;- [Dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards)<br/>&nbsp;&nbsp;- [Genie Spaces](/docs/09-unified-analytics/databricks-aibi/genie-spaces)<br/>&nbsp;&nbsp;- [Apps](/docs/09-unified-analytics/databricks-aibi/databricks-apps) | KPIs defined as Unity Catalog metric views; dashboards, Genie Spaces, and apps surfacing data to business users |
+```
