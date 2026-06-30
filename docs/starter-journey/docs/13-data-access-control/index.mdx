@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 sidebar_label: 12. Data Access Control
-description: Scope who can read and write which data in Unity Catalog with RBAC, row filters, column masks, and tag-driven ABAC policies.
+description: Scope who can read and write which data in Unity Catalog with RBAC, column masks, and tag-driven ABAC policies.
 ---
 
 # 12. Data Access Control
@@ -65,30 +65,9 @@ Reference: [Unity Catalog privileges and securable objects](https://docs.databri
 
 ---
 
-## RLS and CLS: Row Filters and Column Masks
+## Column masks
 
-RBAC grants or denies access to an entire table. Row-level security (RLS) and column-level security (CLS) let you control **which rows** a user sees and **which column values** are returned, for users who already hold `SELECT`.
-
-### Row filters
-
-A row filter is a SQL UDF that Unity Catalog evaluates per row. Rows where the UDF returns `FALSE` are invisible to the caller.
-
-```sql
--- 1. UDF: allow rows only if the caller belongs to the row's region group
---    or is a data admin
-CREATE OR REPLACE FUNCTION main.lab_dac.rls_region(region STRING)
-RETURNS BOOLEAN
-RETURN is_account_group_member(region)
-    OR is_account_group_member('data_admins');
-
--- 2. Attach to the table
-ALTER TABLE main.lab_dac.employees
-  SET ROW FILTER main.lab_dac.rls_region ON (region);
-```
-
-A user in the `EMEA` group sees only rows where `region = 'EMEA'`. A user in `data_admins` sees all rows.
-
-### Column masks
+RBAC grants or denies access to an entire table. Column masks let you control **which column values** are returned for users who already hold `SELECT`.
 
 A column mask is a SQL UDF attached to a single column. It returns either the real value or a substitute depending on who is asking.
 
@@ -106,22 +85,22 @@ ALTER TABLE main.lab_dac.employees
   ALTER COLUMN ssn SET MASK main.lab_dac.cls_ssn;
 ```
 
-### When to use RLS/CLS
+### When to use column masks
 
-Row filters and column masks work well for a **small number of tables** with **table-specific logic**. When you have many tables, or when new tables should inherit a policy automatically, use ABAC instead.
+Column masks work well for a **small number of tables** with **table-specific logic**. When you have many tables, or when new tables should inherit a policy automatically, use ABAC instead.
 
-Reference: [Row filters and column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)
+Reference: [Column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)
 
 ---
 
 ## ABAC: Attribute-Based Access Control
 
-ABAC removes the per-table wiring problem. Instead of attaching a filter to each table individually, you create a **security policy** and bind it to a schema or catalog. Any table in that scope that carries the matching governed tag inherits the policy automatically, with no per-table setup required.
+ABAC removes the per-table wiring problem. Instead of attaching a mask to each table individually, you create a **security policy** and bind it to a schema or catalog. Any table in that scope that carries the matching governed tag inherits the policy automatically, with no per-table setup required.
 
 Three building blocks:
 
 1. **Governed tags:** metadata labels applied to schemas and tables via `ALTER ... SET TAGS`
-2. **UDFs:** the same masking or filtering functions used in RLS/CLS
+2. **UDFs:** the same masking functions used in column masks
 3. **Security policies:** objects that link a UDF to a governed-tag condition
 
 ```sql
@@ -149,12 +128,12 @@ Any table added to `main.lab_dac` that carries `sensitivity = 'high'` automatica
 ABAC security policies require **DBR 16.4+** or **serverless compute**. Clusters on older runtimes cannot evaluate policies and will fail with a permission error.
 :::
 
-### RLS/CLS vs. ABAC
+### Column masks vs. ABAC
 
-| | Table-level RLS/CLS | ABAC |
+| | Table-level column masks | ABAC |
 |---|---|---|
 | Setup effort | Per-table wiring | Once at schema or catalog level |
-| New table coverage | Manual. Developer must add the filter | Automatic. Tag applies the policy |
+| New table coverage | Manual. Developer must add the mask | Automatic. Tag applies the policy |
 | Separation of duties | Developer controls each table directly | Policy owner is separate from data owner |
 | Recommended scale | Few tables, table-specific logic | Many tables, consistent data classification |
 
@@ -177,10 +156,10 @@ Reference: [Attribute-based access control](https://docs.databricks.com/aws/en/d
 
 ## In this section
 
-- [Hands-on lab](/docs/12-data-access-control/lab): apply RBAC grants, a row filter, a column mask, and an ABAC tag-driven policy to a sample employees table (~45 to 60 min)
+- [Hands-on lab](/docs/12-data-access-control/lab): apply RBAC grants, a column mask, and an ABAC tag-driven policy to a sample employees table (~35 to 45 min)
 
 ## Next
 
 - **Do next:** [Hands-on lab](/docs/12-data-access-control/lab)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [Data Governance Strategy](/docs/05-data-governance-strategy/)
-- **Reference:** [Unity Catalog privileges](https://docs.databricks.com/aws/en/security/auth/), [Row filters and column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/), [ABAC](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/)
+- **Reference:** [Unity Catalog privileges](https://docs.databricks.com/aws/en/security/auth/), [Column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/), [ABAC](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/)
