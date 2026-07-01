@@ -46,7 +46,7 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
   title="Databricks VS Code Extension v2"
 ></iframe>
 
-### DABs in VSCode
+## DABs in VSCode + Github Actions Deployment
 
 <iframe
   width="560"
@@ -55,24 +55,76 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
   title="Declarative Automation Bundles in VS Code"
 ></iframe>
 
-#### Start at [Minute 20:50](https://youtu.be/o4qMWHgT1zM?t=1251)
+### Configure VSCode Databricks Extension V2
 
 <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/o4qMWHgT1zM"
+  src="https://www.youtube.com/embed/o4qMWHgT1zM?start=1251"
   title="Declarative Automation Bundles in VS Code"
 ></iframe>
 
-
-
-## GitHub code examples
+## DABs projects for reference
 
 | Repo | What's inside |
 |------|--------------|
 | [bundle-examples / knowledge_base](https://github.com/databricks/bundle-examples/tree/main/knowledge_base) | Official Databricks reference library. Covers **Genie Agents**, **Metric Views**, **Apps**, **Lakebase**, **Jobs**, **Pipelines**, **Models**, **Model Serving Endpoints**, and **Vector Search indexes**. Good first stop for any bundle pattern. |
 | [databricks-dab-examples / flights](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/flights) | End-to-end worked example built around a flights dataset. Comes in three tiers (simple, advanced, bundle template) so you can follow the progression from a minimal bundle to a production-ready project. |
 | [databricks-dab-examples / knowledge-base](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/knowledge-base) | Solutions-team reference examples. Includes an Azure DevOps CI/CD pipeline, a React + Lakebase app, metric views, a uv-managed bundle, and a DAIS 2024 modular orchestration template. |
+
+## DABs deployments from CI/CD
+
+### Github Actions Workflows
+
+:::success for better visibility
+* Right click the image and click "Open Image in New Tab"
+:::
+
+![Account Console high-level relation](/img/dabs-cicd-github.jpg)
+
+### Code from the screenshot
+
+:::success
+* This code is the output from the next section.
+* All major DevOps tools are supported.
+:::
+
+```yaml
+name: Deploy to staging
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: ${{ vars.ENVIRONMENT }}
+          BUNDLE_VAR_catalog: ${{ vars.CATALOG }}
+          BUNDLE_VAR_schema: ${{ vars.SCHEMA }}
+        run: databricks bundle validate --output json
+
+      - name: Deploy bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: ${{ vars.ENVIRONMENT }}
+          BUNDLE_VAR_catalog: ${{ vars.CATALOG }}
+          BUNDLE_VAR_schema: ${{ vars.SCHEMA }}
+        run: databricks bundle deploy
+```
 
 ## How to migrate existing Workspace assets to DABs?
 
