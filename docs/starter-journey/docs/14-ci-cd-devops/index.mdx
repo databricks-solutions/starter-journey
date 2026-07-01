@@ -81,7 +81,7 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
 :::
 
 :::tip 
-Notice how the DABs project variables values for catalog and schema are passed using the repository environments.
+The catalog and schema DABs values come from GitHub repository environments, not from inside the bundle itself.
 :::
 
 ![Account Console high-level relation](/img/dabs-cicd-github.jpg)
@@ -89,8 +89,7 @@ Notice how the DABs project variables values for catalog and schema are passed u
 ### Code from the screenshot
 
 :::tip
-* This code is the output from the next section.
-* All major DevOps tools are supported.
+This is the output you get from the next section. It works the same way with Azure DevOps, GitLab CI, and other CI/CD tools.
 :::
 
 ```yaml
@@ -149,16 +148,18 @@ The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)
   title="Migrate existing Workspace assets to Declarative Automation Bundles"
 ></iframe>
 
-## Monolithic-repo or multiple repos?
+## Recommended GitHub strategy
 
-Use **one Git repo per Databricks project**: one bundle, one deployment boundary, one owning team.
+Keep a **1:1 relationship between a Git repo and a Databricks project**. One repo, one bundle (Databricks project), one deployment boundary, one owning team. Use [trunk-based development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development): keep `main` always deployable, work in short-lived feature branches, and merge back quickly.
 
-A single repo that holds every Databricks project in the org looks tidy. It isn't. The cost shows up as soon as a second team starts committing to it:
+This isolation matters because the alternative (stuffing every project into a shared repo) breaks down the moment a second team starts committing. The table below shows what goes wrong and why.
 
-- ❌ **Merge conflicts** pile up when unrelated teams touch shared folders, CI configs, or bundle targets.
-- ❌ **CI gets slow and noisy.** A change to one team's pipeline kicks off validation for every project in the repo.
-- ❌ **Ownership blurs.** When a deploy fails, there is no clear owner, and a rollback drags in assets another team never touched.
-- ❌ **Release cadences collide.** Team A can't ship a hotfix while Team B is sitting on a long-running feature branch that's holding main.
+| Concern | Shared repo (multi-project) | Isolated repo (1:1) |
+|---------|----------------------------|---------------------|
+| Merge conflicts | Unrelated teams touch shared folders, CI configs, or bundle targets | Each team owns all files in their repo |
+| CI speed | A change to one pipeline triggers validation for every project | CI runs only for the project that changed |
+| Ownership | A failed deploy has no clear owner; rollback drags in unrelated assets | The team that owns the repo owns the deploy |
+| Release cadence | One team's hotfix is blocked by another team's long-running branch | Each team ships on its own schedule |
 
 ### Example
 
@@ -169,7 +170,7 @@ At **Awesome123** corp, two teams kick off separate Databricks projects at the s
 | Data Engineering | Marketing C360 | `databricks-marketing-c360` | Jobs, pipelines, schemas, SQL warehouses, dashboards |
 | Data Science | Finance revenue prediction | `databricks-finance-revenue-prediction` | Training jobs, registered models, serving endpoints, dashboards |
 
-A pipeline change in marketing C360 does not trigger CI for the finance ML project. Each team ships on its own schedule.
+A pipeline change in marketing C360 does not trigger CI for the finance ML project.
 
 ## When to use / when not to
 
