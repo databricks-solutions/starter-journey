@@ -239,7 +239,6 @@
 .theme-doc-sidebar-container .sidebar-track-da .menu__link,
 .theme-doc-sidebar-container .sidebar-track-ml .menu__link,
 .theme-doc-sidebar-container .sidebar-track-ai .menu__link {
-  color: var(--sj-track-color) !important;
   background: transparent !important;
 }
 
