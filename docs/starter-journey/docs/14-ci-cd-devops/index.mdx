@@ -46,7 +46,7 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
   title="Databricks VS Code Extension v2"
 ></iframe>
 
-### DABs in VSCode
+## DABs in VSCode + Github Actions Deployment
 
 <iframe
   width="560"
@@ -55,24 +55,79 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
   title="Declarative Automation Bundles in VS Code"
 ></iframe>
 
-#### Start at [Minute 20:50](https://youtu.be/o4qMWHgT1zM?t=1251)
+### Configure VSCode Databricks Extension V2
 
 <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/o4qMWHgT1zM"
+  src="https://www.youtube.com/embed/o4qMWHgT1zM?start=1251"
   title="Declarative Automation Bundles in VS Code"
 ></iframe>
 
-
-
-## GitHub code examples
+## DABs projects for reference
 
 | Repo | What's inside |
 |------|--------------|
 | [bundle-examples / knowledge_base](https://github.com/databricks/bundle-examples/tree/main/knowledge_base) | Official Databricks reference library. Covers **Genie Agents**, **Metric Views**, **Apps**, **Lakebase**, **Jobs**, **Pipelines**, **Models**, **Model Serving Endpoints**, and **Vector Search indexes**. Good first stop for any bundle pattern. |
 | [databricks-dab-examples / flights](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/flights) | End-to-end worked example built around a flights dataset. Comes in three tiers (simple, advanced, bundle template) so you can follow the progression from a minimal bundle to a production-ready project. |
 | [databricks-dab-examples / knowledge-base](https://github.com/databricks-solutions/databricks-dab-examples/tree/main/knowledge-base) | Solutions-team reference examples. Includes an Azure DevOps CI/CD pipeline, a React + Lakebase app, metric views, a uv-managed bundle, and a DAIS 2024 modular orchestration template. |
+
+## DABs deployments from CI/CD
+
+### Github Actions Workflows deployment
+
+:::warning for better visibility
+* Right click the image and click "Open Image in New Tab"
+:::
+
+:::tip 
+The catalog and schema DABs values come from GitHub repository environments, not from inside the bundle itself.
+:::
+
+![Account Console high-level relation](/img/dabs-cicd-github.jpg)
+
+### Code from the screenshot
+
+:::tip
+This is the output you get from the next section. It works the same way with Azure DevOps, GitLab CI, and other CI/CD tools.
+:::
+
+```yaml
+name: Deploy to staging
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: ${{ vars.ENVIRONMENT }}
+          BUNDLE_VAR_catalog: ${{ vars.CATALOG }}
+          BUNDLE_VAR_schema: ${{ vars.SCHEMA }}
+        run: databricks bundle validate --output json
+
+      - name: Deploy bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_BUNDLE_ENV: ${{ vars.ENVIRONMENT }}
+          BUNDLE_VAR_catalog: ${{ vars.CATALOG }}
+          BUNDLE_VAR_schema: ${{ vars.SCHEMA }}
+        run: databricks bundle deploy
+```
 
 ## How to migrate existing Workspace assets to DABs?
 
@@ -93,16 +148,18 @@ The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)
   title="Migrate existing Workspace assets to Declarative Automation Bundles"
 ></iframe>
 
-## Monolithic-repo or multiple repos?
+## Recommended GitHub strategy
 
-Use **one Git repo per Databricks project**: one bundle, one deployment boundary, one owning team.
+Keep a **1:1 relationship between a Git repo and a Databricks project**. One repo, one bundle (Databricks project), one deployment boundary, one owning team. Use [trunk-based development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development): keep `main` always deployable, work in short-lived feature branches, and merge back quickly.
 
-A single repo that holds every Databricks project in the org looks tidy. It isn't. The cost shows up as soon as a second team starts committing to it:
+This isolation matters because the alternative (stuffing every project into a shared repo) breaks down the moment a second team starts committing. The table below shows what goes wrong and why.
 
-- ❌ **Merge conflicts** pile up when unrelated teams touch shared folders, CI configs, or bundle targets.
-- ❌ **CI gets slow and noisy.** A change to one team's pipeline kicks off validation for every project in the repo.
-- ❌ **Ownership blurs.** When a deploy fails, there is no clear owner, and a rollback drags in assets another team never touched.
-- ❌ **Release cadences collide.** Team A can't ship a hotfix while Team B is sitting on a long-running feature branch that's holding main.
+| Concern | Shared repo (multi-project) | Isolated repo (1:1) |
+|---------|----------------------------|---------------------|
+| Merge conflicts | Unrelated teams touch shared folders, CI configs, or bundle targets | Each team owns all files in their repo |
+| CI speed | A change to one pipeline triggers validation for every project | CI runs only for the project that changed |
+| Ownership | A failed deploy has no clear owner; rollback drags in unrelated assets | The team that owns the repo owns the deploy |
+| Release cadence | One team's hotfix is blocked by another team's long-running branch | Each team ships on its own schedule |
 
 ### Example
 
@@ -113,7 +170,7 @@ At **Awesome123** corp, two teams kick off separate Databricks projects at the s
 | Data Engineering | Marketing C360 | `databricks-marketing-c360` | Jobs, pipelines, schemas, SQL warehouses, dashboards |
 | Data Science | Finance revenue prediction | `databricks-finance-revenue-prediction` | Training jobs, registered models, serving endpoints, dashboards |
 
-A pipeline change in marketing C360 does not trigger CI for the finance ML project. Each team ships on its own schedule.
+A pipeline change in marketing C360 does not trigger CI for the finance ML project.
 
 ## When to use / when not to
 
