@@ -8,7 +8,7 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 
 # 13. Data Access Control
 
-> **You'll** learn how to protect sensitive columns at schema scale using Unity Catalog ABAC policies in **~30 min** (plus a 45-min hands-on lab).
+> **You'll** learn how to protect sensitive columns at schema scale using Unity Catalog ABAC policies in **~30 min** (plus a 55-min hands-on lab).
 >
 > **Prereqs:** [5. Data Governance Strategy](/docs/05-data-governance-strategy/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [3. Infra Setup: Add Groups](/docs/03-infra-setup/add-groups/)
 
@@ -22,34 +22,30 @@ Think of it like a building's badge system. You set the rule at the door, not at
 
 Three building blocks:
 
-1. **Masking UDF:** a SQL function that returns either the real value or a substitute, based on the caller's group membership
-2. **Security policy:** an object that binds the UDF to a column type and a filter condition
-3. **Tag:** a label applied to a schema or table that triggers the policy automatically
+1. **Tag:** a label applied to a column that identifies what the policy should match
+2. **Masking UDF:** a SQL function that returns a substitute value
+3. **Policy:** one statement that binds the UDF to any column carrying that tag, anywhere in a schema or catalog
 
 ```sql
--- 1. UDF: salary visible to hr_admin and finance, NULL for everyone else
+-- 1. Tag: label the column so a policy can find it
+ALTER TABLE main.hr.employees ALTER COLUMN salary SET TAGS ('sensitivity' = 'high');
+
+-- 2. UDF: returns a substitute value; who sees the real value is decided by the policy, not the function
 CREATE OR REPLACE FUNCTION main.security.mask_salary(salary DOUBLE)
 RETURNS DOUBLE
-RETURN CASE
-  WHEN is_account_group_member('hr_admin') THEN salary
-  WHEN is_account_group_member('finance')  THEN salary
-  ELSE NULL
-END;
+RETURN NULL;
 
--- 2. Security policy
-CREATE OR REPLACE SECURITY POLICY main.security.salary_policy
-  COLUMN MASK main.security.mask_salary;
-
--- 3. Tag the schema
-ALTER SCHEMA main.hr SET TAGS ('sensitivity' = 'high');
-
--- 4. Bind: any salary column in a tagged schema inherits the policy automatically
-ALTER SECURITY POLICY main.security.salary_policy
-  SET SCHEMA main.hr FILTER TAG sensitivity = 'high'
-  ON COLUMN salary;
+-- 3. Policy: created once, bound to the schema, masks every matching column except hr_admin and finance
+CREATE OR REPLACE POLICY salary_policy
+ON SCHEMA main.hr
+COLUMN MASK main.security.mask_salary
+TO `account users` EXCEPT hr_admin, finance
+FOR TABLES
+MATCH COLUMNS has_tag_value('sensitivity', 'high') AS salary
+ON COLUMN salary;
 ```
 
-Any table added to `main.hr` with a `salary` column picks up the mask with no extra steps.
+Any column tagged `sensitivity = high` in `main.hr`, on any table, picks up the mask automatically. No new policy, no per-table wiring. Tagging the column is the only step.
 
 :::warning
 ABAC security policies require **DBR 16.4+** or **serverless compute**. Clusters on older runtimes will fail with a permission error when the policy is evaluated.
@@ -140,6 +136,30 @@ See the [hands-on lab](/docs/13-data-access-control/lab) for the full UDF and po
 
 ---
 
+## Row filters
+
+A column mask controls what a visible row shows. A row filter controls which rows are visible at all. Same mechanics, different target: instead of `COLUMN MASK`, a policy uses `ROW FILTER` with a function that returns `BOOLEAN`, and instead of `ON COLUMN`, it uses `USING COLUMNS` to pass in the tagged column the filter checks.
+
+Use a row filter when different groups should see different slices of the same table: a regional manager sees their region, a support rep sees their queue, a business unit sees its own cost center. Use a column mask when the row is fine to see but a specific field on it isn't.
+
+```sql
+CREATE OR REPLACE FUNCTION main.security.filter_region(region STRING)
+RETURNS BOOLEAN
+RETURN is_account_group_member('region_emea') AND region = 'EMEA';
+
+CREATE OR REPLACE POLICY region_policy
+ON SCHEMA main.hr
+ROW FILTER main.security.filter_region
+TO `account users` EXCEPT hr_admin
+FOR TABLES
+MATCH COLUMNS has_tag_value('sensitivity', 'region') AS region
+USING COLUMNS (region);
+```
+
+Everyone in `region_emea` sees only EMEA rows on any tagged table in `main.hr`. `hr_admin` is exempt and sees everything. See the [hands-on lab](/docs/13-data-access-control/lab) for a full worked example with three regions.
+
+---
+
 :::tip Unity Catalog: Data Access Control
 
 <iframe
@@ -155,10 +175,10 @@ See the [hands-on lab](/docs/13-data-access-control/lab) for the full UDF and po
 
 ## In this section
 
-- [Hands-on lab](/docs/13-data-access-control/lab): apply ABAC tag-driven policies to an employees table with salary, SSN, email, and credit card columns, including SHA-256 hashing variants (~45 min)
+- [Hands-on lab](/docs/13-data-access-control/lab): apply ABAC tag-driven policies to an employees table with salary, SSN, email, and credit card columns, including SHA-256 hashing and row-level filtering by region (~55 min)
 
 ## Next
 
 - **Do next:** [Hands-on lab](/docs/13-data-access-control/lab)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [Data Governance Strategy](/docs/05-data-governance-strategy/)
-- **Reference:** [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/), [Automatic data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification.html), [Column masks](https://docs.databricks.com/aws/en/data-governance/unity-catalog/filters-and-masks/)
+- **Reference:** [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/), [Automatic data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification.html), [Create and manage row filter and column mask policies](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/policies)
