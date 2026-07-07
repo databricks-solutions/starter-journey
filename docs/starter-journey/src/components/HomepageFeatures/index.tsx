@@ -14,7 +14,7 @@ const FeatureList: FeatureItem[] = [
     image: require('@site/static/img/build-by-bricksters.webp').default,
     description: (
       <>
-        Written by Databricks employees who have set up hundreds of customer accounts. You get the choices we'd make ourselves, with the reasons behind them.
+        Written by Databricks employees who have set up hundreds of customer accounts.
       </>
     ),
   },
@@ -23,16 +23,16 @@ const FeatureList: FeatureItem[] = [
     image: require('@site/static/img/your-first-chapter.webp').default,
     description: (
       <>
-        No prior Databricks experience needed. Each step is plain language, in order, with the command to run and what you should see back.
+        No prior Databricks experience needed. The content is in order and easy to follow if you're new to Databricks.
       </>
     ),
   },
   {
-    title: 'Get Past Setup',
+    title: 'Past the Setup Wall',
     image: require('@site/static/img/accelerate-to-win.webp').default,
     description: (
       <>
-        Setup is where most teams stall. Follow the path and you end up with a working pipeline instead of a half-configured account.
+        Start with an empty account. Finish with a DevOps and CI/CD-ready Databricks project your team can build on.
       </>
     ),
   },
