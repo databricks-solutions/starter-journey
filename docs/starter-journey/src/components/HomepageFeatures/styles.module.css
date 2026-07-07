@@ -40,8 +40,8 @@
 }
 
 .featureImageWrapper {
-  flex: 0 0 200px;
-  height: 200px;
+  flex: 0 0 260px;
+  height: 260px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
 
 .featureImg {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 260px;
   width: auto;
   height: auto;
   object-fit: contain;
