@@ -7,7 +7,7 @@ description: Apply ABAC tag-driven policies to protect salary, SSN, email, and c
 
 > **You'll** apply ABAC tag-driven policies to mask salary, SSN, email, and credit card columns, and restrict rows by region, on a sample employees table in **~55 min**.
 >
-> **Prereqs:** [13. Data Access Control](/docs/13-data-access-control/), a SQL warehouse or serverless cluster, `CREATE SCHEMA` on `main`
+> **Prereqs:** [13. Data Access Control](/docs/13-data-access-control/), a SQL warehouse or serverless cluster, `CREATE SCHEMA` on `development`
 
 All steps require **DBR 16.4+ or serverless** for ABAC policy evaluation. Run everything in the Databricks SQL editor.
 
@@ -20,9 +20,16 @@ You'll rebuild that table with ABAC: salary and SSN locked to HR and finance, em
 Create a schema and a table that includes the most common sensitive column types: salary, SSN, email, credit card, phone, and region.
 
 ```sql
-CREATE SCHEMA IF NOT EXISTS main.lab_dac;
+USE CATALOG development;
 
-CREATE OR REPLACE TABLE main.lab_dac.employees (
+CREATE SCHEMA IF NOT EXISTS lab_dac;
+
+-- Tables and functions are going to be stored here.
+USE SCHEMA lab_dac;
+```
+
+```sql
+CREATE OR REPLACE TABLE employees (
   employee_id INT,
   name        STRING,
   region      STRING,
@@ -33,31 +40,31 @@ CREATE OR REPLACE TABLE main.lab_dac.employees (
   salary      DOUBLE
 );
 
-INSERT INTO main.lab_dac.employees VALUES
+INSERT INTO employees VALUES
   (1, 'Alice',  'EMEA', 'alice@acme.com',  '+1-415-555-0101', '123-45-6789', '4111-1111-1111-1001', 95000.0),
   (2, 'Bob',    'AMER', 'bob@acme.com',    '+1-212-555-0102', '234-56-7890', '4111-1111-1111-1002', 87000.0),
   (3, 'Carlos', 'APAC', 'carlos@acme.com', '+1-650-555-0103', '345-67-8901', '4111-1111-1111-1003', 91000.0),
   (4, 'Diana',  'EMEA', 'diana@acme.com',  '+1-312-555-0104', '456-78-9012', '4111-1111-1111-1004', 102000.0);
 ```
 
-**Checkpoint:** `SELECT * FROM main.lab_dac.employees` returns 4 rows with all columns populated.
+**Checkpoint:** `SELECT * FROM employees` returns 4 rows with all columns populated.
 
 ## 2. Tag the sensitive columns
 
 ABAC policies match columns by tag, not by name. Tag each sensitive column with what it holds, using one tag key (`pii`) with a distinct value per column.
 
 ```sql
-ALTER TABLE main.lab_dac.employees ALTER COLUMN salary      SET TAGS ('pii' = 'salary');
-ALTER TABLE main.lab_dac.employees ALTER COLUMN ssn         SET TAGS ('pii' = 'ssn');
-ALTER TABLE main.lab_dac.employees ALTER COLUMN email       SET TAGS ('pii' = 'email');
-ALTER TABLE main.lab_dac.employees ALTER COLUMN card_number SET TAGS ('pii' = 'card_number');
-ALTER TABLE main.lab_dac.employees ALTER COLUMN phone       SET TAGS ('pii' = 'phone');
-ALTER TABLE main.lab_dac.employees ALTER COLUMN region      SET TAGS ('pii' = 'region');
+ALTER TABLE employees ALTER COLUMN salary      SET TAGS ('pii' = 'salary');
+ALTER TABLE employees ALTER COLUMN ssn         SET TAGS ('pii' = 'ssn');
+ALTER TABLE employees ALTER COLUMN email       SET TAGS ('pii' = 'email');
+ALTER TABLE employees ALTER COLUMN card_number SET TAGS ('pii' = 'card_number');
+ALTER TABLE employees ALTER COLUMN phone       SET TAGS ('pii' = 'phone');
+ALTER TABLE employees ALTER COLUMN region      SET TAGS ('pii' = 'region');
 ```
 
 In production, `pii` would be a [governed tag](/docs/13-data-access-control/#governed-tags), so only stewards authorized by a tag policy can set these values. A plain tag works for this lab.
 
-**Checkpoint:** `DESCRIBE TABLE EXTENDED main.lab_dac.employees` shows a `pii` tag on each of the six columns.
+**Checkpoint:** `DESCRIBE TABLE EXTENDED employees` shows a `pii` tag on each of the six columns.
 
 ## 3. Create the masking functions and policies
 
@@ -70,14 +77,14 @@ Two masking strategies are available:
 ### Salary: visible to HR and finance only (redaction)
 
 ```sql
-CREATE OR REPLACE FUNCTION main.lab_dac.mask_salary(salary DOUBLE)
+CREATE OR REPLACE FUNCTION mask_salary(salary DOUBLE)
 RETURNS DOUBLE
 RETURN NULL;
 
 CREATE OR REPLACE POLICY policy_salary
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Hide salary from everyone except HR and finance'
-COLUMN MASK main.lab_dac.mask_salary
+COLUMN MASK mask_salary
 TO `account users` EXCEPT hr_admin, finance
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'salary') AS salary
@@ -90,27 +97,27 @@ Full redaction is the safer default. Use a hash only if your compliance requirem
 
 ```sql
 -- Option A: full redaction (recommended for SSNs)
-CREATE OR REPLACE FUNCTION main.lab_dac.mask_ssn(ssn STRING)
+CREATE OR REPLACE FUNCTION mask_ssn(ssn STRING)
 RETURNS STRING
 RETURN 'XXX-XX-XXXX';
 
 CREATE OR REPLACE POLICY policy_ssn
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Redact SSN from everyone except HR and compliance'
-COLUMN MASK main.lab_dac.mask_ssn
+COLUMN MASK mask_ssn
 TO `account users` EXCEPT hr_admin, compliance
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'ssn') AS ssn
 ON COLUMN ssn;
 
 -- Option B: SHA-256 hash (pseudonymization, for cross-dataset matching)
--- CREATE OR REPLACE FUNCTION main.lab_dac.hash_ssn(ssn STRING)
+-- CREATE OR REPLACE FUNCTION hash_ssn(ssn STRING)
 -- RETURNS STRING
 -- RETURN SHA2(ssn, 256);
 --
 -- CREATE OR REPLACE POLICY policy_ssn
--- ON SCHEMA main.lab_dac
--- COLUMN MASK main.lab_dac.hash_ssn
+-- ON SCHEMA lab_dac
+-- COLUMN MASK hash_ssn
 -- TO `account users` EXCEPT hr_admin, compliance
 -- FOR TABLES
 -- MATCH COLUMNS has_tag_value('pii', 'ssn') AS ssn
@@ -125,27 +132,27 @@ The hash lets analysts join across datasets on a consistent token. The domain-on
 
 ```sql
 -- Option A: SHA-256 hash (preserves cross-dataset join-ability)
-CREATE OR REPLACE FUNCTION main.lab_dac.hash_email(email STRING)
+CREATE OR REPLACE FUNCTION hash_email(email STRING)
 RETURNS STRING
 RETURN SHA2(email, 256);
 
 CREATE OR REPLACE POLICY policy_email
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Hash email for everyone except data owners'
-COLUMN MASK main.lab_dac.hash_email
+COLUMN MASK hash_email
 TO `account users` EXCEPT data_owners
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'email') AS email
 ON COLUMN email;
 
 -- Option B: domain-only mask (simpler)
--- CREATE OR REPLACE FUNCTION main.lab_dac.mask_email(email STRING)
+-- CREATE OR REPLACE FUNCTION mask_email(email STRING)
 -- RETURNS STRING
 -- RETURN CONCAT('***@', SPLIT(email, '@')[1]);
 --
 -- CREATE OR REPLACE POLICY policy_email
--- ON SCHEMA main.lab_dac
--- COLUMN MASK main.lab_dac.mask_email
+-- ON SCHEMA lab_dac
+-- COLUMN MASK mask_email
 -- TO `account users` EXCEPT data_owners
 -- FOR TABLES
 -- MATCH COLUMNS has_tag_value('pii', 'email') AS email
@@ -159,14 +166,14 @@ Run the Option A version. You'll verify the hash output in step 5.
 Fraud reviewers need partial numbers to match transactions. Everyone else sees a redacted string.
 
 ```sql
-CREATE OR REPLACE FUNCTION main.lab_dac.mask_card(card_number STRING)
+CREATE OR REPLACE FUNCTION mask_card(card_number STRING)
 RETURNS STRING
 RETURN CONCAT('****-****-****-', RIGHT(REGEXP_REPLACE(card_number, '[^0-9]', ''), 4));
 
 CREATE OR REPLACE POLICY policy_card
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Show only the last 4 digits of a card number, except for the fraud team'
-COLUMN MASK main.lab_dac.mask_card
+COLUMN MASK mask_card
 TO `account users` EXCEPT fraud_team
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'card_number') AS card_number
@@ -178,21 +185,21 @@ ON COLUMN card_number;
 Support reviewers verify identity with the last 4 digits; full numbers are hidden from everyone else.
 
 ```sql
-CREATE OR REPLACE FUNCTION main.lab_dac.mask_phone(phone STRING)
+CREATE OR REPLACE FUNCTION mask_phone(phone STRING)
 RETURNS STRING
 RETURN CONCAT(SPLIT(phone, '-')[0], '-XXX-XXX-', RIGHT(REGEXP_REPLACE(phone, '[^0-9]', ''), 4));
 
 CREATE OR REPLACE POLICY policy_phone
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Keep the last 4 digits of phone visible, except for support'
-COLUMN MASK main.lab_dac.mask_phone
+COLUMN MASK mask_phone
 TO `account users` EXCEPT support_ops
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'phone') AS phone
 ON COLUMN phone;
 ```
 
-**Checkpoint:** Run `SELECT * FROM main.lab_dac.employees` as a user who isn't in any of the groups above. You should see:
+**Checkpoint:** Run `SELECT * FROM employees` as a user who isn't in any of the groups above. You should see:
 
 | column | expected value |
 |---|---|
@@ -211,7 +218,7 @@ Column masks control what a visible row shows. A row filter controls which rows 
 The row filter function checks the caller's group against the row's `region` value, so one function and one policy cover all three regions.
 
 ```sql
-CREATE OR REPLACE FUNCTION main.lab_dac.filter_region(region STRING)
+CREATE OR REPLACE FUNCTION filter_region(region STRING)
 RETURNS BOOLEAN
 RETURN
   (is_account_group_member('region_emea') AND region = 'EMEA')
@@ -219,9 +226,9 @@ RETURN
   OR (is_account_group_member('region_apac') AND region = 'APAC');
 
 CREATE OR REPLACE POLICY policy_region
-ON SCHEMA main.lab_dac
+ON SCHEMA lab_dac
 COMMENT 'Regional managers see only their own region; HR and compliance see everyone'
-ROW FILTER main.lab_dac.filter_region
+ROW FILTER filter_region
 TO `account users` EXCEPT hr_admin, compliance
 FOR TABLES
 MATCH COLUMNS has_tag_value('pii', 'region') AS region
@@ -243,7 +250,7 @@ USING COLUMNS (region);
 Create a second table and tag its sensitive columns with the same `pii` values. No new function, no new policy, the existing five policies apply immediately.
 
 ```sql
-CREATE OR REPLACE TABLE main.lab_dac.contractors (
+CREATE OR REPLACE TABLE contractors (
   contractor_id INT,
   name          STRING,
   email         STRING,
@@ -251,15 +258,15 @@ CREATE OR REPLACE TABLE main.lab_dac.contractors (
   salary        DOUBLE
 );
 
-INSERT INTO main.lab_dac.contractors VALUES
+INSERT INTO contractors VALUES
   (1, 'Eve', 'eve@vendor.com', '567-89-0123', 75000.0);
 
-ALTER TABLE main.lab_dac.contractors ALTER COLUMN salary SET TAGS ('pii' = 'salary');
-ALTER TABLE main.lab_dac.contractors ALTER COLUMN ssn    SET TAGS ('pii' = 'ssn');
-ALTER TABLE main.lab_dac.contractors ALTER COLUMN email  SET TAGS ('pii' = 'email');
+ALTER TABLE contractors ALTER COLUMN salary SET TAGS ('pii' = 'salary');
+ALTER TABLE contractors ALTER COLUMN ssn    SET TAGS ('pii' = 'ssn');
+ALTER TABLE contractors ALTER COLUMN email  SET TAGS ('pii' = 'email');
 ```
 
-**Checkpoint:** `SELECT salary, ssn, email FROM main.lab_dac.contractors` as a non-privileged user returns `NULL`, `XXX-XX-XXXX`, and a 64-character hash. The policies were defined once, on the schema. Tagging is the only per-table step, and that's the point: a data owner tags a column, they don't have to know a masking policy exists.
+**Checkpoint:** `SELECT salary, ssn, email FROM contractors` as a non-privileged user returns `NULL`, `XXX-XX-XXXX`, and a 64-character hash. The policies were defined once, on the schema. Tagging is the only per-table step, and that's the point: a data owner tags a column, they don't have to know a masking policy exists.
 
 ## 6. Clean up
 
@@ -267,28 +274,28 @@ Remove the policies, functions, tables, and schema. Dropping a table removes its
 
 ```sql
 -- Drop policies
-DROP POLICY policy_salary ON SCHEMA main.lab_dac;
-DROP POLICY policy_ssn    ON SCHEMA main.lab_dac;
-DROP POLICY policy_email  ON SCHEMA main.lab_dac;
-DROP POLICY policy_card   ON SCHEMA main.lab_dac;
-DROP POLICY policy_phone  ON SCHEMA main.lab_dac;
-DROP POLICY policy_region ON SCHEMA main.lab_dac;
+DROP POLICY policy_salary ON SCHEMA lab_dac;
+DROP POLICY policy_ssn    ON SCHEMA lab_dac;
+DROP POLICY policy_email  ON SCHEMA lab_dac;
+DROP POLICY policy_card   ON SCHEMA lab_dac;
+DROP POLICY policy_phone  ON SCHEMA lab_dac;
+DROP POLICY policy_region ON SCHEMA lab_dac;
 
 -- Drop UDFs
-DROP FUNCTION IF EXISTS main.lab_dac.mask_salary;
-DROP FUNCTION IF EXISTS main.lab_dac.mask_ssn;
-DROP FUNCTION IF EXISTS main.lab_dac.hash_email;
-DROP FUNCTION IF EXISTS main.lab_dac.mask_card;
-DROP FUNCTION IF EXISTS main.lab_dac.mask_phone;
-DROP FUNCTION IF EXISTS main.lab_dac.filter_region;
+DROP FUNCTION IF EXISTS mask_salary;
+DROP FUNCTION IF EXISTS mask_ssn;
+DROP FUNCTION IF EXISTS hash_email;
+DROP FUNCTION IF EXISTS mask_card;
+DROP FUNCTION IF EXISTS mask_phone;
+DROP FUNCTION IF EXISTS filter_region;
 
 -- Drop tables and schema
-DROP TABLE  IF EXISTS main.lab_dac.employees;
-DROP TABLE  IF EXISTS main.lab_dac.contractors;
-DROP SCHEMA IF EXISTS main.lab_dac;
+DROP TABLE  IF EXISTS employees;
+DROP TABLE  IF EXISTS contractors;
+DROP SCHEMA IF EXISTS lab_dac;
 ```
 
-**Checkpoint:** `SHOW SCHEMAS IN main` no longer lists `lab_dac`.
+**Checkpoint:** `SHOW SCHEMAS IN development` no longer lists `lab_dac`.
 
 ## Next
 
