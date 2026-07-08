@@ -168,6 +168,7 @@ const sidebars: SidebarsConfig = {
       label: '9. Unified Analytics',
       collapsed: false,
       className: 'sidebar-track-da',
+      link: {type: 'doc', id: '09-unified-analytics/index'},
       items: [
         {
           type: 'category',

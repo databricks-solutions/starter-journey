@@ -1,0 +1,50 @@
+---
+sidebar_position: 0
+sidebar_label: Unified Analytics
+description: Turn gold tables into consistent KPIs and business-facing surfaces with Unity Catalog metric views, Databricks SQL, and AI/BI.
+---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+
+# 9. Unified Analytics
+
+> **You'll understand** how to go from production tables to consistent KPIs and business-facing analytics surfaces: metric views, dashboards, Genie, and apps.
+>
+> **Prereqs:** [7. Build the first ETL pipeline](/docs/07-build-first-pipeline/), [8. Query and Explore](/docs/08-query-and-explore), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+
+## Why this matters
+
+Your gold tables are not the finish line.
+Business users need consistent numbers.
+They also need a way to reach those numbers without writing SQL.
+
+The next step is planning the semantics and serving layer.
+Define your KPIs once, in Unity Catalog, so SQL editors, dashboards, Genie, and third-party apps all return the same number.
+Then surface those metrics through Databricks AI/BI, all querying through a SQL warehouse.
+
+<StarterJourneyProgress currentLevel={6} currentForkColumn="da"/>
+
+## Mental model
+
+![Databricks Data Intelligence Platform diagram with four layers highlighted: tables in purple, business semantic layer in red, data warehousing in orange, and AI/BI in green.](/img/unified-analytics.jpg)
+
+| Highlight | Layer | What it is |
+|---|---|---|
+| Purple | Tables | The medallion bronze, silver, and gold tables produced by your data engineering pipelines. Every query in the serving layer reads from here. |
+| Red | Business semantic layer | Where you define KPIs, business aggregates, concepts, and synonyms once, on top of the tables. Unity Catalog metric views live here. |
+| Orange | Data warehousing | All AI/BI tools, applications, and third-party BI apps reach the data through a SQL warehouse. The warehouse is the single query gateway. |
+| Green | AI/BI | Genie and Dashboards. The surfaces business users actually interact with. Both read from metric views through the warehouse. |
+
+## In this section
+
+| Section | What you'll do |
+|---|---|
+| [Business Semantics](/docs/09-unified-analytics/business-semantics/) | Define KPIs as Unity Catalog metric views so every tool returns the same number. |
+| [Databricks AI/BI: Dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards) | Build and share visual reports backed by governed lakehouse data. |
+| [Databricks AI/BI: Genie Spaces](/docs/09-unified-analytics/databricks-aibi/genie-spaces) | Let business users ask data questions in natural language. |
+| [Databricks Apps](/docs/09-unified-analytics/databricks-aibi/databricks-apps) | Build and deploy custom web applications on Databricks. |
+
+## Next
+
+- **Do next:** [Business Semantics](/docs/09-unified-analytics/business-semantics/)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Business semantics in Unity Catalog](https://docs.databricks.com/aws/en/business-semantics/)
