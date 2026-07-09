@@ -2,12 +2,9 @@
 
 Guidance for AI coding agents (Claude Code, Cursor, and similar tools) working in this repository.
 
-## Keep these files in sync
+## Single source of truth
 
-- **Cursor** loads [.cursorrules](.cursorrules) at the repo root.
-- **Claude Code** loads [CLAUDE.md](CLAUDE.md) at the repo root.
-
-**When you change agent guidance, update both files in the same commit.** CI runs `scripts/check_agent_instructions_sync.sh` to ensure they stay identical.
+This repository uses one root [AGENTS.md](AGENTS.md) for all agent guidance. Do not recreate `CLAUDE.md`, `.cursorrules`, or tool-specific instruction duplicates.
 
 ## Behavioral guidelines
 
@@ -122,8 +119,7 @@ Starter Journey is a Docusaurus 3 documentation site deployed to GitHub Pages at
 
 ```
 starter-journey/
-├── CLAUDE.md                          ← agent instructions (Claude Code)
-├── .cursorrules                       ← agent instructions (Cursor; keep in sync)
+├── AGENTS.md                          ← agent instructions (all tools)
 ├── docs/
 │   ├── STYLE.md                       ← writing style guide (read before editing docs)
 │   └── starter-journey/               ← Docusaurus project root
@@ -151,8 +147,7 @@ starter-journey/
 │           ├── 14-ci-cd-devops/
 │           └── 15-journey-progress-demo/
 ├── scripts/
-│   ├── check_section_freshness.py
-│   └── check_agent_instructions_sync.sh
+│   └── check_section_freshness.py
 └── .github/workflows/
     ├── deploy.yml                     ← pushes to main → build → GitHub Pages
     ├── test-deploy.yml                ← PRs to main → build only (no deploy)
@@ -371,6 +366,7 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 
 | File | Purpose |
 |---|---|
+| `AGENTS.md` | Agent instructions for all coding tools |
 | `docs/starter-journey/docusaurus.config.ts` | Site config (URL, presets, plugins, navbar, footer, gtag) |
 | `docs/starter-journey/sidebars.ts` | Sidebar navigation — manually managed, not auto-generated |
 | `docs/starter-journey/package.json` | Dependencies and scripts |
@@ -380,7 +376,6 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 | `.github/workflows/section-freshness.yml` | Weekly stale-section check |
 | `docs/starter-journey/section-freshness.csv` | Last-updated date per journey section |
 | `scripts/check_section_freshness.py` | Freshness checker (stdlib only) |
-| `scripts/check_agent_instructions_sync.sh` | Ensures CLAUDE.md and .cursorrules match |
 
 ## Common mistakes to avoid
 
@@ -389,6 +384,100 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 - **Adding admonitions beyond the allowed three** — the build won't catch this, but it violates the style guide.
 - **Forgetting the `## Next` block** — every page needs it. Technical pages link to educational counterparts and vice versa.
 - **Images without section prefix** — `static/img/` is flat. Prefix images to avoid name collisions.
-- **Updating only one agent instructions file** — change `CLAUDE.md` and `.cursorrules` together.
+- **Recreating tool-specific instruction files** — keep guidance in `AGENTS.md` only.
 
 If a style-guide rule conflicts with an instruction in the conversation, ask before deviating.
+
+## PDF deck button standard
+
+Every button that links to a PDF **must** use the `<Button>` component with `useBaseUrl`. Never use raw `<a>` tags for PDF links.
+
+### Required imports
+
+Every `.mdx` file that contains a PDF button must have these imports at the top (after frontmatter):
+
+```mdx
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
+```
+
+### Component format
+
+```jsx
+<Button label="Deck - [Topic the deck addresses]" link={useBaseUrl('/pdfs/filename.pdf')} />
+```
+
+### Label naming
+
+Labels **must** follow the pattern `"Deck - [Topic]"`:
+
+```
+"Deck - [Topic the deck addresses]"
+```
+
+Examples:
+
+- Good: `Deck - Genie Best Practices`, `Deck - UC Best Practices`, `Deck - Metric Views`
+- Bad: `UC Best Practices Deck`, `View PDF`, `Genie Spaces Implementation Guide`
+
+### Placement
+
+- Place deck buttons inside a `:::tip` admonition (never `:::warning` or `:::danger`).
+- Add a short lead-in sentence before the button, e.g. "For a more elaborated explanation, check the following deck:"
+
+## Journey overview table sync
+
+The `## What you'll build` table in `docs/starter-journey/docs/01-get-started.mdx` lists every numbered journey section. It must stay in sync with `docs/starter-journey/sidebars.ts`.
+
+### When this rule applies
+
+Whenever you add, remove, rename, or restructure a numbered section in `sidebars.ts`, update the table in `01-get-started.mdx` in the same change.
+
+### What to update
+
+- **Add a row** for every new numbered section. Use the sidebar `label` (e.g. `'9. Unified Analytics'`) for the section number and name.
+- **Remove a row** when a section is deleted from the sidebar.
+- **Update the link** when a section's first doc ID changes.
+- **Update the "What you'll have when done" description** when the section's scope changes meaningfully.
+
+### Table format rules
+
+- Link the section title to its index page (`/docs/<folder>/`). Use the `link.id` value from `sidebars.ts` to derive the URL.
+- If a section has no direct index page (no `link:` property on the category in `sidebars.ts`), write the section title in bold without a link, then list the main sub-sections as bullets using `<br/>` within the table cell.
+- If a sub-section also has no direct link, show it as a bold label and list its pages as indented bullets using `<br/>&nbsp;&nbsp;-`.
+- Keep one row per numbered section. Do not create separate rows for sub-sections.
+
+### Example: section with no top-level link
+
+Sidebar entry:
+
+```ts
+{
+  type: 'category',
+  label: '9. Unified Analytics',
+  items: [
+    {
+      type: 'category',
+      label: 'Business Semantics',
+      link: { type: 'doc', id: '09-unified-analytics/business-semantics/index' },
+      items: [...],
+    },
+    {
+      type: 'category',
+      label: 'Databricks AI/BI',
+      // no link property
+      items: [
+        '09-unified-analytics/databricks-aibi/dashboards',
+        '09-unified-analytics/databricks-aibi/genie-spaces',
+        '09-unified-analytics/databricks-aibi/databricks-apps',
+      ],
+    },
+  ],
+}
+```
+
+Table row:
+
+```md
+| 9 | **Unified Analytics**<br/>- [Business Semantics](/docs/09-unified-analytics/business-semantics/)<br/>- **Databricks AI/BI**<br/>&nbsp;&nbsp;- [Dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards)<br/>&nbsp;&nbsp;- [Genie Spaces](/docs/09-unified-analytics/databricks-aibi/genie-spaces)<br/>&nbsp;&nbsp;- [Apps](/docs/09-unified-analytics/databricks-aibi/databricks-apps) | KPIs defined as Unity Catalog metric views; dashboards, Genie Spaces, and apps surfacing data to business users |
+```

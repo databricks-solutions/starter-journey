@@ -22,3 +22,8 @@ docs/starter-journey/.env.production.local
 docs/starter-journey/npm-debug.log*
 docs/starter-journey/yarn-debug.log*
 docs/starter-journey/yarn-error.log*
+
+# Local agent tooling (not required in the repo)
+docs/superpowers/
+.cursor/
+.claude/
