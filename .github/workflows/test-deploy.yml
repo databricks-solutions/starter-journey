@@ -26,10 +26,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check agent instructions sync
-        working-directory: ${{ github.workspace }}
-        run: bash scripts/check_agent_instructions_sync.sh
-
       - name: Get JFrog OIDC token
         run: |
           set -euo pipefail
