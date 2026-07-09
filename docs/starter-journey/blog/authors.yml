@@ -50,3 +50,23 @@ lingeshwaran_kanniappan:
   page: true
   socials:
     linkedin: lingeshwarankanniappan
+
+connor_brown:
+  name: Connor Brown
+  title: Specialist Solutions Architect @ Databricks
+  url: https://www.linkedin.com/in/brownc1/
+  image_url: https://github.com/connorbrown-db.png
+  page: true
+  socials:
+    linkedin: brownc1
+    github: connorbrown-db
+
+shreel_shah:
+  name: Shreel Shah
+  title: Cloud Infrastructure Engineer @ Databricks
+  url: https://www.linkedin.com/in/shreelshah12/
+  image_url: https://github.com/shreelshah12.png
+  page: true
+  socials:
+    linkedin: shreelshah12
+    github: shreelshah12
