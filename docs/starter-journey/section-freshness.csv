@@ -1,15 +1,15 @@
 section_name,last_update
-1. Get Started,2026-06-29
-2. Before you Start,2026-06-14
-3. Infra Setup,2026-06-15
+1. Get started,2026-07-22
+2. Before you start,2026-07-22
+3. Infra setup,2026-07-22
 4. Cost monitoring,2026-06-14
-5. Data Governance Strategy,2026-06-14
+5. Governance strategy,2026-07-22
 6. Access your data,2026-06-14
-7. Build the first ETL pipeline,2026-06-15
-8. Query and Explore,2026-06-14
-9. Unified Analytics,2026-07-08
-10. Predictive Analytics,2026-06-25
+7. Build the first ETL pipeline,2026-07-22
+8. Query and explore,2026-07-22
+9. Unified analytics,2026-07-22
+10. Predictive analytics,2026-07-22
 11. Agents,2026-06-25
-12. Automation & Orchestration,2026-06-14
-13. Data Access Control,2026-07-06
+12. Orchestration using jobs,2026-07-22
+13. Data access control,2026-07-22
 14. CI/CD and DevOps,2026-06-14

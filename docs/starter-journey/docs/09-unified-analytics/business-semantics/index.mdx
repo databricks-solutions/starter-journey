@@ -21,27 +21,36 @@ Read this deck first. It walks the whole metric views surface: why they exist, h
 <Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
 
 
-## The problem: same KPI, different numbers
+## Benefits of Metric Views
 
-Three teams report Q1 revenue. You get three numbers.
+| Benefit | What you get |
+|---|---|
+| **One definition, no drift** | AI/BI Dashboards, Genie, and SQL all read the same object, so the KPI can't come back different per tool. |
+| **Governed in the catalog** | Access, lineage, discovery, and certification travel with the metric because it's a first-class Unity Catalog object. |
+| **One view replaces many** | A single metric view answers many questions. You stop writing a near-duplicate view for every slice and filter. |
+| **Simpler queries** | `MEASURE()` hides the joins and aggregations; the engine generates the SQL for you. |
+| **Query the metric, not the tables** | You don't need to know the underlying schema layout to get the number. |
+| **Performance when it helps** | The engine can materialize behind the scenes for speed when applicable. |
 
-- **Sales:** `SUM(amount) WHERE status = 'closed'` returns $4.2M
-- **Finance:** `SUM(amount) WHERE invoice_date >= '2026-01-01'` returns $4.0M
-- **BI dashboard:** `SUM(net_amount)` joined to a refunds table returns $3.8M
+Who feels it most:
 
-None of them is wrong. Each definition lives in a separate SQL file or BI tool, and nobody owns the canonical one. So leadership goes with whichever number they trust most that week.
+| Role | What gets easier |
+|---|---|
+| **Data engineers** | Stop maintaining a view per slice. Define the metric once and every downstream tool reads the same object, so fewer "why does the dashboard disagree with the notebook" tickets land on you. |
+| **Analysts** | Query `MEASURE(...)` without reverse-engineering the tables or guessing join keys. The number is already certified, so you spend time analyzing, not defending. |
+| **Business users** | Ask Genie or open a dashboard and trust the number. No more picking which team's revenue to believe this week. |
 
-## The fix: define metrics once, in the catalog
+## When a KPI looks wrong
 
-A **metric view** is a Unity Catalog object that holds the formula, the grain, and the filters for a KPI. SQL editors, notebooks, AI/BI dashboards, and Genie all call the same object, so they can't drift apart.
+Before metric views, a wrong number meant hunting across dashboards, SQL files, notebooks, and AI prompts to find whose definition drifted. With the metric defined once, the debug path is short.
 
-```sql
-SELECT `Order Month`, MEASURE(`Total Revenue`)
-FROM main.sales.orders_metrics
-WHERE `Order Month` >= '2026-01-01';
-```
+1. **Someone reports the number looks off.** Don't chase the consumer tool first. The dashboard and Genie read the same object, so they're not the source of the disagreement.
+2. **Open the metric view in Unity Catalog.** Lineage shows the source tables it reads. One object, one place to look.
+3. **Check the measure and filter.** Is the formula what you expect? Is the filter scoping the right rows? Most "wrong number" bugs live here.
+4. **Check the source tables.** If the formula is right, the data upstream is the suspect. Lineage points you at the table; check freshness and row counts.
+5. **Fix the metric view definition.** One change, one object. Every consumer (dashboards, Genie, SQL, AI apps) picks up the fix on the next query. No redeploying dashboards, no rewriting prompts, no chasing downstream copies.
 
-Run that query in any tool. You get the same number every time.
+The DevOps win is the blast radius: a fix touches one object and propagates to every consumer automatically. That's the difference between "define metrics once" as a slogan and as an operational property.
 
 ## Where it sits
 
