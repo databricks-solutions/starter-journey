@@ -16,6 +16,8 @@ Raw data in storage answers nothing on its own. The job of a pipeline is to turn
 
 The payoff of "declarative" is that you stop hand-writing the plumbing. You no longer maintain checkpoints by hand or work out which rows are new. You describe the result, and the engine handles incremental processing and dependency order for you.
 
+Every Databricks project ends up as a Databricks Asset Bundle (DABs) repository. A bundle declares the resources as code: the pipeline, the job, the schemas, the warehouse. Because the resources are code, Genie Code and external agents can read and change them the same way you do. The paths below get a working pipeline in front of you fast; the bundle is where that pipeline lands once the shape is settled.
+
 <StarterJourneyProgress currentLevel={4}/>
 
 ## Data engineering on Databricks

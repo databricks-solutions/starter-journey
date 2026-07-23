@@ -25,5 +25,6 @@ docs/starter-journey/yarn-error.log*
 
 # Local agent tooling (not required in the repo)
 docs/superpowers/
+.superpowers/
 .cursor/
 .claude/

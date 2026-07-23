@@ -2,10 +2,10 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
   docsSidebar: [
-    {type: 'doc', id: '01-get-started', label: '1. Get Started'},
+    {type: 'doc', id: '01-get-started', label: '1. Get started'},
     {
       type: 'category',
-      label: '2. Before you Start',
+      label: '2. Before you start',
       collapsed: true,
       items: [
         {
@@ -32,7 +32,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '3. Infra Setup',
+      label: '3. Infra setup',
       collapsed: true,
       link: {type: 'doc', id: '03-infra-setup/index'},
       items: [
@@ -117,7 +117,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '5. Data Governance Strategy',
+      label: '5. Governance strategy',
       collapsed: true,
       link: {type: 'doc', id: '05-data-governance-strategy/index'},
       items: [
@@ -162,10 +162,10 @@ const sidebars: SidebarsConfig = {
         '07-build-first-pipeline/dabs',
       ],
     },
-    {type: 'doc', id: '08-query-and-explore', label: '8. Query and Explore'},
+    {type: 'doc', id: '08-query-and-explore', label: '8. Query and explore'},
     {
       type: 'category',
-      label: '9. Unified Analytics',
+      label: '9. Unified analytics',
       collapsed: false,
       className: 'sidebar-track-da',
       link: {type: 'doc', id: '09-unified-analytics/index'},
@@ -200,7 +200,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '10. Predictive Analytics',
+      label: '10. Predictive analytics',
       collapsed: true,
       className: 'sidebar-track-ml',
       link: {type: 'doc', id: '10-predictive-analytics/index'},
@@ -220,7 +220,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '12. Automation & Orchestration',
+      label: '12. Orchestration using jobs',
       collapsed: true,
       link: {type: 'doc', id: '12-orchestration/index'},
       items: [
@@ -229,7 +229,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '13. Data Access Control',
+      label: '13. Data access control',
       collapsed: true,
       link: {type: 'doc', id: '13-data-access-control/index'},
       items: [
