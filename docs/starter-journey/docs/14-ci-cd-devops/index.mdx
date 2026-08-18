@@ -11,11 +11,14 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 >
 > **Prereqs:** [7. Build the first pipeline: DABs](/docs/07-build-first-pipeline/dabs), [3. Infra setup](/docs/03-infra-setup/)
 
-## Why this matters
+## The big picture
 
-Draw one line and most of the confusion goes away: anything outside the workspace is Terraform's job, anything inside it is the DABs job. Get that line wrong and you end up with brittle scripts, environments that drift apart, and a deploy only one person knows how to run.
+Draw one line and the confusion clears: anything outside the workspace is Terraform's job; anything inside it is DABs.
+Get that line wrong and you end up with brittle scripts, environments that drift, and a deploy only one person knows how to run.
 
-Clicking changes into the Workspace by hand works until it doesn't. The moment a second person needs to ship, or you need staging to match prod, you want repeatable deploys, a review gate, and a way to promote a change from dev to prod. That is the same discipline that keeps application code sane, applied to data work.
+Hand-clicking changes into the workspace works until a second person needs to ship, or until you need staging to match prod.
+You want repeatable deploys, a review gate, and a clear path from dev to prod.
+That is the same discipline that keeps application code sane, applied to data work.
 
 <StarterJourneyProgress currentLevel={9}/>
 
