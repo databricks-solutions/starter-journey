@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 >
 > **Prereqs:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
 
-## Why this matters
+## The big picture
 
 Build three workspaces, one each for development, staging, and production, and give each its own network. That is the layout most teams land on, and it is much cheaper to set up that way now than to untangle later. A workspace is the compute and collaboration boundary in Databricks, and it cannot move regions or merge with another once it exists. The choices you make in the creation wizard are the choices you live with.
 
@@ -41,7 +41,7 @@ Every cloud gives you two ways to deploy:
 
 A common path is to click the first workspace by hand, then Terraform the rest once you know what the wizard built.
 
-## Pick your cloud provider
+## Choose your approach
 
 | Method | AWS | Azure | GCP |
 |---|---|---|---|
