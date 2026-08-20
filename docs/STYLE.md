@@ -120,6 +120,33 @@ No `:::info`, `:::success`, or `:::note`. Turn those into prose or a numbered st
 
 ---
 
+## Screenshot guides
+
+A screenshot guide is a Build Log page that walks the reader through a console task one screenshot at a time.
+Use it for click-through setup where seeing the screen matters more than reading prose.
+`03-infra-setup/metastore-admins/set-admin-group` is the canonical example.
+Copy its shape.
+
+On top of the shared chrome:
+
+- **The big picture** — one or two sentences on the end state.
+- **Prerequisites** — roles and access needed.
+- **Steps** — each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
+- **Verify** — how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
+- **Where people trip** — a `<details>` per snag.
+
+Screenshots:
+
+- Store per guide in `static/img/<guide-slug>/`, numbered by step order (`1.png`, `2.png`, ...).
+- Reference with `<img src={useBaseUrl('/img/<guide-slug>/1.png')} alt="what the shot shows"/>`. Always write `alt`.
+
+Prompt alternatives:
+
+- Where a step can also be done with a prompt or a SQL command, offer it in a `:::tip[Prefer a prompt?]` with a fenced code block. Docusaurus gives the code block a copy button.
+- Add it only where the prompt is a genuine alternative to the click, not on every step.
+
+---
+
 ## Structure that must survive a rewrite
 
 Changing the voice does not mean breaking the site. Keep all of this intact:
@@ -127,7 +154,7 @@ Changing the voice does not mean breaking the site. Keep all of this intact:
 - Frontmatter (`sidebar_label`, `sidebar_position`, `description`).
 - Internal links in `/docs/<path>` form (never repo-relative file paths).
 - YouTube `<iframe>` embeds and their titles.
-- Images under `static/img/` with a section prefix (`uc-*.png`, `infra-*.png`, `aibi-*.png`).
+- Images under `static/img/`: one-off images use a section prefix (`uc-*.png`, `infra-*.png`, `aibi-*.png`); screenshot guides use a per-guide subfolder `static/img/<guide-slug>/` (see Screenshot guides).
 - Journey checklists on section index pages.
 - The `## Next` block on every page.
 - **Section freshness:** when you meaningfully change a section, bump its `last_update` in

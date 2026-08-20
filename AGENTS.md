@@ -202,7 +202,7 @@ When adding a new numbered section, add a row to the CSV and to `REQUIRED_SECTIO
 - **Doc pages:** `docs/starter-journey/docs/**/*.mdx` — numbered section prefixes (e.g. `03-infra-setup/`) matching sidebar doc IDs.
 - **Sidebar config:** `docs/starter-journey/sidebars.ts` — manually managed. Every new page must be registered here (IDs omit the `.mdx` extension).
 - **Site config:** `docs/starter-journey/docusaurus.config.ts` — plugins, navbar, footer, gtag.
-- **Images:** `docs/starter-journey/static/img/` — prefix with section slug (e.g., `infra-*.png`).
+- **Images:** `docs/starter-journey/static/img/` — one-off images prefix with a section slug (e.g., `infra-*.png`); screenshot guides use a per-guide subfolder `static/img/<guide-slug>/`.
 - **Blog posts:** `docs/starter-journey/blog/YYYY-MM-DD-<slug>.mdx`.
 
 ## Documentation authoring
