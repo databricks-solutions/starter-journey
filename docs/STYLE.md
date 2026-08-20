@@ -1,4 +1,4 @@
-# Starter Journey — writing style
+# Starter Journey: writing style
 
 This site should read like a person who has done this work is walking you through it. Engaging,
 plain-spoken, occasionally opinionated. Not a press release, not a spec sheet, not a chatbot.
@@ -22,7 +22,7 @@ you find. The mechanical rules below are the part a build can't catch, so they a
 
 ---
 
-## Voice 1 — Build Log (technical pages)
+## Voice 1: Build Log (technical pages)
 
 You're a practitioner writing up how you got something working, for the next person.
 
@@ -35,7 +35,7 @@ You're a practitioner writing up how you got something working, for the next per
 - **Failure modes get a real home.** Use a "Where people trip" section instead of a cold
   "Troubleshooting" heading. Name the actual snag and the actual fix.
 
-## Voice 2 — Field Notes (educational pages)
+## Voice 2: Field Notes (educational pages)
 
 You're the experienced engineer telling a colleague how to think about a decision.
 
@@ -78,7 +78,7 @@ These are the humanizer rules that matter most for this site. A build won't flag
 These are functional and stay exactly as-is, even though some look like patterns the humanizer flags
 (the bold labels are navigation, not decoration).
 
-**Top** — frontmatter, a one-line value prop, prereqs:
+**Top**: frontmatter, a one-line value prop, prereqs:
 
 ```md
 ---
@@ -93,7 +93,7 @@ description: <one line, used by search and social previews>
 > **Prereqs:** [<link>](...)
 ```
 
-**Bottom** — always a `## Next` block:
+**Bottom**: always a `## Next` block:
 
 ```md
 ## Next
