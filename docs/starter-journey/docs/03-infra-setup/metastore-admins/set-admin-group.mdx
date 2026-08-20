@@ -1,73 +1,113 @@
 ---
 sidebar_label: Set admin group
-description: Transfer metastore ownership from an individual user to the metastore admin group.
+description: Transfer metastore ownership to a dedicated admin group in the account console.
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Set Admin Group
+# Set the metastore admin group
 
 > **You'll transfer** metastore ownership to a dedicated admin group in ~5 min.
 >
-> **Prereqs:** [Add Groups](/docs/03-infra-setup/add-groups), a metastore admin group created (e.g., `metastore-admins`)
+> **Prereqs:** [Add groups](/docs/03-infra-setup/add-groups), with a metastore admin group already created (for example `metastore-admins`)
 
 ## The big picture
 
-A metastore owned by a group, not by one person or service principal. Ownership then survives anyone leaving, and the responsibility is shared.
+The metastore is the top-level container for everything in Unity Catalog.
+Whoever owns it can manage privileges and transfer ownership of any object inside it.
+Give that ownership to a group, not a person, and it survives anyone leaving.
 
 ## Prerequisites
 
 - Account-admin access to the Databricks account console.
-- A metastore admin group already created (see [Add Groups](/docs/03-infra-setup/add-groups)).
+- A metastore admin group already created (see [Add groups](/docs/03-infra-setup/add-groups)).
 
 :::danger
-The metastore owner must be a group. If you assign an individual or a service principal and that person leaves or that principal is deleted, governance operations stop.
+The metastore owner must be a group.
+Assign an individual or a service principal, and the day that person leaves or that principal is deleted, governance operations stop.
 :::
 
 ## Steps
 
 ### 1. Open the account console
 
-Go to the account console for your cloud provider:
+Sign in to the account console for your cloud, with your account-admin credentials:
 
 - [AWS](https://accounts.cloud.databricks.com)
 - [Azure](https://accounts.azuredatabricks.net)
 - [GCP](https://accounts.gcp.databricks.com)
 
-### 2. Navigate to the metastore
+In the left sidebar, click **Catalog**.
 
-1. On the left panel, click **Catalog**.
-2. Click on the available metastore.
+<img src={useBaseUrl('/img/set-admin-group/1.png')} alt="Account console home with Catalog in the left sidebar"/>
 
-### 3. Check the current owner
+### 2. Open the metastore
 
-Look at who owns the metastore now. If it is already a group (for example `metastore-admins`), you are done, skip the next step.
+Your metastores are listed by region.
+Click the one you want to change.
 
-### 4. Transfer ownership
+<img src={useBaseUrl('/img/set-admin-group/2.png')} alt="Metastore list in the account console"/>
 
-If the owner is a user or service principal:
+### 3. Edit the metastore admin
 
-1. Click the owner field to edit it.
-2. Set the metastore admin group (for example `metastore-admins` or `unity-admins`) as the new owner.
+On the **Configuration** tab, find the **Metastore Admin** section.
+It probably shows a system user or one person today.
+Click **Edit**.
 
-### 5. Configure metastore settings
+<img src={useBaseUrl('/img/set-admin-group/3.png')} alt="Metastore Admin section with the Edit button"/>
 
-1. Turn on **auto-assignment** for new workspaces if you want the metastore attached to them automatically.
-2. Activate **Delta Sharing** if your projects need it. This one is optional.
+### 4. Assign the admin group
 
-<img src={useBaseUrl('/img/account-metastore-owner.png')} alt="Metastore owner configuration in the account console"/>
+In the dialog, select your metastore admin group (for example `metastore-admins`) as the admin.
+Click **Save**.
+
+<img src={useBaseUrl('/img/set-admin-group/4.png')} alt="Edit Metastore Admin dialog with a group selected"/>
+
+:::tip[Prefer a prompt?]
+You can do the same from any workspace notebook or the SQL editor. Ask the Databricks Assistant, or run it directly:
+
+```sql
+ALTER METASTORE `<metastore_name>` SET OWNER TO `<admin_group>`;
+```
+:::
+
+### 5. Turn on auto-assignment
+
+Back on the Configuration tab, confirm **Metastore Admin** now shows your group.
+Under **Workspace assignment**, turn on automatic assignment so new workspaces in this region attach to the metastore automatically.
+
+<img src={useBaseUrl('/img/set-admin-group/5.png')} alt="Metastore admin set to a group, with workspace auto-assignment enabled"/>
 
 ## Verify
 
-1. In the account console, open **Catalog** and click the metastore.
-2. Confirm the **Owner** field shows the admin group name, not a person.
+Verification happens in a workspace, not the account console.
+
+1. Open a workspace attached to the metastore.
+2. In the left sidebar, click **Catalog**, then the gear icon.
+3. Confirm the metastore name shows at the bottom of the menu, and open **External locations**.
+
+<img src={useBaseUrl('/img/set-admin-group/6.png')} alt="Catalog gear menu showing the metastore and External locations"/>
+
+The **Create external location** button is active, and you can see existing external locations, credentials, and connections.
+That confirms your group has metastore admin rights.
+
+<img src={useBaseUrl('/img/set-admin-group/7.png')} alt="External Data page with external locations visible and the create button active"/>
 
 ## Where people trip
 
 <details>
 <summary>Cannot change the metastore owner</summary>
 
-Only the current owner or an account admin can transfer ownership. Confirm you have account-admin privileges. If the current owner already left the organization, contact Databricks support.
+Only the current owner or an account admin can transfer ownership.
+Confirm you have account-admin privileges.
+If the current owner already left the organization, contact Databricks support.
+</details>
+
+<details>
+<summary>External locations tab is empty</summary>
+
+An empty External locations or Credentials tab almost always means you are not a member of the metastore admin group.
+Check your group membership before going further.
 </details>
 
 ## Next
