@@ -137,7 +137,7 @@ On top of the shared chrome:
 
 Screenshots:
 
-- Store per guide in `static/img/<guide-slug>/`, numbered by step order (`1.png`, `2.png`, ...).
+- Store per guide in `static/img/<guide-slug>/`, numbered in the order they appear (`1.png`, `2.png`, ...).
 - Reference with `<img src={useBaseUrl('/img/<guide-slug>/1.png')} alt="what the shot shows"/>`. Always write `alt`.
 
 Prompt alternatives:

@@ -26,7 +26,7 @@ Ask the author for anything missing:
 
 ## Build the guide
 
-1. Copy the screenshots into `docs/starter-journey/static/img/<guide-slug>/`, renamed `1.png`, `2.png`, ... in step order.
+1. Copy the screenshots into `docs/starter-journey/static/img/<guide-slug>/`, renamed `1.png`, `2.png`, ... in the order they appear.
 2. Write the `.mdx` in Build Log voice, following the layout in STYLE.md: shared chrome, The big picture, Prerequisites, Steps (each with its screenshot), Verify, Where people trip, Next.
 3. Add a `:::tip[Prefer a prompt?]` with a fenced code block only on steps where a prompt is a real alternative.
 4. Register the page in `docs/starter-journey/sidebars.ts` (skip if already present).
