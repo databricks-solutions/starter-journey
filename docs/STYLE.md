@@ -129,11 +129,11 @@ Copy its shape.
 
 On top of the shared chrome:
 
-- **The big picture** — one or two sentences on the end state.
-- **Prerequisites** — roles and access needed.
-- **Steps** — each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
-- **Verify** — how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
-- **Where people trip** — a `<details>` per snag.
+- **The big picture**: one or two sentences on the end state.
+- **Prerequisites**: roles and access needed.
+- **Steps**: each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
+- **Verify**: how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
+- **Where people trip**: a `<details>` per snag.
 
 Screenshots:
 
