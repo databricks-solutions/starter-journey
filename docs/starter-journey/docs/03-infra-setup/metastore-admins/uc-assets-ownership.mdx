@@ -1,88 +1,152 @@
 ---
 sidebar_label: UC assets ownership
-description: Transfer ownership of existing Unity Catalog assets to the metastore admin group.
+description: Assign ownership and permissions for Unity Catalog assets (credentials, external locations, connections, catalogs, schemas) to your admin group.
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# UC Assets Ownership
+# Assign ownership of Unity Catalog assets
 
-> **You'll transfer** ownership of existing UC assets (external locations, credentials, connections, catalogs) to the admin group in ~10 min.
+> **You'll transfer** ownership of your Unity Catalog assets (credentials, external locations, connections, catalogs, and schemas) to the admin group and grant working permissions, in ~15 min.
 >
 > **Prereqs:** [Set admin group](/docs/03-infra-setup/metastore-admins/set-admin-group)
 
-## What you'll build
+## The big picture
 
-Every existing Unity Catalog asset owned by the metastore admin group rather than by individual users. That matches the governance model: the admin group owns infrastructure-level assets, and project teams own their own schemas.
+Every Unity Catalog asset has an owner.
+The owner can manage the asset and grant others access to it.
+You change ownership in two places: first-level securables (storage credentials, external locations, connections) and catalog children (catalogs and their schemas).
+Both are done from Catalog Explorer inside a workspace.
 
 ## Prerequisites
 
-- Membership in the metastore admin group.
 - Access to a workspace attached to the metastore.
-
-## Steps
-
-### 1. Transfer external locations, credentials, and connections
-
-1. In the workspace left panel, click **Catalog**.
-2. Click the gear icon (⚙️) to open **External Locations**.
-3. Work through each tab in turn (**External Locations**, **Credentials**, **Connections**, **External Metadata**) and change the owner of every asset to the admin group:
-    - Click the asset.
-    - On the far right, click the edit icon (✏️) next to the owner name.
-    - Set the owner to `Metastore Admins` or `Unity Admins`.
+- Owner, metastore admin, or account admin rights on the assets you are changing.
+- The target admin group already exists (see [Set admin group](/docs/03-infra-setup/metastore-admins/set-admin-group)).
 
 :::warning
-An empty External Locations or Credentials tab almost always means you are not a member of the metastore admin group. Check your group membership before going further.
+An empty External locations or Credentials tab almost always means you are not a member of the metastore admin group.
+Check your group membership before going further.
 :::
 
-<img src={useBaseUrl('/img/uc-owners-1.jpg')} alt="Navigate to external locations via the gear icon"/>
-<img src={useBaseUrl('/img/uc-owners-2.jpg')} alt="External location owner transfer"/>
-<img src={useBaseUrl('/img/uc-owners-3.jpg')} alt="Storage credential owner transfer"/>
+## Transfer first-level securables
 
-### 2. Transfer catalog ownership
+Storage credentials, external locations, and connections all follow the same flow.
+These steps use a storage credential. Repeat them for each external location and connection.
 
-1. In the workspace left panel, click **Catalog**.
-2. For each catalog **except the `system` catalog**:
-    - Click the catalog.
-    - In the **About this catalog** section, find the **Owner** field.
-    - Click the edit icon (✏️) and set the owner to the admin group.
+### 1. Open External data
 
-<img src={useBaseUrl('/img/uc-owners-4.jpg')} alt="Catalog owner transfer"/>
+In the workspace left sidebar, click **Catalog**.
+Click the gear icon, then choose **Credentials**. The same menu holds **External locations** and **Connections**.
 
-### 3. Leave schema ownership to the project team
+<img src={useBaseUrl('/img/uc-assets-ownership/1.png')} alt="Catalog gear menu with Credentials, External locations, and Connections"/>
 
-Schemas are the exception. Don't hand these to the admin group. The team that owns a project should own that project's schemas.
+### 2. Open the credential
 
-For example, if `data-engineers` owns the `c360` project, they own the `c360_bronze`, `c360_silver`, and `c360_gold` schemas.
+On the **Credentials** tab, click the credential whose owner you want to change.
 
-[Data Governance Strategy](/docs/05-data-governance-strategy/) covers schema-level ownership in full.
+<img src={useBaseUrl('/img/uc-assets-ownership/2.png')} alt="Credentials tab with a storage credential"/>
+
+### 3. Edit the owner
+
+On the **Overview** tab, find the **Owner** field under **About this credential** and click the edit icon (pencil).
+
+<img src={useBaseUrl('/img/uc-assets-ownership/3.png')} alt="Credential overview with the owner edit icon"/>
+
+### 4. Select the admin group
+
+Enter your admin group (for example `fe-vending-metastore-admins`) as the owner.
+Click **Save**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/4.png')} alt="Set owner dialog with the admin group selected"/>
+
+### 5. Confirm the new owner
+
+The **Owner** field now shows the admin group.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/5.png')} alt="Credential owner set to the admin group"/>
+
+### 6. Open the permissions grant
+
+Ownership lets the group manage the asset. Grant the privileges the people who use it need.
+
+Open the **Permissions** tab and click **Grant**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/6.png')} alt="Permissions tab with the Grant button"/>
+
+### 7. Choose the principal and privileges
+
+Select the principal (for example `data-scientist`).
+Select the privileges to grant, then click **Confirm**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/7.png')} alt="Grant dialog with a principal and privileges selected"/>
+
+### 8. Confirm the grants
+
+The **Permissions** tab lists the privileges you granted.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/8.png')} alt="Permissions tab listing the granted privileges"/>
+
+Repeat steps 1 to 8 for each external location and connection.
+
+## Transfer catalogs and schemas
+
+Catalogs and their schemas follow the same owner-then-permissions flow.
+These steps use a catalog. Repeat them for each schema.
+
+### 1. Edit the catalog owner
+
+In the left sidebar, click **Catalog**, then click the catalog in the tree.
+On the **Overview** tab, find the **Owner** field under **About this catalog** and click the edit icon (pencil).
+
+<img src={useBaseUrl('/img/uc-assets-ownership/9.png')} alt="Catalog overview with the owner edit icon"/>
+
+### 2. Select the admin group
+
+Enter your admin group as the owner.
+Click **Save**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/10.png')} alt="Set owner dialog for the catalog with the admin group selected"/>
+
+### 3. Open the permissions grant
+
+Open the **Permissions** tab and click **Grant**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/11.png')} alt="Catalog permissions tab with the Grant button"/>
+
+### 4. Choose the principal and privileges
+
+Select the principal.
+Pick a privilege preset (for example **Data Editor**) or select privileges by hand, then click **Confirm**.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/12.png')} alt="Grant dialog with the Data Editor preset selected"/>
+
+### 5. Confirm the grants
+
+The **Permissions** tab lists the privileges you granted. Schemas and tables in the catalog inherit them.
+
+<img src={useBaseUrl('/img/uc-assets-ownership/13.png')} alt="Catalog permissions tab listing the granted privileges"/>
+
+Repeat these steps for each schema whose owner you want to change.
 
 ## Verify
 
-### External locations, credentials, and connections
-
-Confirm every asset shows the admin group as the owner:
-
-<img src={useBaseUrl('/img/uc-ss-output-1.jpg')} alt="Expected output: external locations owned by admin group"/>
-
-### Catalogs and schemas
-
-Confirm each catalog shows the admin group as the owner:
-
-<img src={useBaseUrl('/img/uc-ss-output-2.jpg')} alt="Expected output: catalogs owned by admin group"/>
+For each asset, confirm the **Owner** field shows the admin group and the **Permissions** tab lists the grants you added.
 
 ## Where people trip
 
 <details>
 <summary>Cannot see external locations or credentials</summary>
 
-You have to be a member of the metastore admin group to see these assets. Ask a current metastore admin to add you, or check your membership in the account console.
+You have to be a member of the metastore admin group to see these assets.
+Ask a current metastore admin to add you, or check your membership in the account console.
 </details>
 
 <details>
-<summary>Cannot change ownership of a catalog</summary>
+<summary>Cannot change ownership of an asset</summary>
 
-Only the current owner or a metastore admin can transfer catalog ownership. If the current owner no longer has access, a metastore admin can reassign it from the account console.
+Only the current owner or a metastore admin can transfer ownership.
+If the current owner no longer has access, a metastore admin can reassign it.
 </details>
 
 ## Next

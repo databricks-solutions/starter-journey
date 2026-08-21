@@ -1,4 +1,4 @@
-# Starter Journey — writing style
+# Starter Journey: writing style
 
 This site should read like a person who has done this work is walking you through it. Engaging,
 plain-spoken, occasionally opinionated. Not a press release, not a spec sheet, not a chatbot.
@@ -22,7 +22,7 @@ you find. The mechanical rules below are the part a build can't catch, so they a
 
 ---
 
-## Voice 1 — Build Log (technical pages)
+## Voice 1: Build Log (technical pages)
 
 You're a practitioner writing up how you got something working, for the next person.
 
@@ -35,7 +35,7 @@ You're a practitioner writing up how you got something working, for the next per
 - **Failure modes get a real home.** Use a "Where people trip" section instead of a cold
   "Troubleshooting" heading. Name the actual snag and the actual fix.
 
-## Voice 2 — Field Notes (educational pages)
+## Voice 2: Field Notes (educational pages)
 
 You're the experienced engineer telling a colleague how to think about a decision.
 
@@ -78,7 +78,7 @@ These are the humanizer rules that matter most for this site. A build won't flag
 These are functional and stay exactly as-is, even though some look like patterns the humanizer flags
 (the bold labels are navigation, not decoration).
 
-**Top** — frontmatter, a one-line value prop, prereqs:
+**Top**: frontmatter, a one-line value prop, prereqs:
 
 ```md
 ---
@@ -93,7 +93,7 @@ description: <one line, used by search and social previews>
 > **Prereqs:** [<link>](...)
 ```
 
-**Bottom** — always a `## Next` block:
+**Bottom**: always a `## Next` block:
 
 ```md
 ## Next
@@ -120,6 +120,35 @@ No `:::info`, `:::success`, or `:::note`. Turn those into prose or a numbered st
 
 ---
 
+## Screenshot guides
+
+A screenshot guide is a Build Log page that walks the reader through a console task one screenshot at a time.
+Use it for click-through setup where seeing the screen matters more than reading prose.
+`03-infra-setup/metastore-admins/set-admin-group` is the canonical single-flow example, and `03-infra-setup/metastore-admins/uc-assets-ownership` the canonical multi-part one.
+Copy their shape.
+
+On top of the shared chrome:
+
+- **The big picture**: one or two sentences on the end state.
+- **Prerequisites**: roles and access needed.
+- **Steps**: each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
+- **Verify**: how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
+- **Where people trip**: a `<details>` per snag.
+
+For a task with distinct parts (for example, transferring first-level securables and then catalogs), use one `## <imperative>` section per part instead of a single `## Steps`, each with its own `### N.` steps restarting at 1. Screenshots still number continuously across the whole page.
+
+Screenshots:
+
+- Store per guide in `static/img/<guide-slug>/`, numbered in the order they appear (`1.png`, `2.png`, ...).
+- Reference with `<img src={useBaseUrl('/img/<guide-slug>/1.png')} alt="what the shot shows"/>`. Always write `alt`.
+
+Prompt alternatives:
+
+- Where a step can also be done with a prompt or a SQL command, offer it in a `:::tip[Prefer a prompt?]` with a fenced code block. Docusaurus gives the code block a copy button.
+- Add it only where the prompt is a genuine alternative to the click, not on every step.
+
+---
+
 ## Structure that must survive a rewrite
 
 Changing the voice does not mean breaking the site. Keep all of this intact:
@@ -127,7 +156,7 @@ Changing the voice does not mean breaking the site. Keep all of this intact:
 - Frontmatter (`sidebar_label`, `sidebar_position`, `description`).
 - Internal links in `/docs/<path>` form (never repo-relative file paths).
 - YouTube `<iframe>` embeds and their titles.
-- Images under `static/img/` with a section prefix (`uc-*.png`, `infra-*.png`, `aibi-*.png`).
+- Images under `static/img/`: one-off images use a section prefix (`uc-*.png`, `infra-*.png`, `aibi-*.png`); screenshot guides use a per-guide subfolder `static/img/<guide-slug>/` (see Screenshot guides).
 - Journey checklists on section index pages.
 - The `## Next` block on every page.
 - **Section freshness:** when you meaningfully change a section, bump its `last_update` in

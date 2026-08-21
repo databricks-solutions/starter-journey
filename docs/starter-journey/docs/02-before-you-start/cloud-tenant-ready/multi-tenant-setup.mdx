@@ -11,11 +11,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 >
 > **Prereqs:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
 
-## The call
+## The big picture
 
 Use multi-tenant when your organization already runs separate cloud accounts by environment, by business unit, or because a regulator demands it. Databricks then deploys into each account on its own. Get the layout wrong and you inherit cross-account networking headaches, duplicated config, and audit gaps that are slow to fix.
-
-## Mental model
 
 Several cloud accounts, each holding its own Databricks workspace and backing resources, each with an independent IAM boundary, storage, and network. Governance does not have to follow the split: Unity Catalog can still reach across accounts, so you keep one permission model even though the infrastructure is fully separated.
 
@@ -39,7 +37,7 @@ For each cloud account, create a Databricks workspace and its required cloud res
 
 Each workspace lives inside the IAM and network boundary of its cloud account. Unity Catalog metastores can span accounts within the same Databricks account, so governance stays centralized even when the infrastructure is split.
 
-## When to use which
+## When to use / when not to
 
 Use multi-tenant when your organization already maintains separate cloud accounts per environment or division, when compliance or security policy requires account-level IAM and network isolation, when billing has to be separated per environment, or when blast-radius control is a hard requirement and a failure in one account must never touch another.
 

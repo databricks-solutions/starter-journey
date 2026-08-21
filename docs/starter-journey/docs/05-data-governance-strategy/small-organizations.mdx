@@ -11,11 +11,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 >
 > **Prereqs:** [Data Governance Strategy](/docs/05-data-governance-strategy)
 
-## Why this matters
+## The big picture
 
 Small does not mean no boundaries. You still need a wall between the data people are experimenting on and the data feeding executive dashboards, or one stray query takes down a report someone trusts. This model gives you that wall, a consistent schema layout, and least-privilege access, and it skips the business-unit prefixes that a small team does not need yet.
-
-## Mental model
 
 Three catalogs, one per workspace. Inside each catalog, schemas follow the medallion architecture (bronze, silver, gold), one set per project. Groups decide who can read, write, or own each schema. That is the whole model.
 

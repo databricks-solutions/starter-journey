@@ -9,7 +9,7 @@ description: Deploy a complete medallion pipeline as code using Databricks Asset
 >
 > **Prereqs:** [Build the first pipeline](/docs/07-build-first-pipeline), [DABs CLI](https://docs.databricks.com/aws/en/dev-tools/bundles/)
 
-## What you'll walk away with
+## The big picture
 
 A full medallion pipeline running in your workspace, deployed from a Git repo with one command. The bundle provisions the job, the pipeline, the schemas, the landing volume, and the warehouse, so everything the pipeline touches comes up together and you can tear it down the same way.
 
@@ -31,7 +31,7 @@ The repo is ready to clone and deploy: [github.com/ivancalvo-dbxs/medallion-pipe
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/W8ucHwzwdhc"></iframe>
 
-## When to reach for DABs
+## When to use / when not to
 
 Use DABs once the pipeline is more than an experiment: you want it version-controlled, you need the same thing in dev, staging, and prod, and you want the schemas, volumes, and warehouse defined next to the pipeline code instead of clicked together by hand.
 
