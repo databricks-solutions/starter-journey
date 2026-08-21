@@ -21,13 +21,13 @@ Ask the author for anything missing:
 ## Before you write
 
 1. Read `docs/STYLE.md`, especially the "Screenshot guides" and Build Log sections.
-2. Open `docs/starter-journey/docs/03-infra-setup/metastore-admins/set-admin-group.mdx`. That is the shape to copy.
+2. Open the shape to copy: `docs/starter-journey/docs/03-infra-setup/metastore-admins/set-admin-group.mdx` for a single-flow guide, or `docs/starter-journey/docs/03-infra-setup/metastore-admins/uc-assets-ownership.mdx` for a multi-part one.
 3. Read the reference and view every screenshot. Map each screenshot to a step.
 
 ## Build the guide
 
 1. Copy the screenshots into `docs/starter-journey/static/img/<guide-slug>/`, renamed `1.png`, `2.png`, ... in the order they appear.
-2. Write the `.mdx` in Build Log voice, following the layout in STYLE.md: shared chrome, The big picture, Prerequisites, Steps (each with its screenshot), Verify, Where people trip, Next.
+2. Write the `.mdx` in Build Log voice, following the layout in STYLE.md: shared chrome, The big picture, Prerequisites, Steps (each with its screenshot), Verify, Where people trip, Next. For a task with distinct parts, use one `## <imperative>` section per part instead of a single `## Steps`, each with its own `### N.` steps restarting at 1, and number screenshots continuously across the whole page.
 3. Add a `:::tip[Prefer a prompt?]` with a fenced code block only on steps where a prompt is a real alternative.
 4. Register the page in `docs/starter-journey/sidebars.ts` (skip if already present).
 

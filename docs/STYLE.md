@@ -124,8 +124,8 @@ No `:::info`, `:::success`, or `:::note`. Turn those into prose or a numbered st
 
 A screenshot guide is a Build Log page that walks the reader through a console task one screenshot at a time.
 Use it for click-through setup where seeing the screen matters more than reading prose.
-`03-infra-setup/metastore-admins/set-admin-group` is the canonical example.
-Copy its shape.
+`03-infra-setup/metastore-admins/set-admin-group` is the canonical single-flow example, and `03-infra-setup/metastore-admins/uc-assets-ownership` the canonical multi-part one.
+Copy their shape.
 
 On top of the shared chrome:
 
@@ -134,6 +134,8 @@ On top of the shared chrome:
 - **Steps**: each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
 - **Verify**: how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
 - **Where people trip**: a `<details>` per snag.
+
+For a task with distinct parts (for example, transferring first-level securables and then catalogs), use one `## <imperative>` section per part instead of a single `## Steps`, each with its own `### N.` steps restarting at 1. Screenshots still number continuously across the whole page.
 
 Screenshots:
 
