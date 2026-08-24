@@ -1,12 +1,11 @@
 ---
-sidebar_position: 0
-sidebar_label: Add Groups
+sidebar_label: Groups
 description: Create groups that map to data personas and control access across Databricks workspaces.
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Add Groups
+# Groups
 
 > **You'll understand** how to structure Databricks groups by data persona and create them in ~10 min.
 >
@@ -14,13 +13,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## The big picture
 
-Grant access to groups, not to people. Per-user permissions feel fine on day one and turn into a mess by month three: every new hire means re-granting the same twenty things, and every leaver means hunting down what they could touch. Assign access to a role once (Data Engineer, Data Analyst, and so on), then the only thing you ever change is who is in the group.
+Grant access to groups, not to people.
+Per-user permissions feel fine on day one and turn into a mess by month three: every new hire means re-granting the same twenty things, and every leaver means hunting down what they could touch.
+Assign access to a role once (Data Engineer, Data Analyst, and so on), then the only thing you ever change is who is in the group.
 
 ## How it works
 
 ### Standard data personas
 
-These groups cover the roles on most Databricks projects. Rename them to match your house conventions, but keep the boundaries between roles. The lines are where access control happens.
+These groups cover the roles on most Databricks projects.
+Rename them to match your house conventions, but keep the boundaries between roles.
+The lines are where access control happens.
 
 <div style={{ textAlign: 'center', marginTop: 24, marginBottom: 8 }}>
   <img
@@ -54,7 +57,9 @@ That way no single group holds the keys to every environment, and an accidental 
 
 ### When you need more granularity
 
-At a small company, one `Data Engineers` group is plenty. Once different teams need different data, that flat group stops working: everyone in it can see everything any engineer can see. Prefix groups with the business unit or project name before you hit that wall:
+At a small company, one `Data Engineers` group is plenty.
+Once different teams need different data, that flat group stops working: everyone in it can see everything any engineer can see.
+Prefix groups with the business unit or project name before you hit that wall:
 
 - `[bu-or-project]-data-engineers`
 - `[bu-or-project]-data-scientists`
@@ -67,11 +72,14 @@ Now you can hand each project its own slice of data through Unity Catalog, and g
 
 ### One flat group for all engineers
 
-A single `Data Engineers` group is fine until two teams need to be walled off from each other's data, and by then splitting it is a migration with permissions to re-grant and people to re-sort. Plan for project-level groups before you need them.
+A single `Data Engineers` group is fine until two teams need to be walled off from each other's data, and by then splitting it is a migration with permissions to re-grant and people to re-sort.
+Plan for project-level groups before you need them.
 
 ### Creating groups inside workspaces
 
-A group made at the workspace level stays at that workspace. It does not reach other workspaces and it does not show up in Unity Catalog. Create groups at the account level or through SCIM so they exist everywhere you might want to grant against them.
+A group made at the workspace level stays at that workspace.
+It does not reach other workspaces and it does not show up in Unity Catalog.
+Create groups at the account level or through SCIM so they exist everywhere you might want to grant against them.
 
 ## Create the groups
 

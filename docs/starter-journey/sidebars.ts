@@ -85,7 +85,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: 'Add Groups',
-          link: {type: 'doc', id: '03-infra-setup/add-groups/index'},
+          collapsed: true,
           items: [
             '03-infra-setup/add-groups/manual',
             '03-infra-setup/add-groups/scim',
@@ -121,6 +121,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: '05-data-governance-strategy/index'},
       items: [
+        '05-data-governance-strategy/groups',
         '05-data-governance-strategy/small-organizations',
         '05-data-governance-strategy/medium-large-organizations',
       ],
