@@ -159,7 +159,6 @@ const sidebars: SidebarsConfig = {
       items: [
         '07-build-first-pipeline/hands-on-lab',
         '07-build-first-pipeline/genie-code',
-        '07-build-first-pipeline/dabs',
       ],
     },
     {type: 'doc', id: '08-query-and-explore', label: '8. Query and explore'},
