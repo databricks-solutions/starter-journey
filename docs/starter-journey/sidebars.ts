@@ -219,7 +219,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '12. Orchestration using jobs',
+      label: '12. Orchestration and Jobs',
       collapsed: true,
       link: {type: 'doc', id: '12-orchestration/index'},
       items: [],
