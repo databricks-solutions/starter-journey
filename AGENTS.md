@@ -379,6 +379,7 @@ Blog posts go in `docs/starter-journey/blog/` as `.mdx` files. Follow the naming
 
 ## Common mistakes to avoid
 
+- **Renaming a sidebar section label without propagating** — when you rename a `label` in `sidebars.ts`, also update: (1) the `sidebar_label` frontmatter and the H1 heading in that section's `index.mdx`, (2) the section name in `section-freshness.csv` (must match the `sidebars.ts` label exactly), and (3) the display text in the journey overview table in `01-get-started.mdx`.
 - **Editing `sidebars.ts` without building** — always run `npm run build` after sidebar changes to catch broken doc IDs.
 - **Using wrong link format** — internal doc links use `/docs/<path>` (e.g., `/docs/09-unified-analytics/databricks-aibi/dashboards`). Do not use relative file paths.
 - **Adding admonitions beyond the allowed three** — the build won't catch this, but it violates the style guide.
