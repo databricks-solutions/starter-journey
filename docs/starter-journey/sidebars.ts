@@ -151,17 +151,7 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
-    {
-      type: 'category',
-      label: '7. Build the first ETL pipeline',
-      collapsed: true,
-      link: {type: 'doc', id: '07-build-first-pipeline/index'},
-      items: [
-        '07-build-first-pipeline/hands-on-lab',
-        '07-build-first-pipeline/genie-code',
-        '07-build-first-pipeline/dabs',
-      ],
-    },
+    {type: 'doc', id: '07-build-first-pipeline/index', label: '7. Build the first ETL pipeline'},
     {type: 'doc', id: '08-query-and-explore', label: '8. Query and explore'},
     {
       type: 'category',

@@ -3,46 +3,99 @@ sidebar_label: 7. Build the first ETL pipeline
 description: Build your first Spark Declarative Pipeline on Databricks using Lakeflow for ingestion, transformation, and orchestration.
 ---
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
 
 # 7. Build the first ETL pipeline
 
-> **You'll learn** how Lakeflow and Spark Declarative Pipelines work and build your first transformation pipeline in ~20 min.
+> **You'll build** your first Spark Declarative Pipeline with Genie Code in ~10 min.
 >
 > **Prereqs:** [Access your data](/docs/06-access-your-data)
 
-## Why this matters
-
-Raw data in storage answers nothing on its own. The job of a pipeline is to turn it into clean tables that an analyst or a dashboard can actually trust. On Databricks you do that with Spark Declarative Pipelines (SDP): you declare what the tables should look like, and the engine works out how to build them and how to keep them up to date as new data lands.
-
-The payoff of "declarative" is that you stop hand-writing the plumbing. You no longer maintain checkpoints by hand or work out which rows are new. You describe the result, and the engine handles incremental processing and dependency order for you.
-
-Every Databricks project ends up as a Databricks Asset Bundle (DABs) repository. A bundle declares the resources as code: the pipeline, the job, the schemas, the warehouse. Because the resources are code, Genie Code and external agents can read and change them the same way you do. The paths below get a working pipeline in front of you fast; the bundle is where that pipeline lands once the shape is settled.
-
 <StarterJourneyProgress currentLevel={4}/>
 
-## Data engineering on Databricks
+## Build a pipeline with Genie Code
 
-Three Databricks tools split the work, each at a different stage of the data's life: one to ingest, one to transform, one to schedule. This section is about the transform step, but it helps to see where it sits.
+<StepGuide
+  description="Follow along in the Workspace. Every step links to itself, so you can send someone straight to the one they are stuck on."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/ldp/"
+  referenceLabel="Create a pipeline (Databricks docs)">
 
-| Tool | What it does | Where to learn more |
-|---|---|---|
-| **Lakeflow Connect** | Pulls data from external sources into UC tables | [Access your data: Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors/) |
-| **Spark Declarative Pipelines** | Transforms raw data through bronze, silver, and gold layers | This section |
-| **Lakeflow Jobs** | Runs pipelines, notebooks, and tasks on a schedule | [Automation and orchestration](/docs/12-orchestration/) |
+<Step>
 
-### Lakeflow introduction
+Go to Jobs & Pipelines > Create > ETL pipeline
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/n8XWOr6zIPo"></iframe>
+<StepImage src="/img/pipeline-etl-1.png" placeholder="Step 1: Jobs & Pipelines › Create › ETL pipeline" />
 
-### Lakeflow in action
+</Step>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/alP9qqk5J64"></iframe>
+<Step>
 
-## How it works: Spark Declarative Pipelines
+Name the pipeline `bakehouse_e2e_pipeline` and choose Python or SQL
 
-SDP is the Databricks implementation of [Apache Spark Declarative Pipelines](https://spark.apache.org/docs/latest/declarative-pipelines-programming-guide.html). You write Python (PySpark) or SQL declarations. The engine reads them, works out the execution plan and the order tables depend on each other, and runs the whole thing incrementally.
+<StepImage src="/img/pipeline-etl-2.png" placeholder="Step 2: name and language" />
 
-For core concepts (streaming tables, materialized views, flows, expectations) and why SDP over plain Spark, see [What is Lakeflow Spark Declarative Pipelines](https://docs.databricks.com/aws/en/ldp/concepts/).
+</Step>
+
+<Step>
+
+Set the destination catalog to `<catalog>` and pick a default schema
+
+<StepImage src="/img/pipeline-etl-3.png" placeholder="Step 3: destination catalog and schema" />
+
+</Step>
+
+<Step>
+
+Open the Genie Code panel in the Pipelines Editor
+
+<StepImage src="/img/pipeline-etl-4.png" placeholder="Step 4: Genie Code panel" />
+
+</Step>
+
+<Step>
+
+Prompt Genie Code to build a medallion pipeline from `samples.bakehouse` into bronze/silver with expectations (see reference doc)
+
+<StepImage src="/img/pipeline-etl-5.png" placeholder="Step 5: the prompt" />
+
+<PromptBlock>
+Build a medallion pipeline from samples.bakehouse. Land the raw tables in bronze, then create silver tables with cleaned column names, typed timestamps, and expectations that drop rows with null primary keys.
+</PromptBlock>
+
+</Step>
+
+<Step>
+
+Review the plan and code diff Genie Code shows, then click Accept all
+
+<StepImage src="/img/pipeline-etl-6.png" placeholder="Step 6: review the diff and Accept all" />
+
+</Step>
+
+<Step>
+
+Click Start / Run pipeline to validate it end-to-end
+
+<StepImage src="/img/pipeline-etl-7.png" placeholder="Step 7: run the pipeline" />
+
+</Step>
+
+<Step>
+
+Confirm `bronze.*` and `silver.*` tables were created and inspect the pipeline DAG graph
+
+<StepImage src="/img/pipeline-etl-8.png" placeholder="Step 8: bronze and silver tables" />
+
+```sql
+SHOW TABLES IN <catalog>.bronze;
+SHOW TABLES IN <catalog>.silver;
+```
+
+</Step>
+
+</StepGuide>
 
 ## SDP reference material
 
@@ -54,18 +107,8 @@ Awesome pages to have open while you build:
 - **Python:** [Python language reference](https://docs.databricks.com/aws/en/ldp/developer/python-ref) | [Develop SDP with Python](https://docs.databricks.com/aws/en/ldp/developer/python-dev)
 - **SQL:** [SQL language reference](https://docs.databricks.com/aws/en/ldp/developer/sql-ref) | [Develop SDP with SQL](https://docs.databricks.com/aws/en/ldp/developer/sql-dev)
 
-## Create the first pipeline
-
-Pick by where you are right now, not by which is "better."
-
-| Path | What it does | When to use it |
-|---|---|---|
-| **[Hands-on lab](/docs/07-build-first-pipeline/hands-on-lab)** | Install a pre-built demo pipeline with dashboards | You want to see a working pipeline before writing one yourself |
-| **[Genie Code](/docs/07-build-first-pipeline/genie-code)** | Build interactively in the browser | You are still figuring out the transformation |
-| **[DABs](/docs/07-build-first-pipeline/dabs)** | Deploy a full medallion pipeline as code | The shape is settled and you want it reproducible |
-
 ## Next
 
-- **Do next:** [Hands-on lab](/docs/07-build-first-pipeline/hands-on-lab)
+- **Do next:** [Query and explore](/docs/08-query-and-explore)
 - **Learn why:** [Data Governance Strategy](/docs/05-data-governance-strategy)
 - **Reference:** [Spark Declarative Pipelines (Databricks docs)](https://docs.databricks.com/aws/en/ldp/)

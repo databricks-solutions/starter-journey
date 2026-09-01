@@ -9,7 +9,7 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 
 > **You'll learn** how to split DevOps responsibilities between Terraform and Declarative Automation Bundles (DABs), and how to run CI/CD for Databricks projects in ~15 min.
 >
-> **Prereqs:** [7. Build the first pipeline: DABs](/docs/07-build-first-pipeline/dabs), [8. Automation & orchestration: DABs](/docs/12-orchestration/dabs), [3. Infra setup](/docs/03-infra-setup/)
+> **Prereqs:** [7. Build the first ETL pipeline](/docs/07-build-first-pipeline/), [8. Automation & orchestration: DABs](/docs/12-orchestration/dabs), [3. Infra setup](/docs/03-infra-setup/)
 
 ## Why this matters
 
@@ -26,7 +26,7 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
 | Layer | What it covers | Tool | Example |
 |---|---|---|---|
 | **Platform infrastructure** (external, AWS and Databricks account related)| Accounts, networks, metastores, workspaces, and IAM: anything that lives outside a Databricks workspace | Terraform | [Terraform Examples](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples) |
-| **Databricks Projects** (internal, within the Workspace)| Jobs, pipelines, schemas, dashboards, and [other assets a Databricks project needs](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build your first pipeline with DABs](/docs/07-build-first-pipeline/dabs)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
+| **Databricks Projects** (internal, within the Workspace)| Jobs, pipelines, schemas, dashboards, and [other assets a Databricks project needs](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build the first ETL pipeline](/docs/07-build-first-pipeline/)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
 
 ## What is DABs?
 
@@ -184,6 +184,6 @@ A pipeline change in marketing C360 does not trigger CI for the finance ML proje
 
 ## Next
 
-- **Do next:** [Build your first pipeline with DABs](/docs/07-build-first-pipeline/dabs)
+- **Do next:** [Build the first ETL pipeline](/docs/07-build-first-pipeline/)
 - **Learn why:** [Orchestration with DABs](/docs/12-orchestration/dabs)
 - **Reference:** [CI/CD on Databricks](https://docs.databricks.com/aws/en/dev-tools/ci-cd/)

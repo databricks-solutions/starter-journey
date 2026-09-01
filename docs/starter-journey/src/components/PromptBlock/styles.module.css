@@ -1,0 +1,89 @@
+/* src/components/PromptBlock/styles.module.css */
+.root {
+  --pb-gradient: linear-gradient(100deg, #FAEDFE 0%, #FEF8FF 45%, #FFFDFF 100%);
+  --pb-accent: linear-gradient(#B54FE0, #EDA9EE);
+  --pb-label: #9B3FD0;
+  --pb-text: #3A3838;
+  --pb-copy-border: rgba(155, 63, 208, 0.35);
+  --pb-copy-text: #9B3FD0;
+
+  position: relative;
+  background: var(--pb-gradient);
+  border-radius: 12px;
+  padding: 20px 20px 20px 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--ifm-font-family-base);
+}
+
+.accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--pb-accent);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pb-label);
+}
+
+.icon {
+  display: block;
+}
+
+.copy {
+  flex: none;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--pb-copy-border);
+  background: transparent;
+  color: var(--pb-copy-text);
+  font-family: var(--ifm-font-family-base);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.copy:hover {
+  background: rgba(155, 63, 208, 0.1);
+}
+
+.text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--pb-text);
+  text-wrap: pretty;
+}
+
+[data-theme='dark'] .root {
+  --pb-gradient: linear-gradient(100deg, #2A1B36 0%, #241830 45%, #1F1529 100%);
+  --pb-accent: linear-gradient(#C56BE8, #9B4FD0);
+  --pb-label: #D9A6F0;
+  --pb-text: #E0DCE6;
+  --pb-copy-border: rgba(217, 166, 240, 0.4);
+  --pb-copy-text: #D9A6F0;
+}
+
+[data-theme='dark'] .copy:hover {
+  background: rgba(217, 166, 240, 0.15);
+}
