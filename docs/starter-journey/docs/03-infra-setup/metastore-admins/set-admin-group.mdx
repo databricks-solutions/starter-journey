@@ -3,7 +3,7 @@ sidebar_label: Set admin group
 description: Transfer metastore ownership from an individual user to the metastore admin group.
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 # Set Admin Group
 
@@ -26,36 +26,49 @@ The metastore owner must be a group. If you assign an individual or a service pr
 
 ## Steps
 
-### 1. Open the account console
+<StepGuide
+  description="Follow along in the account console. Every step links to itself, so you can send someone straight to the one they are stuck on."
+  minutes={5}
+  referenceHref="https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/"
+  referenceLabel="Manage metastore privileges (Databricks docs)">
 
-Go to the account console for your cloud provider:
+<Step>
+
+Open the account console for your cloud provider
 
 - [AWS](https://accounts.cloud.databricks.com)
 - [Azure](https://accounts.azuredatabricks.net)
 - [GCP](https://accounts.gcp.databricks.com)
 
-### 2. Navigate to the metastore
+</Step>
 
-1. On the left panel, click **Catalog**.
-2. Click on the available metastore.
+<Step>
 
-### 3. Check the current owner
+In the left panel, click **Catalog**, then click the available metastore
 
-Look at who owns the metastore now. If it is already a group (for example `metastore-admins`), you are done, skip the next step.
+</Step>
 
-### 4. Transfer ownership
+<Step>
 
-If the owner is a user or service principal:
+Check who owns the metastore now. If it is already a group (for example `metastore-admins`), you are done. Skip the next step.
 
-1. Click the owner field to edit it.
-2. Set the metastore admin group (for example `metastore-admins` or `unity-admins`) as the new owner.
+</Step>
 
-### 5. Configure metastore settings
+<Step>
 
-1. Turn on **auto-assignment** for new workspaces if you want the metastore attached to them automatically.
-2. Activate **Delta Sharing** if your projects need it. This one is optional.
+If the owner is a user or service principal, click the owner field to edit it, then set the metastore admin group (for example `metastore-admins` or `unity-admins`) as the new owner
 
-<img src={useBaseUrl('/img/account-metastore-owner.png')} alt="Metastore owner configuration in the account console"/>
+</Step>
+
+<Step>
+
+Turn on **auto-assignment** for new workspaces to attach the metastore automatically. Activate **Delta Sharing** if your projects need it (optional).
+
+<StepImage src="/img/account-metastore-owner.png" placeholder="Metastore owner configuration in the account console" />
+
+</Step>
+
+</StepGuide>
 
 ## Verify
 
