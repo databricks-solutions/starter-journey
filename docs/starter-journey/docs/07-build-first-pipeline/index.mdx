@@ -48,17 +48,9 @@ Set the destination catalog to `<catalog>` and pick a default schema
 
 <Step>
 
-Open the Genie Code panel in the Pipelines Editor
+Open the Genie Code panel in the Pipelines Editor, then prompt it to build a medallion pipeline from `samples.bakehouse` into bronze/silver with expectations (see reference doc)
 
-<StepImage src="/img/pipeline-etl-4.png" placeholder="Step 4: Genie Code panel" />
-
-</Step>
-
-<Step>
-
-Prompt Genie Code to build a medallion pipeline from `samples.bakehouse` into bronze/silver with expectations (see reference doc)
-
-<StepImage src="/img/pipeline-etl-5.png" placeholder="Step 5: the prompt" />
+<StepImage src="/img/pipeline-etl-4.png" placeholder="Step 4: open Genie Code and enter the prompt" />
 
 <PromptBlock>
 Build a medallion pipeline from samples.bakehouse. Land the raw tables in bronze, then create silver tables with cleaned column names, typed timestamps, and expectations that drop rows with null primary keys.
@@ -70,7 +62,7 @@ Build a medallion pipeline from samples.bakehouse. Land the raw tables in bronze
 
 Review the plan and code diff Genie Code shows, then click Accept all
 
-<StepImage src="/img/pipeline-etl-6.png" placeholder="Step 6: review the diff and Accept all" />
+<StepImage src="/img/pipeline-etl-5.png" placeholder="Step 5: review the diff and Accept all" />
 
 </Step>
 
@@ -78,7 +70,7 @@ Review the plan and code diff Genie Code shows, then click Accept all
 
 Click Start / Run pipeline to validate it end-to-end
 
-<StepImage src="/img/pipeline-etl-7.png" placeholder="Step 7: run the pipeline" />
+<StepImage src="/img/pipeline-etl-6.png" placeholder="Step 6: run the pipeline" />
 
 </Step>
 
@@ -86,7 +78,7 @@ Click Start / Run pipeline to validate it end-to-end
 
 Confirm `bronze.*` and `silver.*` tables were created and inspect the pipeline DAG graph
 
-<StepImage src="/img/pipeline-etl-8.png" placeholder="Step 8: bronze and silver tables" />
+<StepImage src="/img/pipeline-etl-7.png" placeholder="Step 7: bronze and silver tables" />
 
 ```sql
 SHOW TABLES IN <catalog>.bronze;
