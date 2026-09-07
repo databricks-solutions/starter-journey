@@ -1,0 +1,200 @@
+/* src/components/StepGuide/styles.module.css */
+.root {
+  --sg-rail: 40px;
+  --sg-gap: 24px;
+  --sg-circle-bg: #FF5F46;
+  --sg-circle-fg: #FFFFFF;
+  --sg-circle-last-bg: #1B3139;
+  --sg-circle-last-fg: #FFFFFF;
+  --sg-connector: var(--ifm-color-emphasis-300);
+  --sg-surface: var(--ifm-background-surface-color);
+  --sg-frame-border: var(--ifm-color-emphasis-200);
+  --sg-frame-shadow: 0 1px 2px rgba(27, 49, 57, 0.06), 0 1px 3px rgba(27, 49, 57, 0.08);
+  --sg-eyebrow: var(--ifm-color-primary);
+  --sg-heading: var(--ifm-heading-color);
+  --sg-body: var(--ifm-font-color-base);
+  --sg-muted: var(--ifm-color-emphasis-600);
+
+  font-family: var(--ifm-font-family-base);
+  max-width: 880px;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sg-eyebrow);
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--sg-heading);
+}
+
+.description {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--sg-muted);
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: var(--sg-rail) 1fr;
+  gap: var(--sg-gap);
+  align-items: start;
+  padding-bottom: 32px;
+}
+
+.stepLast {
+  padding-bottom: 0;
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.circle {
+  width: var(--sg-rail);
+  height: var(--sg-rail);
+  border-radius: 999px;
+  background: var(--sg-circle-bg);
+  color: var(--sg-circle-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 16px;
+  font-weight: 500;
+  flex: none;
+  text-decoration: none;
+}
+
+.circle:hover {
+  color: var(--sg-circle-fg);
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.stepLast .circle {
+  background: var(--sg-circle-last-bg);
+  color: var(--sg-circle-last-fg);
+}
+
+.connector {
+  width: 1px;
+  flex: 1;
+  background: var(--sg-connector);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding-top: 8px;
+}
+
+/* Step prose. The first child paragraph carries the instruction. */
+.body > :first-child {
+  margin-top: 0;
+}
+.body > :last-child {
+  margin-bottom: 0;
+}
+.body p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--sg-body);
+  text-wrap: pretty;
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-frame-border);
+  border-radius: 8px;
+  box-shadow: var(--sg-frame-shadow);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageFrameFilled {
+  aspect-ratio: auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.placeholder {
+  padding: 0 24px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--sg-muted);
+}
+
+.reference {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--sg-muted);
+}
+
+[data-theme='dark'] .root {
+  --sg-frame-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+  /* The last-step navy circle disappears on a dark canvas; invert it. */
+  --sg-circle-last-bg: #E8E8E8;
+  --sg-circle-last-fg: #111111;
+}
+
+@media (max-width: 768px) {
+  .root {
+    --sg-rail: 32px;
+    --sg-gap: 16px;
+  }
+
+  .circle {
+    font-size: 14px;
+  }
+
+  .body p {
+    font-size: 18px;
+  }
+}
