@@ -4,6 +4,8 @@ sidebar_label: Budget alerts
 description: Account admins configure monthly budgets with email thresholds; follow the official budgets guide and use the example Development Workspace budget.
 ---
 
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
 # Budget alerts
 
 > **You'll configure** account-level budgets that email stakeholders when spend crosses list-price thresholds.
@@ -27,7 +29,15 @@ Only **account admins** create budgets. A budget only watches. Usage keeps accru
 
 Budgets are in **Public Preview**, so the limits may change before GA.
 
-## Open the account console
+## Steps
+
+<StepGuide
+  description="Create an account budget for a development workspace and add two email thresholds."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/admin/account-settings/budgets"
+  referenceLabel="Create and monitor budgets (Databricks docs)">
+
+<Step>
 
 Sign in as an account admin:
 
@@ -35,23 +45,35 @@ Sign in as an account admin:
 - **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
 - **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
 
-## Steps
+</Step>
 
-Follow the official guide end to end: **[Create and monitor budgets](https://docs.databricks.com/aws/en/admin/account-settings/budgets)**.
+<Step>
 
-It covers **Usage** → **Budgets** → **Add budget**, plus definitions, thresholds, and email recipients.
+Open **Usage** > **Budgets**, then click **Add budget**.
 
-## Example: Development Workspace budget
+</Step>
 
-Use this pattern when you want to watch a development slice of the account with two early-warning thresholds:
+<Step>
 
-- **Budget name:** `Development Workspace budget`
-- **Definitions:** restrict to your non-production workspace, with optional tag filters if you set them up on [Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs).
-- **Alert thresholds:** add **$500** and **$1000** as two separate monthly lines, each with the right distribution list.
+Set **Budget name** to `Development Workspace budget`.
+Under **Definitions**, restrict the budget to your non-production workspace.
+Add tag filters if you configured them on [Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs).
 
-![Create budget form showing name, workspace scope, and two monthly alert thresholds at $500 and $1000](/img/create-budget.webp)
+</Step>
 
-Expect some lag. Alerts can trail actual usage by up to **24 hours**, and a brand-new budget may show **$0** for a while as telemetry catches up.
+<Step>
+
+Add **$500** and **$1000** as separate monthly alert thresholds.
+Enter the distribution list that should receive each alert, then save the budget.
+
+<StepImage src="/img/create-budget.webp" alt="Create budget form showing name, workspace scope, and two monthly alert thresholds at $500 and $1000" />
+
+</Step>
+
+</StepGuide>
+
+Expect some lag.
+Alerts can trail actual usage by up to **24 hours**, and a brand-new budget may show **$0** for a while as telemetry catches up.
 
 ## Verify
 
@@ -59,7 +81,7 @@ Expect some lag. Alerts can trail actual usage by up to **24 hours**, and a bran
 2. Open it. Cumulative spend plots against the dotted threshold lines.
 3. To force a dry-run email, set a threshold below month-to-date spend and wait. Check spam.
 
-![Budget detail panel showing the Development Workspace budget with monthly thresholds and alert email addresses](/img/verify-budget.webp)
+<StepImage src="/img/verify-budget.webp" alt="Budget detail panel showing the Development Workspace budget with monthly thresholds and alert email addresses" />
 
 ## Where people trip
 

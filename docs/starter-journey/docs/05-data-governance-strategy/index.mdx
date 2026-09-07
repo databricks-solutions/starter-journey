@@ -18,7 +18,8 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 
 Decide your catalog, schema, and grant structure now, before anyone builds a pipeline. That one decision is what lets teams find data, trust it, and share it safely. Get it wrong and you get permission creep, the same table copied five times, and nobody who can say who owns what. Fixing that once a few hundred tables exist means rewriting every reference to them, so it rarely happens.
 
-This section gives you two patterns. Pick the one that matches your size.
+This section starts with the groups and ownership model, then gives you two namespace patterns.
+Pick the pattern that matches your size.
 
 <StarterJourneyProgress currentLevel={2}/>
 
@@ -40,7 +41,8 @@ The two approaches listed in this section are based on:
 
 Unity Catalog organizes data into a three-level namespace: catalog > schema > object. Your governance strategy is how you map that hierarchy onto your teams, environments, and projects.
 
-Two patterns cover most organizations:
+Start with [Groups](/docs/05-data-governance-strategy/groups), then [assign Unity Catalog asset ownership](/docs/05-data-governance-strategy/uc-assets-ownership) to the admin group.
+With the operating model in place, choose a namespace pattern:
 
 | Pattern | Best for |
 |---|---|
@@ -61,6 +63,6 @@ A five-person team does not need business-unit prefixed catalogs. Start with the
 
 ## Next
 
-- **Do next:** [Small organizations](/docs/05-data-governance-strategy/small-organizations)
+- **Do next:** [Groups](/docs/05-data-governance-strategy/groups)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 - **Reference:** [Unity Catalog best practices](https://docs.databricks.com/aws/en/data-governance/unity-catalog/best-practices.html)
