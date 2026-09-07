@@ -10,7 +10,7 @@ description: Train and register a model in Unity Catalog, and register existing 
 >
 > **Prereqs:** [Prepare Datasets](/docs/10-predictive-analytics/prepare-datasets)
 
-## What you'll build
+## The big picture
 
 A model registered to `<catalog>.<schema>.<model_name>` in Unity Catalog using MLflow.
 

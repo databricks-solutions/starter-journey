@@ -11,7 +11,7 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 >
 > **Prereqs:** [7. Build the first pipeline](/docs/07-build-first-pipeline/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog), [14. CI/CD and DevOps](/docs/14-ci-cd-devops/)
 
-## Why this matters
+## The big picture
 
 A Databricks MLOps solution is three Ops disciplines working in concert:
 
@@ -23,9 +23,11 @@ A Databricks MLOps solution is three Ops disciplines working in concert:
 
 <StarterJourneyProgress currentLevel={6} currentForkColumn="ml"/>
 
-## Mental model
-
-The diagram below shows the three Ops layers in action. DataOps (Unity Catalog) provides the governed data assets in Prod and Dev catalogs. ModelOps (MLflow) tracks experiments and moves models from Challenger to Champion. DevOps wires it all together through Git. At the end of the day, everything here is code sitting in a repo.
+The diagram below shows the three Ops layers in action.
+DataOps (Unity Catalog) provides the governed data assets in Prod and Dev catalogs.
+ModelOps (MLflow) tracks experiments and moves models from Challenger to Champion.
+DevOps wires it all together through Git.
+At the end of the day, everything here is code sitting in a repo.
 
 ![MLOps architecture on Databricks. Unity Catalog governs Dev and Prod catalogs, MLflow handles model training and validation, and Git stores all project code.](/img/mlops-diagram.png)
 

@@ -12,11 +12,9 @@ import Button from '@site/src/components/Button';
 >
 > **Prereqs:** [Workspace](/docs/02-before-you-start/foundations/workspace)
 
-## The call
+## The big picture
 
 Route everything through Unity Catalog. Skip it and access controls fragment across workspaces, credentials end up hardcoded in notebooks, and nobody can see how data moves between systems. Unity Catalog (UC) gives you one place to manage permissions, lineage, and discovery for every data and AI asset in your environment. Default to it even when a quick experiment doesn't strictly need it.
-
-## Mental model
 
 UC sits between your workspaces and your data lake. Workspaces connect to a shared **metastore**, and every interaction with data, models, or functions routes through UC so permissions, lineage, and audit logs are enforced for you.
 

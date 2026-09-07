@@ -10,13 +10,17 @@ description: Connect Databricks to your cloud object storage (S3, ADLS, GCS) usi
 >
 > **Prereqs:** [Access your data](/docs/06-access-your-data)
 
-## Why this matters
+## The big picture
 
-Most of your data probably already sits in cloud object storage: S3 buckets, ADLS containers, GCS buckets. Databricks needs a governed way to read and write it. Skip that, and teams paste credentials into notebooks or set them at the cluster level, which sidesteps Unity Catalog completely. Then nobody can tell you who touched what.
+Most of your data probably already sits in cloud object storage: S3 buckets, ADLS containers, GCS buckets.
+Databricks needs a governed way to read and write it.
+Skip that, and teams paste credentials into notebooks or set them at the cluster level, which sidesteps Unity Catalog completely.
+Then nobody can tell you who touched what.
 
-## Mental model
-
-Think of it as a key and a door. The key proves who you are. The door decides what you can open. Two Unity Catalog objects play those roles.
+Think of it as a key and a door.
+The key proves who you are.
+The door decides what you can open.
+Two Unity Catalog objects play those roles.
 
 ![Storage credentials and external locations](/img/uc-cloud-object-idea.png)
 
@@ -29,7 +33,8 @@ The **external location** is the door. It points at one specific path and is bou
 - Azure: `abfss://mycontainer@mystorageaccount.dfs.core.windows.net/mydataset/`
 - GCP: `gs://mybucket/mydepartment/mydataset/`
 
-The credential proves who you are. The external location and its grants decide who reaches which path.
+The credential proves who you are.
+The external location and its grants decide who reaches which path.
 
 ## How it works
 

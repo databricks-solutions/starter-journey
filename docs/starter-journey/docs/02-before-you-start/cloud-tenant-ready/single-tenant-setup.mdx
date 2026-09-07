@@ -11,11 +11,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 >
 > **Prereqs:** [Cloud Tenant ready](/docs/02-before-you-start/cloud-tenant-ready)
 
-## The call
+## The big picture
 
 If your organization runs in one cloud account, start here. Pick multi-tenant when you don't need it and you pay for infrastructure overhead you'll never use. Pick single-tenant when you should have split and you face a painful migration later. The tradeoff cuts both ways, so be honest about whether you actually need an account-level boundary.
-
-## Mental model
 
 One cloud account. Every Databricks workspace (dev, staging, production) deploys into that account along with its backing resources: IAM roles, storage buckets, networking. Unity Catalog governs data access across those workspaces. Same building, separate rooms.
 
@@ -31,7 +29,7 @@ This layout applies when your organization uses a single cloud account (one AWS 
 
 All three recommended workspaces (development, staging, production) and their cloud resources are created inside the same account. Environment isolation comes from workspace boundaries and Unity Catalog grants, not from separating cloud accounts.
 
-## When to use which
+## When to use / when not to
 
 Use single-tenant when you have one cloud account with no plans to add more, when compliance does not require account-level isolation between environments, and when you want the simplest setup to operate.
 

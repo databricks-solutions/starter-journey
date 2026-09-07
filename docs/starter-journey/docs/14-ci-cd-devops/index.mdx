@@ -9,13 +9,16 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 
 > **You'll learn** how to split DevOps responsibilities between Terraform and Declarative Automation Bundles (DABs), and how to run CI/CD for Databricks projects in ~15 min.
 >
-> **Prereqs:** [7. Build the first ETL pipeline](/docs/07-build-first-pipeline/), [8. Automation & orchestration: DABs](/docs/12-orchestration/dabs), [3. Infra setup](/docs/03-infra-setup/)
+> **Prereqs:** [7. Build the first pipeline](/docs/07-build-first-pipeline), [3. Infra setup](/docs/03-infra-setup/)
 
-## Why this matters
+## The big picture
 
-Draw one line and most of the confusion goes away: anything outside the workspace is Terraform's job, anything inside it is the DABs job. Get that line wrong and you end up with brittle scripts, environments that drift apart, and a deploy only one person knows how to run.
+Draw one line and the confusion clears: anything outside the workspace is Terraform's job; anything inside it is DABs.
+Get that line wrong and you end up with brittle scripts, environments that drift, and a deploy only one person knows how to run.
 
-Clicking changes into the Workspace by hand works until it doesn't. The moment a second person needs to ship, or you need staging to match prod, you want repeatable deploys, a review gate, and a way to promote a change from dev to prod. That is the same discipline that keeps application code sane, applied to data work.
+Hand-clicking changes into the workspace works until a second person needs to ship, or until you need staging to match prod.
+You want repeatable deploys, a review gate, and a clear path from dev to prod.
+That is the same discipline that keeps application code sane, applied to data work.
 
 <StarterJourneyProgress currentLevel={9}/>
 
@@ -26,7 +29,7 @@ Databricks DevOps is two separate concerns, each with its own tool and lifecycle
 | Layer | What it covers | Tool | Example |
 |---|---|---|---|
 | **Platform infrastructure** (external, AWS and Databricks account related)| Accounts, networks, metastores, workspaces, and IAM: anything that lives outside a Databricks workspace | Terraform | [Terraform Examples](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples) |
-| **Databricks Projects** (internal, within the Workspace)| Jobs, pipelines, schemas, dashboards, and [other assets a Databricks project needs](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Build the first ETL pipeline](/docs/07-build-first-pipeline/)</li><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
+| **Databricks Projects** (internal, within the Workspace)| Jobs, pipelines, schemas, dashboards, and [other assets a Databricks project needs](https://docs.databricks.com/aws/en/dev-tools/bundles/resources). | Declarative Automation Bundles (DABs) | <ul><li>[Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples)</li></ul> |
 
 ## What is DABs?
 
@@ -138,7 +141,8 @@ The following items are covered in the video:
 - [x] Create a base CI/CD pipeline for your preferred DevOps tool.
 
 :::warning
-The **[Genie Code skill](https://github.com/ivancalvo-dbxs/dabsmigratorshowcase)** presented here is not a official Databricks-supported tool. Validate generated bundles in a non-production workspace before you rely on them in CI/CD.
+The **[DABs migrator](https://github.com/databricks-solutions/technical-services-solutions/tree/main/core-platform/cicd/dabs-migrator)** presented here is not an official Databricks-supported tool.
+Validate generated bundles in a non-production workspace before you rely on them in CI/CD.
 :::
 
 <iframe
@@ -184,6 +188,5 @@ A pipeline change in marketing C360 does not trigger CI for the finance ML proje
 
 ## Next
 
-- **Do next:** [Build the first ETL pipeline](/docs/07-build-first-pipeline/)
-- **Learn why:** [Orchestration with DABs](/docs/12-orchestration/dabs)
+- **Learn why:** [Automation & orchestration](/docs/12-orchestration/)
 - **Reference:** [CI/CD on Databricks](https://docs.databricks.com/aws/en/dev-tools/ci-cd/)

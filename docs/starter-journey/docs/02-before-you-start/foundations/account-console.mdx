@@ -9,11 +9,9 @@ description: The Databricks account console is the central admin portal for mana
 >
 > **Prereqs:** none
 
-## The call
+## The big picture
 
 The account console is the one place you provision workspaces, manage identity, assign metastores, and watch costs across the whole deployment. Without it, every workspace becomes its own island with its own users, permissions, and billing. Treat it as the control plane and keep account-level changes here, not scattered across individual workspaces.
-
-## Mental model
 
 The account console is to Databricks what the AWS console, Azure portal, or GCP cloud console is to your cloud provider. It sits above the individual workspaces and owns everything that spans them.
 
@@ -39,7 +37,7 @@ The diagram below shows how account-level objects (metastores, workspaces, ident
 
 One account can own many workspaces. Each workspace in a region attaches to one metastore. Users and groups defined at the account level are available to any workspace they're assigned to.
 
-## When to use which
+## When to use / when not to
 
 Use the account console when you need to create or delete a workspace, set up SSO or SCIM for automated provisioning, view billing across workspaces, or create and assign a Unity Catalog metastore.
 

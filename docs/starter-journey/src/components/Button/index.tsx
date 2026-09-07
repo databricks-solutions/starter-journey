@@ -12,7 +12,7 @@ export default function Button({
   link,
   style,
   newTab = true,
-}: ButtonProps): JSX.Element {
+}: ButtonProps): React.JSX.Element {
   return (
     <a
       href={link}

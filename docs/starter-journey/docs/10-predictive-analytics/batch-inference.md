@@ -10,7 +10,7 @@ description: Score data with a registered model using pandas single-node or dist
 >
 > **Prereqs:** [Save a Model to Unity Catalog](/docs/10-predictive-analytics/save-model-to-unity-catalog)
 
-## What you'll build
+## The big picture
 
 A batch job that loads a model from Unity Catalog by alias, scores rows, and writes predictions to a Delta table.
 

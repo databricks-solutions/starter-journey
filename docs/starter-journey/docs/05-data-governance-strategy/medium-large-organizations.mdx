@@ -11,11 +11,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 >
 > **Prereqs:** [Small organizations](/docs/05-data-governance-strategy/small-organizations) (read this first, everything below builds on it)
 
-## Why this matters
+## The big picture
 
 The small-organization model holds up while everyone shares the same data boundaries. The moment finance, marketing, and operations all share one Databricks deployment, a single `data-engineers` group and unprefixed catalogs stop working. Teams wander into each other's development data, grants get confusing, and nobody can tell at a glance which catalog belongs to which department. Prefixes fix this. They add a predictable naming layer on top of the same catalog, schema, and grant model you already know.
-
-## Mental model
 
 Take the small-organization model (three environments, medallion schemas, group-based grants) and stamp a business-unit prefix on every resource. That prefix is a hard naming boundary between departments, and you get it without spinning up separate Databricks accounts.
 

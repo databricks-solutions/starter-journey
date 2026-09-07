@@ -9,7 +9,7 @@ import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 > **You'll transfer** metastore ownership to a dedicated admin group in ~5 min.
 >
-> **Prereqs:** [Add Groups](/docs/03-infra-setup/add-groups), a metastore admin group created (e.g., `metastore-admins`)
+> **Prereqs:** [Plan your groups](/docs/05-data-governance-strategy/groups), with a metastore admin group already created (e.g., `metastore-admins`)
 
 ## What you'll build
 
@@ -18,7 +18,7 @@ A metastore owned by a group, not by one person or service principal. Ownership 
 ## Prerequisites
 
 - Account-admin access to the Databricks account console.
-- A metastore admin group already created (see [Add Groups](/docs/03-infra-setup/add-groups)).
+- A metastore admin group already created (see [Plan your groups](/docs/05-data-governance-strategy/groups)).
 
 :::danger
 The metastore owner must be a group. If you assign an individual or a service principal and that person leaves or that principal is deleted, governance operations stop.

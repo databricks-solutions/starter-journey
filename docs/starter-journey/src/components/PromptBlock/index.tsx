@@ -23,7 +23,7 @@ function SparkleIcon() {
 }
 
 export default function PromptBlock({ children, label = 'Prompt' }: PromptBlockProps) {
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -49,9 +49,9 @@ export default function PromptBlock({ children, label = 'Prompt' }: PromptBlockP
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <p ref={textRef} className={styles.text}>
+      <div ref={textRef} className={styles.text}>
         {children}
-      </p>
+      </div>
     </div>
   );
 }

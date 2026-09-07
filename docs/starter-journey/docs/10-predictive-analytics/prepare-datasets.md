@@ -10,7 +10,7 @@ description: Install the Feature Store and Online Inference dbdemo to explore fe
 >
 > **Prereqs:** [14. MLOps](/docs/10-predictive-analytics/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 
-## What you'll build
+## The big picture
 
 A working Feature Store demo with three notebooks, sample travel data, and feature tables registered in Unity Catalog. The demo covers the full lifecycle from feature creation through online serving.
 
