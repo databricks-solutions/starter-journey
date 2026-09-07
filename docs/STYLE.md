@@ -124,28 +124,83 @@ No `:::info`, `:::success`, or `:::note`. Turn those into prose or a numbered st
 
 A screenshot guide is a Build Log page that walks the reader through a console task one screenshot at a time.
 Use it for click-through setup where seeing the screen matters more than reading prose.
-`03-infra-setup/metastore-admins/set-admin-group` is the canonical single-flow example, and `03-infra-setup/metastore-admins/uc-assets-ownership` the canonical multi-part one.
+The `StepGuide` layout used by `/docs/07-build-first-pipeline/` is required for new screenshot tutorials and when an existing screenshot tutorial is substantially updated.
+`03-infra-setup/metastore-admins/set-admin-group` is the canonical single-flow example, and `05-data-governance-strategy/uc-assets-ownership` is the canonical multi-part one.
 Copy their shape.
+
+Import the walkthrough components:
+
+```mdx
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+```
+
+Put each logical walkthrough in a `StepGuide`.
+Put each action in a `Step`.
+The component numbers the steps and creates stable anchors.
+When a step has no screenshot, keep it as a text-only `Step`.
+
+```mdx
+<StepGuide
+  description="Follow along in the account console."
+  minutes={5}
+  referenceHref="https://docs.databricks.com/"
+  referenceLabel="Databricks documentation">
+
+<Step>
+
+Open **Catalog**, then select the metastore.
+
+<StepImage src="/img/<guide-slug>/1.png" alt="Metastore list in the account console" />
+
+</Step>
+
+</StepGuide>
+```
+
+For a task with distinct parts, use one `## <imperative>` section and one `StepGuide` per part.
+Give each guide a unique `idPrefix` so step anchors do not collide:
+
+```mdx
+<StepGuide idPrefix="credentials-step">
+  <Step>Open the credential.</Step>
+</StepGuide>
+
+<StepGuide idPrefix="catalog-step">
+  <Step>Open the catalog.</Step>
+</StepGuide>
+```
 
 On top of the shared chrome:
 
 - **The big picture**: one or two sentences on the end state.
 - **Prerequisites**: roles and access needed.
-- **Steps**: each is `### N. <imperative>`, a sentence or two of what to do and what you expect to see, then the screenshot.
-- **Verify**: how to confirm it worked, with expected-output screenshots. Say where you are (account console vs workspace) when it changes.
+- **Steps**: imperative actions inside `StepGuide` and `Step`.
+- **Verify**: how to confirm it worked, with expected-output screenshots.
+  Say where you are (account console vs workspace) when it changes.
 - **Where people trip**: a `<details>` per snag.
 
-For a task with distinct parts (for example, transferring first-level securables and then catalogs), use one `## <imperative>` section per part instead of a single `## Steps`, each with its own `### N.` steps restarting at 1. Screenshots still number continuously across the whole page.
+Store screenshots per guide in `static/img/<guide-slug>/`, numbered in the order they appear (`1.png`, `2.png`, ...).
+Reference each screenshot with `StepImage` and always provide meaningful `alt` text.
 
-Screenshots:
+### Prompts
 
-- Store per guide in `static/img/<guide-slug>/`, numbered in the order they appear (`1.png`, `2.png`, ...).
-- Reference with `<img src={useBaseUrl('/img/<guide-slug>/1.png')} alt="what the shot shows"/>`. Always write `alt`.
+Prompts use the same copyable block shown in step 4 of `/docs/07-build-first-pipeline/`.
+Import `PromptBlock`:
 
-Prompt alternatives:
+```mdx
+import PromptBlock from '@site/src/components/PromptBlock';
+```
 
-- Where a step can also be done with a prompt or a SQL command, offer it in a `:::tip[Prefer a prompt?]` with a fenced code block. Docusaurus gives the code block a copy button.
-- Add it only where the prompt is a genuine alternative to the click, not on every step.
+Place the exact text the reader should paste inside the component:
+
+```mdx
+<PromptBlock>
+Build a medallion pipeline from samples.bakehouse.
+</PromptBlock>
+```
+
+Use `PromptBlock` instead of a generic admonition for prompts.
+Add it only when the prompt is a real step or a genuine alternative to a click.
 
 ---
 

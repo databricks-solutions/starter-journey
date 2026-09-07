@@ -4,6 +4,8 @@ sidebar_label: Import usage dashboard
 description: Account admins import the pre-built AI/BI usage dashboard and read Usage graphs, pricing, and downloads.
 ---
 
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
 # Import usage dashboard
 
 > **You'll import** the account-console usage dashboard into a workspace and know how to read the **Usage** page in ~10 min.
@@ -20,7 +22,13 @@ Only **account admins** can import the dashboard from the account console.
 
 ## Steps
 
-### 1. Sign in to the account console
+<StepGuide
+  description="Import the account usage dashboard, publish it when needed, and use the account-level usage tools."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/admin/account-settings/usage"
+  referenceLabel="Usage dashboards (Databricks docs)">
+
+<Step>
 
 Open the account console for your cloud:
 
@@ -28,9 +36,9 @@ Open the account console for your cloud:
 - **Azure:** [accounts.azuredatabricks.net](https://accounts.azuredatabricks.net)
 - **GCP:** [accounts.gcp.databricks.com](https://accounts.gcp.databricks.com)
 
-### 2. Import the usage dashboard into a Workspace
+</Step>
 
-![Setup usage dashboard dialog showing Account usage selected, Version 2.0, and a target workspace dropdown with the Import button highlighted](/img/import-usage-dashboard.webp)
+<Step>
 
 1. Click **Usage** in the left sidebar.
 2. Click **Setup dashboard**.
@@ -42,13 +50,21 @@ Open the account console for your cloud:
 5. Pick the **target workspace** that should receive the dashboard.
 6. Click **Import**. You land on the new dashboard in that workspace.
 
-### 3. Customize and publish (optional)
+<StepImage src="/img/import-usage-dashboard.webp" alt="Setup usage dashboard dialog showing Account usage selected, Version 2.0, and a target workspace dropdown with the Import button highlighted" />
+
+</Step>
+
+<Step>
+
+Optional: customize and publish the dashboard.
 
 1. Edit widgets, filters, and datasets like any AI/BI dashboard.
 2. Click **Publish** when stakeholders need a stable URL.
 3. Choose **Viewer credentials** (each viewer’s permissions apply) or **Editor credentials** (the editor’s permissions apply at refresh time).
 
-### 4. Use the rest of the Usage page (graphs and downloads)
+</Step>
+
+<Step>
 
 Still under **Usage** (same sidebar entry):
 
@@ -66,13 +82,21 @@ Graphs and downloads reconcile to **`system.billing.usage`**. When numbers diver
 
 :::
 
-### 5. Optional: build your own dashboard in AI/BI Dashboards
+</Step>
+
+<Step>
+
+Optional: build your own dashboard in AI/BI Dashboards.
 
 Add datasets from SQL on **`system.billing.usage`** joined to **`system.billing.list_prices`**. Start from [Databricks AI/BI dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards) and [Dashboards (AI/BI)](https://docs.databricks.com/aws/en/dashboards).
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-![Dashboards page in a Databricks workspace showing the imported Account Usage Dashboard featured at the top of the list](/img/verify-usage-dashboard.webp)
+<StepImage src="/img/verify-usage-dashboard.webp" alt="Dashboards page in a Databricks workspace showing the imported Account Usage Dashboard featured at the top of the list" />
 
 1. Open the imported dashboard and confirm charts return data for a recent date range.
 2. Open the **Custom tags** view. Untagged usage looks sparse until you tag compute ([Tags and attribution](/docs/04-cost-monitoring/tag-compute-and-jobs)).

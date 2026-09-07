@@ -3,6 +3,8 @@ sidebar_label: Activate SSO
 description: Configure single sign-on so users authenticate to Databricks through your identity provider.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Activate SSO
 
 > **You'll configure** SSO so users sign in to Databricks with your identity provider in ~10 min.
@@ -20,34 +22,32 @@ Single sign-on at the Databricks account level. Users sign in through your exist
 
 ## Steps
 
-### 1. Pick the path for your cloud
+<StepGuide
+  description="Choose your cloud path, configure the identity provider when required, then test the redirect."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/security/auth/single-sign-on/"
+  referenceLabel="Configure SSO (Databricks docs)">
 
-The setup differs by cloud, so jump to your platform.
+<Step>
 
-#### Azure
+Choose the path for your cloud:
 
-Nothing to do. Entra ID (Azure AD) SSO is on by default for Azure Databricks.
+- **Azure:** Nothing to configure.
+  Entra ID SSO is on by default for Azure Databricks.
+- **AWS:** Open [Configure SSO for AWS](https://docs.databricks.com/aws/en/security/auth/single-sign-on/), configure the SAML or OIDC application in your identity provider, then register it under **Settings** > **Single sign-on** in the account console.
+- **GCP:** Google SSO is often on already.
+  If it is not, open [Configure SSO for GCP](https://docs.databricks.com/gcp/en/security/auth/single-sign-on/), configure the SAML or OIDC application in your identity provider, then register it in the account console.
 
-#### AWS
+</Step>
 
-1. Open the guide: [Configure SSO for AWS](https://docs.databricks.com/aws/en/security/auth/single-sign-on/).
-2. Set up the SAML or OIDC application in your IdP.
-3. Register that IdP configuration in the account console under **Settings** > **Single sign-on**.
+<Step>
 
-#### GCP
+Open a private or incognito browser window and go to the workspace URL.
+Confirm the login redirects to your identity provider, then sign in and confirm you land in the workspace.
 
-Google SSO is often on already. If it is not:
+</Step>
 
-1. Open the guide: [Configure SSO for GCP](https://docs.databricks.com/gcp/en/security/auth/single-sign-on/).
-2. Set up the SAML or OIDC application in your IdP.
-3. Register that IdP configuration in the account console.
-
-### 2. Test SSO login
-
-1. Open a private or incognito browser window.
-2. Go to the workspace URL.
-3. The login should redirect to your identity provider. If it does, the wiring is right.
-4. Sign in and confirm you land in the workspace.
+</StepGuide>
 
 ## Verify
 

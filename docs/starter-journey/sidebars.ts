@@ -91,15 +91,7 @@ const sidebars: SidebarsConfig = {
             '03-infra-setup/add-groups/scim',
           ],
         },
-        {
-          type: 'category',
-          label: 'Metastore Admins',
-          collapsed: true,
-          items: [
-            '03-infra-setup/metastore-admins/set-admin-group',
-            '03-infra-setup/metastore-admins/uc-assets-ownership',
-          ],
-        },
+        '03-infra-setup/metastore-admins/set-admin-group',
         '03-infra-setup/activate-sso',
       ],
     },
@@ -122,6 +114,7 @@ const sidebars: SidebarsConfig = {
       link: {type: 'doc', id: '05-data-governance-strategy/index'},
       items: [
         '05-data-governance-strategy/groups',
+        '05-data-governance-strategy/uc-assets-ownership',
         '05-data-governance-strategy/small-organizations',
         '05-data-governance-strategy/medium-large-organizations',
       ],

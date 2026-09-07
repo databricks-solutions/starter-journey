@@ -4,6 +4,8 @@ sidebar_label: Additional dashboards
 description: Install the dbdemos system-tables package for optional forecasting and attribution AI/BI dashboards on your catalog and schema.
 ---
 
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
 # Additional dashboards
 
 > **You'll install** the community **`system-tables`** demo so optional AI/BI dashboards run against your real billing data in ~15 min.
@@ -24,17 +26,35 @@ Confirm the demo slug is still **`system-tables`** on PyPI or GitHub before you 
 
 ## Steps
 
-### 1. Install the dashboards from the dbdemos library
+<StepGuide
+  description="Install the system tables demo in a notebook and confirm the generated assets."
+  minutes={15}
+  referenceHref="https://www.databricks.com/resources/demos/tutorials/governance/system-tables"
+  referenceLabel="System Tables demo (Demo Center)">
 
-Run these cells in a new Python notebook.
+<Step>
+
+Create a Python notebook and install `dbdemos`:
 
 ```python
 %pip install dbdemos
 ```
 
+</Step>
+
+<Step>
+
+Restart Python so the notebook can import the installed package:
+
 ```python
 dbutils.library.restartPython()
 ```
+
+</Step>
+
+<Step>
+
+Set `catalog` and `schema` to Unity Catalog assets where you can create tables, then install the demo:
 
 ```python
 import dbdemos
@@ -45,20 +65,27 @@ schema = "myschema"
 dbdemos.install("uc-04-system-tables", catalog=catalog, schema=schema)
 ```
 
-Set **`catalog`** and **`schema`** to UC assets you already have. Then wait until the notebook finishes and prints status for the notebooks and dashboards it created.
+<StepImage src="/img/usage-demo-1.webp" alt="dbdemos install notebook showing the system tables demo setup with catalog and schema configuration" />
 
-![dbdemos install notebook showing the system tables demo setup with catalog and schema configuration](/img/usage-demo-1.webp)
+</Step>
 
-![dbdemos install output listing the installed Databricks AI/BI dashboards and Genie Space for system tables](/img/usage-demo-2.webp)
+<Step>
 
+Wait until the notebook finishes and prints the notebooks, dashboards, and Genie Space it created.
+
+<StepImage src="/img/usage-demo-2.webp" alt="dbdemos install output listing the installed Databricks AI/BI dashboards and Genie Space for system tables" />
+
+</Step>
+
+</StepGuide>
 
 ## Verify
 
 Open the **Dashboards** and **Genie Spaces** sections and confirm the new assets are there.
 
-![Dashboards list showing the installed dbdemos System Tables dashboards in a Databricks workspace](/img/verify-demo-1.webp)
+<StepImage src="/img/verify-demo-1.webp" alt="Dashboards list showing the installed dbdemos System Tables dashboards in a Databricks workspace" />
 
-![Genie Spaces page showing the installed Databricks System Table Genie Space](/img/verify-demo-2.webp)
+<StepImage src="/img/verify-demo-2.webp" alt="Genie Spaces page showing the installed Databricks System Table Genie Space" />
 
 ## Where people trip
 
