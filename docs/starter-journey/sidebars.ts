@@ -171,10 +171,10 @@ const sidebars: SidebarsConfig = {
             '09-unified-analytics/databricks-aibi/dashboards',
             {
               type: 'category',
-              label: 'Genie Spaces',
-              link: {type: 'doc', id: '09-unified-analytics/databricks-aibi/genie-spaces'},
+              label: 'Genie Agents',
+              link: {type: 'doc', id: '09-unified-analytics/databricks-aibi/genie-agents'},
               items: [
-                '09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
+                '09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
               ],
             },
             '09-unified-analytics/databricks-aibi/databricks-apps',
@@ -229,3 +229,5 @@ const sidebars: SidebarsConfig = {
 };
 
 export default sidebars;
+
+

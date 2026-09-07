@@ -3,7 +3,7 @@ sidebar_label: Azure - ADLS
 description: Create an access connector, storage credential, storage account, and external location to connect Databricks to ADLS Gen2.
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 # Azure ADLS
 
@@ -46,186 +46,299 @@ For environments that require private networking, see [Configure private connect
 
 ### 1. Create an access connector
 
-The access connector is the managed identity Databricks uses to authenticate to your storage account. Create it first; everything else points back to it.
+<StepGuide
+  description="The access connector is the managed identity Databricks uses to authenticate to your storage account. Create it first; everything else points back to it."
+  idPrefix="connector">
 
-1. In the [Azure portal](https://portal.azure.com/), search for **Access Connector for Azure Databricks** and select it.
+<Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/azure_access_connector_searchbar.png')} alt="Azure Access Connector search" style={{width: '50%', height: 'auto'}} />
-</div>
+In the [Azure portal](https://portal.azure.com/), search for **Access Connector for Azure Databricks** and select it.
 
-2. Click **Create**.
+<StepImage src="/img/azure/azure_access_connector_searchbar.png" placeholder="Azure Access Connector search" />
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/create_access_connector_buttom.png')} alt="Create Access Connector button" style={{width: '50%', height: 'auto'}} />
-</div>
+</Step>
 
-3. Fill in the form:
-   - **Subscription:** the subscription where the connector will be deployed.
-   - **Resource group:** choose or create a resource group.
-   - **Name:** a descriptive name for the connector.
-   - **Region:** same region as your Databricks workspace.
+<Step>
 
-4. Click **Review + create**, then **Create**.
+Click **Create**.
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/access_connector_name.png')} alt="Access Connector configuration form" style={{width: '50%', height: 'auto'}} />
-</div>
+<StepImage src="/img/azure/create_access_connector_buttom.png" placeholder="Create Access Connector button" />
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/access_connector_create_buttom.png')} alt="Access Connector create confirmation" style={{width: '50%', height: 'auto'}} />
-</div>
+</Step>
 
-5. After deployment, navigate to the new access connector and copy the **Resource ID** from the overview page.
+<Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/copy_ac_resource_id.png')} alt="Copy Access Connector Resource ID" style={{width: '50%', height: 'auto'}} />
-</div>
+Fill in the form:
+
+- **Subscription:** the subscription where the connector will be deployed.
+- **Resource group:** choose or create a resource group.
+- **Name:** a descriptive name for the connector.
+- **Region:** same region as your Databricks workspace.
+
+</Step>
+
+<Step>
+
+Click **Review + create**, then **Create**.
+
+<StepImage src="/img/azure/access_connector_name.png" placeholder="Access Connector configuration form" />
+
+<StepImage src="/img/azure/access_connector_create_buttom.png" placeholder="Access Connector create confirmation" />
+
+</Step>
+
+<Step>
+
+After deployment, navigate to the new access connector and copy the **Resource ID** from the overview page.
+
+<StepImage src="/img/azure/copy_ac_resource_id.png" placeholder="Copy Access Connector Resource ID" />
+
+</Step>
+
+</StepGuide>
 
 ### 2. Create a storage credential in Databricks
 
-1. In the Databricks workspace, click **Catalog** in the left sidebar.
+<StepGuide idPrefix="credential">
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/ws_catalog_buttom.png')} alt="Databricks Catalog menu" style={{width: '25%', height: '25%'}} />
-</div>
+<Step>
 
-2. Click **External Data**.
+In the Databricks workspace, click **Catalog** in the left sidebar.
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/external_location_buttom.png')} alt="External Data menu" style={{width: '100%', height: 'auto'}} />
-</div>
+<StepImage src="/img/azure/ws_catalog_buttom.png" placeholder="Databricks Catalog menu" />
 
-3. Go to the **Credentials** tab and click **Create credential**.
+</Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/create_credential_buttom.png')} alt="Create Credential button" style={{width: '100%', height: 'auto'}} />
-</div>
+<Step>
 
-4. Fill in the form:
-   - **Credential Name:** a descriptive name.
-   - **Authentication Type:** Azure Managed Identity.
-   - **Access Connector ID:** paste the Resource ID from Step 1.
-   - **Description:** optional.
+Click **External Data**.
 
-5. Click **Create**.
+<StepImage src="/img/azure/external_location_buttom.png" placeholder="External Data menu" />
+
+</Step>
+
+<Step>
+
+Go to the **Credentials** tab and click **Create credential**.
+
+<StepImage src="/img/azure/create_credential_buttom.png" placeholder="Create Credential button" />
+
+</Step>
+
+<Step>
+
+Fill in the form:
+
+- **Credential Name:** a descriptive name.
+- **Authentication Type:** Azure Managed Identity.
+- **Access Connector ID:** paste the Resource ID from Step 1.
+- **Description:** optional.
+
+</Step>
+
+<Step>
+
+Click **Create**.
+
+</Step>
+
+</StepGuide>
 
 ### 3. Create or prepare a storage account
 
 If you already have a compliant ADLS Gen2 storage account, skip to Step 4.
 
-1. In the [Azure portal](https://portal.azure.com/), search for **Storage Account** and select it.
-2. Click **Create**.
+<StepGuide idPrefix="storage">
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/storage_account_create.png')} alt="Create Storage Account" style={{width: '60%', height: 'auto'}} />
-</div>
+<Step>
 
-3. Configure the **Basics** tab:
-   - **Subscription:** same as your Databricks workspace.
-   - **Resource group:** same as or adjacent to your workspace resources.
-   - **Storage account name:** globally unique, lowercase letters and numbers only.
-   - **Region:** same region as your Databricks workspace.
-   - **Performance:** Standard (sufficient for most use cases).
-   - **Redundancy:** choose based on durability requirements (LRS, ZRS, GRS, or GZRS).
+In the [Azure portal](https://portal.azure.com/), search for **Storage Account** and select it.
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/storage_account_project_details.png')} alt="Storage Account project details" style={{width: '60%', height: 'auto'}} />
-</div>
+</Step>
 
-4. In the **Advanced** tab, enable **Hierarchical namespace** (required for Unity Catalog). Set access tier to Hot.
+<Step>
+
+Click **Create**.
+
+<StepImage src="/img/azure/storage_account_create.png" placeholder="Create Storage Account" />
+
+</Step>
+
+<Step>
+
+Configure the **Basics** tab:
+
+- **Subscription:** same as your Databricks workspace.
+- **Resource group:** same as or adjacent to your workspace resources.
+- **Storage account name:** globally unique, lowercase letters and numbers only.
+- **Region:** same region as your Databricks workspace.
+- **Performance:** Standard (sufficient for most use cases).
+- **Redundancy:** choose based on durability requirements (LRS, ZRS, GRS, or GZRS).
+
+<StepImage src="/img/azure/storage_account_project_details.png" placeholder="Storage Account project details" />
+
+</Step>
+
+<Step>
+
+In the **Advanced** tab, enable **Hierarchical namespace** (required for Unity Catalog). Set access tier to Hot.
 
 :::warning
 Hierarchical namespace must be enabled at creation time. It cannot be enabled on an existing storage account.
 :::
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/storage_account_advanced_settings.png')} alt="Storage Account advanced settings" style={{width: '60%', height: 'auto'}} />
-</div>
+<StepImage src="/img/azure/storage_account_advanced_settings.png" placeholder="Storage Account advanced settings" />
 
-5. Click **Review + create**, then **Create**.
-6. Navigate to the new storage account, create a **container**, and optionally add directories inside it (e.g., `bronze`, `silver`, `gold`).
+</Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/create_container_journey.png')} alt="Create container in storage account" style={{width: '60%', height: 'auto'}} />
-</div>
+<Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/folder_journey.png')} alt="Add directory inside container" style={{width: '60%', height: 'auto'}} />
-</div>
+Click **Review + create**, then **Create**.
+
+</Step>
+
+<Step>
+
+Navigate to the new storage account, create a **container**, and optionally add directories inside it (e.g., `bronze`, `silver`, `gold`).
+
+<StepImage src="/img/azure/create_container_journey.png" placeholder="Create container in storage account" />
+
+<StepImage src="/img/azure/folder_journey.png" placeholder="Add directory inside container" />
+
+</Step>
+
+</StepGuide>
 
 ### 4. Assign IAM permissions to the access connector
 
 The connector's managed identity has no access to the storage account yet. Grant it the **Storage Blob Data Contributor** role, or the Test Connection in Step 6 will fail.
 
-1. In the Azure portal, navigate to the storage account.
-2. Click **Access control (IAM)** in the left sidebar.
-3. Click **+ Add** > **Add role assignment**.
+<StepGuide idPrefix="iam">
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/access_control_iam.png')} alt="Storage Account IAM" style={{width: '40%', height: 'auto'}} />
-</div>
+<Step>
 
-4. Search for **Storage Blob Data Contributor**, select it, and click **Next**.
+In the Azure portal, navigate to the storage account.
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/blob_contributor.png')} alt="Storage Blob Data Contributor role" style={{width: '70%', height: 'auto'}} />
-</div>
+</Step>
 
-5. In the **Members** section:
-   - Select **Managed identity** as the assignment type.
-   - Click **+ Select members** and search for your access connector.
-   - Select it, click **Select**, then **Review + assign**.
+<Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/add_member.png')} alt="Add managed identity to role assignment" style={{width: '70%', height: 'auto'}} />
-</div>
+Click **Access control (IAM)** in the left sidebar.
+
+</Step>
+
+<Step>
+
+Click **+ Add** > **Add role assignment**.
+
+<StepImage src="/img/azure/access_control_iam.png" placeholder="Storage Account IAM" />
+
+</Step>
+
+<Step>
+
+Search for **Storage Blob Data Contributor**, select it, and click **Next**.
+
+<StepImage src="/img/azure/blob_contributor.png" placeholder="Storage Blob Data Contributor role" />
+
+</Step>
+
+<Step>
+
+In the **Members** section:
+
+- Select **Managed identity** as the assignment type.
+- Click **+ Select members** and search for your access connector.
+- Select it, click **Select**, then **Review + assign**.
+
+<StepImage src="/img/azure/add_member.png" placeholder="Add managed identity to role assignment" />
+
+</Step>
+
+</StepGuide>
 
 ### 5. Create an external location in Databricks
 
-1. In the Databricks workspace, go to **Catalog** > **External Data**.
+<StepGuide idPrefix="extloc">
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/external_location_buttom.png')} alt="External Data menu" style={{width: '80%', height: 'auto'}} />
-</div>
+<Step>
 
-2. Go to the **External Locations** tab and click **Create external location**.
+In the Databricks workspace, go to **Catalog** > **External Data**.
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/create_external_location_buttom.png')} alt="Create external location button" style={{width: '60%', height: 'auto'}} />
-</div>
+<StepImage src="/img/azure/external_location_buttom.png" placeholder="External Data menu" />
 
-3. Fill in the form:
-   - **External Location Name:** a descriptive name (e.g., `raw-data-location`).
-   - **Storage Type:** Azure Data Lake Storage Gen2.
-   - **URL:** `abfss://<container>@<storage_account>.dfs.core.windows.net/<folder_path>`
-   - **Storage credential:** select the credential from Step 2.
+</Step>
 
-4. Click **Create**.
+<Step>
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/external_location_form.png')} alt="External location creation form" style={{width: '80%', height: 'auto'}} />
-</div>
+Go to the **External Locations** tab and click **Create external location**.
+
+<StepImage src="/img/azure/create_external_location_buttom.png" placeholder="Create external location button" />
+
+</Step>
+
+<Step>
+
+Fill in the form:
+
+- **External Location Name:** a descriptive name (e.g., `raw-data-location`).
+- **Storage Type:** Azure Data Lake Storage Gen2.
+- **URL:** `abfss://<container>@<storage_account>.dfs.core.windows.net/<folder_path>`
+- **Storage credential:** select the credential from Step 2.
+
+</Step>
+
+<Step>
+
+Click **Create**.
+
+<StepImage src="/img/azure/external_location_form.png" placeholder="External location creation form" />
+
+</Step>
+
+</StepGuide>
 
 ### 6. Mark the external location as read-only
 
-Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
+<StepGuide idPrefix="readonly">
 
-Follow the guide: [Mark an external location as read-only](https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
+<Step>
+
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data. Follow the guide: [Mark an external location as read-only](https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 
 :::warning
 Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
 :::
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-1. In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
-2. Click the new external location and click **Test Connection**.
-3. Confirm the test returns a success status.
+<StepGuide eyebrow="Verify" idPrefix="verify">
 
-<div style={{textAlign: 'left'}}>
-  <img src={useBaseUrl('/img/azure/test_connection.png')} alt="Test Connection button" style={{width: '70%', height: 'auto'}} />
-</div>
+<Step>
+
+In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
+
+</Step>
+
+<Step>
+
+Click the new external location and click **Test Connection**.
+
+<StepImage src="/img/azure/test_connection.png" placeholder="Test Connection button" />
+
+</Step>
+
+<Step>
+
+Confirm the test returns a success status.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

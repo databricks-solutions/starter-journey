@@ -3,6 +3,8 @@ sidebar_label: Terraform
 description: Deploy a Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # AWS Terraform
 
 > **You'll deploy** a Databricks workspace and catalog on AWS using Terraform in ~20 min.
@@ -57,9 +59,27 @@ For production, put catalog storage on separate AWS accounts rather than deployi
 
 ## Verify
 
-1. Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
-2. Open **Workspaces** and confirm the new workspace shows **Running**.
-3. Open the workspace, go to **Catalog**, and confirm the new catalog appears.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
+
+</Step>
+
+<Step>
+
+Open **Workspaces** and confirm the new workspace shows **Running**.
+
+</Step>
+
+<Step>
+
+Open the workspace, go to **Catalog**, and confirm the new catalog appears.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

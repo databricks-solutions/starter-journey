@@ -39,6 +39,21 @@ const config: Config = {
         searchResultLimits: 15,
       },
     ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/genie-spaces',
+            to: '/docs/09-unified-analytics/databricks-aibi/genie-agents',
+          },
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
+            to: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
+          },
+        ],
+      },
+    ],
   ],
 
   presets: [

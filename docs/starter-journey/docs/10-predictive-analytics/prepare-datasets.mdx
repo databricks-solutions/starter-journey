@@ -4,13 +4,15 @@ sidebar_label: Datasets as Feature Tables
 description: Install the Feature Store and Online Inference dbdemo to explore feature engineering with Unity Catalog, online tables, and Lakeflow Declarative Pipelines.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Datasets as Feature Tables
 
 > **You'll install** the **Feature Store and Online Inference** dbdemo and explore three notebooks that cover feature engineering from basics to production patterns in ~15 min.
 >
 > **Prereqs:** [14. MLOps](/docs/10-predictive-analytics/), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 
-## The big picture
+## What you'll build
 
 A working Feature Store demo with three notebooks, sample travel data, and feature tables registered in Unity Catalog. The demo covers the full lifecycle from feature creation through online serving.
 
@@ -18,9 +20,15 @@ A working Feature Store demo with three notebooks, sample travel data, and featu
 
 ## Steps
 
-### 1. Install the demo from the dbdemos library.
+<StepGuide
+  description="Install the Feature Store dbdemo in a notebook, then explore the three notebooks it creates, from feature basics to production pipelines."
+  minutes={15}
+  referenceHref="https://www.databricks.com/resources/demos/tutorials/data-science-and-ai/feature-store-and-online-inference"
+  referenceLabel="Feature Store and Online Inference (Demo Center)">
 
-Run the following cells in a new Python notebook.
+<Step>
+
+Install the demo from the dbdemos library. Run the following cells in a new Python notebook.
 
 ```python
 %pip install dbdemos
@@ -37,9 +45,11 @@ dbdemos.install('feature-store', catalog='main', schema='dbdemos_fs_travel')
 
 Swap `main` and `dbdemos_fs_travel` for any Unity Catalog catalog and schema where your user has **CREATE** privileges.
 
-### 2. Explore the installed notebooks.
+</Step>
 
-The demo installs three notebooks that build on each other:
+<Step>
+
+Explore the installed notebooks. The demo installs three that build on each other:
 
 | Notebook | What it covers |
 |---|---|
@@ -48,8 +58,12 @@ The demo installs three notebooks that build on each other:
 | [`03_Feature_store_pipeline`](https://notebooks.databricks.com/demos/feature-store/03_Feature_store_pipeline.html) | Build and manage feature tables declaratively using a Lakeflow Declarative Pipeline. |
 
 :::tip
-Feature engineering is a data engineering task — not an ML task. Notebook 03 shows the recommended approach: define feature tables as a **Lakeflow Declarative Pipeline** so they refresh automatically and stay governed in Unity Catalog. Start there before writing any model training code.
+Feature engineering is a data engineering task, not an ML task. Notebook 03 shows the recommended approach: define feature tables as a **Lakeflow Declarative Pipeline** so they refresh automatically and stay governed in Unity Catalog. Start there before writing any model training code.
 :::
+
+</Step>
+
+</StepGuide>
 
 ## Watch the walkthrough
 
