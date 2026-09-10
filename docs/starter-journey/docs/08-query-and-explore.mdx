@@ -3,7 +3,6 @@ sidebar_label: 8. Query and Explore
 description: Run interactive SQL against your lakehouse data using the Databricks SQL Editor and a serverless warehouse.
 ---
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
-import { StepGuide, Step } from '@site/src/components/StepGuide';
 
 # 8. Query and explore
 
@@ -19,35 +18,10 @@ Once a pipeline writes data, someone has to look at it. You check that the trans
 
 ## Run your first query
 
-<StepGuide
-  description="Open the SQL Editor, pick the serverless warehouse, set your context, and run a query."
-  minutes={5}>
-
-<Step>
-
-Open the SQL Editor from the left nav. Every workspace ships with a **Starter Serverless Warehouse**, a managed endpoint built for interactive SQL, so you do not have to create compute first.
-
-</Step>
-
-<Step>
-
-Pick the Starter Serverless Warehouse in the warehouse dropdown if it is not already selected.
-
-</Step>
-
-<Step>
-
-Set the catalog and schema in the context bar so you can use plain table names instead of `catalog.schema.table` everywhere.
-
-</Step>
-
-<Step>
-
-Type a query and run it. The warehouse spins up in a few seconds and returns results in the grid below.
-
-</Step>
-
-</StepGuide>
+1. Open the SQL Editor from the left nav. Every workspace ships with a **Starter Serverless Warehouse**, a managed endpoint built for interactive SQL, so you do not have to create compute first.
+2. Pick the Starter Serverless Warehouse in the warehouse dropdown if it is not already selected.
+3. Set the catalog and schema in the context bar so you can use plain table names instead of `catalog.schema.table` everywhere.
+4. Type a query and run it. The warehouse spins up in a few seconds and returns results in the grid below.
 
 :::tip
 Drag a table from the schema browser straight into the editor and it drops in the fully qualified name for you.
