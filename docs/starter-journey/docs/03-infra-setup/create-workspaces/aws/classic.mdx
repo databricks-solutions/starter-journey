@@ -1,37 +1,24 @@
 ---
 sidebar_label: Classic
-description: Deploy a Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
+description: Deploy a classic Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
 ---
 
-# AWS Terraform
+# AWS Classic
 
-> **You'll deploy** a Databricks workspace and catalog on AWS using Terraform in ~20 min.
+> **You'll deploy** a classic Databricks workspace and catalog on AWS using Terraform in ~20 min.
 >
 > **Prereqs:** [AWS account](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
 
 ## The big picture
 
-A Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below. You do not need a separate workspace step and catalog step unless you choose the split templates.
-
-The **Workspace + Catalog** template creates a new VPC only. The **Workspace** template takes a new or existing VPC.
+A classic Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below. The **Workspace + Catalog** template creates a new VPC; the **Workspace** template takes a new or existing one.
 
 ## Prerequisites
 
 - An AWS account with permission to create IAM roles, S3 buckets, and VPC resources.
 - A Databricks account with account-admin privileges.
 - Terraform CLI installed locally.
-- A service principal with workspace-admin access. This is required for the **Catalog** template, and for attaching to an existing metastore on the combined template.
-
-## YouTube walkthrough
-
-The video walks through the **Workspace** template ([aws-byovpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc)). The flow is the same for **Workspace + Catalog**: copy `tf/terraform.tfvars.example`, set your variables, then run `terraform init`, `plan`, and `apply` per the repo README.
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/aiBC7tvLZKo"
-  title="AWS BYOVPC workspace Terraform walkthrough"
-></iframe>
+- A service principal with workspace-admin access. Required for the **Catalog** template and for attaching to an existing metastore on the combined template.
 
 ## Terraform resources
 
