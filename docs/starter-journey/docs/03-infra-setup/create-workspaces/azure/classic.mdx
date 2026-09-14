@@ -1,9 +1,9 @@
 ---
 sidebar_label: Classic
-description: Deploy a Databricks workspace and Unity Catalog on Azure using Terraform with VNet injection.
+description: Deploy a classic Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform.
 ---
 
-# Azure Terraform
+# Azure Classic
 
 > **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
 >
@@ -21,17 +21,6 @@ The **Workspace + Catalog** template creates a new VNet. The **Workspace** templ
 - A Databricks account with account-admin privileges.
 - Terraform CLI installed locally.
 - Azure CLI authenticated (`az login`).
-
-## YouTube walkthrough
-
-The video walks through the **Workspace + Catalog** template ([azure-vnet-injection-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc)). The flow is the same for all templates: copy `tf/terraform.tfvars.example`, set your variables, then run `terraform init`, `plan`, and `apply` per the repo README.
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/0PbMicR_loQ"
-  title="Azure VNet injection workspace Terraform walkthrough"
-></iframe>
 
 ## Terraform resources
 
