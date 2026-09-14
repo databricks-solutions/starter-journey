@@ -1,75 +1,203 @@
 ---
 sidebar_label: 8. Query and Explore
-description: Run interactive SQL against your lakehouse data using the Databricks SQL Editor and a serverless warehouse.
+description: Create a serverless SQL warehouse and save a daily franchise revenue query against your silver tables.
 ---
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
-import { StepGuide, Step } from '@site/src/components/StepGuide';
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
 
 # 8. Query and explore
 
-> **You'll run** interactive SQL against your lakehouse tables in the Databricks SQL Editor in ~5 min.
+> **You'll create** a serverless SQL warehouse and save a daily franchise revenue query in ~15 min.
 >
-> **Prereqs:** [Automation & Orchestration](/docs/12-orchestration/)
+> **Prereqs:** [Build the first ETL pipeline](/docs/07-build-first-pipeline/)
 
 ## The big picture
 
-Once a pipeline writes data, someone has to look at it. You check that the transforms did what you meant, eyeball a few distributions, and answer the one-off question your stakeholder just asked. The SQL Editor plus a serverless warehouse gives you a place to do that. No cluster to size, no waiting on startup. You open the editor and run a query against any table your Unity Catalog grants let you see.
+The pipeline has written clean transaction and franchise tables. You need a query engine and a concrete question: how much revenue did each franchise make each day?
+
+Create a small serverless SQL warehouse first. Use it to answer that question. Keep the warehouse after this walkthrough. Section 9 uses the same query gateway for business-facing analytics.
 
 <StarterJourneyProgress currentLevel={5}/>
 
-## Run your first query
+## Create the query engine
 
 <StepGuide
-  description="Open the SQL Editor, pick the serverless warehouse, set your context, and run a query."
-  minutes={5}>
+  description="Create dedicated SQL compute for this journey and confirm it is ready."
+  minutes={7}
+  idPrefix="warehouse-step"
+  referenceHref="https://docs.databricks.com/aws/en/compute/sql-warehouse/create"
+  referenceLabel="Create a SQL warehouse (Databricks docs)">
 
 <Step>
 
-Open the SQL Editor from the left nav. Every workspace ships with a **Starter Serverless Warehouse**, a managed endpoint built for interactive SQL, so you do not have to create compute first.
+In the workspace sidebar, click **SQL Warehouses** under compute, then click **Create SQL warehouse**.
+
+<StepImage src="/img/query-and-explore/1.png" alt="SQL Warehouses list with the Create SQL warehouse button" />
 
 </Step>
 
 <Step>
 
-Pick the Starter Serverless Warehouse in the warehouse dropdown if it is not already selected.
+Name the warehouse `starter_journey_wh`, select **Serverless**, and choose size **2X-Small**. Set **Auto stop** to 10 minutes and both the minimum and maximum cluster count to 1. That is enough for one reader. Click **Create**.
+
+<StepImage src="/img/query-and-explore/2.png" alt="SQL warehouse form configured for Serverless, 2X-Small, 10-minute auto-stop, and one cluster" />
+
+:::danger
+A running SQL warehouse consumes billable compute. Check the settings before you create it. The 10-minute auto-stop limits idle spend after you finish.
+:::
 
 </Step>
 
 <Step>
 
-Set the catalog and schema in the context bar so you can use plain table names instead of `catalog.schema.table` everywhere.
+Wait for the status to show **Running**. Confirm the warehouse is named `starter_journey_wh`, uses Serverless compute, and is sized 2X-Small.
 
-</Step>
-
-<Step>
-
-Type a query and run it. The warehouse spins up in a few seconds and returns results in the grid below.
+<StepImage src="/img/query-and-explore/3.png" alt="starter_journey_wh showing Running status with Serverless compute and 2X-Small size" />
 
 </Step>
 
 </StepGuide>
 
-:::tip
-Drag a table from the schema browser straight into the editor and it drops in the fully qualified name for you.
-:::
+## Answer a business question
 
-### Video walkthrough
+The silver tables are ready. Use them to answer: How much revenue did each franchise make each day?
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/0XWf1V40SdI"
-></iframe>
+<StepGuide
+  description="Ask Genie Code for the join, check its work, run it, and save the query."
+  minutes={10}
+  idPrefix="query-step"
+  referenceHref="https://docs.databricks.com/aws/en/sql/user/sql-editor/write-queries"
+  referenceLabel="Write queries in the SQL Editor (Databricks docs)">
+
+<Step>
+
+In the workspace sidebar, click **SQL Editor**, then under **Create new** select **SQL Query**.
+
+<StepImage src="/img/query-and-explore/query_1.png" alt="SQL Editor in the sidebar with the Create new SQL Query option" />
+
+</Step>
+
+<Step>
+
+Open the warehouse selector in the top right, then click **More**.
+
+<StepImage src="/img/query-and-explore/query_2.png" alt="Warehouse selector open with the More option" />
+
+</Step>
+
+<Step>
+
+In **Attach to an existing compute resource**, select `starter_journey_wh`, then click **Start and attach**.
+
+<StepImage src="/img/query-and-explore/query_3.png" alt="Attach to an existing compute resource dialog with starter_journey_wh selected" />
+
+</Step>
+
+<Step>
+
+Set the catalog and schema to the ones from your pipeline (`starterjourney_catalog` and `bakehouse_silver`).
+
+<StepImage src="/img/query-and-explore/query_4.png" alt="SQL Editor attached to starter_journey_wh with the starterjourney_catalog catalog and bakehouse_silver schema selected" />
+
+</Step>
+
+<Step>
+
+Open Genie Code and paste this prompt:
+
+<PromptBlock>
+Using the `transactions` and `franchises` tables in the current `bakehouse_silver` schema, write a query that joins them on `franchise_id`. Return the transaction date, franchise name, and total daily revenue. Calculate daily revenue as the sum of `total_price`, group by transaction date and franchise name, and sort by transaction date and franchise name.
+</PromptBlock>
+
+<StepImage src="/img/query-and-explore/query_5.png" alt="Genie Code panel with the daily franchise revenue prompt pasted" />
+
+</Step>
+
+<Step>
+
+Review the generated SQL, then click **Accept**:
+
+- `transactions` joins to `franchises` on `franchise_id`.
+- `transaction_timestamp` is converted or truncated to a calendar day.
+- `total_price` is summed.
+- The query groups by transaction day and franchise name.
+
+<StepImage src="/img/query-and-explore/query_6.png" alt="Genie Code generated SQL with the Accept button" />
+
+<details>
+<summary>Use the fallback SQL</summary>
+
+Generated SQL can look different and still be correct. If it misses one of the checks, replace it with:
+
+```sql
+SELECT
+  DATE(t.transaction_timestamp) AS transaction_date,
+  f.franchise_name,
+  SUM(t.total_price) AS daily_revenue
+FROM transactions AS t
+INNER JOIN franchises AS f
+  ON t.franchise_id = f.franchise_id
+GROUP BY
+  DATE(t.transaction_timestamp),
+  f.franchise_name
+ORDER BY
+  transaction_date,
+  franchise_name;
+```
+
+</details>
+
+</Step>
+
+<Step>
+
+Click **Run all**, or press Cmd+Enter on macOS or Ctrl+Enter on Windows and Linux.
+
+<StepImage src="/img/query-and-explore/query_7.png" alt="SQL Editor with the Run all button" />
+
+</Step>
+
+<Step>
+
+Check that the grid contains `transaction_date`, `franchise_name`, and `daily_revenue`. Franchise names should not be null, and the result should contain more than one date and franchise combination.
+
+<StepImage src="/img/query-and-explore/query_8.png" alt="SQL Editor results with transaction_date, franchise_name, and daily_revenue columns" />
+
+</Step>
+
+<Step>
+
+Save the query. Use Genie's **Suggest a title** to name it.
+
+<StepImage src="/img/query-and-explore/query_9.png" alt="Saving the query and using Suggest a title to name it" />
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 
-- **Reaching for a pro warehouse out of habit.** Serverless starts faster and scales on its own, so use it for interactive work unless your admin set up a specific warehouse for your team.
-- **Querying with no context set.** If you skip the catalog and schema in the context bar, every query needs the full three-part name (`catalog.schema.table`). Set it once and the editor fills in the rest.
+<details>
+<summary>The editor cannot find the silver tables</summary>
+
+Selecting `bakehouse_silver` is not enough if the editor is using another catalog. Select `starterjourney_catalog`, then select `bakehouse_silver` again.
+</details>
+
+<details>
+<summary>The SQL runs but answers a different question</summary>
+
+Check the join on `franchise_id`, the day-level conversion of `transaction_timestamp`, and `SUM(total_price)`. A valid query needs all three.
+</details>
+
+<details>
+<summary>The warehouse does not reach Running</summary>
+
+Confirm that Serverless SQL warehouses are available in the workspace. Do not switch warehouse types during the walkthrough because startup and cost behavior will differ.
+</details>
 
 ## Next
 
-| Page | What you'll do |
-|---|---|
-| [9. Unified analytics](/docs/09-unified-analytics/) | Build metric views, dashboards, Genie Spaces, and apps on top of your lakehouse data. |
-| [10. Predictive analytics](/docs/10-predictive-analytics/) | Register models in Unity Catalog and run batch inference at scale. |
-| [11. Agents](/docs/11-agents/) | Build and deploy AI agents grounded in your lakehouse data. |
+- **Do next:** [Unified analytics](/docs/09-unified-analytics/)
+- **Learn why:** [Metric Views](/docs/09-unified-analytics/metric-views)
+- **Reference:** [Write queries in the SQL Editor (Databricks docs)](https://docs.databricks.com/aws/en/sql/user/sql-editor/write-queries)

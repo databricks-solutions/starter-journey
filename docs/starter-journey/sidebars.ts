@@ -154,32 +154,9 @@ const sidebars: SidebarsConfig = {
       className: 'sidebar-track-da',
       link: {type: 'doc', id: '09-unified-analytics/index'},
       items: [
-        {
-          type: 'category',
-          label: 'Business Semantics',
-          collapsed: true,
-          link: {type: 'doc', id: '09-unified-analytics/business-semantics/index'},
-          items: [
-            '09-unified-analytics/business-semantics/lab',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Databricks AI/BI',
-          collapsed: true,
-          items: [
-            '09-unified-analytics/databricks-aibi/dashboards',
-            {
-              type: 'category',
-              label: 'Genie Agents',
-              link: {type: 'doc', id: '09-unified-analytics/databricks-aibi/genie-agents'},
-              items: [
-                '09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
-              ],
-            },
-            '09-unified-analytics/databricks-aibi/databricks-apps',
-          ],
-        },
+        '09-unified-analytics/metric-views',
+        '09-unified-analytics/dashboards',
+        '09-unified-analytics/genie-agents',
       ],
     },
     {

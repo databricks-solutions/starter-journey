@@ -44,12 +44,36 @@ const config: Config = {
       {
         redirects: [
           {
+            from: '/docs/09-unified-analytics/business-semantics',
+            to: '/docs/09-unified-analytics/metric-views',
+          },
+          {
+            from: '/docs/09-unified-analytics/business-semantics/lab',
+            to: '/docs/09-unified-analytics/metric-views',
+          },
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/dashboards',
+            to: '/docs/09-unified-analytics/dashboards',
+          },
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/genie-agents',
+            to: '/docs/09-unified-analytics/genie-agents',
+          },
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
+            to: '/docs/09-unified-analytics/genie-agents',
+          },
+          {
+            from: '/docs/09-unified-analytics/databricks-aibi/databricks-apps',
+            to: '/docs/09-unified-analytics/',
+          },
+          {
             from: '/docs/09-unified-analytics/databricks-aibi/genie-spaces',
-            to: '/docs/09-unified-analytics/databricks-aibi/genie-agents',
+            to: '/docs/09-unified-analytics/genie-agents',
           },
           {
             from: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
-            to: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
+            to: '/docs/09-unified-analytics/genie-agents',
           },
         ],
       },

@@ -1,25 +1,23 @@
 ---
 sidebar_position: 0
 sidebar_label: Unified Analytics
-description: Turn gold tables into consistent KPIs and business-facing surfaces with Unity Catalog metric views, Databricks SQL, and AI/BI.
+description: Define a KPI once as a Unity Catalog metric view, then serve it through an AI/BI dashboard and a Genie Agent.
 ---
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Button from '@site/src/components/Button';
 
 # 9. Unified Analytics
 
-> **You'll understand** how to go from production tables to consistent KPIs and business-facing analytics surfaces: metric views, dashboards, Genie, and apps.
+> **You'll understand** how one governed metric view feeds both a dashboard and a Genie Agent, so every surface returns the same number.
 >
 > **Prereqs:** [7. Build the first ETL pipeline](/docs/07-build-first-pipeline/), [8. Query and Explore](/docs/08-query-and-explore), [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 
-## The big picture
+## The call
 
-Your gold tables are not the finish line.
-Business users need consistent numbers.
-They also need a way to reach those numbers without writing SQL.
+Define the number once, then present it two ways.
 
-The next step is planning the semantics and serving layer.
-Define your KPIs once, in Unity Catalog, so SQL editors, dashboards, Genie, and third-party apps all return the same number.
-Then surface those metrics through Databricks AI/BI, all querying through a SQL warehouse.
+Your silver tables are not the finish line. Business users need consistent numbers, and they need to reach those numbers without writing SQL. So define each KPI one time as a Unity Catalog metric view. A dashboard gives people a fixed view they can trust. A Genie Agent answers the follow-up questions a dashboard can't anticipate. Both read the same metric view, so the number cannot drift between them.
 
 <StarterJourneyProgress currentLevel={6} currentForkColumn="da"/>
 
@@ -27,22 +25,33 @@ Then surface those metrics through Databricks AI/BI, all querying through a SQL 
 
 | Highlight | Layer | What it is |
 |---|---|---|
-| Purple | Tables | The medallion bronze, silver, and gold tables produced by your data engineering pipelines. Every query in the serving layer reads from here. |
-| Red | Business semantic layer | Where you define KPIs, business aggregates, concepts, and synonyms once, on top of the tables. Unity Catalog metric views live here. |
-| Orange | Data warehousing | All AI/BI tools, applications, and third-party BI apps reach the data through a SQL warehouse. The warehouse is the single query gateway. |
-| Green | AI/BI | Genie and Dashboards. The surfaces business users actually interact with. Both read from metric views through the warehouse. |
+| Purple | Tables | The medallion bronze and silver tables your pipeline produced. Every query in the serving layer reads from here. |
+| Red | Business semantic layer | Where you define KPIs once, on top of the tables. Unity Catalog metric views live here. |
+| Orange | Data warehousing | Every AI/BI tool reaches the data through a SQL warehouse. The warehouse is the single query gateway. |
+| Green | AI/BI | Dashboards and Genie. The surfaces business users interact with. Both read the metric view through the warehouse. |
+
+## Why define it once
+
+- One object, one number. Dashboards, Genie, and SQL all read the same metric view, so a KPI can't come back different per tool.
+- Governed in the catalog. Access, lineage, and certification travel with the metric because it's a Unity Catalog object.
+- Short debug path. When a number looks wrong, you check one definition, not every dashboard and prompt that copied it.
+
+:::tip
+For the full tour of metric views, why they exist and how dimensions, measures, and queries fit together, read this deck.
+
+<Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
+:::
 
 ## In this section
 
-| Section | What you'll do |
+| Page | What you'll do |
 |---|---|
-| [Business Semantics](/docs/09-unified-analytics/business-semantics/) | Define KPIs as Unity Catalog metric views so every tool returns the same number. |
-| [Databricks AI/BI: Dashboards](/docs/09-unified-analytics/databricks-aibi/dashboards) | Build and share visual reports backed by governed lakehouse data. |
-| [Databricks AI/BI: Genie Agents](/docs/09-unified-analytics/databricks-aibi/genie-agents) | Let business users ask data questions in natural language. |
-| [Databricks Apps](/docs/09-unified-analytics/databricks-aibi/databricks-apps) | Build and deploy custom web applications on Databricks. |
+| [Metric Views](/docs/09-unified-analytics/metric-views) | Define `franchise_sales_metrics` once so every tool returns the same number. |
+| [Dashboards](/docs/09-unified-analytics/dashboards) | Build and publish the Bakehouse Franchise Performance dashboard on that metric view. |
+| [Genie Agents](/docs/09-unified-analytics/genie-agents) | Let business users ask the Bakehouse Sales Assistant questions in plain English. |
 
 ## Next
 
-- **Do next:** [Business Semantics](/docs/09-unified-analytics/business-semantics/)
+- **Do next:** [Metric Views](/docs/09-unified-analytics/metric-views)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Business semantics in Unity Catalog](https://docs.databricks.com/aws/en/business-semantics/)
+- **Reference:** [Unity Catalog metric views](https://docs.databricks.com/aws/en/uc-semantics/metric-views/)
