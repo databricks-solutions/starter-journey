@@ -1,9 +1,9 @@
 ---
 sidebar_label: Classic
-description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (standalone or shared VPC).
+description: Deploy a classic Databricks workspace on GCP with a customer-managed VPC using Terraform (standalone new VPC or shared VPC).
 ---
 
-# GCP Terraform
+# GCP Classic
 
 > **You'll deploy** a Databricks workspace with BYOVPC on GCP using Terraform in ~20 min.
 >
@@ -11,11 +11,14 @@ description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (s
 
 ## The big picture
 
-A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below.
+A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform.
+Pick **one** template from [Terraform resources](#terraform-resources) below.
 
-The **Standalone** template creates a new VPC, subnet, Cloud Router, and NAT. The **Shared VPC** template attaches a workspace to an **existing** VPC and subnet, in the same project or a Shared VPC host project.
+**Standalone** creates a new VPC, subnet, Cloud Router, and NAT.
+**Shared VPC** attaches a workspace to an existing VPC and subnet, in the same project or a Shared VPC host project.
 
-There is no combined workspace-and-catalog template in this repo yet. On **Shared VPC**, Unity Catalog metastore assignment is optional via `metastore_id`. Add catalogs later in the workspace or with separate UC automation.
+Unity Catalog metastore assignment on Shared VPC is optional via `metastore_id`.
+Add catalogs later in the workspace or with separate UC automation.
 
 ## Prerequisites
 
