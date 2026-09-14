@@ -3,6 +3,8 @@ sidebar_label: Terraform
 description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (standalone or shared VPC).
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # GCP Terraform
 
 > **You'll deploy** a Databricks workspace with BYOVPC on GCP using Terraform in ~20 min.
@@ -48,11 +50,39 @@ Enable the Compute API before apply: `gcloud services enable compute.googleapis.
 
 ## Verify
 
-1. Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
-2. Open **Workspaces** and confirm the new workspace shows **Running**.
-3. Run `terraform output -raw workspace_url` and confirm you reach the workspace landing page.
-4. In the GCP console, confirm the VPC/subnet (Standalone) or that the existing network is referenced (Shared VPC).
-5. If you set `metastore_id`, open **Catalog** in the workspace and confirm the metastore is attached.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Log in to the [Databricks account console](https://accounts.gcp.databricks.com/).
+
+</Step>
+
+<Step>
+
+Open **Workspaces** and confirm the new workspace shows **Running**.
+
+</Step>
+
+<Step>
+
+Run `terraform output -raw workspace_url` and confirm you reach the workspace landing page.
+
+</Step>
+
+<Step>
+
+In the GCP console, confirm the VPC/subnet (Standalone) or that the existing network is referenced (Shared VPC).
+
+</Step>
+
+<Step>
+
+If you set `metastore_id`, open **Catalog** in the workspace and confirm the metastore is attached.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

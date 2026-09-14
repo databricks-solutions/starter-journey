@@ -5,6 +5,7 @@ description: Create a Databricks workspace on AWS using the automated configurat
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Button from '@site/src/components/Button';
+import { StepGuide, Step } from '@site/src/components/StepGuide';
 
 # AWS manual workspace creation
 
@@ -24,7 +25,15 @@ A running Databricks workspace in your AWS account. The configuration wizard cre
 
 ## Steps
 
-### 1. Create the development workspace
+<StepGuide
+  description="Run the AWS configuration wizard to create each workspace. The deck walks through the wizard screen by screen."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html"
+  referenceLabel="Create a workspace (Databricks docs)">
+
+<Step>
+
+Create the development workspace by following the deck below.
 
 :::tip
 Deploy the workspace in the same AWS region as your data sources. Cross-region traffic adds egress fees that pile up fast.
@@ -32,15 +41,39 @@ Deploy the workspace in the same AWS region as your data sources. Cross-region t
 
 <Button label="Deck - Create AWS Workspace" link={useBaseUrl('/pdfs/AWS-Automated-Configuration-Classic-Workspace-Deployment.pdf')} />
 
-### 2. Repeat for staging and production
+</Step>
 
-Run through the same PDF once more for each additional workspace. A standard setup has three: development, staging, and production.
+<Step>
+
+Run through the same deck once more for each additional workspace. A standard setup has three: development, staging, and production.
+
+</Step>
+
+</StepGuide>
 
 ## Verify
 
-1. Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
-2. Open **Workspaces** and confirm the new workspace shows **Running**.
-3. Click the workspace URL and confirm the landing page loads.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
+
+</Step>
+
+<Step>
+
+Open **Workspaces** and confirm the new workspace shows **Running**.
+
+</Step>
+
+<Step>
+
+Click the workspace URL and confirm the landing page loads.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

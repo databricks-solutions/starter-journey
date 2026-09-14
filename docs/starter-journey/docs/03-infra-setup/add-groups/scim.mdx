@@ -3,6 +3,8 @@ sidebar_label: SCIM
 description: Automate group provisioning into Databricks using SCIM from your identity provider.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Add Groups: SCIM
 
 > **You'll configure** SCIM to automatically sync groups from your identity provider into Databricks in ~10 min.
@@ -20,9 +22,15 @@ Your identity provider's groups synced into the Databricks account. When members
 
 ## Steps
 
-### 1. Configure group sync in your IdP
+<StepGuide
+  description="Groups ride on the same SCIM connector you set up for users. Configure sync in your IdP, assign the groups, and trigger a sync."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/admin/users-groups/scim/"
+  referenceLabel="SCIM provisioning overview (Databricks docs)">
 
-If you already set up SCIM for users, groups ride on the same connector. Follow the guide for your identity provider:
+<Step>
+
+Configure group sync in your identity provider. If you already set up SCIM for users, groups ride on the same connector, so follow the guide for your IdP:
 
 | Identity provider | Guide |
 |---|---|
@@ -32,19 +40,45 @@ If you already set up SCIM for users, groups ride on the same connector. Follow 
 
 If the steps differ by cloud, select your cloud provider at the top right of the Databricks docs page.
 
-### 2. Assign groups in the IdP
+</Step>
+
+<Step>
 
 In your identity provider, assign the groups you want to the Databricks SCIM application. Only assigned groups sync, so anything you leave out simply will not show up.
 
-### 3. Trigger a sync
+</Step>
+
+<Step>
 
 Run a manual sync from your IdP, or wait for the next scheduled cycle. The groups should appear in the Databricks account console.
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-1. Go to **User management** > **Groups** in the account console.
-2. Confirm the synced groups have the right names and members.
-3. In your IdP, check that the SCIM application reports a successful provisioning status for groups.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Go to **User management** > **Groups** in the account console.
+
+</Step>
+
+<Step>
+
+Confirm the synced groups have the right names and members.
+
+</Step>
+
+<Step>
+
+In your IdP, check that the SCIM application reports a successful provisioning status for groups.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

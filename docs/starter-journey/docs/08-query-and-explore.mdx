@@ -96,9 +96,9 @@ In **Attach to an existing compute resource**, select `starter_journey_wh`, then
 
 <Step>
 
-Set the catalog and schema to the ones from your pipeline (`starterjourney_catalog` and `bakehouse`).
+Set the catalog and schema to the ones from your pipeline (`starterjourney_catalog` and `bakehouse_silver`).
 
-<StepImage src="/img/query-and-explore/query_4.png" alt="SQL Editor attached to starter_journey_wh with the pipeline catalog and schema selected" />
+<StepImage src="/img/query-and-explore/query_4.png" alt="SQL Editor attached to starter_journey_wh with the starterjourney_catalog catalog and bakehouse_silver schema selected" />
 
 </Step>
 
@@ -107,7 +107,7 @@ Set the catalog and schema to the ones from your pipeline (`starterjourney_catal
 Open Genie Code and paste this prompt:
 
 <PromptBlock>
-Using the `silver_transactions` and `silver_franchises` tables in the current `bakehouse` schema, write a query that joins them on `franchise_id`. Return the transaction date, franchise name, and total daily revenue. Calculate daily revenue as the sum of `total_price`, group by transaction date and franchise name, and sort by transaction date and franchise name.
+Using the `transactions` and `franchises` tables in the current `bakehouse_silver` schema, write a query that joins them on `franchise_id`. Return the transaction date, franchise name, and total daily revenue. Calculate daily revenue as the sum of `total_price`, group by transaction date and franchise name, and sort by transaction date and franchise name.
 </PromptBlock>
 
 <StepImage src="/img/query-and-explore/query_5.png" alt="Genie Code panel with the daily franchise revenue prompt pasted" />
@@ -118,7 +118,7 @@ Using the `silver_transactions` and `silver_franchises` tables in the current `b
 
 Review the generated SQL, then click **Accept**:
 
-- `silver_transactions` joins to `silver_franchises` on `franchise_id`.
+- `transactions` joins to `franchises` on `franchise_id`.
 - `transaction_timestamp` is converted or truncated to a calendar day.
 - `total_price` is summed.
 - The query groups by transaction day and franchise name.
@@ -135,8 +135,8 @@ SELECT
   DATE(t.transaction_timestamp) AS transaction_date,
   f.franchise_name,
   SUM(t.total_price) AS daily_revenue
-FROM silver_transactions AS t
-INNER JOIN silver_franchises AS f
+FROM transactions AS t
+INNER JOIN franchises AS f
   ON t.franchise_id = f.franchise_id
 GROUP BY
   DATE(t.transaction_timestamp),
@@ -181,7 +181,7 @@ Save the query. Use Genie's **Suggest a title** to name it.
 <details>
 <summary>The editor cannot find the silver tables</summary>
 
-Selecting `bakehouse` is not enough if the editor is using another catalog. Select `starterjourney_catalog`, then select `bakehouse` again.
+Selecting `bakehouse_silver` is not enough if the editor is using another catalog. Select `starterjourney_catalog`, then select `bakehouse_silver` again.
 </details>
 
 <details>
@@ -199,5 +199,5 @@ Confirm that Serverless SQL warehouses are available in the workspace. Do not sw
 ## Next
 
 - **Do next:** [Unified analytics](/docs/09-unified-analytics/)
-- **Learn why:** [Business semantics](/docs/09-unified-analytics/business-semantics/)
+- **Learn why:** [Metric Views](/docs/09-unified-analytics/metric-views)
 - **Reference:** [Write queries in the SQL Editor (Databricks docs)](https://docs.databricks.com/aws/en/sql/user/sql-editor/write-queries)

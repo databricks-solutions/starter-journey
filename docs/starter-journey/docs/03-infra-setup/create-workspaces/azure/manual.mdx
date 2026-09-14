@@ -3,6 +3,8 @@ sidebar_label: Manual
 description: Create a Databricks workspace on Azure manually through the Azure portal.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Azure manual workspace creation
 
 > **You'll create** a Databricks workspace on Azure in ~10 min.
@@ -21,9 +23,15 @@ A running Databricks workspace in your Azure subscription, created from the Azur
 
 ## Steps
 
-### 1. Create the development workspace
+<StepGuide
+  description="Create each workspace from the Azure portal, following the video. Match every workspace to the right subscription and resource group."
+  minutes={10}
+  referenceHref="https://learn.microsoft.com/en-us/azure/databricks/getting-started/"
+  referenceLabel="Azure Databricks workspace setup (Microsoft docs)">
 
-Follow the video below. As you deploy:
+<Step>
+
+Create the development workspace by following the video below. As you deploy:
 
 - Pick the right **subscription** and **resource group** for the environment.
 - For example, put the dev workspace in the dev subscription and dev Databricks resource group.
@@ -38,15 +46,39 @@ Match the subscription and resource group to the environment. A dev workspace dr
   src="https://www.youtube.com/embed/hb_cQ8d3750"
 ></iframe>
 
-### 2. Repeat for staging and production
+</Step>
+
+<Step>
 
 Run the same process for each additional workspace, picking the matching subscription and resource group each time.
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-1. Log in to the [Databricks account console](https://accounts.azuredatabricks.net/).
-2. Open **Workspaces** and confirm the new workspace shows **Running**.
-3. Click the workspace URL and confirm the landing page loads.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Log in to the [Databricks account console](https://accounts.azuredatabricks.net/).
+
+</Step>
+
+<Step>
+
+Open **Workspaces** and confirm the new workspace shows **Running**.
+
+</Step>
+
+<Step>
+
+Click the workspace URL and confirm the landing page loads.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 
