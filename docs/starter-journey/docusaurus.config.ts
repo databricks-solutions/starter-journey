@@ -39,6 +39,25 @@ const config: Config = {
         searchResultLimits: 15,
       },
     ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: ['aws', 'azure', 'gcp'].flatMap((c) => [
+          {
+            from: `/docs/03-infra-setup/create-workspaces/${c}/manual`,
+            to: `/docs/03-infra-setup/create-workspaces/${c}/serverless`,
+          },
+          {
+            from: `/docs/03-infra-setup/create-workspaces/${c}/terraform`,
+            to: `/docs/03-infra-setup/create-workspaces/${c}/classic`,
+          },
+          {
+            from: `/docs/03-infra-setup/create-workspaces/${c}/sra`,
+            to: `/docs/03-infra-setup/create-workspaces/${c}/private-link`,
+          },
+        ]),
+      },
+    ],
   ],
 
   presets: [
