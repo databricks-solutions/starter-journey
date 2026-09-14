@@ -1,14 +1,128 @@
 ---
 sidebar_label: Serverless
-description: Create a serverless Databricks workspace on AWS.
+description: Create a serverless Databricks workspace on AWS from the account console, with default storage and no VPC to manage.
 ---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 # AWS serverless workspace creation
 
-> **You'll create** a serverless Databricks workspace on AWS.
+> **You'll create** a serverless Databricks workspace on AWS in ~10 min.
 >
 > **Prereqs:** [AWS account](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
 
 ## The big picture
 
-A serverless Databricks workspace, deployed from the account console. Step-by-step guide in progress.
+A running Databricks workspace where Databricks manages the compute and the storage.
+There is no VPC to size, no IAM role to wire up, and no cross-account trust to configure.
+You turn on a preview, fill in a short dialog, and the workspace comes up ready to use.
+Start here for your first workspace and for most new deployments.
+
+## Prerequisites
+
+- A Databricks account with account-admin privileges.
+- An AWS region where serverless workspaces are available. Deploy the workspace close to your data sources.
+
+## Steps
+
+<StepGuide
+  description="Follow along in the account console. Every step links to itself, so you can send someone straight to the one they are stuck on."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html"
+  referenceLabel="Databricks workspace administration (Databricks docs)">
+
+<Step>
+
+Go to the [Databricks account console](https://accounts.cloud.databricks.com) and log in.
+Check the account name in the top left and confirm you are in the account you mean to deploy into.
+
+<StepImage src="/img/aws-serverless/1.png" alt="Databricks account console log in screen" />
+
+</Step>
+
+<Step>
+
+In the left sidebar, open **Previews**.
+Find **Serverless Workspaces** and turn its toggle to **On**.
+
+This is what makes the serverless option appear in the create dialog.
+
+<StepImage src="/img/aws-serverless/2.png" alt="Previews page with the Serverless Workspaces public preview toggled on" />
+
+</Step>
+
+<Step>
+
+In the left sidebar, open **Workspaces**.
+Click **Create workspace** in the top right.
+
+<StepImage src="/img/aws-serverless/3.png" alt="Workspaces page in the account console with the Create workspace button" />
+
+</Step>
+
+<Step>
+
+In the **Create Workspace** dialog:
+
+- Enter a **Workspace name**.
+- Pick the **Region** to deploy into. You cannot change this later.
+- Under **Storage and compute**, select **Use serverless compute with default storage**.
+- Choose a **Metastore** if one already exists in that region. This is optional.
+- Click **Create**.
+
+<StepImage src="/img/aws-serverless/4.png" alt="Create Workspace dialog with the serverless compute with default storage option selected" />
+
+</Step>
+
+<Step>
+
+The workspace configuration page opens and the status moves to **Running**.
+Storage shows as managed, and the network policy is attached automatically.
+Click **Open workspace**.
+
+<StepImage src="/img/aws-serverless/5.png" alt="New workspace configuration page showing managed storage, a network policy, and a running status" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+You land in the workspace itself, not the account console.
+
+The **Welcome to Databricks** home loads with the left navigation for Workspace, Catalog, Compute, and SQL.
+Seeing this page means the workspace is deployed and ready.
+
+<StepImage src="/img/aws-serverless/6.png" alt="Welcome to Databricks workspace home for the new serverless workspace" />
+
+## Where people trip
+
+<details>
+<summary>Serverless Workspaces is not in the Previews list</summary>
+
+The preview toggle only shows for account admins.
+Confirm you have account-admin privileges on the account console.
+If it is still missing, serverless workspaces may not be available yet in your account or region.
+</details>
+
+<details>
+<summary>The Metastore dropdown is empty</summary>
+
+The metastore is optional at creation time.
+Leave it blank if no metastore exists in that region, then attach one later.
+See [Set the metastore admin group](/docs/03-infra-setup/metastore-admins/set-admin-group) for managing metastore ownership.
+</details>
+
+<details>
+<summary>Picked the wrong region</summary>
+
+A workspace cannot move regions once created.
+Delete the workspace and create a new one in the correct region.
+Deploy in the region that hosts your data sources to avoid cross-region egress fees.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/03-infra-setup/add-users/manual)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks workspace administration](https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html)
