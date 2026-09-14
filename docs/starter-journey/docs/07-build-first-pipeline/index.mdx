@@ -40,20 +40,20 @@ Name the pipeline `bakehouse_e2e_pipeline` and choose Python or SQL
 
 <Step>
 
-Set the destination catalog to `<catalog>` and pick a default schema
+Set the destination catalog to `starterjourney_catalog` and the default schema to `bakehouse_bronze`
 
-<StepImage src="/img/pipeline-etl-3.png" placeholder="Step 3: destination catalog and schema" />
+<StepImage src="/img/pipeline-etl-3.png" placeholder="Step 3: destination catalog starterjourney_catalog and default schema bakehouse_bronze" />
 
 </Step>
 
 <Step>
 
-Open the Genie Code panel in the Pipelines Editor, then prompt it to build a medallion pipeline from `samples.bakehouse` into bronze/silver with expectations (see reference doc)
+Open the Genie Code panel in the Pipelines Editor. Ask it to land the two Bakehouse source tables in the bronze schema, then publish cleaned silver tables into a separate silver schema.
 
 <StepImage src="/img/pipeline-etl-4.png" placeholder="Step 4: open Genie Code and enter the prompt" />
 
 <PromptBlock>
-Build a medallion pipeline from samples.bakehouse. Land the raw tables in bronze, then create silver tables with cleaned column names, typed timestamps, and expectations that drop rows with null primary keys.
+Build a medallion pipeline from samples.bakehouse. Land the raw tables in bakehouse_bronze schema, then create silver tables with cleaned column names, typed timestamps, and expectations that drop rows with null primary keys and land them on bakehouse_silver schema.
 </PromptBlock>
 
 </Step>
@@ -76,9 +76,13 @@ Click Start / Run pipeline to validate it end-to-end
 
 <Step>
 
-Confirm `bronze.*` and `silver.*` tables were created and inspect the pipeline DAG graph
+Confirm both the bronze and silver schemas were created with their tables, then inspect the pipeline DAG graph.
 
-<StepImage src="/img/pipeline-etl-7a.png" placeholder="Step 7: bronze and silver tables in Catalog Explorer" />
+:::tip
+Section 8 and the section 9 metric view read these silver columns by name: `transaction_timestamp` and `total_price` on `transactions`, and `franchise_id` plus `franchise_name` on `franchises`. If Genie Code named them differently, rename them now.
+:::
+
+<StepImage src="/img/pipeline-etl-7a.png" placeholder="Step 7: bronze and silver schemas with their tables in Catalog Explorer" />
 
 <StepImage src="/img/pipeline-etl-7b.png" placeholder="Step 7: pipeline DAG graph" />
 

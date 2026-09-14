@@ -3,7 +3,7 @@ sidebar_label: Manual
 description: Add users to Databricks manually through the account console.
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 # Add Users: Manual
 
@@ -21,33 +21,55 @@ Users registered at the account level, ready to assign to any workspace.
 
 ## Steps
 
-### 1. Open the account console
+<StepGuide
+  description="Register users at the account level through the console. You assign them to workspaces and groups later."
+  minutes={2}
+  referenceHref="https://docs.databricks.com/aws/en/admin/users-groups/"
+  referenceLabel="Add users to your account (Databricks docs)">
 
-Go to the account console for your cloud:
+<Step>
+
+Open the account console for your cloud
 
 - [AWS](https://accounts.cloud.databricks.com)
 - [Azure](https://accounts.azuredatabricks.net)
 - [GCP](https://accounts.gcp.databricks.com)
 
-### 2. Add a user
+</Step>
 
-1. In the left panel, click **User management**.
-2. On the **Users** tab, click **Add user**.
-3. Enter the user's **email** and **full name**.
-4. Click **Add**.
+<Step>
 
-The user now shows up in the Users list.
+In the left panel, click **User management**. On the **Users** tab, click **Add user**, enter the user's **email** and **full name**, then click **Add**. The user now shows up in the Users list.
 
-<img src={useBaseUrl('/img/account-users.png')} alt="Account console user management screen"/>
+<StepImage src="/img/account-users.png" placeholder="Account console user management screen" />
 
-### 3. Repeat for the rest
+</Step>
+
+<Step>
 
 Add everyone who needs access. You assign them to workspaces and groups in the next steps, so for now you are just getting the names into the account.
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-1. Go to **User management** > **Users**.
-2. Check that each new user is in the list with the right email.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Go to **User management** > **Users**.
+
+</Step>
+
+<Step>
+
+Check that each new user is in the list with the right email.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 
