@@ -1,11 +1,12 @@
 ---
-sidebar_label: Terraform
-description: Deploy a Databricks workspace on GCP with BYOVPC using Terraform (standalone or shared VPC).
+sidebar_label: Classic
+description: Deploy a classic Databricks workspace on GCP with a customer-managed VPC using Terraform (standalone new VPC or shared VPC).
 ---
 
 import { StepGuide, Step } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
 
-# GCP Terraform
+# GCP Classic
 
 > **You'll deploy** a Databricks workspace with BYOVPC on GCP using Terraform in ~20 min.
 >
@@ -13,11 +14,14 @@ import { StepGuide, Step } from '@site/src/components/StepGuide';
 
 ## The big picture
 
-A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below.
+A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform.
+Pick **one** template from [Terraform resources](#terraform-resources) below.
 
-The **Standalone** template creates a new VPC, subnet, Cloud Router, and NAT. The **Shared VPC** template attaches a workspace to an **existing** VPC and subnet, in the same project or a Shared VPC host project.
+**Standalone** creates a new VPC, subnet, Cloud Router, and NAT.
+**Shared VPC** attaches a workspace to an existing VPC and subnet, in the same project or a Shared VPC host project.
 
-There is no combined workspace-and-catalog template in this repo yet. On **Shared VPC**, Unity Catalog metastore assignment is optional via `metastore_id`. Add catalogs later in the workspace or with separate UC automation.
+Unity Catalog metastore assignment on Shared VPC is optional via `metastore_id`.
+Add catalogs later in the workspace or with separate UC automation.
 
 ## Prerequisites
 
@@ -26,6 +30,30 @@ There is no combined workspace-and-catalog template in this repo yet. On **Share
 - Terraform CLI v1.3+ installed locally.
 - Google Cloud SDK authenticated. The templates use GSA impersonation and `GOOGLE_OAUTH_ACCESS_TOKEN` (see each repo README and `service-account-impersonation.md`).
 - The GSA added to the Databricks account console as an account user with the account-admin role.
+
+## Prompt your coding agent
+
+Paste this into your coding agent to have it drive the recommended **Standalone (new VPC)** deployment with you.
+
+<PromptBlock>
+
+You are helping me deploy a classic Databricks workspace on GCP with a customer-managed VPC using Terraform. Use the Databricks-supported Standalone (new VPC) template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone.
+
+1. Clone the repo and read its README.md and service-account-impersonation.md first.
+2. From the repository root (this template does not use a tf/ subdirectory), copy terraform.tfvars.example to terraform.tfvars and help me set the values (project id, workspace name, region, network settings).
+3. Run terraform init, then terraform plan, and explain what it creates (VPC and subnet, Cloud Router and Cloud NAT, Databricks MWS network and workspace, workspace admin user, Databricks-managed GCS buckets) before applying.
+4. Run terraform apply only after I confirm the plan.
+
+Considerations for GCP:
+- I use Terraform v1.3+ and a Google service account (GSA) with roles/Owner on the project, or the tighter roles in the README.
+- Auth uses GSA impersonation with GOOGLE_OAUTH_ACCESS_TOKEN; refresh it with export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token) if apply hits permission errors.
+- The GSA must be added to the Databricks account console as an account user with the account-admin role.
+- Enable the Compute API first: gcloud services enable compute.googleapis.com --project PROJECT_ID.
+- On terraform destroy, tear down in the README's order (workspace first, then NAT and router) and delete any orphaned firewall rules.
+
+Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+
+</PromptBlock>
 
 ## Terraform resources
 

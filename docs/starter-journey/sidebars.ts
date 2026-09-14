@@ -46,9 +46,9 @@ const sidebars: SidebarsConfig = {
               label: 'AWS',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/aws/manual',
-                '03-infra-setup/create-workspaces/aws/terraform',
-                '03-infra-setup/create-workspaces/aws/sra',
+                '03-infra-setup/create-workspaces/aws/serverless',
+                '03-infra-setup/create-workspaces/aws/classic',
+                '03-infra-setup/create-workspaces/aws/private-link',
               ],
             },
             {
@@ -56,9 +56,9 @@ const sidebars: SidebarsConfig = {
               label: 'Azure',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/azure/manual',
-                '03-infra-setup/create-workspaces/azure/terraform',
-                '03-infra-setup/create-workspaces/azure/sra',
+                '03-infra-setup/create-workspaces/azure/serverless',
+                '03-infra-setup/create-workspaces/azure/classic',
+                '03-infra-setup/create-workspaces/azure/private-link',
               ],
             },
             {
@@ -66,9 +66,9 @@ const sidebars: SidebarsConfig = {
               label: 'GCP',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/gcp/manual',
-                '03-infra-setup/create-workspaces/gcp/terraform',
-                '03-infra-setup/create-workspaces/gcp/sra',
+                '03-infra-setup/create-workspaces/gcp/serverless',
+                '03-infra-setup/create-workspaces/gcp/classic',
+                '03-infra-setup/create-workspaces/gcp/private-link',
               ],
             },
           ],

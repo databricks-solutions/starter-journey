@@ -1,11 +1,12 @@
 ---
-sidebar_label: Terraform
-description: Deploy a Databricks workspace and Unity Catalog on Azure using Terraform with VNet injection.
+sidebar_label: Classic
+description: Deploy a classic Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform.
 ---
 
 import { StepGuide, Step } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
 
-# Azure Terraform
+# Azure Classic
 
 > **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
 >
@@ -24,16 +25,29 @@ The **Workspace + Catalog** template creates a new VNet. The **Workspace** templ
 - Terraform CLI installed locally.
 - Azure CLI authenticated (`az login`).
 
-## YouTube walkthrough
+## Prompt your coding agent
 
-The video walks through the **Workspace + Catalog** template ([azure-vnet-injection-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc)). The flow is the same for all templates: copy `tf/terraform.tfvars.example`, set your variables, then run `terraform init`, `plan`, and `apply` per the repo README.
+Paste this into your coding agent to have it drive the recommended **Workspace + Catalog** deployment with you.
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/0PbMicR_loQ"
-  title="Azure VNet injection workspace Terraform walkthrough"
-></iframe>
+<PromptBlock>
+
+You are helping me deploy a classic Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform. Use the Databricks-supported Workspace + Catalog template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc.
+
+1. Clone the repo and read its README.md first.
+2. From the tf/ directory, copy terraform.tfvars.example to terraform.tfvars and help me set the values (subscription, resource group names, workspace name, region, VNet CIDRs).
+3. Run terraform init, then terraform plan, and explain what it creates (resource groups, VNet with public and private subnets, NSG, NAT gateway, VNet-injected workspace with No Public IP, UC metastore, storage credential, external location, catalog) before applying.
+4. Run terraform apply only after I confirm the plan.
+
+Considerations for Azure:
+- I am authenticated with az login and have Contributor at the subscription scope. Databricks creates a managed resource group, so resource-group scope is not enough.
+- Pin the provider to Azure CLI auth before apply: export DATABRICKS_AUTH_TYPE=azure-cli.
+- Subnets must be delegated to Microsoft.Databricks/workspaces with non-overlapping CIDRs, and vnet_resource_group_name must differ from resource_group_name.
+- If I use an existing metastore, admin_user needs CREATE EXTERNAL LOCATION on it.
+- Use a prefix like dev, staging, or prod so I can repeat this per environment.
+
+Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+
+</PromptBlock>
 
 ## Terraform resources
 
