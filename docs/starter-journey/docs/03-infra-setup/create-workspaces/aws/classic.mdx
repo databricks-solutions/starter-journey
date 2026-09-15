@@ -1,0 +1,126 @@
+---
+sidebar_label: Classic
+description: Deploy a classic Databricks workspace and Unity Catalog on AWS using Terraform with a customer-managed VPC.
+---
+
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
+
+# AWS Classic
+
+> **You'll deploy** a classic Databricks workspace and catalog on AWS using Terraform in ~20 min.
+>
+> **Prereqs:** [AWS account](/docs/02-before-you-start/cloud-tenant-ready/single-tenant-setup), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+
+## The big picture
+
+A classic Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below. The **Workspace + Catalog** template creates a new VPC; the **Workspace** template takes a new or existing one.
+
+## Prerequisites
+
+- An AWS account with permission to create IAM roles, S3 buckets, and VPC resources.
+- A Databricks account with account-admin privileges.
+- Terraform CLI installed locally.
+- A service principal with workspace-admin access. Required for the **Catalog** template and for attaching to an existing metastore on the combined template.
+
+## Prompt your coding agent
+
+Paste this into your coding agent to have it drive the recommended **Workspace + Catalog** deployment with you.
+
+<PromptBlock>
+
+You are helping me deploy a classic Databricks workspace on AWS with Unity Catalog using Terraform. Use the Databricks-supported Workspace + Catalog template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc-uc.
+
+1. Clone the repo and read its README.md before changing anything.
+2. From the tf/ directory, copy terraform.tfvars.example to terraform.tfvars and help me fill in the values (AWS region, resource prefix, Unity Catalog settings).
+3. Run terraform init, then terraform plan, and explain the resources it will create (VPC, cross-account IAM role, root S3 bucket, workspace, storage credential, external location, catalog) before any apply.
+4. Run terraform apply only after I confirm the plan.
+
+Considerations for AWS:
+- My AWS credentials need permission to create IAM roles, S3 buckets, and VPC resources; I have a Databricks account-admin and a service principal with workspace-admin for the catalog.
+- The catalog module needs a workspace-level Databricks provider, not account-level.
+- If apply fails with "User is not an owner of Metastore", grant CREATE CATALOG on the metastore to my principal, or add it to the metastore admins group.
+- Deploy in the region that hosts my data sources, and use a prefix like dev, staging, or prod so I can repeat this per environment.
+
+Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+
+</PromptBlock>
+
+## Terraform resources
+
+Open the repository for your scenario and follow its **README.md**. In each repo, run commands from the `tf/` directory: copy `terraform.tfvars.example` to `terraform.tfvars`, set your values, then run `terraform init && terraform apply`.
+
+Repeat for **development**, **staging**, and **production**. Use the `prefix` or `resource_prefix` variable to name each environment (for example `dev`, `staging`, `prod`, or a business-unit prefix such as `finance_dev`).
+
+If you are **new to Databricks**, start with **Workspace + Catalog** (first row).
+
+| Terraform template | What it creates | URL |
+| --- | --- | --- |
+| 💎 **Workspace + Catalog** | <ul><li>AWS VPC</li><li>Databricks Cross-account IAM</li><li>Root S3 bucket</li><li>Databricks Workspace (uses the previous 3 resources)</li><li>Storage credential</li><li>External location</li><li>Catalog (uses the previous 2 resources)</li></ul> | [aws-byovpc-uc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc-uc) |
+| **Workspace** | <ul><li>AWS VPC (new or existing)</li><li>Cross-account IAM</li><li>Root S3 bucket</li><li>Databricks workspace</li><li>Unity Catalog metastore (optional)</li></ul> | [aws-byovpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc) |
+| **Catalog** | <ul><li>S3 buckets</li><li>IAM roles and policies</li><li>Unity Catalog catalogs</li><li>External locations</li><li>Storage credentials</li><li>Targets an **existing** workspace</li></ul> | [uc-quickstart/aws](https://github.com/databrickslabs/sandbox/tree/main/uc-quickstart/aws) |
+
+:::danger
+For the **Catalog** template only: the Terraform provider must use a **workspace-level** connection, not account-level. See [Authenticating with Databricks-managed Service Principal](https://registry.terraform.io/providers/databricks/databricks/latest/docs#authenticating-with-databricks-managed-service-principal). The service principal needs workspace-admin access or the apply will fail.
+:::
+
+:::tip
+For production, put catalog storage on separate AWS accounts rather than deploying every catalog from one account.
+:::
+
+## Verify
+
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Log in to the [Databricks account console](https://accounts.cloud.databricks.com/).
+
+</Step>
+
+<Step>
+
+Open **Workspaces** and confirm the new workspace shows **Running**.
+
+</Step>
+
+<Step>
+
+Open the workspace, go to **Catalog**, and confirm the new catalog appears.
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>PERMISSION_DENIED: User is not an owner of Metastore while creating catalog</summary>
+
+The service principal running Terraform lacks metastore-level permissions. Fix it one of two ways:
+
+- **Option 1:** Add the service principal to the metastore admins group.
+- **Option 2:** Grant just the catalog creation privilege:
+
+```sql
+GRANT CREATE CATALOG ON METASTORE TO `service_principal_name`;
+```
+</details>
+
+<details>
+<summary>Terraform apply fails with VPC or IAM errors</summary>
+
+Confirm the AWS credentials Terraform uses can create IAM roles, S3 buckets, and VPC resources. If you are using an existing VPC, check that the subnet CIDRs and security groups match the template requirements.
+</details>
+
+<details>
+<summary>Workspace created but catalog module cannot connect</summary>
+
+The catalog module needs a workspace-level Databricks provider, not an account-level one. Confirm the provider block uses the workspace URL and a service principal with workspace-admin access.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/03-infra-setup/add-users/manual)
+- **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
+- **Reference:** [Databricks Terraform provider](https://registry.terraform.io/providers/databricks/databricks/latest/docs)

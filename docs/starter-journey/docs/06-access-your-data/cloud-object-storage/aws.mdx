@@ -70,15 +70,47 @@ In the Databricks workspace, click **Catalog** in the left sidebar, then click *
 
 <Step>
 
-On **Create a new external location**, select **Set up Automatically** and click **Next**. This connects to your AWS account and auto-creates the paired credential (IAM role) that gives access to the S3 path. (**Manual** is for advanced users who already have a storage credential or use non-S3 storage.)
+<StepGuide idPrefix="bucket">
 
-<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step002.png" alt="Create a new external location with Set up Automatically selected" />
+<Step>
+
+Navigate to the [AWS console](https://console.aws.amazon.com/).
 
 </Step>
 
 <Step>
 
-Give the external location a **name**, enter the **S3 bucket URL** (`s3://<bucket-name>`), and optionally check **Limit to read-only use** if this is source data you only read from. Click **Log in to AWS and create external location**.
+Search for **S3** and select it.
+
+</Step>
+
+<Step>
+
+Click **Create bucket**.
+
+<StepImage src="/img/aws/aws_create_buttom_s3bucket.png" placeholder="Create S3 bucket button" />
+
+</Step>
+
+<Step>
+
+Configure the bucket:
+
+- **Bucket name:** a descriptive name for the bucket.
+- **Object ownership:** ACLs disabled.
+- **Block public access:** block all public access.
+- **Bucket versioning:** disabled.
+- **Tags:** optional but recommended.
+- **Default encryption:** SSE-S3 (server-side encryption with Amazon S3 managed keys).
+- **Bucket key:** disabled.
+
+<StepImage src="/img/aws/s3bucketoptoins_part1.png" placeholder="S3 bucket configuration part 1" />
+
+<StepImage src="/img/aws/s3bucketoptoins_part2.png" placeholder="S3 bucket configuration part 2" />
+
+</Step>
+
+</StepGuide>
 
 <StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step003.png" alt="Set up Automatically form with external location name and S3 bucket URL" />
 
@@ -106,40 +138,77 @@ On the AWS sign-in page, review the delegation request and click **Allow access*
 If this location holds source data you only read from and you didn't check **Limit to read-only use** during setup, mark it read-only afterward so a stray job cannot overwrite it. Follow [Mark an external location as read-only](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 :::
 
-## Configure network connectivity (NCC) for S3
-
-:::note
-This part is **optional**. You only need it when private connectivity from serverless is required — that is, the bucket is not open to the public internet and serverless compute must reach it over a private network. If your bucket allows access over the public internet, skip to [Verify](#verify).
-:::
-
-A network connectivity configuration (NCC) gives serverless compute an AWS PrivateLink endpoint to the S3 bucket. You create the NCC, add an S3 private endpoint rule, then attach the NCC to your workspace.
-
-<StepGuide
-  description="Create a network connectivity configuration with an S3 private endpoint rule and attach it to your workspace."
-  minutes={10}
-  idPrefix="ncc-step"
-  referenceHref="https://docs.databricks.com/aws/en/security/network/serverless-network-security/serverless-private-link"
-  referenceLabel="Configure private connectivity from serverless (Databricks docs)">
+<StepGuide idPrefix="quickstart">
 
 <Step>
 
-In the [account console](https://accounts.cloud.databricks.com/), open **Security**.
+In the Databricks workspace, click **Catalog** in the left sidebar, then click **External Data**.
 
-<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step001.png" alt="Account console with the Security section" />
+<StepImage src="/img/aws/aws_external_data_buttom.png" placeholder="External Data button in Databricks" />
 
 </Step>
 
 <Step>
 
-On the **Networking** tab, open **Network connectivity configurations**.
+Click **Create external location**.
 
-<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step002.png" alt="Security Networking tab with Network connectivity configurations" />
+<StepImage src="/img/aws/create_externallocation_buttom.png" placeholder="Create external location button" />
 
 </Step>
 
 <Step>
 
-Click **Add Network Connectivity Configuration**. Give it a **name**, choose the **region** (the same region as your workspace), then click **Add**.
+Select **AWS QuickStart** and click **Next**.
+
+<StepImage src="/img/aws/external_location_quickstart_option.png" placeholder="QuickStart option" />
+
+</Step>
+
+<Step>
+
+Enter the bucket name (`s3://<existing-bucket-name>`).
+
+</Step>
+
+<Step>
+
+Click **Generate new token** and copy the token.
+
+<StepImage src="/img/aws/s3_quickstart_form.png" placeholder="QuickStart form with token" />
+
+</Step>
+
+<Step>
+
+In the CloudFormation page, paste the token in the **Databricks Personal Access Token** field.
+
+</Step>
+
+<Step>
+
+Check **I acknowledge that AWS CloudFormation might create IAM resources with custom names**.
+
+</Step>
+
+<Step>
+
+Click **Create stack**.
+
+<StepImage src="/img/aws/quickstarttemplate_part1.png" placeholder="CloudFormation template part 1" />
+
+<StepImage src="/img/aws/quickstarttemplate_part2.png" placeholder="CloudFormation template part 2" />
+
+</Step>
+
+</StepGuide>
+
+</Step>
+
+<StepGuide idPrefix="readonly">
+
+<Step>
+
+Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data. Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 
 <StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step003.png" alt="Add network connectivity configuration dialog with a name and region" />
 
@@ -219,46 +288,29 @@ Click **Save**.
 
 </StepGuide>
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-Test the external location's connection to confirm everything is wired up. A green success status means the IAM role, the storage credential, and the external location all line up.
-
-<StepGuide
-  description="Test the external location's connection from Unity Catalog and confirm every check passes."
-  minutes={2}
-  idPrefix="verify-step"
-  referenceHref="https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations"
-  referenceLabel="Manage external locations (Databricks docs)">
+<StepGuide eyebrow="Verify" idPrefix="verify">
 
 <Step>
 
-In the Databricks workspace, open **Catalog**, then click **Connect** > **External locations** to open the External Data page.
-
-<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step001.png" alt="Catalog page with the Connect menu open and External locations highlighted" />
+In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
 
 </Step>
 
 <Step>
 
-On the **External Locations** tab, click the external location you created.
-
-<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step002.png" alt="External Locations list with the new external location" />
+Click the new external location and click **Test Connection**.
 
 </Step>
 
 <Step>
 
-On the location's **Overview** tab, click **Test connection** in the top-right corner.
-
-<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step003.png" alt="External location Overview tab with the Test connection button" />
-
-</Step>
-
-<Step>
-
-Confirm the dialog reports a success status for every check (read, list, write, delete, path, file events, assume role, self assume role, and external ID condition), then click **Done**.
-
-<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step004.png" alt="Test connection dialog showing all checks succeeded and All Permissions Confirmed" />
+Confirm the test returns a success status.
 
 </Step>
 

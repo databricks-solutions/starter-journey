@@ -1,6 +1,6 @@
 ---
 sidebar_label: Azure - ADLS
-description: Reuse an existing external location or create a new one for Unity Catalog by wiring up an access connector, storage account permissions, a storage credential, and an external location for ADLS Gen2.
+description: Create an access connector, storage account, container, storage credential, external location, and network connectivity configuration to connect Databricks to ADLS Gen2.
 ---
 
 import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
@@ -8,18 +8,9 @@ import PromptBlock from '@site/src/components/PromptBlock';
 
 # Azure ADLS
 
-> **You'll create** an access connector, grant it access to the storage account, wrap it in a Unity Catalog storage credential, and create an external location that points Databricks at an existing ADLS Gen2 container in ~20 min. Need a storage account and container first? See the [bonus at the end](#bonus-create-a-storage-account-and-container).
+> **You'll create** an access connector, storage account, container, storage credential, IAM role assignment, external location, and network connectivity configuration to connect Databricks to ADLS Gen2 in ~30 min.
 >
 > **Prereqs:** [Cloud Object Storage overview](/docs/06-access-your-data/cloud-object-storage), Azure and Unity Catalog privileges listed below
-
-## Existing or new storage account
-
-Unity Catalog reaches cloud storage through an **external location** — a named object that points at a path in an ADLS Gen2 container through a storage credential. Which storage account you point it at depends on your situation:
-
-- **A new storage account.** Usually you create a fresh ADLS Gen2 storage account to hold your catalog's data — a clean place for Unity Catalog to write managed tables and volumes. Create the storage account and container first (see the [bonus](#bonus-create-a-storage-account-and-container)), then follow this walkthrough to wire it up.
-- **An existing storage account.** When a storage account already holds data, it's usually because you need to ingest that data into Databricks. Point an external location at it so Unity Catalog can read (and optionally write) the data in place — no new storage needed.
-
-Either way, the setup is the same: create the access connector, grant it access to the storage account, wrap it in a storage credential, then create the external location on top and verify it. This page assumes the storage account and container already exist; if they don't, start from the [bonus](#bonus-create-a-storage-account-and-container).
 
 ## The big picture
 
@@ -118,7 +109,188 @@ When the deployment finishes, click **Go to resource** and copy the **Resource I
 
 </StepGuide>
 
-## Add permissions to the storage account
+## Create a storage account
+
+If you already have a compliant ADLS Gen2 storage account, skip to [Create a container](#create-a-container).
+
+<StepGuide
+  description="Create an ADLS Gen2 storage account with hierarchical namespace enabled."
+  minutes={5}
+  idPrefix="storage-account-step"
+  referenceHref="https://learn.microsoft.com/en-us/azure/storage/blobs/create-data-lake-storage-account"
+  referenceLabel="Create an ADLS Gen2 storage account (Azure docs)">
+
+<Step>
+
+In the Azure portal, search for **Storage account** and select it.
+
+<StepImage src="/img/azure/object_storage_external_location/06_stg_searchbar.png" alt="Search the Azure portal for Storage account" />
+
+</Step>
+
+<Step>
+
+Click **Create**.
+
+<StepImage src="/img/azure/object_storage_external_location/07_stg_creation.png" alt="Create button on the Storage accounts listing" />
+
+</Step>
+
+<Step>
+
+Fill in the **Basics** tab:
+- **Subscription:** the same subscription as your Databricks workspace.
+- **Resource group:** the same resource group as your workspace resources.
+- **Storage account name:** globally unique, lowercase letters and numbers only.
+- **Region:** the same region as your Databricks workspace.
+- **Primary service:** Azure Blob Storage or Azure Data Lake Storage Gen2.
+- **Performance:** Standard is enough for most cases.
+- **Redundancy:** choose based on your durability needs (LRS, ZRS, GRS, or GZRS).
+
+<StepImage src="/img/azure/object_storage_external_location/08_stg_create_step1.png" alt="Storage account Basics tab" />
+
+</Step>
+
+<Step>
+
+On the **Advanced** tab, check **Enable hierarchical namespace** and set the access tier to **Hot**.
+
+:::warning
+Hierarchical namespace has to be enabled at creation time. You cannot turn it on for an existing storage account.
+:::
+
+<StepImage src="/img/azure/object_storage_external_location/09_stg_create_step2.png" alt="Storage account Advanced tab with hierarchical namespace enabled" />
+
+</Step>
+
+<Step>
+
+Click **Review + create**, then **Create**.
+
+<StepImage src="/img/azure/object_storage_external_location/10_stg_create_step3.png" alt="Storage account Review + create tab" />
+
+</Step>
+
+<Step>
+
+When the deployment finishes, click **Go to resource** to open the new storage account.
+
+<StepImage src="/img/azure/object_storage_external_location/11_stg_create_step4.png" alt="Storage account deployment complete" />
+
+</Step>
+
+</StepGuide>
+
+## Create a container
+
+Unity Catalog reads and writes under a directory in a container, so create one now.
+
+<StepGuide
+  description="Create a container in the storage account and add a directory for Unity Catalog."
+  minutes={3}
+  idPrefix="container-step"
+  referenceHref="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/"
+  referenceLabel="Connect to ADLS Gen2 using Unity Catalog (Databricks docs)">
+
+<Step>
+
+On the storage account, open **Containers** from the left menu.
+
+<StepImage src="/img/azure/object_storage_external_location/12_container.png" alt="Storage account overview with the Containers menu" />
+
+</Step>
+
+<Step>
+
+Click **+ Container**, name it (for example `dev`) and click **Create**.
+
+<StepImage src="/img/azure/object_storage_external_location/13_container.png" alt="New container dialog with a private access level" />
+
+</Step>
+
+<Step>
+
+The new container appears in the containers list.
+
+<StepImage src="/img/azure/object_storage_external_location/14_container.png" alt="Containers list showing the new container" />
+
+</Step>
+
+<Step>
+
+Open the container and click **Add Directory**. Name it (for example `unity_catalog_dev`) and click **Save**.
+
+<StepImage src="/img/azure/object_storage_external_location/15_container.png" alt="Add Directory dialog inside the container" />
+
+</Step>
+
+<Step>
+
+The directory now shows up inside the container.
+
+<StepImage src="/img/azure/object_storage_external_location/16_container_results.png" alt="Container contents with the new directory" />
+
+</Step>
+
+</StepGuide>
+
+## Ask Genie: storage credential and external locations
+
+Open Databricks Assistant (Genie) in the workspace if you want the Unity Catalog SQL for the credential and the three environment locations, instead of (or before) the click-through below.
+
+<PromptBlock label="Genie: storage credential">
+Create a Unity Catalog storage credential that uses Azure Managed Identity and my Access Connector for Azure Databricks. Show the CREATE STORAGE CREDENTIAL SQL and tell me which fields I need from the access connector Resource ID.
+</PromptBlock>
+
+
+## Create a storage credential in Databricks
+
+The storage credential links Unity Catalog to the access connector you made earlier.
+
+<StepGuide
+  description="Create a storage credential that references the access connector's Resource ID."
+  minutes={3}
+  idPrefix="credential-step"
+  referenceHref="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/storage-credentials"
+  referenceLabel="Create a storage credential (Databricks docs)">
+
+<Step>
+
+In the Databricks workspace, go to **Catalog** > **External Data** > **Credentials**, then click **Create credential**.
+
+<StepImage src="/img/azure/object_storage_external_location/17_credentials.png" alt="External Data Credentials tab with the Create credential button" />
+
+<StepImage src="/img/azure/object_storage_external_location/18_credentials.png" alt="Empty Credentials tab" />
+
+</Step>
+
+<Step>
+
+Set the credential type to **Storage credential**, choose **Azure Managed Identity** as the authentication type, and give the credential a name.
+
+<StepImage src="/img/azure/object_storage_external_location/19_1_storage_cred.png" alt="Create credential dialog with Azure Managed Identity selected" />
+
+</Step>
+
+<Step>
+
+Paste the access connector **Resource ID** you copied earlier into the **Access connector ID** field.
+
+<StepImage src="/img/azure/object_storage_external_location/19_2_storage_cred.png" alt="Create credential dialog with the access connector ID filled in" />
+
+</Step>
+
+<Step>
+
+Click **Create**.
+
+<StepImage src="/img/azure/object_storage_external_location/19_3_storage_cred.png" alt="Create credential dialog ready to submit" />
+
+</Step>
+
+</StepGuide>
+
+## Grant IAM permissions to the access connector
 
 The connector's managed identity has no access to the storage account yet. Grant it the **Storage Blob Data Contributor** role, or the connection test at the end fails. If you plan to use file events on the external location, grant the queue and event roles too.
 
@@ -180,61 +352,6 @@ Repeat the steps above to add each of these roles to the same access connector:
 
 </StepGuide>
 
-## Ask Genie: storage credential and external locations
-
-Open Databricks Assistant (Genie) in the workspace if you want the Unity Catalog SQL for the credential and the three environment locations, instead of (or before) the click-through below.
-
-<PromptBlock label="Genie: storage credential">
-Create a Unity Catalog storage credential that uses Azure Managed Identity and my Access Connector for Azure Databricks. Show the CREATE STORAGE CREDENTIAL SQL and tell me which fields I need from the access connector Resource ID.
-</PromptBlock>
-
-## Create a storage credential in Databricks
-
-The storage credential links Unity Catalog to the access connector you made earlier.
-
-<StepGuide
-  description="Create a storage credential that references the access connector's Resource ID."
-  minutes={3}
-  idPrefix="credential-step"
-  referenceHref="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/storage-credentials"
-  referenceLabel="Create a storage credential (Databricks docs)">
-
-<Step>
-
-In the Databricks workspace, go to **Catalog** > **External Data** > **Credentials**, then click **Create credential**.
-
-<StepImage src="/img/azure/object_storage_external_location/17_credentials.png" alt="External Data Credentials tab with the Create credential button" />
-
-<StepImage src="/img/azure/object_storage_external_location/18_credentials.png" alt="Empty Credentials tab" />
-
-</Step>
-
-<Step>
-
-Set the credential type to **Storage credential**, choose **Azure Managed Identity** as the authentication type, and give the credential a name.
-
-<StepImage src="/img/azure/object_storage_external_location/19_1_storage_cred.png" alt="Create credential dialog with Azure Managed Identity selected" />
-
-</Step>
-
-<Step>
-
-Paste the access connector **Resource ID** you copied earlier into the **Access connector ID** field.
-
-<StepImage src="/img/azure/object_storage_external_location/19_2_storage_cred.png" alt="Create credential dialog with the access connector ID filled in" />
-
-</Step>
-
-<Step>
-
-Click **Create**.
-
-<StepImage src="/img/azure/object_storage_external_location/19_3_storage_cred.png" alt="Create credential dialog ready to submit" />
-
-</Step>
-
-</StepGuide>
-
 ## Create an external location
 
 The external location is the Unity Catalog object that points at the container path through the storage credential.
@@ -242,6 +359,9 @@ The external location is the Unity Catalog object that points at the container p
 <PromptBlock label="Genie: external locations">
 Create three Unity Catalog external locations named dev_ext_loc = `abfss://<container>@<storage_account>.dfs.core.windows.net/<directory>`, qa_ext_loc = `abfss://<container>@<storage_account>.dfs.core.windows.net/<directory>`, and prod_ext_loc = `abfss://<container>@<storage_account>.dfs.core.windows.net/<directory>`. Use my existing Azure storage credential and ADLS Gen2 paths under the same container, one directory per environment (dev, qa, prod). Show the CREATE EXTERNAL LOCATION SQL for all three.
 </PromptBlock>
+
+
+
 
 <StepGuide
   description="Create an external location and assign it to your workspace."
@@ -291,43 +411,6 @@ Assign the external location to your workspace.
 <Step>
 
 If this location holds source data you only read from, mark it read-only so a stray job cannot overwrite it. Follow [Mark an external location as read-only](https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
-
-</Step>
-
-</StepGuide>
-
-## Verify
-
-Test the external location's connection to confirm everything is wired up. A green success status means the access connector, its storage account role, the storage credential, and the external location all line up.
-
-<StepGuide
-  description="Test the external location's connection from Unity Catalog and confirm every check passes."
-  minutes={2}
-  idPrefix="verify-step"
-  referenceHref="https://learn.microsoft.com/en-us/azure/databricks/connect/unity-catalog/cloud-storage/manage-external-locations"
-  referenceLabel="Manage external locations (Databricks docs)">
-
-<Step>
-
-In the Databricks workspace, open **Catalog**, then click **Connect** > **External locations** to open the External Data page.
-
-<StepImage src="/img/azure/object_storage_external_location/49_test_connectivity.png" alt="Catalog page with the Connect menu open and External locations highlighted" />
-
-</Step>
-
-<Step>
-
-On the **External Locations** tab, click the external location you created.
-
-<StepImage src="/img/azure/object_storage_external_location/50_test_connectivity.png" alt="External Locations list with the new external location" />
-
-</Step>
-
-<Step>
-
-On the location's **Overview** tab, click **Test connection** in the top-right corner. Confirm the dialog reports a success status for the read, list, write, delete, path, and file events checks, then click **Done**.
-
-<StepImage src="/img/azure/object_storage_external_location/51_test_connectivity.png" alt="Test connection dialog showing all checks succeeded and All Permissions Confirmed" />
 
 </Step>
 
@@ -515,12 +598,18 @@ Review the configuration and click **Create**.
 
 </StepGuide>
 
+## Verify
+
+1. In the Databricks workspace, go to **Catalog** > **External Data** > **External Locations**.
+2. Click the new external location and click **Test Connection**.
+3. Confirm the test returns a success status.
+
 ## Where people trip
 
 <details>
 <summary>Test Connection fails with permission denied</summary>
 
-The connector's managed identity is missing the Storage Blob Data Contributor role. Check the role assignment under the storage account's Access control (IAM) section in the Azure portal. This is the [Add permissions to the storage account](#add-permissions-to-the-storage-account) step, and it is the most common one to skip.
+The connector's managed identity is missing the Storage Blob Data Contributor role. Check the role assignment under the storage account's Access control (IAM) section in the Azure portal. This is the [Grant IAM permissions](#grant-iam-permissions-to-the-access-connector) step, and it is the most common one to skip.
 </details>
 
 <details>
@@ -539,6 +628,12 @@ Recopy the access connector Resource ID from the Azure portal overview page. A t
 <summary>Hierarchical namespace is not available on the storage account</summary>
 
 Hierarchical namespace can only be enabled when the storage account is created. Create a new storage account with the option checked and repeat the steps against it.
+</details>
+
+<details>
+<summary>Private endpoint stays in Pending</summary>
+
+A serverless private endpoint rule is not active until you approve the connection on the storage account. Open the storage account's Networking > Private endpoint connections tab in the Azure portal and approve the pending request.
 </details>
 
 <details>

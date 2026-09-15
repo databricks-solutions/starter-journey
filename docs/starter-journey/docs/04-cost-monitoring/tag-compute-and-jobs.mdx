@@ -4,6 +4,8 @@ sidebar_label: Tags and attribution
 description: Attribute spend with custom tags on classic compute and serverless usage policies so billing breaks down by team or project.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Tags and attribution
 
 > **You'll tag** classic compute and configure **serverless usage policies** so **`system.billing.usage`** rolls up by team or project in ~25 min.
@@ -31,10 +33,37 @@ Tags apply **from creation forward**. Historical rows stay untagged. Start early
 
 Serverless notebooks, jobs, Lakeflow pipelines, and model serving pick up tags from policies, not from cluster tags.
 
-1. Avatar → **Settings** → **Compute**.
-2. Next to **Serverless usage policies**, click **Manage**.
-3. **Create** → name the policy → add tag pairs (for example `team:data-engineering`).
-4. **Permissions** → **Grant access** → assign **User** or **Manager** roles.
+<StepGuide
+  description="Create a serverless usage policy so serverless workloads inherit your team or project tags."
+  eyebrow="Serverless usage policy"
+  referenceHref="https://docs.databricks.com/aws/en/admin/account-settings/usage-detail-tags"
+  referenceLabel="Use tags to attribute and track usage">
+
+<Step>
+
+Go to Avatar → **Settings** → **Compute**.
+
+</Step>
+
+<Step>
+
+Next to **Serverless usage policies**, click **Manage**.
+
+</Step>
+
+<Step>
+
+Click **Create**, name the policy, and add tag pairs (for example `team:data-engineering`).
+
+</Step>
+
+<Step>
+
+Open **Permissions** → **Grant access** and assign **User** or **Manager** roles.
+
+</Step>
+
+</StepGuide>
 
 If a user has one policy assigned, it auto-attaches. With more than one, they pick at creation time. If they pick nothing, the UI may default to the first policy alphabetically. Either way, only **new** usage gets the tags.
 
@@ -136,9 +165,27 @@ More patterns: [Top 10 queries to use with System Tables](https://community.data
 
 ## Verify
 
-1. Tag a cluster `test_tag:verification`, run some work, wait **2 to 4 hours**, then filter **`system.billing.usage`** on that map key.
-2. Assign yourself a serverless usage policy, run serverless work, then confirm **`budget_policy_id`** is populated.
-3. In **AWS Cost Explorer** (or its equivalent), confirm the propagated tags when classic compute backs the bill.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Tag a cluster `test_tag:verification`, run some work, wait **2 to 4 hours**, then filter **`system.billing.usage`** on that map key.
+
+</Step>
+
+<Step>
+
+Assign yourself a serverless usage policy, run serverless work, then confirm **`budget_policy_id`** is populated.
+
+</Step>
+
+<Step>
+
+In **AWS Cost Explorer** (or its equivalent), confirm the propagated tags when classic compute backs the bill.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 
