@@ -46,9 +46,9 @@ const sidebars: SidebarsConfig = {
               label: 'AWS',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/aws/manual',
-                '03-infra-setup/create-workspaces/aws/terraform',
-                '03-infra-setup/create-workspaces/aws/sra',
+                '03-infra-setup/create-workspaces/aws/serverless',
+                '03-infra-setup/create-workspaces/aws/classic',
+                '03-infra-setup/create-workspaces/aws/private-link',
               ],
             },
             {
@@ -56,9 +56,9 @@ const sidebars: SidebarsConfig = {
               label: 'Azure',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/azure/manual',
-                '03-infra-setup/create-workspaces/azure/terraform',
-                '03-infra-setup/create-workspaces/azure/sra',
+                '03-infra-setup/create-workspaces/azure/serverless',
+                '03-infra-setup/create-workspaces/azure/classic',
+                '03-infra-setup/create-workspaces/azure/private-link',
               ],
             },
             {
@@ -66,9 +66,9 @@ const sidebars: SidebarsConfig = {
               label: 'GCP',
               collapsed: true,
               items: [
-                '03-infra-setup/create-workspaces/gcp/manual',
-                '03-infra-setup/create-workspaces/gcp/terraform',
-                '03-infra-setup/create-workspaces/gcp/sra',
+                '03-infra-setup/create-workspaces/gcp/serverless',
+                '03-infra-setup/create-workspaces/gcp/classic',
+                '03-infra-setup/create-workspaces/gcp/private-link',
               ],
             },
           ],
@@ -154,32 +154,9 @@ const sidebars: SidebarsConfig = {
       className: 'sidebar-track-da',
       link: {type: 'doc', id: '09-unified-analytics/index'},
       items: [
-        {
-          type: 'category',
-          label: 'Business Semantics',
-          collapsed: true,
-          link: {type: 'doc', id: '09-unified-analytics/business-semantics/index'},
-          items: [
-            '09-unified-analytics/business-semantics/lab',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Databricks AI/BI',
-          collapsed: true,
-          items: [
-            '09-unified-analytics/databricks-aibi/dashboards',
-            {
-              type: 'category',
-              label: 'Genie Spaces',
-              link: {type: 'doc', id: '09-unified-analytics/databricks-aibi/genie-spaces'},
-              items: [
-                '09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
-              ],
-            },
-            '09-unified-analytics/databricks-aibi/databricks-apps',
-          ],
-        },
+        '09-unified-analytics/metric-views',
+        '09-unified-analytics/dashboards',
+        '09-unified-analytics/genie-agents',
       ],
     },
     {
@@ -229,3 +206,5 @@ const sidebars: SidebarsConfig = {
 };
 
 export default sidebars;
+
+

@@ -3,6 +3,8 @@ sidebar_label: Manual
 description: Add groups to Databricks manually through the account console.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # Add Groups: Manual
 
 > **You'll create** groups in the Databricks account console and assign users in ~5 min.
@@ -20,36 +22,59 @@ Account-level groups with members assigned, ready to grant permissions against i
 
 ## Steps
 
-### 1. Open the account console
+<StepGuide
+  description="Create account-level groups in the console and assign the users you already added. Repeat for the full set your org needs."
+  minutes={5}
+  referenceHref="https://docs.databricks.com/aws/en/admin/users-groups/"
+  referenceLabel="Manage groups (Databricks docs)">
 
-Go to the account console for your cloud:
+<Step>
+
+Open the account console for your cloud
 
 - [AWS](https://accounts.cloud.databricks.com)
 - [Azure](https://accounts.azuredatabricks.net)
 - [GCP](https://accounts.gcp.databricks.com)
 
-### 2. Create a group
+</Step>
 
-1. In the left panel, click **User management**.
-2. On the **Groups** tab, click **Add group**.
-3. Enter the group name (for example, `data-engineers` or `dev-ws-admins`).
-4. Click **Add Group**.
+<Step>
 
-### 3. Add members
+In the left panel, click **User management**. On the **Groups** tab, click **Add group**, enter the group name (for example, `data-engineers` or `dev-ws-admins`), then click **Add Group**.
 
-1. Click the group you just made.
-2. Click **Add members**.
-3. Pick the users you added earlier.
-4. Click **Add**.
+</Step>
 
-### 4. Repeat for each group
+<Step>
 
-Create the full set your org needs. The [standard data personas](/docs/05-data-governance-strategy/groups) list the recommended ones.
+Click the group you just made, click **Add members**, pick the users you added earlier, then click **Add**.
+
+</Step>
+
+<Step>
+
+Repeat for each group your org needs. The [standard data personas](/docs/05-data-governance-strategy/groups) list the recommended ones.
+
+</Step>
+
+</StepGuide>
 
 ## Verify
 
-1. Go to **User management** > **Groups**.
-2. Open each group and confirm the right people are in it.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Go to **User management** > **Groups**.
+
+</Step>
+
+<Step>
+
+Open each group and confirm the right people are in it.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 

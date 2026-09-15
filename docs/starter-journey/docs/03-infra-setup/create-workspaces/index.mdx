@@ -32,22 +32,23 @@ For more on isolation choices, see [Data Governance Strategy for medium-large or
 
 <img src={useBaseUrl('/img/workspace-target.jpg')} alt="Account console user management screen"/>
 
-## Manual or Terraform
+## Serverless, Classic, or Private Link
 
-Every cloud gives you two ways to deploy:
+Every cloud gives you three ways to deploy. Start with Serverless:
 
-- **Manual** is point-and-click through the account console or cloud portal. Use it for your first workspace or a proof of concept, when seeing the resources appear teaches you what the code will later automate.
-- **Terraform** is infrastructure as code: repeatable and version-controlled. Use it for staging and production, where you want the same workspace every time and a record of what changed.
+- **Serverless** is the recommended path. You create the workspace from the account console and Databricks runs the compute, so there is no VPC or VNet to size and maintain. Start here for your first workspace and for most new deployments.
+- **Classic** is infrastructure as code with a customer-managed VPC or VNet, deployed from Terraform. Use it when you need the network under your own control, repeatable across environments, with a record of what changed.
+- **Private Link** is the hardened path: a classic workspace with Private Link and the Security Reference Architecture (SRA) defaults, deployed from Terraform. Use it when traffic must stay off the public internet.
 
-A common path is to click the first workspace by hand, then Terraform the rest once you know what the wizard built.
+Serverless end-to-end deployments are supported with the latest Network Connectivity Configuration (NCC) and Private Link releases, so you can lock down a serverless workspace without falling back to classic.
 
 ## Choose your approach
 
 | Method | AWS | Azure | GCP |
 |---|---|---|---|
-| Manual | [Console wizard](/docs/03-infra-setup/create-workspaces/aws/manual) | [Azure portal](/docs/03-infra-setup/create-workspaces/azure/manual) | [Console wizard](/docs/03-infra-setup/create-workspaces/gcp/manual) |
-| Terraform | [BYOVPC](/docs/03-infra-setup/create-workspaces/aws/terraform) | [VNet injection](/docs/03-infra-setup/create-workspaces/azure/terraform) | [BYOVPC](/docs/03-infra-setup/create-workspaces/gcp/terraform) |
-| Private Link + Terraform (SRA) | [AWS SRA](/docs/03-infra-setup/create-workspaces/aws/sra) | [Azure SRA](/docs/03-infra-setup/create-workspaces/azure/sra) | [GCP SRA](/docs/03-infra-setup/create-workspaces/gcp/sra) |
+| Serverless | [AWS](/docs/03-infra-setup/create-workspaces/aws/serverless) | [Azure](/docs/03-infra-setup/create-workspaces/azure/serverless) | [GCP](/docs/03-infra-setup/create-workspaces/gcp/serverless) |
+| Classic | [BYOVPC](/docs/03-infra-setup/create-workspaces/aws/classic) | [VNet injection](/docs/03-infra-setup/create-workspaces/azure/classic) | [BYOVPC](/docs/03-infra-setup/create-workspaces/gcp/classic) |
+| Private Link (SRA) | [AWS SRA](/docs/03-infra-setup/create-workspaces/aws/private-link) | [Azure SRA](/docs/03-infra-setup/create-workspaces/azure/private-link) | [GCP SRA](/docs/03-infra-setup/create-workspaces/gcp/private-link) |
 
 ## Next
 

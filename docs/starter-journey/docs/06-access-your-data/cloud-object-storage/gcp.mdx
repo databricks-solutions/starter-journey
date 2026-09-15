@@ -3,13 +3,15 @@ sidebar_label: GCP - GCS
 description: Create a storage credential and external location to connect Databricks to Google Cloud Storage.
 ---
 
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
 # GCP GCS
 
 > **You'll create** a storage credential and external location to connect Databricks to GCS in ~10 min.
 >
 > **Prereqs:** [Cloud Object Storage overview](/docs/06-access-your-data/cloud-object-storage), GCP project with Owner permissions
 
-## The big picture
+## What you'll build
 
 A Google Cloud Storage bucket Databricks can read through a Unity Catalog storage credential and external location.
 
@@ -20,29 +22,53 @@ A Google Cloud Storage bucket Databricks can read through a Unity Catalog storag
 
 ## Steps
 
-### 1. Follow the official guide
+<StepGuide
+  description="GCS setup is fully covered by the official Databricks guide, so this page hands you off, then has you mark the external location read-only."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs"
+  referenceLabel="GCS external locations (Databricks docs)">
 
-GCS is the one cloud where the Databricks docs already do the whole job end to end, so this page hands you off rather than duplicating it:
+<Step>
 
-[Connect to a Google Cloud Storage (GCS) external location](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs)
+Follow the official guide: [Connect to a Google Cloud Storage (GCS) external location](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs). It creates a service account, grants it access to your bucket, registers the storage credential, and creates the external location.
 
-The guide creates a service account, grants it access to your bucket, registers the storage credential, and creates the external location.
+</Step>
 
-### 2. Mark the external location as read-only
+<Step>
 
-Once the external location exists, set it to read-only. Now no Databricks workload can write to that path, so a stray job cannot clobber your source data.
-
-Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
+Mark the external location as read-only. Once it exists, set it to read-only so no Databricks workload can write to that path and a stray job cannot clobber your source data. Follow the guide: [Mark an external location as read-only](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
 
 :::warning
 Skip this and the location stays writable for any principal with write grants. Leave it read-only unless a pipeline genuinely needs to write back to this path.
 :::
 
+</Step>
+
+</StepGuide>
+
 ## Verify
 
-1. In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
-2. Click the new external location and click **Test Connection**.
-3. Confirm the test returns a success status.
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+In the Databricks workspace, navigate to **Catalog** > **External Data** > **External Locations**.
+
+</Step>
+
+<Step>
+
+Click the new external location and click **Test Connection**.
+
+</Step>
+
+<Step>
+
+Confirm the test returns a success status.
+
+</Step>
+
+</StepGuide>
 
 ## Where people trip
 
