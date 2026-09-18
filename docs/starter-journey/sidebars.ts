@@ -140,6 +140,8 @@ const sidebars: SidebarsConfig = {
           label: 'Databases and SaaS ingestion',
           link: {type: 'doc', id: '06-access-your-data/managed-connectors/index'},
           items: [
+            '06-access-your-data/managed-connectors/cdc',
+            '06-access-your-data/managed-connectors/query-based',
             '06-access-your-data/managed-connectors/dabs-definition',
           ],
         },
@@ -206,5 +208,4 @@ const sidebars: SidebarsConfig = {
 };
 
 export default sidebars;
-
 
