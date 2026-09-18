@@ -1,0 +1,154 @@
+---
+sidebar_label: Query-based ingestion
+description: Ingest database rows into Unity Catalog on a schedule with a query-based Lakeflow Connect pipeline.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# Query-based ingestion
+
+> **You'll ingest** a database table incrementally with a cursor column in ~10 min.
+>
+> **Prereqs:** [Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors), [query-based connector requirements](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/query-based-pipeline#requirements)
+
+## The big picture
+
+A query-based connector runs a source query on the schedule you choose. After a successful run, it stores the highest cursor value it saw. The next run normally requests rows above that high-water mark and writes them to a Unity Catalog streaming table. With a timestamp cursor, SCD type 1 and type 2 also re-read a short window below the mark to catch late-arriving rows.
+
+There is no gateway or staging volume. That makes the setup shorter, but the cursor has to be trustworthy. The connector cannot find an update if the cursor value does not change with the row.
+
+The screenshots show a SQL Server setup. Other supported databases follow the same overall workflow, but source preparation, authentication methods, and available settings vary by connector. Follow the connection and source setup documentation for your database.
+
+## Before you start
+
+You need:
+
+- A Unity Catalog-enabled workspace and a supported database reachable from serverless compute.
+- Permission to create a Unity Catalog connection, or `USE CONNECTION` on an existing one.
+- `USE CATALOG`, `USE SCHEMA`, and `CREATE TABLE` on the destination.
+- A monotonically increasing timestamp or integer cursor column. SCD type 1 and type 2 also require a primary key.
+
+Choose an authentication method supported by your database. The screenshots use a username and password.
+
+## Create the query-based pipeline
+
+<StepGuide
+  description="Create the connection and pipeline, then configure incremental tracking for the source tables."
+  minutes={10}
+  idPrefix="query-step"
+  referenceHref="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/query-based-pipeline"
+  referenceLabel="Create a query-based ingestion pipeline (Databricks docs)">
+
+<Step>
+
+In the Databricks workspace, open **Data Ingestion**, then select your database source under Databricks connectors. This example selects **SQL Server**.
+
+<StepImage src="/img/lakeflow-connect-query-based/1.png" alt="Data Ingestion page with SQL Server selected under Databricks connectors" />
+
+</Step>
+
+<Step>
+
+On the **Connection** page, click **Create connection**.
+
+<StepImage src="/img/lakeflow-connect-query-based/2.png" alt="SQL Server ingestion wizard with the Create connection button" />
+
+</Step>
+
+<Step>
+
+Choose an authentication method and enter the required connection details. This example uses **Username and password** for SQL Server. Click **Create connection**.
+
+<StepImage src="/img/lakeflow-connect-query-based/3.png" alt="Create a SQL Server connection dialog with username, password, host, and port fields" />
+
+</Step>
+
+<Step>
+
+Select **Query based capture**. Name the pipeline and choose an event log catalog and schema. Select **Serverless**, then click **Create pipeline and continue**.
+
+<StepImage src="/img/lakeflow-connect-query-based/4.png" alt="SQL Server ingestion setup with query based capture and serverless compute selected" />
+
+</Step>
+
+<Step>
+
+Enter the source database name and click the plus button.
+
+<StepImage src="/img/lakeflow-connect-query-based/5.png" alt="Query-based source page with demo entered as the SQL Server database name" />
+
+</Step>
+
+<Step>
+
+Expand the database and schema, then select the tables that you want to ingest. For each table, select one monotonically increasing timestamp or integer cursor column. If rows can change, the cursor must also change with each update. Configure a primary key and history tracking when required for the selected SCD mode, then click **Next**.
+
+<StepImage src="/img/lakeflow-connect-query-based/6.png" alt="Customers selected with created_at as the cursor and customer_id as the primary key" />
+
+</Step>
+
+<Step>
+
+Select the destination catalog and schema, then click **Save and continue**.
+
+<StepImage src="/img/lakeflow-connect-query-based/7.png" alt="Query-based destination selection with the dev catalog and sql-server schema selected" />
+
+</Step>
+
+<Step>
+
+On **Schedules and notifications**, create a refresh schedule and add notifications if needed. Click **Save and run pipeline**.
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+<StepGuide
+  eyebrow="Verify"
+  description="Confirm the source query completed and wrote the destination streaming table."
+  minutes={2}
+  idPrefix="query-verify-step">
+
+<Step>
+
+Open the pipeline in **Jobs & Pipelines**. Confirm the run is **Completed** and the selected streaming tables have green status indicators. The pipeline graph shows each source staging view feeding its destination table.
+
+<StepImage src="/img/lakeflow-connect-query-based/8.png" alt="Completed query-based pipeline with a source staging view and customers streaming table" />
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>Updates never arrive</summary>
+
+Check whether the cursor changes when a source row changes. A creation timestamp or auto-incrementing ID only tracks inserts unless the source also updates that value. Choose a cursor that advances whenever a source row changes.
+</details>
+
+<details>
+<summary>Rows with a null cursor are missing</summary>
+
+The connector does not ingest rows whose cursor value is `NULL`. Fix the source values or choose a cursor column that every row populates.
+</details>
+
+<details>
+<summary>The pipeline cannot reach the source database</summary>
+
+Query-based connectors require network connectivity from serverless compute to the database. Configure serverless network connectivity for the source hostname and port.
+</details>
+
+<details>
+<summary>The source database is under unexpected load</summary>
+
+Every pipeline update queries source tables directly. Check the schedule and add a B-tree index on the cursor column. If frequent queries put too much load on the source, consider a CDC connector.
+</details>
+
+## Next
+
+- **Do next:** [DABs definition](/docs/06-access-your-data/managed-connectors/dabs-definition)
+- **Learn why:** [Databases and SaaS ingestion](/docs/06-access-your-data/managed-connectors)
+- **Reference:** [Query-based connectors](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/query-based-overview)
