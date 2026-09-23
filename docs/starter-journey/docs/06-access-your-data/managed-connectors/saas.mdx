@@ -1,0 +1,163 @@
+---
+sidebar_label: SaaS apps
+description: Ingest from Salesforce, ServiceNow, Workday, Google Analytics, HubSpot, and Confluence into Unity Catalog with serverless Lakeflow Connect pipelines defined with Databricks Asset Bundles.
+---
+
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
+# SaaS apps
+
+> **You'll deploy** a serverless Lakeflow Connect pipeline that ingests a SaaS source into Unity Catalog, defined with DABs, in ~10 min.
+>
+> **Prereqs:** [Lakeflow Connect ingestion overview](/docs/06-access-your-data/managed-connectors), and the Databricks CLI installed and configured
+
+## What you'll build
+
+A serverless ingestion pipeline that pulls objects from a SaaS app into governed Delta tables. Unlike databases, SaaS connectors need **no gateway**: the connector reads the source over its API, so the whole pipeline runs on serverless compute.
+
+The setup is three steps for every SaaS source:
+
+1. Create a UC connection that holds the source credentials.
+2. Define the ingestion pipeline as DABs YAML.
+3. Deploy and run it.
+
+## What changes for your source
+
+The pipeline definition is the same shape for all of them. What differs is how you authenticate.
+
+| Source | Auth | Notes |
+|---|---|---|
+| Salesforce | OAuth (browser sign-in) | OAuth only, no API key. Use a separate connection per sandbox and per production org. Caps at 250 tables per pipeline. |
+| ServiceNow | OAuth or basic auth | Objects are ServiceNow table names (`incident`, `change_request`). Reference fields stay as `sys_id` strings, joins happen downstream. |
+| Workday Reports | OAuth refresh token or basic | Ingests Workday custom reports, not raw HCM tables. Configure the report in Workday first, then reference it by name. |
+| Google Analytics 4 | GCP service-account JSON | Ingests via the GA4 to BigQuery export, not the GA4 API. Enable the BigQuery export first. |
+| HubSpot | OAuth | CRM objects (Contacts, Companies, Deals, Tickets) plus engagements. |
+| Confluence | OAuth | Spaces, pages, and comments; page markup is preserved. |
+
+:::warning
+OAuth connections (Salesforce, ServiceNow, HubSpot, Confluence) must be created in the UI, because the sign-in needs a browser. The CLI and DABs cannot bootstrap them. Key-based and basic-auth connections (Workday, GA4) can be created from the CLI or a DABs resource.
+:::
+
+## Steps
+
+<StepGuide
+  description="Create the source connection, define the ingestion pipeline as DABs YAML, then deploy and run it."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect"
+  referenceLabel="Lakeflow Connect (Databricks docs)">
+
+<Step>
+
+Create the UC connection that holds the source credentials.
+
+For OAuth sources, do this in the UI: **Catalog** > **Connect** > **Connections** > **Create connection**, pick the source, and complete the browser sign-in. Confirm it reports `READY` before you deploy.
+
+For key-based sources, create it from the CLI instead:
+
+```bash
+databricks connections create --json '{
+  "name": "my_workday_connection",
+  "connection_type": "WORKDAY_RAAS",
+  "options": {"...": "source credentials"}
+}'
+```
+
+</Step>
+
+<Step>
+
+Define the ingestion pipeline in your DABs YAML. The pipeline names the connection and lists the source objects to land. This example uses Salesforce; for another source, swap the object names and the connection.
+
+```yaml
+variables:
+  catalog:
+    default: development
+
+resources:
+  pipelines:
+    salesforce_ingestion:
+      name: salesforce_to_uc
+      ingestion_definition:
+        connection_name: my_salesforce_oauth_connection
+        objects:
+          - table:
+              source_schema: salesforce
+              source_table: Account
+              destination_catalog: ${var.catalog}
+              destination_schema: salesforce_raw
+          - table:
+              source_schema: salesforce
+              source_table: Opportunity
+              destination_catalog: ${var.catalog}
+              destination_schema: salesforce_raw
+```
+
+</Step>
+
+<Step>
+
+Deploy the pipeline.
+
+```bash
+databricks bundle deploy
+```
+
+</Step>
+
+<Step>
+
+Start the pipeline.
+
+```bash
+databricks bundle run salesforce_ingestion
+```
+
+Lakeflow Connect runs on demand, not continuously. To keep the tables fresh, schedule the pipeline with a Jobs `pipeline_task` on a cron or interval.
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+In the Databricks workspace, go to **Jobs & Pipelines** and confirm the pipeline shows a **Completed** status.
+
+</Step>
+
+<Step>
+
+Go to **Catalog** > the target catalog and schema. Confirm the ingested tables appear with data.
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>OAuth connection stuck in PENDING</summary>
+
+The browser sign-in was not completed. Re-open the connection in Catalog Explorer and finish the OAuth flow, then confirm it reports `READY`.
+</details>
+
+<details>
+<summary>Pipeline succeeds but no rows land</summary>
+
+Either the destination schema is missing, or the connection's account lacks read access on the source object. Check the pipeline event log; pre-flight errors surface there.
+</details>
+
+<details>
+<summary>A new source column is missing from the target</summary>
+
+Schema evolution is disabled or has not propagated yet. Re-enable it on the destination table and trigger a run.
+</details>
+
+## Next
+
+- **Do next:** [Files](/docs/06-access-your-data/managed-connectors/files)
+- **Learn why:** [Lakeflow Connect ingestion overview](/docs/06-access-your-data/managed-connectors)
+- **Reference:** [Lakeflow Connect (Databricks docs)](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect)

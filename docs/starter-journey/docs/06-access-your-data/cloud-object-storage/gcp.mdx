@@ -1,13 +1,13 @@
 ---
 sidebar_label: GCP - GCS
-description: Create a storage credential and external location to connect Databricks to an existing or new Google Cloud Storage bucket, with optional file events and private connectivity.
+description: Create a storage credential and external location to connect Databricks to an existing or new Google Cloud Storage bucket, with optional file events.
 ---
 
 import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 
 # GCP GCS
 
-> **You'll create** a Unity Catalog storage credential (a GCP service account Databricks manages for you), grant that service account access to a GCS bucket, then create an external location that points Databricks at it in ~10 min. Need file events or private connectivity from serverless? Add the optional parts. Need a bucket first? See the [bonus at the end](#bonus-create-a-gcs-bucket).
+> **You'll create** a Unity Catalog storage credential (a GCP service account Databricks manages for you), grant that service account access to a GCS bucket, then create an external location that points Databricks at it in ~10 min. Need file events? Add the optional part. Need a bucket first? See the [bonus at the end](#bonus-create-a-gcs-bucket).
 >
 > **Prereqs:** [Cloud Object Storage overview](/docs/06-access-your-data/cloud-object-storage), a GCP project with permission to grant IAM roles on the bucket, and a Databricks metastore admin or account admin
 
@@ -22,7 +22,7 @@ Either way, the setup below is the same. This page assumes the bucket already ex
 
 ## The big picture
 
-A GCS bucket Databricks reaches through a Unity Catalog storage credential and external location. Unlike AWS, you don't approve an automatic role hand-off: Databricks generates a **GCP service account** when you create the storage credential, and you grant that service account access to the bucket in the Google Cloud console. If you want [file events](#enable-file-events-optional), you also create a custom Pub/Sub role and let the Cloud Storage service agent publish notifications. If your workspace uses serverless private networking, the optional [private connectivity](#configure-private-connectivity-from-serverless) parts give compute a private path to the bucket.
+A GCS bucket Databricks reaches through a Unity Catalog storage credential and external location. Unlike AWS, you don't approve an automatic role hand-off: Databricks generates a **GCP service account** when you create the storage credential, and you grant that service account access to the bucket in the Google Cloud console. If you want [file events](#enable-file-events-optional), you also create a custom Pub/Sub role and let the Cloud Storage service agent publish notifications.
 
 ## Permissions you need
 
@@ -47,8 +47,6 @@ If you are not a metastore admin, ask one to grant your group:
 ```sql
 GRANT CREATE STORAGE CREDENTIAL, CREATE EXTERNAL LOCATION ON METASTORE TO `your-group`;
 ```
-
-Creating a network connectivity configuration and attaching it to a workspace also needs **account admin**.
 
 ## Create a storage credential
 
@@ -313,8 +311,6 @@ If this location holds source data you only read from, mark it read-only afterwa
 
 Test the external location's connection to confirm everything is wired up. A green success status means the service account, its bucket roles, the storage credential, and the external location all line up.
 
-{/* TODO: add verify_connectivity screenshots for GCP (Catalog > External locations, the location Overview tab, and the Test connection dialog). */}
-
 <StepGuide
   description="Test the external location's connection from Unity Catalog and confirm every check passes."
   minutes={2}
@@ -326,11 +322,15 @@ Test the external location's connection to confirm everything is wired up. A gre
 
 In the Databricks workspace, open **Catalog**, then click **Connect** > **External locations** to open the External Data page.
 
+<StepImage src="/img/gcp/verify_ext_loc/gcp_verify_ext_loc_Step001.png" alt="Catalog page with the Connect menu open and External locations highlighted" />
+
 </Step>
 
 <Step>
 
 On the **External Locations** tab, click the external location you created.
+
+<StepImage src="/img/gcp/verify_ext_loc/gcp_verify_ext_loc_Step002.png" alt="External Data page listing external locations with the one you created" />
 
 </Step>
 
@@ -338,83 +338,15 @@ On the **External Locations** tab, click the external location you created.
 
 On the location's **Overview** tab, click **Test connection** in the top-right corner.
 
+<StepImage src="/img/gcp/verify_ext_loc/gcp_verify_ext_loc_Step003.png" alt="External location Overview tab with the Test connection button" />
+
 </Step>
 
 <Step>
 
 Confirm the dialog reports a success status for every check (read, list, write, delete, and path), then click **Done**.
 
-</Step>
-
-</StepGuide>
-
-## Configure private connectivity from serverless
-
-:::note
-This part is **optional**. You only need it when the bucket is not open to the public internet and serverless compute must reach it over a private network. If your bucket allows access over the public internet, skip to [Where people trip](#where-people-trip).
-:::
-
-On GCP, serverless compute reaches a private GCS bucket through a **network connectivity configuration (NCC)** with a private endpoint rule that uses Private Service Connect for Google Cloud Storage. You create the NCC, add a Cloud Storage private endpoint rule, then attach the NCC to your workspace.
-
-{/* TODO: add serverless private endpoint screenshots (account console Security > Network connectivity configuration, the private endpoint rule, and attaching the NCC to the workspace). */}
-
-<StepGuide
-  description="Create a network connectivity configuration with a Cloud Storage private endpoint rule and attach it to your workspace."
-  minutes={10}
-  idPrefix="serverless-ncc-step"
-  referenceHref="https://docs.databricks.com/gcp/en/security/network/serverless-network-security/serverless-private-link"
-  referenceLabel="Configure private connectivity from serverless (Databricks docs)">
-
-<Step>
-
-In the [account console](https://accounts.gcp.databricks.com/), open **Security**, then go to **Network connectivity configuration**.
-
-</Step>
-
-<Step>
-
-Create an NCC in the same region as your workspace: give it a **name**, choose the **region**, then click **Add**.
-
-</Step>
-
-<Step>
-
-Open the new NCC, go to **Private endpoint rules**, and add a rule for **Google Cloud Storage** in the bucket's region.
-
-</Step>
-
-<Step>
-
-Attach the NCC to your workspace in the workspace's configuration, then click **Save**.
-
-</Step>
-
-</StepGuide>
-
-## Connect classic compute to the bucket
-
-:::note
-Like the NCC, this part is only needed when the bucket is private. The NCC covers serverless compute. Classic compute (clusters that run in your workspace's Google Cloud network) reaches a private bucket through Private Service Connect for storage from that network.
-:::
-
-{/* TODO: add classic-compute private connectivity screenshots for GCP once the flow is captured. */}
-
-<StepGuide
-  description="Give classic compute a private path to Cloud Storage from the workspace network."
-  minutes={10}
-  idPrefix="classic-compute-step"
-  referenceHref="https://docs.databricks.com/gcp/en/security/network/classic/private-service-connect"
-  referenceLabel="Enable Private Service Connect for a workspace (Databricks docs)">
-
-<Step>
-
-Confirm the workspace network has **Private Google Access** (or a Private Service Connect endpoint for `storage.googleapis.com`) so classic clusters resolve and reach Cloud Storage privately.
-
-</Step>
-
-<Step>
-
-Follow the Databricks GCP Private Service Connect guide to create the endpoint and attach it to the workspace network, then re-run the external location's **Test connection**.
+<StepImage src="/img/gcp/verify_ext_loc/gcp_verify_ext_loc_Step004.png" alt="Test connection dialog showing a success status for every check" />
 
 </Step>
 
@@ -438,12 +370,6 @@ The URL has to be `gs://<bucket-name>/<directory>`. Confirm the bucket exists an
 <summary>File events don't fire</summary>
 
 File events need both grants: the custom Pub/Sub role on the credential's service account, and **Pub/Sub Publisher** on the project's Cloud Storage service agent. Re-check the [Enable file events](#enable-file-events-optional) grants — the service agent grant is the most common one to miss.
-</details>
-
-<details>
-<summary>Serverless compute cannot reach a private bucket</summary>
-
-A bucket that blocks public access is not reachable from serverless by default. Create a [network connectivity configuration](#configure-private-connectivity-from-serverless) with a Cloud Storage private endpoint rule and attach it to your workspace.
 </details>
 
 ## Bonus: Create a GCS bucket
@@ -509,6 +435,6 @@ Name the folder (for example `unitycatalog`) and click **Create**. Use `gs://<bu
 
 ## Next
 
-- **Do next:** [Managed connectors](/docs/06-access-your-data/managed-connectors)
+- **Do next:** [Lakeflow Connect ingestion](/docs/06-access-your-data/managed-connectors)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
 - **Reference:** [Connect to a Google Cloud Storage (GCS) external location](https://docs.databricks.com/gcp/en/connect/unity-catalog/cloud-storage/external-locations-gcs)
