@@ -25,28 +25,32 @@ A classic Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus 
 
 ## Prompt your coding agent
 
-Paste this into your coding agent to have it drive the recommended **Workspace + Catalog** deployment with you.
-
-:::tip
-**Want your agent to write the Terraform for you?** Instead of the fixed templates below, the [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit) has your coding agent generate custom Terraform to provision workspaces, configure Unity Catalog, set up networking, and manage groups and permissions — all from natural language (Claude Code, Codex, Cursor, Copilot, Gemini, and more).
-:::
+Paste this into your coding agent to provision the classic AWS workspace with [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit).
 
 <PromptBlock>
 
-You are helping me deploy a classic Databricks workspace on AWS with Unity Catalog using Terraform. Use the Databricks-supported Workspace + Catalog template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/aws/aws-byovpc-uc.
+Install and use the Databricks AI Platform Kit (https://github.com/databricks-solutions/ai-platform-kit) if it is not already installed.
 
-1. Clone the repo and read its README.md before changing anything.
-2. From the tf/ directory, copy terraform.tfvars.example to terraform.tfvars and help me fill in the values (AWS region, resource prefix, Unity Catalog settings).
-3. Run terraform init, then terraform plan, and explain the resources it will create (VPC, cross-account IAM role, root S3 bucket, workspace, storage credential, external location, catalog) before any apply.
-4. Run terraform apply only after I confirm the plan.
+macOS/Linux: `bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.sh)`
+Windows PowerShell: `irm https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.ps1 | iex`
 
-Considerations for AWS:
-- My AWS credentials need permission to create IAM roles, S3 buckets, and VPC resources; I have a Databricks account-admin and a service principal with workspace-admin for the catalog.
-- The catalog module needs a workspace-level Databricks provider, not account-level.
-- If apply fails with "User is not an owner of Metastore", grant CREATE CATALOG on the metastore to my principal, or add it to the metastore admins group.
-- Deploy in the region that hosts my data sources, and use a prefix like dev, staging, or prod so I can repeat this per environment.
+Then follow the kit skills (platform-provisioning, unity-catalog-setup, identity-governance, workspace-config, deployment-verification as needed) to provision a classic Databricks workspace on AWS with a customer-managed VPC (BYOVPC) and Unity Catalog.
 
-Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+Requirements for this deploy:
+- Cloud: AWS
+- Architecture: classic workspace with customer-managed VPC
+- Include Unity Catalog (metastore assignment or creation as appropriate, plus catalog/storage pieces the skills recommend)
+- Environments and naming: ask me for region, account ID, prefix (dev/staging/prod), networking choices, and any compliance constraints before generating Terraform
+
+Workflow:
+1. Confirm cloud and Databricks auth (aws configure / AWS CLI identity, Databricks CLI / account admin access).
+2. Ask me for any missing value. Do not guess regions, CIDRs, prefixes, or account IDs.
+3. Generate Terraform from the kit skills for my requirements. Do not clone a fixed technical-services-solutions template as the source of truth.
+4. Run terraform init and terraform plan. Explain the plan (VPC, cross-account IAM, root storage, workspace, UC resources) before any apply.
+5. Run terraform apply only after I explicitly approve the plan. Never apply or destroy without approval.
+6. After workspace and UC are up, run the kit's mandatory three-path verification: classic cluster, serverless SQL warehouse, and serverless notebook job.
+
+If something fails, diagnose with the kit gotchas guidance and re-plan before retrying.
 
 </PromptBlock>
 

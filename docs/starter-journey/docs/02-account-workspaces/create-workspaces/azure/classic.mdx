@@ -27,29 +27,32 @@ The **Workspace + Catalog** template creates a new VNet. The **Workspace** templ
 
 ## Prompt your coding agent
 
-Paste this into your coding agent to have it drive the recommended **Workspace + Catalog** deployment with you.
-
-:::tip
-**Want your agent to write the Terraform for you?** Instead of the fixed templates below, the [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit) has your coding agent generate custom Terraform to provision workspaces, configure Unity Catalog, set up networking, and manage groups and permissions — all from natural language (Claude Code, Codex, Cursor, Copilot, Gemini, and more).
-:::
+Paste this into your coding agent to provision the classic Azure workspace with [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit).
 
 <PromptBlock>
 
-You are helping me deploy a classic Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform. Use the Databricks-supported Workspace + Catalog template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/azure/azure-vnet-injection-uc.
+Install and use the Databricks AI Platform Kit (https://github.com/databricks-solutions/ai-platform-kit) if it is not already installed.
 
-1. Clone the repo and read its README.md first.
-2. From the tf/ directory, copy terraform.tfvars.example to terraform.tfvars and help me set the values (subscription, resource group names, workspace name, region, VNet CIDRs).
-3. Run terraform init, then terraform plan, and explain what it creates (resource groups, VNet with public and private subnets, NSG, NAT gateway, VNet-injected workspace with No Public IP, UC metastore, storage credential, external location, catalog) before applying.
-4. Run terraform apply only after I confirm the plan.
+macOS/Linux: `bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.sh)`
+Windows PowerShell: `irm https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.ps1 | iex`
 
-Considerations for Azure:
-- I am authenticated with az login and have Contributor at the subscription scope. Databricks creates a managed resource group, so resource-group scope is not enough.
-- Pin the provider to Azure CLI auth before apply: export DATABRICKS_AUTH_TYPE=azure-cli.
-- Subnets must be delegated to Microsoft.Databricks/workspaces with non-overlapping CIDRs, and vnet_resource_group_name must differ from resource_group_name.
-- If I use an existing metastore, admin_user needs CREATE EXTERNAL LOCATION on it.
-- Use a prefix like dev, staging, or prod so I can repeat this per environment.
+Then follow the kit skills (platform-provisioning, unity-catalog-setup, identity-governance, workspace-config, deployment-verification as needed) to provision a classic Databricks workspace on Azure with VNet injection and Unity Catalog.
 
-Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+Requirements for this deploy:
+- Cloud: Azure
+- Architecture: classic workspace with VNet injection (No Public IP where appropriate)
+- Include Unity Catalog (metastore assignment or creation as appropriate, plus catalog/storage pieces the skills recommend)
+- Environments and naming: ask me for subscription, region, resource group names, workspace name, VNet CIDRs, and any compliance constraints before generating Terraform
+
+Workflow:
+1. Confirm cloud and Databricks auth (az login with Contributor at subscription scope, Databricks CLI / account admin access). Pin DATABRICKS_AUTH_TYPE=azure-cli when needed.
+2. Ask me for any missing value. Do not guess regions, CIDRs, resource group names, or account IDs.
+3. Generate Terraform from the kit skills for my requirements. Do not clone a fixed technical-services-solutions template as the source of truth.
+4. Run terraform init and terraform plan. Explain the plan (resource groups, VNet/subnets/NSG/NAT, VNet-injected workspace, UC resources) before any apply.
+5. Run terraform apply only after I explicitly approve the plan. Never apply or destroy without approval.
+6. After workspace and UC are up, run the kit's mandatory three-path verification: classic cluster, serverless SQL warehouse, and serverless notebook job.
+
+If something fails, diagnose with the kit gotchas guidance and re-plan before retrying.
 
 </PromptBlock>
 

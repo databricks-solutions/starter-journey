@@ -17,6 +17,12 @@ import PromptBlock from '@site/src/components/PromptBlock';
 You will create one domain with a direct dashboard page and a Sales Analytics subdomain with a Genie Agent page.
 After publishing the full tree, Genie One can choose the right page from the wording of a question.
 
+| Continuation of | What carries forward |
+|---|---|
+| [Metric Views](/docs/05-genie-ontology/metric-views) | The governed sales metrics that dashboards and agents both read. |
+| [Dashboards](/docs/05-genie-ontology/dashboards) | The Franchise Performance dashboard attached as a domain page. |
+| [Genie Agents](/docs/05-genie-ontology/genie-agents) | The Bakehouse Sales Assistant attached under the Sales Analytics subdomain. |
+
 ## Create the domain
 
 <StepGuide
@@ -56,6 +62,8 @@ Click **Create**.
 Confirm that the Bakehouse Sales Operations domain opens in a draft state.
 Do not publish it yet.
 Its pages and subdomain need to be in place before users can rely on the routing tree.
+
+<StepImage src="/img/genie-ontology/domain-03.png" alt="Bakehouse Sales Operations domain open in draft with Pages empty and Publish available" />
 
 </Step>
 
@@ -272,14 +280,9 @@ Start from the Genie One prompt.
 
 <Step>
 
-`[For the Bakehouse Starter Journey Context]` is included because the demo workspace contains hundreds of domains and pages.
-An end user in a normal environment does not need to add it.
-
 Paste the first test:
 
 <PromptBlock>
-[For the Bakehouse Starter Journey Context]
-
 Show me a high-level snapshot of how our franchise sales are performing this month.
 </PromptBlock>
 
@@ -303,8 +306,6 @@ The thought process shows the dashboard and `franchise_sales_metrics` as the sel
 Start a new chat and paste the second test:
 
 <PromptBlock>
-[For the Bakehouse Starter Journey Context]
-
 Which 5 franchises had the lowest total sales, and how does their average order value compare to the network average?
 </PromptBlock>
 
@@ -317,8 +318,6 @@ Review the five franchises and their average order values, then open **Thought p
 
 <StepImage src="/img/genie-ontology/publish-test-08.png" alt="Genie One result listing the five lowest-sales franchises with the Thought process control highlighted" />
 
-Scroll to inspect the comparison chart.
-
 <StepImage src="/img/genie-ontology/publish-test-09.png" alt="Genie One comparison chart for franchise average order value and network average" />
 
 The expanded thought process identifies the Bakehouse Sales Assistant and `franchise_sales_metrics` before delegating the question to the agent.
@@ -330,6 +329,16 @@ The expanded thought process identifies the Bakehouse Sales Assistant and `franc
 </StepGuide>
 
 ## Verify
+
+Confirm the domain is discoverable from Genie One:
+
+1. Open **Genie One**.
+2. Go to **Discover**.
+3. Search for `Bakehouse Sales Operations` and confirm the domain appears in the results.
+
+<StepImage src="/img/genie-ontology/verify-01.png" alt="Genie One Discover search for Bakehouse Sales Operations showing the published domain in the results" />
+
+Also confirm:
 
 - Bakehouse Sales Operations is published and contains the Franchise Performance at a Glance page plus the Sales Analytics subdomain.
 - Sales Analytics contains the published Sales Q&A Assistant page.

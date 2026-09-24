@@ -20,7 +20,7 @@ REQUIRED_SECTIONS: tuple[str, ...] = (
     "4. Governance",
     "5. Genie Ontology",
     "6. Data science",
-    "7. Operations",
+    "7. Operations and CI/CD",
 )
 
 STALE_DAYS = 60

@@ -33,29 +33,32 @@ Add catalogs later in the workspace or with separate UC automation.
 
 ## Prompt your coding agent
 
-Paste this into your coding agent to have it drive the recommended **Standalone (new VPC)** deployment with you.
-
-:::tip
-**Want your agent to write the Terraform for you?** Instead of the fixed templates below, the [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit) has your coding agent generate custom Terraform to provision workspaces, configure Unity Catalog, set up networking, and manage groups and permissions — all from natural language (Claude Code, Codex, Cursor, Copilot, Gemini, and more).
-:::
+Paste this into your coding agent to provision the classic GCP workspace with [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit).
 
 <PromptBlock>
 
-You are helping me deploy a classic Databricks workspace on GCP with a customer-managed VPC using Terraform. Use the Databricks-supported Standalone (new VPC) template at https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone.
+Install and use the Databricks AI Platform Kit (https://github.com/databricks-solutions/ai-platform-kit) if it is not already installed.
 
-1. Clone the repo and read its README.md and service-account-impersonation.md first.
-2. From the repository root (this template does not use a tf/ subdirectory), copy terraform.tfvars.example to terraform.tfvars and help me set the values (project id, workspace name, region, network settings).
-3. Run terraform init, then terraform plan, and explain what it creates (VPC and subnet, Cloud Router and Cloud NAT, Databricks MWS network and workspace, workspace admin user, Databricks-managed GCS buckets) before applying.
-4. Run terraform apply only after I confirm the plan.
+macOS/Linux: `bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.sh)`
+Windows PowerShell: `irm https://raw.githubusercontent.com/databricks-solutions/ai-platform-kit/main/install.ps1 | iex`
 
-Considerations for GCP:
-- I use Terraform v1.3+ and a Google service account (GSA) with roles/Owner on the project, or the tighter roles in the README.
-- Auth uses GSA impersonation with GOOGLE_OAUTH_ACCESS_TOKEN; refresh it with export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token) if apply hits permission errors.
-- The GSA must be added to the Databricks account console as an account user with the account-admin role.
-- Enable the Compute API first: gcloud services enable compute.googleapis.com --project PROJECT_ID.
-- On terraform destroy, tear down in the README's order (workspace first, then NAT and router) and delete any orphaned firewall rules.
+Then follow the kit skills (platform-provisioning, unity-catalog-setup, identity-governance, workspace-config, deployment-verification as needed) to provision a classic Databricks workspace on GCP with a customer-managed VPC (BYOVPC / Standalone new VPC) and Unity Catalog or metastore assignment as supported.
 
-Ask me for any value you need instead of guessing, and never run apply or destroy without showing me the plan first.
+Requirements for this deploy:
+- Cloud: GCP
+- Architecture: classic workspace with customer-managed VPC (Standalone / new VPC preferred unless I say otherwise)
+- Include Unity Catalog or metastore assignment when my account supports it
+- Environments and naming: ask me for project ID, region, workspace name, network settings, and any compliance constraints before generating Terraform
+
+Workflow:
+1. Confirm cloud and Databricks auth (gcloud auth, service account / impersonation as needed, Databricks CLI / account admin access). Enable compute.googleapis.com if it is not already enabled.
+2. Ask me for any missing value. Do not guess project IDs, regions, CIDRs, or account IDs.
+3. Generate Terraform from the kit skills for my requirements. Do not clone a fixed technical-services-solutions template as the source of truth.
+4. Run terraform init and terraform plan. Explain the plan (VPC/subnet, router/NAT, MWS network and workspace, UC/metastore pieces) before any apply.
+5. Run terraform apply only after I explicitly approve the plan. Never apply or destroy without approval.
+6. After workspace and UC are up, run the kit's mandatory three-path verification: classic cluster, serverless SQL warehouse, and serverless notebook job.
+
+If something fails, diagnose with the kit gotchas guidance and re-plan before retrying.
 
 </PromptBlock>
 
