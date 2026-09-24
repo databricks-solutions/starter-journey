@@ -493,15 +493,16 @@ a:hover {
   }
   /* .navbar-sidebar__items is the horizontal dual-panel slider. A vertical
      overflow context here clips the translated docs panel, so only size it to
-     the viewport and let each inner panel scroll on its own. The drawer also
-     inherits the dark navbar background, which leaves menu text unreadable in
-     light theme, so give the panel a theme-aware background. */
+     the viewport and let each inner panel scroll on its own. */
   .navbar-sidebar__items {
     height: calc(100vh - var(--ifm-navbar-height));
-    background: var(--ifm-background-color);
   }
+  /* The visible panel is .navbar-sidebar__item. It inherits the dark navbar
+     shell, which leaves menu text unreadable in light theme, so give the panel
+     itself a theme-aware background. */
   .navbar-sidebar__item {
     overflow-y: auto;
+    background: var(--ifm-background-color);
   }
   .navbar-sidebar .menu__link,
   .navbar-sidebar .navbar__link,
