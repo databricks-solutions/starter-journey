@@ -1,14 +1,14 @@
 ---
 sidebar_position: 0
-sidebar_label: 13. Data Access Control
+sidebar_label: ABAC
 description: Tag-driven ABAC policies in Unity Catalog — protect salaries, PII, and sensitive fields at schema scale without per-table wiring.
 ---
 
-# 13. Data Access Control
+# ABAC
 
 > **You'll** learn how to protect sensitive columns at schema scale using Unity Catalog ABAC policies in **~30 min** (plus a 55-min hands-on lab).
 >
-> **Prereqs:** [5. Data Governance Strategy](/docs/04-governance/), [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [Groups](/docs/04-governance/groups)
+> **Prereqs:** [Governance](/docs/04-governance/), [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [Groups](/docs/04-governance/groups)
 
 The right approach for column-level access control in Unity Catalog is **ABAC** (Attribute-Based Access Control). You define a masking policy once, attach it to a tag, and every column in every tagged table inherits the policy. No per-table wiring. No risk of a developer forgetting to add the mask when they create a new table.
 
@@ -176,5 +176,5 @@ Everyone in `region_emea` sees only EMEA rows on any tagged table in `main.hr`. 
 ## Next
 
 - **Do next:** [Hands-on lab](/docs/04-governance/abac/lab)
-- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [Data Governance Strategy](/docs/04-governance/)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [Governance](/docs/04-governance/)
 - **Reference:** [Attribute-based access control](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/), [Automatic data classification](https://docs.databricks.com/aws/en/data-governance/unity-catalog/data-classification.html), [Create and manage row filter and column mask policies](https://docs.databricks.com/aws/en/data-governance/unity-catalog/abac/policies)

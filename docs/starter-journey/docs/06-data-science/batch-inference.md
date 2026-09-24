@@ -30,5 +30,5 @@ A batch job that loads a model from Unity Catalog by alias, scores rows, and wri
 ## Next
 
 - **Do next:** [Datasets as Feature Tables](/docs/06-data-science/prepare-datasets)
-- **Learn why:** [14. MLOps](/docs/06-data-science/)
+- **Learn why:** [Data science](/docs/06-data-science/)
 - **Reference:** [Model lifecycle in Unity Catalog](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle/), [How to speed up inference](https://community.databricks.com/t5/machine-learning/how-to-speed-up-inference/td-p/135900), [Image ETL and inference](https://docs.databricks.com/aws/en/machine-learning/reference-solutions/images-etl-inference)

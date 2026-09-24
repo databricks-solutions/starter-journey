@@ -138,5 +138,5 @@ Swap `distilbert-base-uncased-finetuned-sst-2-english` for any Hugging Face mode
 ## Next
 
 - **Do next:** [Batch Inference](/docs/06-data-science/batch-inference)
-- **Learn why:** [14. MLOps](/docs/06-data-science/)
+- **Learn why:** [Data science](/docs/06-data-science/)
 - **Reference:** [Install MLflow 3](https://docs.databricks.com/aws/en/mlflow/mlflow-3-install), [Manage the model lifecycle](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle), [View training results with MLflow runs](https://docs.databricks.com/aws/en/mlflow/runs)

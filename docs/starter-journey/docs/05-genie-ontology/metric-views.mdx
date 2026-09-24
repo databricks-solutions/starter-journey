@@ -7,20 +7,20 @@ import PromptBlock from '@site/src/components/PromptBlock';
 
 # Metric Views
 
-> **You'll define** a governed `franchise_sales_metrics` metric view and confirm it matches your section 8 query in ~20 min.
+> **You'll define** a governed `franchise_sales_metrics` metric view and confirm it matches the query you saved in Query and explore in ~20 min.
 >
-> **Prereqs:** [8. Query and Explore](/docs/03-data-access-etl/query-and-explore), a serverless SQL warehouse, CREATE privileges on the target schema
+> **Prereqs:** [Query and explore](/docs/03-data-access-etl/query-and-explore), a serverless SQL warehouse, CREATE privileges on the target schema
 
 ## The big picture
 
-In section 8 you proved daily franchise revenue with one saved query. A metric view promotes that logic into a governed object: define Total Sales, Order Count, and Avg Order Value once, and every dashboard, Genie Agent, and SQL client reads the same definition. Change the number in one place and every consumer picks it up on the next query.
+The Query and explore walkthrough proved daily franchise revenue with one saved query. A metric view promotes that logic into a governed object: define Total Sales, Order Count, and Avg Order Value once, and every dashboard, Genie Agent, and SQL client reads the same definition. Change the number in one place and every consumer picks it up on the next query.
 
 The source is your silver layer. The output is `starterjourney_catalog.bakehouse_gold.franchise_sales_metrics`.
 
 ## Build the metric view
 
 <StepGuide
-  description="Create the gold schema, generate the metric view with Genie Code, then validate it against section 8."
+  description="Create the gold schema, generate the metric view with Genie Code, then validate it against the saved query from Query and explore."
   minutes={20}
   idPrefix="metric-step"
   referenceHref="https://docs.databricks.com/aws/en/uc-semantics/metric-views/create"
@@ -129,7 +129,7 @@ Preview the fields and measures panel, then click **Save**.
 
 <Step>
 
-Validate against section 8. In a SQL editor, run:
+Validate against the saved query from Query and explore. In a SQL editor, run:
 
 ```sql
 SELECT
@@ -141,7 +141,7 @@ GROUP BY ALL
 ORDER BY `sales_date`, `franchise`;
 ```
 
-The daily totals per franchise should match your `daily_franchise_revenue` query from section 8. If they don't, the join or a measure is off.
+The daily totals per franchise should match the `daily_franchise_revenue` query you saved in Query and explore. If they don't, the join or a measure is off.
 
 <StepImage src="/img/unified-metric-views/7.png" alt="SQL Editor running the MEASURE query on franchise_sales_metrics with Sales Date, Franchise, and Total Sales results" />
 
@@ -170,7 +170,7 @@ The field names feed the dashboard and Genie prompts on the next pages. Rename t
 </details>
 
 <details>
-<summary>Daily totals don't match section 8</summary>
+<summary>Daily totals don't match the saved query</summary>
 
 Check that `sales_date` truncates `transaction_timestamp` to a day and `total_sales` sums `total_price`. Reconcile any time zone difference.
 </details>

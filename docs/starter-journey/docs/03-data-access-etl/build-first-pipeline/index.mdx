@@ -1,15 +1,15 @@
 ---
-sidebar_label: 7. Build the first ETL pipeline
+sidebar_label: Build the first ETL pipeline
 description: Build your first Spark Declarative Pipeline on Databricks using Lakeflow for ingestion, transformation, and orchestration.
 ---
 import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
 import PromptBlock from '@site/src/components/PromptBlock';
 
-# 7. Build the first ETL pipeline
+# Build the first ETL pipeline
 
 > **You'll build** your first Spark Declarative Pipeline with Genie Code in ~10 min.
 >
-> **Prereqs:** [Access your data](/docs/03-data-access-etl)
+> **Prereqs:** [Data access and ETL](/docs/03-data-access-etl)
 
 ## Build a pipeline with Genie Code
 
@@ -76,7 +76,7 @@ Click Start / Run pipeline to validate it end-to-end
 Confirm both the bronze and silver schemas were created with their tables, then inspect the pipeline DAG graph.
 
 :::tip
-Section 8 and the section 9 metric view read these silver columns by name: `transaction_timestamp` and `total_price` on `transactions`, and `franchise_id` plus `franchise_name` on `franchises`. If Genie Code named them differently, rename them now.
+The Query and explore page and the Genie Ontology metric view read these silver columns by name: `transaction_timestamp` and `total_price` on `transactions`, and `franchise_id` plus `franchise_name` on `franchises`. If Genie Code named them differently, rename them now.
 :::
 
 <StepImage src="/img/pipeline-etl-7a.png" placeholder="Step 7: bronze and silver schemas with their tables in Catalog Explorer" />
@@ -100,5 +100,5 @@ Awesome pages to have open while you build:
 ## Next
 
 - **Do next:** [Query and explore](/docs/03-data-access-etl/query-and-explore)
-- **Learn why:** [Data Governance Strategy](/docs/04-governance)
+- **Learn why:** [Governance](/docs/04-governance)
 - **Reference:** [Spark Declarative Pipelines (Databricks docs)](https://docs.databricks.com/aws/en/ldp/)

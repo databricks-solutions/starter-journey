@@ -9,7 +9,7 @@ import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress'
 
 > **You'll understand** how Databricks connects feature engineering, model training, deployment, and inference into a governed production lifecycle.
 >
-> **Prereqs:** [7. Build the first pipeline](/docs/03-data-access-etl/build-first-pipeline/), [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [14. CI/CD and DevOps](/docs/07-operations/)
+> **Prereqs:** [Build the first ETL pipeline](/docs/03-data-access-etl/build-first-pipeline/), [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog), [Operations](/docs/07-operations/)
 
 ## The big picture
 
@@ -19,7 +19,7 @@ A Databricks MLOps solution is three Ops disciplines working in concert:
 |---|---|---|
 | **DataOps** | Feature tables, training sets, inference outputs | Unity Catalog |
 | **ModelOps** | Experiment tracking, model registry, model serving | MLflow |
-| **DevOps** | Repo structure, CI/CD pipelines, environment promotion | DABs + Git (see [14. CI/CD and DevOps](/docs/07-operations/)) |
+| **DevOps** | Repo structure, CI/CD pipelines, environment promotion | DABs + Git (see [Operations](/docs/07-operations/)) |
 
 <StarterJourneyProgress currentLevel={5}/>
 
@@ -44,7 +44,7 @@ This video is the definitive guide for MLOps on Databricks. It puts into practic
 
 ## Deploy the MLOps quickstart
 
-The [mlops-quickstart repo](https://github.com/databricks-solutions/mlops-quickstart) trains, registers, and promotes a model end to end. Before you deploy it, get familiar with [14. CI/CD and DevOps](/docs/07-operations/). The quickstart uses DABs and GitHub Actions, so understanding those first makes the deployment straightforward.
+The [mlops-quickstart repo](https://github.com/databricks-solutions/mlops-quickstart) trains, registers, and promotes a model end to end. Before you deploy it, get familiar with [Operations](/docs/07-operations/). The quickstart uses DABs and GitHub Actions, so understanding those first makes the deployment straightforward.
 
 Once you have the project running, read the [Adapt this template with Genie Code](https://github.com/databricks-solutions/mlops-quickstart#adapt-this-template-with-genie-code) section in the repo to swap in your own data, model, and inference pipelines using the built-in Databricks Assistant skills.
 
@@ -66,5 +66,5 @@ Once you have the project running, read the [Adapt this template with Genie Code
 ## Next
 
 - **Do next:** [Save a Model to Unity Catalog](/docs/06-data-science/save-model-to-unity-catalog)
-- **Learn why:** [14. CI/CD and DevOps](/docs/07-operations/)
+- **Learn why:** [Operations](/docs/07-operations/)
 - **Reference:** [MLflow on Databricks](https://docs.databricks.com/aws/en/mlflow/)
