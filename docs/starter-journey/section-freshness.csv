@@ -1,15 +1,8 @@
 section_name,last_update
-1. Get started,2026-09-07
-2. Before you start,2026-07-22
-3. Infra setup,2026-09-14
-4. Cost monitoring,2026-09-07
-5. Governance strategy,2026-09-07
-6. Access your data,2026-09-23
-7. Build the first ETL pipeline,2026-09-14
-8. Query and explore,2026-09-14
-9. Unified analytics,2026-09-14
-10. Predictive analytics,2026-09-07
-11. Agents,2026-06-25
-12. Orchestration using jobs,2026-07-22
-13. Data access control,2026-07-22
-14. CI/CD and DevOps,2026-06-14
+1. Introduction,2026-09-24
+2. Account and workspaces,2026-09-24
+3. Data access and ETL,2026-09-24
+4. Governance,2026-09-24
+5. Genie Ontology,2026-09-24
+6. Data science,2026-09-24
+7. Operations,2026-09-24

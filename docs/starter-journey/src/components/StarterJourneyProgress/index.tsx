@@ -145,13 +145,17 @@ export default function StarterJourneyProgress({
   title = 'Starter Journey Progress',
   className,
 }: StarterJourneyProgressProps) {
-  const forkBlocks = JOURNEY_BLOCKS.filter((b) => b.level === 6);
-  const upperBlocks = JOURNEY_BLOCKS.filter((b) => b.level >= 7).sort(
-    (a, b) => b.level - a.level,
-  );
-  const lowerBlocks = JOURNEY_BLOCKS.filter((b) => b.level <= 5).sort(
-    (a, b) => b.level - a.level,
-  );
+  const forkBlocks = JOURNEY_BLOCKS.filter((b) => b.forkColumn);
+  const hasFork = forkBlocks.length > 0;
+  const forkLevel = forkBlocks[0]?.level;
+  const upperBlocks = JOURNEY_BLOCKS.filter((b) => {
+    if (b.forkColumn) return false;
+    return forkLevel === undefined || b.level >= forkLevel;
+  }).sort((a, b) => b.level - a.level);
+  const lowerBlocks = JOURNEY_BLOCKS.filter((b) => {
+    if (b.forkColumn || forkLevel === undefined) return false;
+    return b.level < forkLevel;
+  }).sort((a, b) => b.level - a.level);
 
   let rowIndex = 0;
   const renderBlock = (block: JourneyBlock) => (
@@ -171,13 +175,14 @@ export default function StarterJourneyProgress({
       <div className={styles.stack}>
         {upperBlocks.map(renderBlock)}
 
-        <MergeConnector />
-
-        <div className={styles.fork}>{forkBlocks.map(renderBlock)}</div>
-
-        <SplitConnector colorful={colorfulArrows} />
-
-        {lowerBlocks.map(renderBlock)}
+        {hasFork && (
+          <>
+            <MergeConnector />
+            <div className={styles.fork}>{forkBlocks.map(renderBlock)}</div>
+            <SplitConnector colorful={colorfulArrows} />
+            {lowerBlocks.map(renderBlock)}
+          </>
+        )}
       </div>
 
       {showLegend && (

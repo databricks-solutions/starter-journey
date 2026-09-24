@@ -12,28 +12,17 @@ export interface JourneyBlock {
   icon: string;
 }
 
-/**
- * Blocks ordered foundation-first (index 0 = foundation, level 0).
- * The single fork row shares level 6. Levels 0-5 and 7-9 are full-width.
- */
 export const JOURNEY_BLOCKS: JourneyBlock[] = [
-  { id: "infra-setup",           label: "Infra Setup",                level: 0, icon: "server" },
-  { id: "cost-monitoring",       label: "Cost Monitoring",            level: 1, icon: "dollar" },
-  { id: "data-governance",       label: "Data Governance Strategy",   level: 2, icon: "shield" },
-  { id: "access-data",           label: "Access Your Data",           level: 3, icon: "cloud-download" },
-  { id: "first-pipeline",        label: "Build the First Pipeline",   level: 4, icon: "activity" },
-  { id: "query-explore",         label: "Query and Explore",          level: 5, icon: "search" },
-  // Fork row, level 6
-  { id: "unified-analytics",     label: "Unified Analytics",          level: 6, forkColumn: "da",    tag: "DA",  icon: "grid" },
-  { id: "predictive-analytics",  label: "Predictive Analytics",       level: 6, forkColumn: "ml",    tag: "ML",  icon: "cpu" },
-  { id: "agents",                label: "Agents",                     level: 6, forkColumn: "genai", tag: "AI",  icon: "bot" },
-  // Full-width rows resume
-  { id: "automation",            label: "Automation & Orchestration", level: 7, icon: "settings" },
-  { id: "data-access-control",   label: "Data Access Control",        level: 8, icon: "key" },
-  { id: "cicd-devops",           label: "CI/CD and DevOps",           level: 9, icon: "git-branch" },
+  { id: "introduction", label: "Introduction", level: 0, icon: "grid" },
+  { id: "account-workspaces", label: "Account and workspaces", level: 1, icon: "server" },
+  { id: "data-access-etl", label: "Data access and ETL", level: 2, icon: "activity" },
+  { id: "governance", label: "Governance", level: 3, icon: "shield" },
+  { id: "genie-ontology", label: "Genie Ontology", level: 4, icon: "bot" },
+  { id: "data-science", label: "Data science", level: 5, icon: "cpu" },
+  { id: "operations", label: "Operations", level: 6, icon: "git-branch" },
 ];
 
-export const MAX_LEVEL = 9;
+export const MAX_LEVEL = 6;
 
 export type ProgressState = "completed" | "current" | "pending";
 

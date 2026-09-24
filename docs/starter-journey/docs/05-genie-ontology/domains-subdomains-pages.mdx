@@ -1,0 +1,380 @@
+---
+sidebar_label: Domains, subdomains, and pages
+description: Build and test a Genie Ontology routing tree for the Bakehouse dashboard and Genie Agent.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
+
+# Domains, subdomains, and pages
+
+> **You'll build** a published Bakehouse ontology that routes overview questions to a dashboard and detailed questions to a Genie Agent in ~30 min.
+>
+> **Prereqs:** [Metric Views](/docs/05-genie-ontology/metric-views), [Dashboards](/docs/05-genie-ontology/dashboards), and [Genie Agents](/docs/05-genie-ontology/genie-agents) in this section
+
+## The big picture
+
+You will create one domain with a direct dashboard page and a Sales Analytics subdomain with a Genie Agent page.
+After publishing the full tree, Genie One can choose the right page from the wording of a question.
+
+## Create the domain
+
+<StepGuide
+  description="Create the Bakehouse Sales Operations domain and leave it unpublished while you add its routing tree."
+  minutes={5}
+  idPrefix="create-domain"
+  referenceHref="https://docs.databricks.com/aws/en/discover/"
+  referenceLabel="Discover data and AI assets (Databricks docs)">
+
+<Step>
+
+In the workspace sidebar, click **Discover**.
+Click **Create**, then choose **Create domain**.
+
+<StepImage src="/img/genie-ontology/domain-01.png" alt="Discover page with Create domain selected from the Create menu" />
+
+</Step>
+
+<Step>
+
+Complete the domain:
+
+- **Title:** `Bakehouse Sales Operations`
+- **Subtitle:** `Domain for Bakehouse Business Unit`
+- **Description:** `Central domain for all Bakehouse franchise sales analytics. Covers revenue tracking, order volume, average order value, and performance comparisons across 46 franchise locations and 6 product lines.`
+- **Technical contacts:** Select the Databricks engineers who maintain the domain and its assets.
+- **Business contacts:** Select the target business users or downstream users.
+
+Click **Create**.
+
+<StepImage src="/img/genie-ontology/domain-02.png" alt="Create domain dialog completed for Bakehouse Sales Operations with technical and business contacts" />
+
+</Step>
+
+<Step>
+
+Confirm that the Bakehouse Sales Operations domain opens in a draft state.
+Do not publish it yet.
+Its pages and subdomain need to be in place before users can rely on the routing tree.
+
+</Step>
+
+</StepGuide>
+
+## Create the domain page
+
+<StepGuide
+  description="Add a dashboard page for overview and snapshot questions."
+  minutes={7}
+  idPrefix="create-domain-page"
+  referenceHref="https://docs.databricks.com/aws/en/discover/"
+  referenceLabel="Discover data and AI assets (Databricks docs)">
+
+<Step>
+
+Inside Bakehouse Sales Operations, click **Create**, then choose **Create page**.
+
+<StepImage src="/img/genie-ontology/domain-page-01.png" alt="Bakehouse Sales Operations domain with Create page selected" />
+
+</Step>
+
+<Step>
+
+Name the page `Franchise Performance at a Glance`.
+Add synonyms such as `analytics` and `numbers`.
+
+Use this description:
+
+```text
+Visual dashboard showing KPI counters, time-series trends, and franchise/product breakdowns. Start here for a quick pulse check on sales performance.
+```
+
+Keep the Markdown page body focused on routing, matching the screenshot:
+
+```md
+## When to route here
+
+User asks for a chart, overview, snapshot, high-level summary, or comparison visualization
+
+## Example questions
+
+"Show me total sales this month" · "Which franchise has the highest revenue?" · "How do products compare?"
+```
+
+Under **Related Assets**, add the existing `Bakehouse Franchise Performance` dashboard.
+Add the same dashboard under **Sources**, then click **Publish**.
+
+<StepImage src="/img/genie-ontology/domain-page-02.png" alt="Franchise Performance at a Glance page with synonyms, routing text, dashboard asset, source, and Publish button" />
+
+</Step>
+
+<Step>
+
+On the published page, find the **Discussion** area.
+Databricks engineers can use it to discuss whether content should be added, edited, or removed.
+
+<StepImage src="/img/genie-ontology/domain-page-03.png" alt="Published Franchise Performance at a Glance page with the Discussion area highlighted" />
+
+</Step>
+
+<Step>
+
+Return to Bakehouse Sales Operations and confirm that **Franchise Performance at a Glance** appears under **Pages**.
+
+<StepImage src="/img/genie-ontology/domain-page-04.png" alt="Bakehouse Sales Operations domain showing Franchise Performance at a Glance under Pages" />
+
+</Step>
+
+</StepGuide>
+
+## Create the subdomain
+
+<StepGuide
+  description="Add a Sales Analytics subdomain for detailed questions."
+  minutes={5}
+  idPrefix="create-subdomain"
+  referenceHref="https://docs.databricks.com/aws/en/discover/"
+  referenceLabel="Discover data and AI assets (Databricks docs)">
+
+<Step>
+
+Inside Bakehouse Sales Operations, click **Create**, then choose **Create subdomain**.
+
+<StepImage src="/img/genie-ontology/subdomain-01.png" alt="Bakehouse Sales Operations domain with Create subdomain selected" />
+
+</Step>
+
+<Step>
+
+Complete the subdomain:
+
+- **Title:** `Sales Analytics`
+- **Subtitle:** `Subdomain for Agents`
+- **Description:** `Detailed analytical subdomain for ad-hoc queries, trend deep-dives, and data exploration across franchise sales metrics.`
+- **Technical contacts:** Select the Databricks engineers who maintain the subdomain and its assets.
+- **Business contacts:** Select the target business users or downstream users.
+
+Click **Create**.
+
+<StepImage src="/img/genie-ontology/subdomain-02.png" alt="Create subdomain dialog completed for Sales Analytics with technical and business contacts" />
+
+</Step>
+
+<Step>
+
+Open the new Sales Analytics subdomain.
+It still shows as Draft, so click **Publish**.
+The page you add next needs a published subdomain to route questions.
+
+<StepImage src="/img/genie-ontology/subdomain-03.png" alt="Sales Analytics subdomain in Draft with the Publish button highlighted" />
+
+</Step>
+
+<Step>
+
+Confirm that the domain filter and breadcrumb both read Bakehouse Sales Operations, so the subdomain sits in the intended domain.
+
+<StepImage src="/img/genie-ontology/subdomain-04.png" alt="Sales Analytics subdomain with the Bakehouse Sales Operations domain filter and breadcrumb highlighted" />
+
+</Step>
+
+</StepGuide>
+
+## Create the subdomain page
+
+<StepGuide
+  description="Add a Genie Agent page for rankings, comparisons, and detailed analysis."
+  minutes={6}
+  idPrefix="create-subdomain-page"
+  referenceHref="https://docs.databricks.com/aws/en/discover/"
+  referenceLabel="Discover data and AI assets (Databricks docs)">
+
+<Step>
+
+Inside Sales Analytics, click **Create page**.
+
+<StepImage src="/img/genie-ontology/subdomain-page-01.png" alt="Sales Analytics subdomain with the Create page button highlighted" />
+
+</Step>
+
+<Step>
+
+Name the page `Sales Q&A Assistant`.
+Add a synonym such as `Chatbot`.
+
+Use this description:
+
+```text
+Conversational AI agent that answers free-form questions about franchise sales. Supports trend analysis, comparisons, rankings, and daily patterns using natural language.
+```
+
+Keep the Markdown page body focused on the questions this page handles, matching the screenshot:
+
+```md
+## Definition
+
+User asks a specific analytical question, requests a ranking, wants to filter by a franchise or product name, or asks about patterns
+
+## Business use
+
+Question examples: "What was Baked Bliss's total sales on May 12?" · "Rank the top 5 franchises by order count." · "Compare Golden Gate Ginger vs Pearly Pies across all franchises"
+```
+
+Under **Related Assets**, select **Sales Q&A Assistant** in Discover.
+Add the same asset under **Sources**, then click **Publish**.
+In Discover this asset is labeled Sales Q&A Assistant, and it points to the Bakehouse Sales Assistant Genie Agent you built earlier.
+
+<StepImage src="/img/genie-ontology/subdomain-page-02.png" alt="Sales Q&A Assistant page with routing text, the Sales Q&A Assistant related asset, source, and Publish button" />
+
+</Step>
+
+<Step>
+
+Confirm that the published Sales Q&A Assistant page shows the description, body, related asset, and source.
+
+<StepImage src="/img/genie-ontology/subdomain-page-03.png" alt="Published Sales Q&A Assistant page with the Sales Q&A Assistant asset and source" />
+
+</Step>
+
+</StepGuide>
+
+## Publish and test the ontology
+
+<StepGuide
+  description="Publish the completed domain, then test the dashboard and agent routes in Genie One."
+  minutes={7}
+  idPrefix="publish-test"
+  referenceHref="https://docs.databricks.com/aws/en/discover/"
+  referenceLabel="Discover data and AI assets (Databricks docs)">
+
+<Step>
+
+Return to Bakehouse Sales Operations.
+Confirm that the Sales Analytics subdomain appears under Browse by subdomain, then click **Publish**.
+
+The domain stayed unpublished until now because its routing tree was incomplete.
+
+<StepImage src="/img/genie-ontology/publish-test-01.png" alt="Bakehouse Sales Operations domain with Sales Analytics visible and Publish highlighted" />
+
+</Step>
+
+<Step>
+
+Open the app switcher in the upper-right corner and select **Genie One**.
+
+<StepImage src="/img/genie-ontology/publish-test-02.png" alt="Databricks app switcher with Genie One selected" />
+
+Start from the Genie One prompt.
+
+<StepImage src="/img/genie-ontology/publish-test-03.png" alt="Genie One home page with the question prompt ready" />
+
+</Step>
+
+<Step>
+
+`[For the Bakehouse Starter Journey Context]` is included because the demo workspace contains hundreds of domains and pages.
+An end user in a normal environment does not need to add it.
+
+Paste the first test:
+
+<PromptBlock>
+[For the Bakehouse Starter Journey Context]
+
+Show me a high-level snapshot of how our franchise sales are performing this month.
+</PromptBlock>
+
+The words "high-level snapshot" route the question to the dashboard page, which is built for visual KPI summaries.
+During the response, Genie reads the Bakehouse Franchise Performance dashboard and the shared metric view.
+
+<StepImage src="/img/genie-ontology/publish-test-04.png" alt="Genie One routing the high-level snapshot question to the dashboard and metric view" />
+
+Review the dashboard-backed summary, then open **Thought process**.
+
+<StepImage src="/img/genie-ontology/publish-test-05.png" alt="Genie One result showing franchise sales KPIs and the Thought process control" />
+
+The thought process shows the dashboard and `franchise_sales_metrics` as the selected sources.
+
+<StepImage src="/img/genie-ontology/publish-test-06.png" alt="Genie One thought process showing the dashboard and franchise_sales_metrics sources" />
+
+</Step>
+
+<Step>
+
+Start a new chat and paste the second test:
+
+<PromptBlock>
+[For the Bakehouse Starter Journey Context]
+
+Which 5 franchises had the lowest total sales, and how does their average order value compare to the network average?
+</PromptBlock>
+
+The ranking and computed comparison require an ad hoc query.
+Genie routes the question through Sales Analytics to the Bakehouse Sales Assistant Genie Agent.
+
+<StepImage src="/img/genie-ontology/publish-test-07.png" alt="Genie One routing the lowest-sales comparison question to the Sales Q&A Assistant" />
+
+Review the five franchises and their average order values, then open **Thought process** at the top of the answer.
+
+<StepImage src="/img/genie-ontology/publish-test-08.png" alt="Genie One result listing the five lowest-sales franchises with the Thought process control highlighted" />
+
+Scroll to inspect the comparison chart.
+
+<StepImage src="/img/genie-ontology/publish-test-09.png" alt="Genie One comparison chart for franchise average order value and network average" />
+
+The expanded thought process identifies the Bakehouse Sales Assistant and `franchise_sales_metrics` before delegating the question to the agent.
+
+<StepImage src="/img/genie-ontology/publish-test-10.png" alt="Genie One thought process showing the Bakehouse Sales Assistant and franchise_sales_metrics route" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+- Bakehouse Sales Operations is published and contains the Franchise Performance at a Glance page plus the Sales Analytics subdomain.
+- Sales Analytics contains the published Sales Q&A Assistant page.
+- The overview prompt reads the dashboard and metric view.
+- The ranking prompt delegates to the Genie Agent.
+
+## Where people trip
+
+<details>
+<summary>The domain does not appear in Genie One</summary>
+
+Confirm that you published the two pages and the parent domain.
+A draft domain is not available for normal routing.
+</details>
+
+<details>
+<summary>The subdomain stays in Draft</summary>
+
+Publishing the domain does not publish the subdomain.
+Open Sales Analytics and click **Publish** so its page can route questions.
+</details>
+
+<details>
+<summary>The overview question routes to the agent</summary>
+
+Check the Franchise Performance at a Glance description and body for the words `overview`, `snapshot`, `high-level summary`, and `visual comparison`.
+Those terms distinguish the dashboard page from detailed analysis.
+</details>
+
+<details>
+<summary>The detailed question routes to the dashboard</summary>
+
+Check that Sales Q&A Assistant describes rankings, comparisons, trends, and specific franchise or product analysis.
+Also confirm that the Bakehouse Sales Assistant is present in both **Related Assets** and **Sources**.
+</details>
+
+<details>
+<summary>The two routes return different KPI values</summary>
+
+Confirm that the dashboard and Genie Agent both use `starterjourney_catalog.bakehouse_gold.franchise_sales_metrics`.
+The ontology chooses a surface, but the metric view keeps the definitions consistent.
+</details>
+
+## Next
+
+- **Do next:** [Data science](/docs/06-data-science/)
+- **Learn why:** [Genie Ontology](/docs/05-genie-ontology/)
+- **Reference:** [Discover data and AI assets](https://docs.databricks.com/aws/en/discover/)

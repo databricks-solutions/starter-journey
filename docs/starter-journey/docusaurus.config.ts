@@ -45,49 +45,49 @@ const config: Config = {
         redirects: [
           ...['aws', 'azure', 'gcp'].flatMap((c) => [
             {
-              from: `/docs/03-infra-setup/create-workspaces/${c}/manual`,
-              to: `/docs/03-infra-setup/create-workspaces/${c}/serverless`,
+              from: `/docs/02-account-workspaces/create-workspaces/${c}/manual`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/serverless`,
             },
             {
-              from: `/docs/03-infra-setup/create-workspaces/${c}/terraform`,
-              to: `/docs/03-infra-setup/create-workspaces/${c}/classic`,
+              from: `/docs/02-account-workspaces/create-workspaces/${c}/terraform`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/classic`,
             },
             {
-              from: `/docs/03-infra-setup/create-workspaces/${c}/sra`,
-              to: `/docs/03-infra-setup/create-workspaces/${c}/private-link`,
+              from: `/docs/02-account-workspaces/create-workspaces/${c}/sra`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/private-link`,
             },
           ]),
           {
-            from: '/docs/09-unified-analytics/business-semantics',
-            to: '/docs/09-unified-analytics/metric-views',
+            from: '/docs/05-genie-ontology/business-semantics',
+            to: '/docs/05-genie-ontology/metric-views',
           },
           {
-            from: '/docs/09-unified-analytics/business-semantics/lab',
-            to: '/docs/09-unified-analytics/metric-views',
+            from: '/docs/05-genie-ontology/business-semantics/lab',
+            to: '/docs/05-genie-ontology/metric-views',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/dashboards',
-            to: '/docs/09-unified-analytics/dashboards',
+            from: '/docs/05-genie-ontology/databricks-aibi/dashboards',
+            to: '/docs/05-genie-ontology/dashboards',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/genie-agents',
-            to: '/docs/09-unified-analytics/genie-agents',
+            from: '/docs/05-genie-ontology/databricks-aibi/genie-agents',
+            to: '/docs/05-genie-ontology/genie-agents',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-agent',
-            to: '/docs/09-unified-analytics/genie-agents',
+            from: '/docs/05-genie-ontology/databricks-aibi/try-a-sample-genie-agent',
+            to: '/docs/05-genie-ontology/genie-agents',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/databricks-apps',
-            to: '/docs/09-unified-analytics/',
+            from: '/docs/05-genie-ontology/databricks-aibi/databricks-apps',
+            to: '/docs/05-genie-ontology/',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/genie-spaces',
-            to: '/docs/09-unified-analytics/genie-agents',
+            from: '/docs/05-genie-ontology/databricks-aibi/genie-spaces',
+            to: '/docs/05-genie-ontology/genie-agents',
           },
           {
-            from: '/docs/09-unified-analytics/databricks-aibi/try-a-sample-genie-space',
-            to: '/docs/09-unified-analytics/genie-agents',
+            from: '/docs/05-genie-ontology/databricks-aibi/try-a-sample-genie-space',
+            to: '/docs/05-genie-ontology/genie-agents',
           },
         ],
       },
@@ -144,7 +144,7 @@ const config: Config = {
       items: [
         {
           type: 'doc',
-          docId: '01-get-started',
+          docId: '01-introduction/index',
           position: 'left',
           label: 'Get Started',
         },

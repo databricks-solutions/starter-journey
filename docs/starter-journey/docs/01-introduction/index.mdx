@@ -1,0 +1,44 @@
+---
+sidebar_position: 0
+sidebar_label: 1. Introduction
+description: Follow the Databricks starter journey from platform foundations through governed data, analytics, data science, and operations.
+---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+
+# 1. Introduction
+
+> **You'll map** the platform layers you need to build, in the order they depend on each other, in ~10 min.
+>
+> **Prereqs:** [A Databricks account](https://docs.databricks.com/aws/en/getting-started/free-trial)
+
+Start with the foundation.
+Every dashboard, model, and agent reads data from the same platform and catalog.
+If the tables are wrong, reports mislead, models train on noise, and agents return unreliable answers.
+
+BI, machine learning, and AI have different serving needs.
+They still depend on the same account, governance model, and trusted data.
+Fix those layers once, then build each workload on top.
+
+This guide follows that dependency order.
+It starts with the account and workspaces, moves through data access and governance, then reaches the products people use.
+Operations closes the loop by making the platform repeatable.
+
+<StarterJourneyProgress currentLevel={0}/>
+
+## What you'll build
+
+| # | Section | What you'll have when done |
+|---|---|---|
+| 1 | **[Introduction](/docs/01-introduction/)** | A foundation-first map of the journey and a cloud tenant model that fits your organization |
+| 2 | **[Account and workspaces](/docs/02-account-workspaces/)** | Workspaces, identity, SSO, account administration, workspace settings, and cost monitoring |
+| 3 | **[Data access and ETL](/docs/03-data-access-etl/)** | Connected data sources, a working ETL pipeline, SQL exploration, and scheduled jobs |
+| 4 | **[Governance](/docs/04-governance/)** | A Unity Catalog structure, ownership model, and access controls for your data |
+| 5 | **[Genie Ontology](/docs/05-genie-ontology/)** | Generated metadata, governed metrics, dashboards, Genie agents, and a domain structure |
+| 6 | **[Data science](/docs/06-data-science/)** | Governed feature tables, registered models, and batch inference |
+| 7 | **[Operations](/docs/07-operations/)** | Version-controlled Databricks projects deployed with DABs and CI/CD |
+
+## Next
+
+- **Do next:** [Foundations](/docs/01-introduction/foundations/)
+- **Learn why:** [Cloud tenant ready](/docs/01-introduction/cloud-tenant-ready/)
+- **Reference:** [Databricks architecture overview](https://docs.databricks.com/aws/en/getting-started/overview)

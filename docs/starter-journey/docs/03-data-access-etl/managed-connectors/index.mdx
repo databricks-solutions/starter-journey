@@ -1,0 +1,67 @@
+---
+sidebar_position: 0
+sidebar_label: Databases and SaaS ingestion
+description: Choose between CDC and query-based Lakeflow Connect ingestion, then load an external database into Unity Catalog.
+---
+
+# Databases and SaaS ingestion
+
+> **You'll choose** a managed ingestion pattern and know what each one requires in ~5 min.
+>
+> **Prereqs:** [Data access and ETL](/docs/03-data-access-etl)
+
+## The big picture
+
+Lakeflow Connect copies data from an external database or SaaS application into Unity Catalog streaming tables. The source credentials live in a Unity Catalog connection. The ingestion pattern decides how Databricks finds new and changed rows.
+
+For databases, start with this choice:
+
+| Compare | Query-based connectors | CDC database connectors |
+|---|---|---|
+| Gateway | No ingestion gateway | Uses an ingestion gateway for the standard CDC architecture |
+| Staging | No staging volume | Stages captured changes in a Unity Catalog volume |
+| Ingestion timing | Runs on a schedule | Captures source changes continuously, then applies them on the ingestion pipeline schedule |
+| Change history | Reads the latest row state available to each query. It does not capture intermediate states between runs | Captures intermediate changes recorded by the source change log |
+| Source compatibility | Works with a broader set of database sources, including sources without CDC support | Requires a supported CDC source and source-side CDC configuration |
+| Source impact | Queries source tables directly, which adds source load and can result in slower queries | Reads the source change log instead of repeatedly querying source tables |
+
+## Supported database sources
+
+CDC connectors are available for MySQL, PostgreSQL, SQL Server, and Oracle. Direct query-based connections support Oracle, Teradata, SQL Server, MySQL, MariaDB, and PostgreSQL. Query-based ingestion through a foreign catalog supports Lakehouse Federation data sources.
+
+The screenshots in both walkthroughs show SQL Server. Other supported database connectors follow the same overall workspace workflow. Source preparation, authentication methods, and available settings vary by connector, so check the documentation for your database before you start. The CDC walkthrough uses the standard gateway-based architecture. SQL Server also supports integrated CDC with a single pipeline, which is outside this walkthrough.
+
+## Build an ingestion pipeline
+
+- **[Change data capture (CDC)](/docs/03-data-access-etl/managed-connectors/cdc):** create a database connection, gateway, and ingestion pipeline, then validate the source and select tables to ingest.
+- **[Query-based ingestion](/docs/03-data-access-etl/managed-connectors/query-based):** query a database incrementally with a cursor column and load the result into Unity Catalog.
+
+## Video tutorials
+
+### SQL Server change data capture (CDC)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/g1srOFsD59I" title="Ingest SQL Server data with Lakeflow Connect CDC"></iframe>
+
+### Salesforce
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/neH6vJv8AbE" title="Ingest Salesforce data with Lakeflow Connect"></iframe>
+
+### SharePoint
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YbB8CGMfJl4" title="Ingest SharePoint data with Lakeflow Connect"></iframe>
+
+### ServiceNow
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/436IaP-R8SM" title="Ingest ServiceNow data with Lakeflow Connect"></iframe>
+
+## Deploy with DABs
+
+Use a Declarative Automation Bundle when the pipeline should be version-controlled and repeatable across environments.
+
+- **[DABs definition](/docs/03-data-access-etl/managed-connectors/dabs-definition):** define and deploy a gateway and ingestion pipeline as code.
+
+## Next
+
+- **Do next:** [Change data capture (CDC)](/docs/03-data-access-etl/managed-connectors/cdc)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Lakeflow Connect database connectors](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/cdc-overview)

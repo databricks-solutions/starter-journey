@@ -1,0 +1,160 @@
+---
+sidebar_label: Change data capture (CDC)
+description: Ingest database changes into Unity Catalog with a Lakeflow Connect gateway and ingestion pipeline.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# Change data capture (CDC)
+
+> **You'll ingest** database tables into Unity Catalog with a CDC gateway and ingestion pipeline in ~15 min.
+>
+> **Prereqs:** [Databases and SaaS ingestion](/docs/03-data-access-etl/managed-connectors), [managed database connector requirements](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/cdc-overview)
+
+## The big picture
+
+This walkthrough creates the standard CDC architecture. A gateway runs continuously on classic compute and writes source changes to a Unity Catalog staging volume. A scheduled serverless ingestion pipeline applies those changes to destination streaming tables.
+
+The screenshots show a SQL Server setup. Other supported CDC database connectors follow the same overall workflow, but source preparation, authentication methods, and available settings vary by connector. Follow the source setup documentation for your database.
+
+## Before you start
+
+You need:
+
+- A supported source database configured for CDC according to its connector documentation.
+- A network path from classic compute in the workspace to the source database.
+- Permission to create a Unity Catalog connection, or `USE CONNECTION` on an existing one.
+- Permission to create the gateway compute, destination tables, and staging volume.
+
+Choose an authentication method supported by your database. The screenshots use a username and password. Use an existing connection instead if your organization manages source credentials centrally.
+
+## Create the CDC pipeline
+
+<StepGuide
+  description="Create the connection, gateway, and ingestion pipeline, then choose the source and destination."
+  minutes={15}
+  idPrefix="cdc-step"
+  referenceHref="https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/cdc-overview"
+  referenceLabel="Managed database connectors (Databricks docs)">
+
+<Step>
+
+In the Databricks workspace, open **Data Ingestion**, then select your database source under Databricks connectors. This example selects **SQL Server**.
+
+<StepImage src="/img/lakeflow-connect-cdc/1.png" alt="Data Ingestion page with SQL Server selected under Databricks connectors" />
+
+</Step>
+
+<Step>
+
+On the **Connection** page, click **Create connection**.
+
+<StepImage src="/img/lakeflow-connect-cdc/2.png" alt="SQL Server ingestion wizard with the Create connection button" />
+
+</Step>
+
+<Step>
+
+Choose an authentication method and enter the required connection details. This example uses **Username and password** for SQL Server. Click **Create connection**.
+
+<StepImage src="/img/lakeflow-connect-cdc/3.png" alt="Create a SQL Server connection dialog with username, password, host, and port fields" />
+
+</Step>
+
+<Step>
+
+Select **Change data capture**. Name the ingestion pipeline and choose an event log catalog and schema. Name the ingestion gateway and choose its staging catalog and schema, then click **Create pipelines and continue**.
+
+<StepImage src="/img/lakeflow-connect-cdc/4.png" alt="SQL Server ingestion setup with change data capture selected and pipeline and gateway settings configured" />
+
+</Step>
+
+<Step>
+
+Expand the source database and schema. Select the tables that you want to ingest, then click **Next**.
+
+<StepImage src="/img/lakeflow-connect-cdc/5.png" alt="SQL Server source selection with customers and orders selected" />
+
+</Step>
+
+<Step>
+
+Select the destination catalog and schema, then click **Save and continue**.
+
+<StepImage src="/img/lakeflow-connect-cdc/6.png" alt="CDC destination selection with the dev catalog and sql-server-cdc schema selected" />
+
+</Step>
+
+<Step>
+
+On **Database setup**, click **Validate**. This checks the source support objects, CDC configuration, and connector permissions.
+
+<StepImage src="/img/lakeflow-connect-cdc/7.png" alt="SQL Server database setup page with the Validate button" />
+
+</Step>
+
+<Step>
+
+Confirm that every check passes and the database reports **Validation successful**, then click **Next**.
+
+<StepImage src="/img/lakeflow-connect-cdc/8.png" alt="SQL Server database setup showing successful validation for support objects, CDC, and permissions" />
+
+</Step>
+
+<Step>
+
+Create a schedule for the ingestion pipeline based on your data freshness requirements. Add notifications if needed, then click **Save and run pipeline**.
+
+:::warning
+The schedule controls the ingestion pipeline. Do not stop the gateway. It must run continuously so it captures changes before the source removes them.
+:::
+
+<StepImage src="/img/lakeflow-connect-cdc/9.png" alt="CDC schedules and notifications page with an hourly schedule and Save and run pipeline button" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+<StepGuide
+  eyebrow="Verify"
+  description="Confirm the first ingestion update completed and the gateway is still running."
+  minutes={2}
+  idPrefix="cdc-verify-step">
+
+<Step>
+
+Open the ingestion pipeline in **Jobs & Pipelines**. Confirm the run is **Completed**, the selected streaming tables have green status indicators, and **Gateway status** is **Running**.
+
+<StepImage src="/img/lakeflow-connect-cdc/10.png" alt="Completed CDC ingestion pipeline with customers and orders streaming tables and a running gateway" />
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>Database validation fails</summary>
+
+Expand the failed validation group and use **Complete configuration** to see what the source is missing. Common causes include missing support objects, CDC or change tracking that is not enabled, and insufficient permissions for the connection user. The exact checks depend on the connector.
+</details>
+
+<details>
+<summary>The gateway cannot reach the source database</summary>
+
+The gateway runs on classic compute in the workspace network. Check routing, private connectivity, firewall rules, and the database port before changing pipeline settings.
+</details>
+
+<details>
+<summary>The gateway was stopped</summary>
+
+Restarting the gateway does not recover change data that the source already removed. If the source retention window passed, run a full refresh for the affected tables after the gateway is healthy.
+</details>
+
+## Next
+
+- **Do next:** [Query-based ingestion](/docs/03-data-access-etl/managed-connectors/query-based)
+- **Learn why:** [Databases and SaaS ingestion](/docs/03-data-access-etl/managed-connectors)
+- **Reference:** [Managed database connectors](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/cdc-overview)

@@ -479,3 +479,42 @@ a:hover {
 .navbar .DocSearch-Button {
   border-radius: 8px;
 }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE FIXES
+   ═══════════════════════════════════════ */
+
+@media (max-width: 996px) {
+  /* The navbar's backdrop-filter makes it the containing block for the fixed
+     mobile sidebar, so its height: 100% collapsed to the 4.25rem navbar height
+     and clipped the links. Anchor it to the viewport. */
+  .navbar-sidebar {
+    height: 100vh;
+  }
+  /* .navbar-sidebar__items is the horizontal dual-panel slider. A vertical
+     overflow context here clips the translated docs panel, so only size it to
+     the viewport and let each inner panel scroll on its own. */
+  .navbar-sidebar__items {
+    height: calc(100vh - var(--ifm-navbar-height));
+  }
+  /* The visible panel is .navbar-sidebar__item. It inherits the dark navbar
+     shell, which leaves menu text unreadable in light theme, so give the panel
+     itself a theme-aware background. */
+  .navbar-sidebar__item {
+    overflow-y: auto;
+    background: var(--ifm-background-color);
+  }
+  .navbar-sidebar .menu__link,
+  .navbar-sidebar .navbar__link,
+  .navbar-sidebar .navbar-sidebar__back {
+    color: var(--ifm-font-color-base);
+  }
+
+  /* Raw iframe video embeds ship a fixed 560px width. Cap them to the content
+     width and hold the 16:9 ratio. Desktop keeps its dimensions above 996px. */
+  .markdown iframe {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}

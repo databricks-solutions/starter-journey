@@ -1,0 +1,131 @@
+---
+sidebar_label: Dashboards
+description: Build and publish the Bakehouse Franchise Performance dashboard on the franchise_sales_metrics metric view.
+---
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+import PromptBlock from '@site/src/components/PromptBlock';
+
+# Dashboards
+
+> **You'll build and publish** the Bakehouse Franchise Performance dashboard on your metric view in ~15 min.
+>
+> **Prereqs:** [Metric Views](/docs/05-genie-ontology/metric-views)
+
+## The big picture
+
+A dashboard is how most people see the data. This one reads the `franchise_sales_metrics` metric view, so its KPI cards and charts show the same numbers you validated on the previous page. No copied SQL, no second definition of revenue.
+
+## Build the dashboard
+
+<StepGuide
+  description="Create a dashboard on the metric view, let Genie Code build the widgets, then publish."
+  minutes={15}
+  idPrefix="dashboard-step"
+  referenceHref="https://docs.databricks.com/aws/en/dashboards/tutorials/create-dashboard"
+  referenceLabel="Create a dashboard (Databricks docs)">
+
+<Step>
+
+In the sidebar, click **Dashboards**, then click **Create dashboard** in the upper-right corner.
+
+<StepImage src="/img/unified-dashboards/1.png" alt="Dashboards page with the Create dashboard button in the upper-right corner" />
+
+</Step>
+
+<Step>
+
+Rename the dashboard to `Bakehouse Franchise Performance` using the title field in the upper-left corner.
+
+<StepImage src="/img/unified-dashboards/2.png" alt="New dashboard with the title renamed to Bakehouse Franchise Performance and the Create a dashboard with Genie panel" />
+
+</Step>
+
+<Step>
+
+Open the **Data** tab and click **Add data**. In the Add data from Unity Catalog dialog, browse to `starterjourney_catalog` > `bakehouse_gold`, select `franchise_sales_metrics`, then click **Add**. The dataset picks up the measures and fields defined in the metric view.
+
+<StepImage src="/img/unified-dashboards/3.png" alt="Add data from Unity Catalog dialog with franchise_sales_metrics selected under bakehouse_gold" />
+
+</Step>
+
+<Step>
+
+On the dashboard page, use the **Create a dashboard with Genie** prompt box. Paste this prompt:
+
+<PromptBlock>
+Build a one-page dashboard from the franchise_sales_metrics dataset. Add KPI counter cards for Total Sales, Order Count, and Avg Order Value. Add a line chart of Total Sales by Sales Date. Add a bar chart of Total Sales by Franchise and a bar chart of Total Sales by Product. Add a date range filter on Sales Date and a filter on Franchise. Lay it out cleanly on a single page.
+</PromptBlock>
+
+<StepImage src="/img/unified-dashboards/4.png" alt="Create a dashboard with Genie prompt box on the dashboard page with the build prompt pasted" />
+
+</Step>
+
+<Step>
+
+Review the widgets Genie Code generates. When it finishes, confirm every widget uses the `franchise_sales_metrics` dataset and the expected measure or field.
+
+<StepImage src="/img/unified-dashboards/5.png" alt="Generated KPI cards, line chart, and bar charts bound to franchise_sales_metrics with the Genie Code panel showing created widgets" />
+
+</Step>
+
+<Step>
+
+Adjust widget titles and layout if you want to.
+
+</Step>
+
+<Step>
+
+Click **Publish** in the upper-right corner to publish the dashboard.
+
+<StepImage src="/img/unified-dashboards/6.png" alt="Published Bakehouse Franchise Performance dashboard with the Publish button in the upper-right corner" />
+
+</Step>
+
+<Step>
+
+Open **Share**. Add your audience (for example the `data-analysts-starter-journey` group) with a permission level, then set **Sharing settings** to control whose credentials run the queries, and copy the link.
+
+- **Only people with access can view**: each viewer sees data through their own Unity Catalog permissions. Use this when row or column rules must apply per viewer.
+- **Embed your credentials**: viewers see data through your permissions. Use this only when the audience should not need direct access to the tables.
+
+:::warning
+Embedding your credentials lets viewers see data you can see, even if they have no direct access to the underlying tables. Keep "Only people with access can view" when viewer-level access must be enforced.
+:::
+
+<StepImage src="/img/unified-dashboards/7.png" alt="Sharing dialog for Bakehouse Franchise Performance with the data-analysts-starter-journey group, Sharing settings, and Copy link" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+- The Total Sales, Order Count, and Avg Order Value cards match the metric-view validation query from the previous page.
+- The franchise bar chart's top franchise is the one you'll confirm with Genie next.
+
+## Where people trip
+
+<details>
+<summary>The Create a dashboard with Genie panel is missing</summary>
+
+Genie Code needs partner-powered AI features enabled for the account and workspace. Without it, build the widgets manually from the dataset.
+</details>
+
+<details>
+<summary>A widget runs its own SQL instead of the metric view</summary>
+
+Open the widget's dataset. It should be `franchise_sales_metrics`, not an ad hoc SQL query. Rebind it so every widget reads the governed metric view.
+</details>
+
+<details>
+<summary>Numbers disagree with the metric view</summary>
+
+Check for a dashboard-level filter that narrows the data. Remove it or align it with the metric view's definition.
+</details>
+
+## Next
+
+- **Do next:** [Genie Agents](/docs/05-genie-ontology/genie-agents)
+- **Learn why:** [Genie Ontology](/docs/05-genie-ontology/)
+- **Reference:** [Use Genie Code for dashboard authoring](https://docs.databricks.com/aws/en/dashboards/manage/dashboard-agent)

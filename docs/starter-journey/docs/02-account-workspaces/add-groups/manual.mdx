@@ -1,0 +1,97 @@
+---
+sidebar_label: Manual
+description: Add groups to Databricks manually through the account console.
+---
+
+import { StepGuide, Step } from '@site/src/components/StepGuide';
+
+# Add Groups: Manual
+
+> **You'll create** groups in the Databricks account console and assign users in ~5 min.
+>
+> **Prereqs:** [Add Users](/docs/02-account-workspaces/add-users/manual), [Groups](/docs/04-governance/groups)
+
+## The big picture
+
+Account-level groups with members assigned, ready to grant permissions against in any workspace.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- Users already added (see [Add Users](/docs/02-account-workspaces/add-users/manual)).
+
+## Steps
+
+<StepGuide
+  description="Create account-level groups in the console and assign the users you already added. Repeat for the full set your org needs."
+  minutes={5}
+  referenceHref="https://docs.databricks.com/aws/en/admin/users-groups/"
+  referenceLabel="Manage groups (Databricks docs)">
+
+<Step>
+
+Open the account console for your cloud
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+</Step>
+
+<Step>
+
+In the left panel, click **User management**. On the **Groups** tab, click **Add group**, enter the group name (for example, `data-engineers` or `dev-ws-admins`), then click **Add Group**.
+
+</Step>
+
+<Step>
+
+Click the group you just made, click **Add members**, pick the users you added earlier, then click **Add**.
+
+</Step>
+
+<Step>
+
+Repeat for each group your org needs. The [standard data personas](/docs/04-governance/groups) list the recommended ones.
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Go to **User management** > **Groups**.
+
+</Step>
+
+<Step>
+
+Open each group and confirm the right people are in it.
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>Group not visible in a workspace</summary>
+
+An account-level group has to be assigned to a workspace before it shows up there. In the account console, open the workspace settings and add the group under **Permissions**.
+</details>
+
+<details>
+<summary>Cannot add a user to a group</summary>
+
+The user has to exist at the account level first. Check that they appear under **User management** > **Users** before you try to add them.
+</details>
+
+## Next
+
+- **Do next:** [Add Groups: SCIM](/docs/02-account-workspaces/add-groups/scim)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Manage groups](https://docs.databricks.com/aws/en/admin/users-groups/)
