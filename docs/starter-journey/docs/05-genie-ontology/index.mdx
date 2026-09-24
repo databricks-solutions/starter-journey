@@ -1,57 +1,63 @@
 ---
 sidebar_position: 0
-sidebar_label: 5. Genie Ontology
-description: Define a KPI once as a Unity Catalog metric view, then serve it through an AI/BI dashboard and a Genie Agent.
+sidebar_label: Genie Ontology
+description: Route business questions to governed dashboards and Genie Agents with domains, subdomains, and pages.
 ---
 import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import Button from '@site/src/components/Button';
 
 # 5. Genie Ontology
 
-> **You'll understand** how one governed metric view feeds both a dashboard and a Genie Agent, so every surface returns the same number.
+> **You'll understand** how Genie Ontology routes a broad business question to the right governed analytics surface in ~10 min.
 >
-> **Prereqs:** [7. Build the first ETL pipeline](/docs/03-data-access-etl/build-first-pipeline/), [8. Query and Explore](/docs/03-data-access-etl/query-and-explore), [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+> **Prereqs:** [Unity Catalog Setup](/docs/04-governance/unity-catalog-setup), [Build the first ETL pipeline](/docs/03-data-access-etl/build-first-pipeline/), [Query and Explore](/docs/03-data-access-etl/query-and-explore)
 
-## The call
+Use an ontology when one broad question could belong to several dashboards or agents.
+The ontology gives Genie a routing tree, so it can find the right governed surface instead of making the user choose one first.
 
-Define the number once, then present it two ways.
+```text
+User question
+  -> Domain
+    -> optional Subdomain
+      -> Page
+        -> Dashboard or Genie Agent
+```
 
-Your silver tables are not the finish line. Business users need consistent numbers, and they need to reach those numbers without writing SQL. So define each KPI one time as a Unity Catalog metric view. A dashboard gives people a fixed view they can trust. A Genie Agent answers the follow-up questions a dashboard can't anticipate. Both read the same metric view, so the number cannot drift between them.
+Think of the domain as the front desk.
+It reads the question, sends broad overview requests to a dashboard page, and sends detailed analysis to a page backed by a Genie Agent.
 
 <StarterJourneyProgress currentLevel={4}/>
 
-![Databricks Data Intelligence Platform diagram with four layers highlighted: tables in purple, business semantic layer in red, data warehousing in orange, and AI/BI in green.](/img/unified-analytics.jpg)
+## The Bakehouse routing tree
 
-| Highlight | Layer | What it is |
-|---|---|---|
-| Purple | Tables | The medallion bronze and silver tables your pipeline produced. Every query in the serving layer reads from here. |
-| Red | Business semantic layer | Where you define KPIs once, on top of the tables. Unity Catalog metric views live here. |
-| Orange | Data warehousing | Every AI/BI tool reaches the data through a SQL warehouse. The warehouse is the single query gateway. |
-| Green | AI/BI | Dashboards and Genie. The surfaces business users interact with. Both read the metric view through the warehouse. |
+The Bakehouse example uses one direct page for an executive overview and one subdomain for deeper questions:
 
-## Why define it once
+```text
+Domain: Bakehouse Sales Operations
+├── Page: Franchise Performance at a Glance
+│   └── Bakehouse Franchise Performance dashboard
+└── Subdomain: Sales Analytics
+    └── Page: Sales Q&A Assistant
+        └── Bakehouse Sales Assistant Genie Agent
+```
 
-- One object, one number. Dashboards, Genie, and SQL all read the same metric view, so a KPI can't come back different per tool.
-- Governed in the catalog. Access, lineage, and certification travel with the metric because it's a Unity Catalog object.
-- Short debug path. When a number looks wrong, you check one definition, not every dashboard and prompt that copied it.
+Questions that ask for an overview, snapshot, or visual comparison stop at the dashboard page.
+Questions that ask for a ranking, a computed comparison, or analysis of a specific franchise continue into Sales Analytics and reach the Genie Agent.
 
-:::tip
-For the full tour of metric views, why they exist and how dimensions, measures, and queries fit together, read this deck.
-
-<Button label="Deck - Metric Views" link={useBaseUrl('/pdfs/UC-Metric-Views.pdf')} />
-:::
+Both surfaces use `starterjourney_catalog.bakehouse_gold.franchise_sales_metrics`.
+That shared metric view keeps Total Sales, Order Count, and Avg Order Value consistent after the ontology chooses a destination.
 
 ## In this section
 
 | Page | What you'll do |
 |---|---|
+| [Metadata Generation](/docs/05-genie-ontology/metadata-generation) | Review the planned guidance for generating metadata. |
 | [Metric Views](/docs/05-genie-ontology/metric-views) | Define `franchise_sales_metrics` once so every tool returns the same number. |
 | [Dashboards](/docs/05-genie-ontology/dashboards) | Build and publish the Bakehouse Franchise Performance dashboard on that metric view. |
 | [Genie Agents](/docs/05-genie-ontology/genie-agents) | Let business users ask the Bakehouse Sales Assistant questions in plain English. |
+| [Domains, subdomains, and pages](/docs/05-genie-ontology/domains-subdomains-pages) | Build the routing tree, publish it, and test both routes in Genie One. |
 
 ## Next
 
-- **Do next:** [Metric Views](/docs/05-genie-ontology/metric-views)
+- **Do next:** [Metadata Generation](/docs/05-genie-ontology/metadata-generation)
 - **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
-- **Reference:** [Unity Catalog metric views](https://docs.databricks.com/aws/en/uc-semantics/metric-views/)
+- **Reference:** [Discover data and AI assets](https://docs.databricks.com/aws/en/discover/)
