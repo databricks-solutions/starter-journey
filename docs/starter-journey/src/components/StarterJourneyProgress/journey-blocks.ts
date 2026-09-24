@@ -19,7 +19,7 @@ export const JOURNEY_BLOCKS: JourneyBlock[] = [
   { id: "governance", label: "Governance", level: 3, icon: "shield" },
   { id: "genie-ontology", label: "Genie Ontology", level: 4, icon: "bot" },
   { id: "data-science", label: "Data science", level: 5, icon: "cpu" },
-  { id: "operations", label: "Operations", level: 6, icon: "git-branch" },
+  { id: "operations", label: "Operations and CI/CD", level: 6, icon: "git-branch" },
 ];
 
 export const MAX_LEVEL = 6;

@@ -188,7 +188,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '7. Operations',
+      label: '7. Operations and CI/CD',
       collapsed: true,
       link: {type: 'doc', id: '07-operations/index'},
       items: [],
