@@ -1,0 +1,86 @@
+---
+sidebar_label: Manual
+description: Add users to Databricks manually through the account console.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# Add Users: Manual
+
+> **You'll add** users to the Databricks account through the console in ~2 min per user.
+>
+> **Prereqs:** [Account Console](/docs/01-introduction/foundations/account-console), account-admin privileges
+
+## The big picture
+
+Users registered at the account level, ready to assign to any workspace.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+
+## Steps
+
+<StepGuide
+  description="Register users at the account level through the console. You assign them to workspaces and groups later."
+  minutes={2}
+  referenceHref="https://docs.databricks.com/aws/en/admin/users-groups/"
+  referenceLabel="Add users to your account (Databricks docs)">
+
+<Step>
+
+Open the account console for your cloud
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+</Step>
+
+<Step>
+
+In the left panel, click **User management**. On the **Users** tab, click **Add user**, enter the user's **email** and **full name**, then click **Add**. The user now shows up in the Users list.
+
+<StepImage src="/img/account-users.png" placeholder="Account console user management screen" />
+
+</Step>
+
+<Step>
+
+Add everyone who needs access. You assign them to workspaces and groups in the next steps, so for now you are just getting the names into the account.
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+<StepGuide eyebrow="Verify" idPrefix="verify">
+
+<Step>
+
+Go to **User management** > **Users**.
+
+</Step>
+
+<Step>
+
+Check that each new user is in the list with the right email.
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>User already exists error</summary>
+
+The email is already in the account. Search the Users tab for it: a previous admin may have added that person by hand, or a SCIM sync already pulled them in.
+</details>
+
+## Next
+
+- **Do next:** [Add Users: SCIM](/docs/02-account-workspaces/add-users/scim)
+- **Learn why:** [Account Console foundations](/docs/01-introduction/foundations/account-console)
+- **Reference:** [Add users to your account](https://docs.databricks.com/aws/en/admin/users-groups/)

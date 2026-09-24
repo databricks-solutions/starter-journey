@@ -1,0 +1,127 @@
+---
+sidebar_label: Set admin group
+description: Transfer metastore ownership to a dedicated admin group in the account console.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# Set the metastore admin group
+
+> **You'll transfer** metastore ownership to a dedicated admin group in ~5 min.
+>
+> **Prereqs:** [Plan your groups](/docs/04-governance/groups), with a metastore admin group already created (for example `metastore-admins`)
+
+## The big picture
+
+The metastore is the top-level container for everything in Unity Catalog.
+Whoever owns it can manage privileges and transfer ownership of any object inside it.
+Give that ownership to a group, not a person, and it survives anyone leaving.
+
+## Prerequisites
+
+- Account-admin access to the Databricks account console.
+- A metastore admin group already created (see [Plan your groups](/docs/04-governance/groups)).
+
+:::danger
+The metastore owner must be a group.
+Assign an individual or a service principal, and the day that person leaves or that principal is deleted, governance operations stop.
+:::
+
+## Steps
+
+<StepGuide
+  description="Follow along in the account console. Every step links to itself, so you can send someone straight to the one they are stuck on."
+  minutes={5}
+  referenceHref="https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/"
+  referenceLabel="Manage metastore privileges (Databricks docs)">
+
+<Step>
+
+Sign in to the account console for your cloud with account-admin credentials:
+
+- [AWS](https://accounts.cloud.databricks.com)
+- [Azure](https://accounts.azuredatabricks.net)
+- [GCP](https://accounts.gcp.databricks.com)
+
+In the left sidebar, click **Catalog**.
+
+<StepImage src="/img/set-admin-group/1.png" alt="Account console home with Catalog in the left sidebar" />
+
+</Step>
+
+<Step>
+
+Your metastores are listed by region.
+Click the one you want to change.
+
+<StepImage src="/img/set-admin-group/2.png" alt="Metastore list in the account console" />
+
+</Step>
+
+<Step>
+
+On the **Configuration** tab, find the **Metastore Admin** section.
+It probably shows a system user or one person today.
+Click **Edit**.
+
+<StepImage src="/img/set-admin-group/3.png" alt="Metastore Admin section with the Edit button" />
+
+</Step>
+
+<Step>
+
+In the dialog, select your metastore admin group (for example `metastore-admins`) as the admin.
+Click **Save**.
+
+<StepImage src="/img/set-admin-group/4.png" alt="Edit Metastore Admin dialog with a group selected" />
+
+</Step>
+
+<Step>
+
+Back on the Configuration tab, confirm **Metastore Admin** now shows your group.
+Under **Workspace assignment**, turn on automatic assignment so new workspaces in this region attach to the metastore automatically.
+
+<StepImage src="/img/set-admin-group/5.png" alt="Metastore admin set to a group with workspace auto-assignment enabled" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+Verification happens in a workspace, not the account console.
+
+1. Open a workspace attached to the metastore.
+2. In the left sidebar, click **Catalog**, then the gear icon.
+3. Confirm the metastore name shows at the bottom of the menu, and open **External locations**.
+
+<StepImage src="/img/set-admin-group/6.png" alt="Catalog gear menu showing the metastore and External locations" />
+
+The **Create external location** button is active, and you can see existing external locations, credentials, and connections.
+That confirms your group has metastore admin rights.
+
+<StepImage src="/img/set-admin-group/7.png" alt="External Data page with external locations visible and the create button active" />
+
+## Where people trip
+
+<details>
+<summary>Cannot change the metastore owner</summary>
+
+Only the current owner or an account admin can transfer ownership.
+Confirm you have account-admin privileges.
+If the current owner already left the organization, contact Databricks support.
+</details>
+
+<details>
+<summary>External locations tab is empty</summary>
+
+An empty External locations or Credentials tab almost always means you are not a member of the metastore admin group.
+Check your group membership before going further.
+</details>
+
+## Next
+
+- **Do next:** [UC assets ownership](/docs/04-governance/uc-assets-ownership)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Manage metastore privileges](https://docs.databricks.com/aws/en/data-governance/unity-catalog/manage-privileges/)

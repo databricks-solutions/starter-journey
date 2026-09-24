@@ -1,0 +1,34 @@
+---
+sidebar_position: 0
+sidebar_label: 3. Infra Setup
+description: Set up workspaces, users, groups, metastore administration, and SSO for your Databricks deployment.
+---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
+
+# 3. Infra Setup
+
+> **You'll deploy** the core Databricks infrastructure (workspaces, identity, and governance) in this section.
+>
+> **Prereqs:** [Before you Start](/docs/01-introduction/foundations)
+
+## The big picture
+
+Do this part in order, and do it before anyone starts loading data. Skip the workspace layout, central identity, and metastore ownership now and you will be untangling them later, with real users and real tables in the way. The pieces below build on each other, so each section assumes the last one is done.
+
+<StarterJourneyProgress currentLevel={0}/>
+
+## In this section
+
+Work through these in order. Each one assumes the previous is done.
+
+- **[Create Workspaces](/docs/02-account-workspaces/create-workspaces)**: deploy workspaces on AWS, Azure, or GCP, by hand or with Terraform.
+- **[Add Users](/docs/02-account-workspaces/add-users/manual)**: register users by hand or through SCIM provisioning.
+- **[Add Groups](/docs/02-account-workspaces/add-groups/manual)**: create groups that map to data personas and assign users to them.
+- **[Set admin group](/docs/02-account-workspaces/metastore-admins/set-admin-group)**: assign metastore administration to a group instead of one person.
+- **[Activate SSO](/docs/02-account-workspaces/activate-sso)**: wire single sign-on to your identity provider.
+
+## Next
+
+- **Do next:** [Create Workspaces](/docs/02-account-workspaces/create-workspaces)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Databricks administration overview](https://docs.databricks.com/aws/en/admin/)

@@ -1,0 +1,37 @@
+---
+sidebar_position: 1
+---
+
+# 1. Get Started
+
+Starter Journey walks you through setting up Databricks the right way - from an empty account to a production-ready environment.
+
+## All about data
+
+Get the data foundation right first. Every dashboard, ML model, and agent reads from the same tables. When those tables are wrong, everything downstream is wrong: reports mislead, models train on noise, agents hallucinate.
+
+BI, ML, and GenAI have different requirements from that data, but all three share the same platform and the same catalog. Fix the foundation once and it serves all three.
+
+This guide is the minimum steps, in order, from an empty account to a working production environment.
+
+## The big picture
+
+Each section starts where the last one left off, taking you from an empty Databricks account to a production-ready environment:
+
+| # | Section | What you'll have when done |
+|---|---|---|
+| 2 | **Before you start**<br/>- [Foundations](/docs/01-introduction/foundations/)<br/>- [Cloud tenant ready](/docs/01-introduction/cloud-tenant-ready/) | A clear understanding of workspaces, Unity Catalog, and your cloud tenant model |
+| 3 | **[Infra setup](/docs/02-account-workspaces/)** | Workspaces provisioned, users and groups added, SSO activated |
+| 4 | **[Cost monitoring](/docs/02-account-workspaces/workspace-settings/cost-monitoring/)** | Day-zero visibility: imported usage dashboard, optional packaged dashboards, tags, and account budgets |
+| 5 | **[Governance strategy](/docs/04-governance/)** | Group-based Unity Catalog ownership and a catalog/schema structure that fits your organization's size |
+| 6 | **[Access your data](/docs/03-data-access-etl/)** | Cloud storage connected, external systems accessible via managed connectors |
+| 7 | **[Build the first ETL pipeline](/docs/03-data-access-etl/build-first-pipeline/)** | A working medallion pipeline (bronze → silver → gold) |
+| 8 | **[Query and explore](/docs/03-data-access-etl/query-and-explore)** | A dedicated serverless SQL warehouse and a saved daily franchise revenue query |
+| 9 | **[Unified analytics](/docs/05-genie-ontology/)**<br/>- [Metric Views](/docs/05-genie-ontology/metric-views)<br/>- [Dashboards](/docs/05-genie-ontology/dashboards)<br/>- [Genie Agents](/docs/05-genie-ontology/genie-agents) | A governed franchise_sales_metrics metric view, a published dashboard, and a shared Genie Agent, all returning the same numbers |
+| 10 | **[Predictive analytics](/docs/06-data-science/)** | Models trained, saved to Unity Catalog, and scored in batch |
+| 11 | **Agents** | AI agents built on your data |
+| 12 | **[Orchestration and Jobs](/docs/03-data-access-etl/orchestration/)** | The pipeline running on a schedule with retries and notifications |
+| 13 | **[Data access control](/docs/04-governance/abac/)** | Row, column, and object-level access controls on your catalog |
+| 14 | **[CI/CD and DevOps](/docs/07-operations/)** | Projects version-controlled and deployed with DABs and CI/CD |
+
+Work through the sidebar in order, or jump straight to the topic you need.

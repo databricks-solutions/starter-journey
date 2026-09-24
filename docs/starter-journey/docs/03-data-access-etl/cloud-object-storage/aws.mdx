@@ -1,0 +1,374 @@
+---
+sidebar_label: AWS - S3
+description: Create an external location with the automatic setup option to connect Databricks to an existing or new Amazon S3 bucket, with optional serverless private connectivity.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# AWS S3
+
+> **You'll create** an external location that points Databricks at an S3 bucket using the automatic setup option (Databricks provisions the IAM role and storage credential for you) in ~10 min. Need private connectivity from serverless? Add a network connectivity configuration. Need a bucket first? See the [bonus at the end](#bonus-create-an-s3-bucket).
+>
+> **Prereqs:** [Cloud Object Storage overview](/docs/03-data-access-etl/cloud-object-storage), AWS account with IAM and S3 permissions, and a Databricks metastore admin or account admin
+
+## Existing or new bucket
+
+Unity Catalog reaches S3 through an **external location** — a named object that points at an `s3://` path through a storage credential (an IAM role Databricks assumes). There are two reasons to create one:
+
+- **Access an existing S3 bucket with data.** When a bucket already holds data, point an external location at it so Unity Catalog can read (and optionally write) that data in place — usually to ingest it into Databricks. Mark the location read-only if you only need to read from it.
+- **Use a new bucket for Unity Catalog managed data.** Create a fresh S3 bucket for Unity Catalog to store managed tables and volumes, then point an external location (or a catalog's managed storage) at it.
+
+Either way, the setup below is the same. This page assumes the bucket already exists; if it doesn't, create one first with the [bonus](#bonus-create-an-s3-bucket).
+
+## The big picture
+
+An S3 bucket Databricks reaches through a Unity Catalog storage credential and external location. You will not hand-write an IAM policy: the **Set up Automatically** option connects to your AWS account, provisions the IAM role and storage credential for you, and you approve the role creation in AWS. If your workspace uses serverless private networking, the optional NCC part gives serverless compute a private endpoint to reach the bucket.
+
+## Permissions you need
+
+Check these before you start.
+
+### AWS
+
+- Ability to sign in to the AWS account that owns the bucket and create IAM roles. If you cannot create roles, the automatic setup offers a **Request approval** path so an AWS administrator can approve the role creation for you.
+
+### Databricks
+
+You need these Unity Catalog privileges. Metastore admins and account admins already have them. Workspace admin is not enough on its own.
+
+| Privilege | On | Why you need it |
+|---|---|---|
+| `CREATE STORAGE CREDENTIAL` | Metastore | The automatic setup creates the credential that wraps the IAM role. |
+| `CREATE EXTERNAL LOCATION` | Metastore | Create the path object. |
+
+If you are not a metastore admin, ask one to grant your group:
+
+```sql
+GRANT CREATE STORAGE CREDENTIAL, CREATE EXTERNAL LOCATION ON METASTORE TO `your-group`;
+```
+
+Creating a network connectivity configuration and attaching it to a workspace also needs **account admin**.
+
+## Create an external location
+
+The external location is the Unity Catalog object that points at the S3 bucket. The automatic setup provisions the IAM role and storage credential for you, so you only approve the role creation in AWS.
+
+<StepGuide
+  description="Create an external location with the automatic setup option and approve the IAM role in AWS."
+  minutes={5}
+  idPrefix="external-location-step"
+  referenceHref="https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/external-locations"
+  referenceLabel="Create an external location (Databricks docs)">
+
+<Step>
+
+In the Databricks workspace, click **Catalog** in the left sidebar, then click **Create** > **Create an external location**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step001.png" alt="Catalog page with the Create menu open and Create an external location highlighted" />
+
+</Step>
+
+<Step>
+
+On **Create a new external location**, select **Set up Automatically** and click **Next**. This connects to your AWS account and auto-creates the paired credential (IAM role) that gives access to the S3 path. (**Manual** is for advanced users who already have a storage credential or use non-S3 storage.)
+
+<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step002.png" alt="Create a new external location with Set up Automatically selected" />
+
+</Step>
+
+<Step>
+
+Give the external location a **name**, enter the **S3 bucket URL** (`s3://<bucket-name>`), and optionally check **Limit to read-only use** if this is source data you only read from. Click **Log in to AWS and create external location**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step003.png" alt="Set up Automatically form with external location name and S3 bucket URL" />
+
+</Step>
+
+<Step>
+
+Review the AWS resources Databricks will create (the IAM storage role) and click **Initiate external location creation**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step004.png" alt="Review AWS Resources dialog with Initiate external location creation" />
+
+</Step>
+
+<Step>
+
+On the AWS sign-in page, review the delegation request and click **Allow access**. If you don't have permission to create IAM roles, click **Request approval** to send the request to your AWS administrator instead. Databricks then provisions the role and returns you to the new external location.
+
+<StepImage src="/img/aws/object_storage_external_location/create_external_location/create_extenal_location_Step005.png" alt="AWS page allowing Databricks temporary access with the Allow access button" />
+
+</Step>
+
+</StepGuide>
+
+:::tip
+If this location holds source data you only read from and you didn't check **Limit to read-only use** during setup, mark it read-only afterward so a stray job cannot overwrite it. Follow [Mark an external location as read-only](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations#mark-an-external-location-as-read-only).
+:::
+
+## Configure network connectivity (NCC) for S3
+
+:::note
+This part is **optional**. You only need it when private connectivity from serverless is required — that is, the bucket is not open to the public internet and serverless compute must reach it over a private network. If your bucket allows access over the public internet, skip to [Verify](#verify).
+:::
+
+A network connectivity configuration (NCC) gives serverless compute an AWS PrivateLink endpoint to the S3 bucket. You create the NCC, add an S3 private endpoint rule, then attach the NCC to your workspace.
+
+<StepGuide
+  description="Create a network connectivity configuration with an S3 private endpoint rule and attach it to your workspace."
+  minutes={10}
+  idPrefix="ncc-step"
+  referenceHref="https://docs.databricks.com/aws/en/security/network/serverless-network-security/serverless-private-link"
+  referenceLabel="Configure private connectivity from serverless (Databricks docs)">
+
+<Step>
+
+In the [account console](https://accounts.cloud.databricks.com/), open **Security**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step001.png" alt="Account console with the Security section" />
+
+</Step>
+
+<Step>
+
+On the **Networking** tab, open **Network connectivity configurations**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step002.png" alt="Security Networking tab with Network connectivity configurations" />
+
+</Step>
+
+<Step>
+
+Click **Add Network Connectivity Configuration**. Give it a **name**, choose the **region** (the same region as your workspace), then click **Add**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step003.png" alt="Add network connectivity configuration dialog with a name and region" />
+
+</Step>
+
+<Step>
+
+The new NCC appears in the list. Click it to open it.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step004.png" alt="Network connectivity configurations list with the new NCC" />
+
+</Step>
+
+<Step>
+
+Open the **Private endpoint rules** tab and click **Add private endpoint rule**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step005.png" alt="NCC Private endpoint rules tab with Add private endpoint rule" />
+
+</Step>
+
+<Step>
+
+Open the **AWS resource type** dropdown.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step006.png" alt="Add private endpoint rule dialog with the AWS resource type dropdown" />
+
+</Step>
+
+<Step>
+
+Select **S3 bucket** and click **Add**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step007.png" alt="Resource type dropdown with S3 bucket selected" />
+
+</Step>
+
+<Step>
+
+Confirm the **Endpoint service** for your region's S3 (for example `com.amazonaws.us-west-2.s3`), enter the **S3 bucket names** that will use this PrivateLink (comma-separated), then click **Add**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step008.png" alt="Add private endpoint rule with the S3 endpoint service and bucket names" />
+
+</Step>
+
+<Step>
+
+Now attach the NCC to your workspace. In the account console, go to **Workspaces**, find your workspace, and open it.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step009.png" alt="Workspaces list with the target workspace" />
+
+</Step>
+
+<Step>
+
+On the workspace's **Configuration** tab, in the **Networking** section, click the edit (pencil) icon.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step010.png" alt="Workspace Configuration tab with the Networking section" />
+
+</Step>
+
+<Step>
+
+Open the **Network connectivity configuration** dropdown and select the NCC you created.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step011.png" alt="Network connectivity configuration dropdown with the NCC selected" />
+
+</Step>
+
+<Step>
+
+Click **Save**.
+
+<StepImage src="/img/aws/object_storage_external_location/s3_ncc/ncc_aws_Step012.png" alt="Workspace networking with the NCC selected and the Save button" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+Test the external location's connection to confirm everything is wired up. A green success status means the IAM role, the storage credential, and the external location all line up.
+
+<StepGuide
+  description="Test the external location's connection from Unity Catalog and confirm every check passes."
+  minutes={2}
+  idPrefix="verify-step"
+  referenceHref="https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/manage-external-locations"
+  referenceLabel="Manage external locations (Databricks docs)">
+
+<Step>
+
+In the Databricks workspace, open **Catalog**, then click **Connect** > **External locations** to open the External Data page.
+
+<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step001.png" alt="Catalog page with the Connect menu open and External locations highlighted" />
+
+</Step>
+
+<Step>
+
+On the **External Locations** tab, click the external location you created.
+
+<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step002.png" alt="External Locations list with the new external location" />
+
+</Step>
+
+<Step>
+
+On the location's **Overview** tab, click **Test connection** in the top-right corner.
+
+<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step003.png" alt="External location Overview tab with the Test connection button" />
+
+</Step>
+
+<Step>
+
+Confirm the dialog reports a success status for every check (read, list, write, delete, path, file events, assume role, self assume role, and external ID condition), then click **Done**.
+
+<StepImage src="/img/aws/object_storage_external_location/verify_connectivity/verify_connectivity_Step004.png" alt="Test connection dialog showing all checks succeeded and All Permissions Confirmed" />
+
+</Step>
+
+</StepGuide>
+
+## Where people trip
+
+<details>
+<summary>Set up Automatically fails because you can't create an IAM role</summary>
+
+The automatic setup needs permission to create an IAM role in your AWS account. If you don't have it, use **Request approval** on the AWS sign-in page so your AWS administrator can approve the role creation, then finish the flow.
+</details>
+
+<details>
+<summary>Test connection fails after creation</summary>
+
+The setup creates an IAM role whose trust policy is scoped to the Databricks account. Confirm you clicked **Allow access** in AWS and that the role finished provisioning. Re-run **Test connection** from the external location's Overview tab.
+</details>
+
+<details>
+<summary>External location creation fails with invalid URL</summary>
+
+The URL has to be `s3://<bucket-name>`. Confirm the bucket exists and the name is spelled correctly.
+</details>
+
+<details>
+<summary>Serverless compute cannot reach a private bucket</summary>
+
+A bucket that blocks public access is not reachable from serverless by default. Create a [network connectivity configuration](#configure-network-connectivity-ncc-for-s3) with an S3 private endpoint rule and attach it to your workspace.
+</details>
+
+## Bonus: Create an S3 bucket
+
+If you don't already have an S3 bucket, create one here first, then go back to [Create an external location](#create-an-external-location) and point it at the new bucket.
+
+<StepGuide
+  description="Create an S3 bucket to use as a landing zone or as Unity Catalog storage."
+  minutes={5}
+  idPrefix="bucket-step"
+  referenceHref="https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html"
+  referenceLabel="Create a bucket (AWS docs)">
+
+<Step>
+
+Sign in to the [AWS console](https://console.aws.amazon.com/).
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step001.png" alt="AWS console home" />
+
+</Step>
+
+<Step>
+
+Search for **S3** and select it.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step002.png" alt="AWS console search for S3" />
+
+</Step>
+
+<Step>
+
+On the **Buckets** page, click **Create bucket**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step003.png" alt="Amazon S3 Buckets page with the Create bucket button" />
+
+</Step>
+
+<Step>
+
+Under **General configuration**, keep **Bucket type** as **General purpose** and enter a globally unique **Bucket name** (lowercase letters, numbers, periods, and hyphens).
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step004.png" alt="Create bucket General configuration with General purpose selected and bucket name" />
+
+</Step>
+
+<Step>
+
+Leave **Object Ownership** as **ACLs disabled (recommended)**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step005.png" alt="Create bucket with the bucket name entered and Object Ownership set to ACLs disabled" />
+
+</Step>
+
+<Step>
+
+Under **Block Public Access settings for this bucket**, keep **Block all public access** checked.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step006.png" alt="Block Public Access settings with Block all public access checked" />
+
+</Step>
+
+<Step>
+
+Set **Bucket Versioning** to **Disable** (or enable it if you need version history) and leave **Default encryption** on **Server-side encryption with Amazon S3 managed keys (SSE-S3)**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step007.png" alt="Bucket Versioning disabled and default encryption set to SSE-S3" />
+
+</Step>
+
+<Step>
+
+Keep **SSE-S3** encryption, optionally set **Bucket Key** to **Enable**, then click **Create bucket**.
+
+<StepImage src="/img/aws/object_storage_external_location/create_bucket/create_bucket_Step008.png" alt="Default encryption SSE-S3 with Bucket Key enabled and the Create bucket button" />
+
+</Step>
+
+</StepGuide>
+
+## Next
+
+- **Do next:** [Managed connectors](/docs/03-data-access-etl/managed-connectors)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Create a storage credential and external location for S3](https://docs.databricks.com/aws/en/connect/unity-catalog/cloud-storage/s3/s3-external-location)

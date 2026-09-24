@@ -1,0 +1,146 @@
+---
+sidebar_label: Serverless
+description: Create a serverless Databricks workspace on GCP from the account console, with default storage and no VPC to manage.
+---
+
+import { StepGuide, Step, StepImage } from '@site/src/components/StepGuide';
+
+# GCP serverless workspace creation
+
+> **You'll create** a serverless Databricks workspace on GCP in ~10 min.
+>
+> **Prereqs:** [GCP account](/docs/01-introduction/cloud-tenant-ready/single-tenant-setup), [Databricks account console](/docs/01-introduction/foundations/account-console)
+
+## The big picture
+
+A running Databricks workspace where Databricks manages the compute and the storage.
+There is no VPC to size, no service account to wire up, and no cross-project trust to configure.
+You turn on a preview, fill in a short dialog, grant Google account permissions, and the workspace comes up ready to use.
+Start here for your first GCP workspace and for most new deployments.
+
+## Prerequisites
+
+- A Databricks account with account-admin privileges (GCP Marketplace subscription).
+- A GCP region where serverless workspaces are available.
+Deploy the workspace close to your data sources.
+
+## Steps
+
+<StepGuide
+  description="Follow along in the account console. Every step links to itself, so you can send someone straight to the one they are stuck on."
+  minutes={10}
+  referenceHref="https://docs.databricks.com/gcp/en/admin/account-settings-e2/workspaces.html"
+  referenceLabel="Databricks workspace administration on GCP (Databricks docs)">
+
+<Step>
+
+Go to the [Databricks account console](https://accounts.gcp.databricks.com) and log in.
+Check the account name in the top left and confirm you are in the account you mean to deploy into.
+
+<StepImage src="/img/gcp-serverless/1.png" alt="Databricks account portal log in screen with email field and Continue button" />
+
+</Step>
+
+<Step>
+
+In the left sidebar, open **Previews**.
+Find **Serverless Workspaces** and turn its toggle to **On**.
+
+This is what makes the serverless option appear in the create dialog.
+
+<StepImage src="/img/gcp-serverless/2.png" alt="Previews page in the GCP account console with the Serverless Workspaces public preview toggle set to On" />
+
+</Step>
+
+<Step>
+
+In the left sidebar, open **Workspaces**.
+Click **Create workspace** in the top right.
+
+<StepImage src="/img/gcp-serverless/3.png" alt="Workspaces page in the GCP account console listing existing workspaces and the Create workspace button in the top right" />
+
+</Step>
+
+<Step>
+
+In the **Create Workspace** dialog:
+
+- Enter a **Workspace name**.
+- Pick the **Region** to deploy into.
+You cannot change this later.
+- Choose a **Metastore** if one already exists in that region.
+This is optional.
+- Under **Storage and compute**, select **Use serverless compute with default storage**.
+- Click **Create**.
+
+<StepImage src="/img/gcp-serverless/4.png" alt="Create Workspace dialog showing workspace name, region, metastore, and the Use serverless compute with default storage option selected" />
+
+</Step>
+
+<Step>
+
+The workspace configuration page opens with the status **Running**.
+The metastore, region, and network policy are shown.
+Click **Open workspace**.
+
+<StepImage src="/img/gcp-serverless/5.png" alt="Workspace configuration page showing region, metastore, network policy, and a Running workspace status with the Open workspace button" />
+
+</Step>
+
+<Step>
+
+A Google **Sign in with Google** screen appears.
+Select the same Google account you used to log in to the Databricks account console.
+Click **Allow** to grant Databricks the necessary GCP permissions.
+
+This step is specific to GCP.
+Clicking **Allow** lets Databricks manage your Google Cloud resources on your behalf.
+
+<StepImage src="/img/gcp-serverless/6.png" alt="Google Sign in with Google screen showing Databricks wants to access your Google Account, with Cancel and Allow buttons" />
+
+</Step>
+
+</StepGuide>
+
+## Verify
+
+You land in the workspace itself, not the account console.
+
+The **Welcome to Databricks** home loads with the left navigation for Workspace, Catalog, Compute, and SQL.
+Seeing this page means the workspace is deployed and ready.
+
+<StepImage src="/img/gcp-serverless/7.png" alt="Welcome to Databricks workspace home for the new GCP serverless workspace, showing the full left navigation" />
+
+## Where people trip
+
+<details>
+<summary>Serverless Workspaces is not in the Previews list</summary>
+
+The preview toggle only shows for account admins.
+Confirm you have account-admin privileges on the account console.
+If it is still missing, serverless workspaces may not be available yet in your account or region.
+Check the [supported GCP regions](https://docs.databricks.com/gcp/en/resources/supported-regions) list.
+</details>
+
+<details>
+<summary>Wrong Google account on the Allow step</summary>
+
+The Google account you click **Allow** with must match the account linked to your Databricks account.
+If you see a different account in the sign-in prompt, click **Use a different account** and sign in with the correct one.
+Allowing with the wrong account causes permission errors when the workspace tries to access GCP resources.
+</details>
+
+<details>
+<summary>Picked the wrong region</summary>
+
+A workspace cannot move regions once created.
+Delete the workspace and create a new one in the correct region.
+Deploy in the region that hosts your data sources to avoid cross-region egress fees.
+See [supported GCP regions](https://docs.databricks.com/gcp/en/resources/supported-regions) for the full list.
+</details>
+
+## Next
+
+- **Do next:** [Add Users](/docs/02-account-workspaces/add-users/manual)
+- **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
+- **Reference:** [Databricks workspace administration on GCP](https://docs.databricks.com/gcp/en/admin/account-settings-e2/workspaces.html)
