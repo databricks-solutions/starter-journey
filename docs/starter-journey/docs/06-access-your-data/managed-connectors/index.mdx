@@ -1,33 +1,46 @@
 ---
 sidebar_position: 0
-sidebar_label: Lakeflow Connect ingestion
-description: Use Lakeflow Connect managed connectors to ingest data from databases, SaaS apps, files, and streams into Unity Catalog tables. Pick the setup pattern that matches your source.
+sidebar_label: Databases and SaaS ingestion
+description: Choose between CDC and query-based Lakeflow Connect ingestion, then load an external database into Unity Catalog.
 ---
 
-# Lakeflow Connect ingestion
+# Databases and SaaS ingestion
 
-> **You'll understand** how Lakeflow Connect ingestion pipelines work and pick the right setup pattern for your source in ~5 min.
+> **You'll choose** a managed ingestion pattern and know what each one requires in ~5 min.
 >
 > **Prereqs:** [Access your data](/docs/06-access-your-data)
 
 ## The big picture
 
-A **connection** lets Databricks reach an external system. An **ingestion pipeline** puts it to work: it replicates data into Unity Catalog tables, change data capture (CDC) included, and keeps them current. No pipeline, and the connection just sits there while your data stays in the source.
+Lakeflow Connect copies data from an external database or SaaS application into Unity Catalog streaming tables. The source credentials live in a Unity Catalog connection. The ingestion pattern decides how Databricks finds new and changed rows.
 
-Lakeflow Connect gives you managed connectors for that job. You store the source credentials once in a UC connection, point a pipeline at it, and Databricks handles retries, schema evolution, and incremental loading. The output is a governed Delta table you can build on.
+For databases, start with this choice:
 
-## The one fork that matters
+| Compare | Query-based connectors | CDC database connectors |
+|---|---|---|
+| Gateway | No ingestion gateway | Uses an ingestion gateway for the standard CDC architecture |
+| Staging | No staging volume | Stages captured changes in a Unity Catalog volume |
+| Ingestion timing | Runs on a schedule | Captures source changes continuously, then applies them on the ingestion pipeline schedule |
+| Change history | Reads the latest row state available to each query. It does not capture intermediate states between runs | Captures intermediate changes recorded by the source change log |
+| Source compatibility | Works with a broader set of database sources, including sources without CDC support | Requires a supported CDC source and source-side CDC configuration |
+| Source impact | Queries source tables directly, which adds source load and can result in slower queries | Reads the source change log instead of repeatedly querying source tables |
 
-Every connector sets up the same way except for one split. Get this right and the rest follows:
+## Supported database sources
 
-- **Serverless connectors.** SaaS apps and files (Salesforce, ServiceNow, SharePoint, and so on) run entirely on serverless compute. You create a connection, define a pipeline, run it. No infrastructure to place.
-- **Gateway connectors.** Databases (SQL Server, PostgreSQL, MySQL, Oracle) need an **ingestion gateway** running on classic compute inside your own network, because that is what can reach the source and read its change feed. The gateway stages changes; a serverless pipeline then applies them to Delta.
+CDC connectors are available for MySQL, PostgreSQL, SQL Server, and Oracle. Direct query-based connections support Oracle, Teradata, SQL Server, MySQL, MariaDB, and PostgreSQL. Query-based ingestion through a foreign catalog supports Lakehouse Federation data sources.
+
+The screenshots in both walkthroughs show SQL Server. Other supported database connectors follow the same overall workspace workflow. Source preparation, authentication methods, and available settings vary by connector, so check the documentation for your database before you start. The CDC walkthrough uses the standard gateway-based architecture. SQL Server also supports integrated CDC with a single pipeline, which is outside this walkthrough.
+
+## Build an ingestion pipeline
+
+- **[Change data capture (CDC)](/docs/06-access-your-data/managed-connectors/cdc):** create a database connection, gateway, and ingestion pipeline, then validate the source and select tables to ingest.
+- **[Query-based ingestion](/docs/06-access-your-data/managed-connectors/query-based):** query a database incrementally with a cursor column and load the result into Unity Catalog.
 
 So the real question is not "which brand" but "does my source need a gateway?"
 
 ## Which page do I need?
 
-Match your source to a setup pattern, then follow that page. All four lead with the Databricks Asset Bundles (DABs) definition so the pipeline is version-controlled and repeatable.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/g1srOFsD59I" title="Ingest SQL Server data with Lakeflow Connect CDC"></iframe>
 
 | Your source | Setup pattern | Gateway? | Page |
 |---|---|---|---|
@@ -36,17 +49,24 @@ Match your source to a setup pattern, then follow that page. All four lead with 
 | SharePoint, Google Drive, SFTP | File pull | No, serverless | [Files](/docs/06-access-your-data/managed-connectors/files) |
 | Kafka, Kinesis, Pub/Sub, Event Hubs | Structured Streaming | No, serverless | [Streams](/docs/06-access-your-data/managed-connectors/streaming) |
 
-Streaming sources are the odd one out: they are not managed Lakeflow Connect connectors. You ingest them with Structured Streaming instead. The [Streams](/docs/06-access-your-data/managed-connectors/streaming) page shows how.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/neH6vJv8AbE" title="Ingest Salesforce data with Lakeflow Connect"></iframe>
 
 ## In this section
 
-- **[Databases](/docs/06-access-your-data/managed-connectors/databases)**: gateway + serverless pipeline for CDC from SQL Server, PostgreSQL, MySQL, and Oracle.
-- **[SaaS apps](/docs/06-access-your-data/managed-connectors/saas)**: serverless pull from Salesforce, ServiceNow, Workday, and more.
-- **[Files](/docs/06-access-your-data/managed-connectors/files)**: serverless pull from SharePoint, Google Drive, and SFTP.
-- **[Streams](/docs/06-access-your-data/managed-connectors/streaming)**: Structured Streaming from Kafka, Kinesis, and other message buses.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YbB8CGMfJl4" title="Ingest SharePoint data with Lakeflow Connect"></iframe>
+
+### ServiceNow
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/436IaP-R8SM" title="Ingest ServiceNow data with Lakeflow Connect"></iframe>
+
+## Deploy with DABs
+
+Use a Declarative Automation Bundle when the pipeline should be version-controlled and repeatable across environments.
+
+- **[DABs definition](/docs/06-access-your-data/managed-connectors/dabs-definition):** define and deploy a gateway and ingestion pipeline as code.
 
 ## Next
 
-- **Do next:** [Databases](/docs/06-access-your-data/managed-connectors/databases)
+- **Do next:** [Change data capture (CDC)](/docs/06-access-your-data/managed-connectors/cdc)
 - **Learn why:** [Unity Catalog foundations](/docs/02-before-you-start/foundations/unity-catalog)
-- **Reference:** [Lakeflow Connect (Databricks docs)](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect)
+- **Reference:** [Lakeflow Connect database connectors](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/cdc-overview)

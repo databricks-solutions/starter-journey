@@ -140,10 +140,9 @@ const sidebars: SidebarsConfig = {
           label: 'Lakeflow Connect ingestion',
           link: {type: 'doc', id: '06-access-your-data/managed-connectors/index'},
           items: [
-            '06-access-your-data/managed-connectors/databases',
-            '06-access-your-data/managed-connectors/saas',
-            '06-access-your-data/managed-connectors/files',
-            '06-access-your-data/managed-connectors/streaming',
+            '06-access-your-data/managed-connectors/cdc',
+            '06-access-your-data/managed-connectors/query-based',
+            '06-access-your-data/managed-connectors/dabs-definition',
           ],
         },
       ],
@@ -209,5 +208,4 @@ const sidebars: SidebarsConfig = {
 };
 
 export default sidebars;
-
 
