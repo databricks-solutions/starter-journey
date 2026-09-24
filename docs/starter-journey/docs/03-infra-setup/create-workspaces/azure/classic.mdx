@@ -10,7 +10,7 @@ import PromptBlock from '@site/src/components/PromptBlock';
 
 > **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
 >
-> **Prereqs:** [Azure subscription](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install), [Databricks account console](/docs/02-before-you-start/foundations/account-console)
+> **Prereqs:** [Azure subscription](/docs/02-before-you-start/cloud-tenant-ready), [Terraform CLI](https://developer.hashicorp.com/terraform/install)
 
 ## The big picture
 
@@ -28,6 +28,10 @@ The **Workspace + Catalog** template creates a new VNet. The **Workspace** templ
 ## Prompt your coding agent
 
 Paste this into your coding agent to have it drive the recommended **Workspace + Catalog** deployment with you.
+
+:::tip
+**Want your agent to write the Terraform for you?** Instead of the fixed templates below, the [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit) has your coding agent generate custom Terraform to provision workspaces, configure Unity Catalog, set up networking, and manage groups and permissions — all from natural language (Claude Code, Codex, Cursor, Copilot, Gemini, and more).
+:::
 
 <PromptBlock>
 
