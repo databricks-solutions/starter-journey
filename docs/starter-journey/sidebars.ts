@@ -137,7 +137,7 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: 'category',
-          label: 'Lakeflow Connect ingestion',
+          label: 'Databases and SaaS ingestion',
           link: {type: 'doc', id: '06-access-your-data/managed-connectors/index'},
           items: [
             '06-access-your-data/managed-connectors/cdc',
