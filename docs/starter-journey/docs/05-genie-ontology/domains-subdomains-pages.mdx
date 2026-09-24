@@ -89,18 +89,16 @@ Use this description:
 Visual dashboard showing KPI counters, time-series trends, and franchise/product breakdowns. Start here for a quick pulse check on sales performance.
 ```
 
-Keep the Markdown page body focused on routing:
+Keep the Markdown page body focused on routing, matching the screenshot:
 
 ```md
 ## When to route here
 
-Use this page when someone asks for an overview, snapshot, high-level summary, or visual comparison of franchise sales.
+User asks for a chart, overview, snapshot, high-level summary, or comparison visualization
 
 ## Example questions
 
-- Show me total sales this month.
-- Which franchise has the highest revenue?
-- How do products compare?
+"Show me total sales this month" · "Which franchise has the highest revenue?" · "How do products compare?"
 ```
 
 Under **Related Assets**, add the existing `Bakehouse Franchise Performance` dashboard.
@@ -165,11 +163,16 @@ Click **Create**.
 <Step>
 
 Open the new Sales Analytics subdomain.
-Its title and Bakehouse Sales Operations breadcrumb confirm that it was created in the intended domain.
+It still shows as Draft, so click **Publish**.
+The page you add next needs a published subdomain to route questions.
 
-<StepImage src="/img/genie-ontology/subdomain-03.png" alt="Sales Analytics subdomain page inside Bakehouse Sales Operations" />
+<StepImage src="/img/genie-ontology/subdomain-03.png" alt="Sales Analytics subdomain in Draft with the Publish button highlighted" />
 
-Check the domain filter and breadcrumb once more before adding the page.
+</Step>
+
+<Step>
+
+Confirm that the domain filter and breadcrumb both read Bakehouse Sales Operations, so the subdomain sits in the intended domain.
 
 <StepImage src="/img/genie-ontology/subdomain-04.png" alt="Sales Analytics subdomain with the Bakehouse Sales Operations domain filter and breadcrumb highlighted" />
 
@@ -205,32 +208,31 @@ Use this description:
 Conversational AI agent that answers free-form questions about franchise sales. Supports trend analysis, comparisons, rankings, and daily patterns using natural language.
 ```
 
-Keep the Markdown page body focused on the questions this page handles:
+Keep the Markdown page body focused on the questions this page handles, matching the screenshot:
 
 ```md
 ## Definition
 
-Use this page for ad hoc questions, rankings, comparisons, trends, and analysis of a specific franchise or product.
+User asks a specific analytical question, requests a ranking, wants to filter by a franchise or product name, or asks about patterns
 
 ## Business use
 
-- What was Baked Bliss's total sales on May 12?
-- Rank the top 5 franchises by order count.
-- Compare Golden Gate Ginger with Pearly Pies across all franchises.
+Question examples: "What was Baked Bliss's total sales on May 12?" · "Rank the top 5 franchises by order count." · "Compare Golden Gate Ginger vs Pearly Pies across all franchises"
 ```
 
-Under **Related Assets**, add the existing `Bakehouse Sales Assistant` Genie Agent.
-Add the same agent under **Sources**, then click **Publish**.
+Under **Related Assets**, select **Sales Q&A Assistant** in Discover.
+Add the same asset under **Sources**, then click **Publish**.
+In Discover this asset is labeled Sales Q&A Assistant, and it points to the Bakehouse Sales Assistant Genie Agent you built earlier.
 
-<StepImage src="/img/genie-ontology/subdomain-page-02.png" alt="Sales Q&A Assistant page with routing text, Genie Agent asset, source, and Publish button" />
+<StepImage src="/img/genie-ontology/subdomain-page-02.png" alt="Sales Q&A Assistant page with routing text, the Sales Q&A Assistant related asset, source, and Publish button" />
 
 </Step>
 
 <Step>
 
-Confirm that the published Sales Q&A Assistant page shows the description, body, related Genie Agent, and source.
+Confirm that the published Sales Q&A Assistant page shows the description, body, related asset, and source.
 
-<StepImage src="/img/genie-ontology/subdomain-page-03.png" alt="Published Sales Q&A Assistant page with the Bakehouse Sales Assistant asset and source" />
+<StepImage src="/img/genie-ontology/subdomain-page-03.png" alt="Published Sales Q&A Assistant page with the Sales Q&A Assistant asset and source" />
 
 </Step>
 
@@ -248,7 +250,7 @@ Confirm that the published Sales Q&A Assistant page shows the description, body,
 <Step>
 
 Return to Bakehouse Sales Operations.
-Confirm that its page and Sales Analytics subdomain are present, then click **Publish**.
+Confirm that the Sales Analytics subdomain appears under Browse by subdomain, then click **Publish**.
 
 The domain stayed unpublished until now because its routing tree was incomplete.
 
@@ -311,16 +313,15 @@ Genie routes the question through Sales Analytics to the Bakehouse Sales Assista
 
 <StepImage src="/img/genie-ontology/publish-test-07.png" alt="Genie One routing the lowest-sales comparison question to the Sales Q&A Assistant" />
 
-Review the five franchises and their average order values.
+Review the five franchises and their average order values, then open **Thought process** at the top of the answer.
 
-<StepImage src="/img/genie-ontology/publish-test-08.png" alt="Genie One result listing the five lowest-sales franchises and average order value comparison" />
+<StepImage src="/img/genie-ontology/publish-test-08.png" alt="Genie One result listing the five lowest-sales franchises with the Thought process control highlighted" />
 
 Scroll to inspect the comparison chart.
 
 <StepImage src="/img/genie-ontology/publish-test-09.png" alt="Genie One comparison chart for franchise average order value and network average" />
 
-Open **Thought process**.
-It should identify the Bakehouse Sales Assistant and `franchise_sales_metrics` before delegating the question to the agent.
+The expanded thought process identifies the Bakehouse Sales Assistant and `franchise_sales_metrics` before delegating the question to the agent.
 
 <StepImage src="/img/genie-ontology/publish-test-10.png" alt="Genie One thought process showing the Bakehouse Sales Assistant and franchise_sales_metrics route" />
 
@@ -342,6 +343,13 @@ It should identify the Bakehouse Sales Assistant and `franchise_sales_metrics` b
 
 Confirm that you published the two pages and the parent domain.
 A draft domain is not available for normal routing.
+</details>
+
+<details>
+<summary>The subdomain stays in Draft</summary>
+
+Publishing the domain does not publish the subdomain.
+Open Sales Analytics and click **Publish** so its page can route questions.
 </details>
 
 <details>
