@@ -14,20 +14,13 @@ DEFAULT_CSV = REPO_ROOT / "docs" / "starter-journey" / "section-freshness.csv"
 
 # Top-level sidebar sections (must match sidebars.ts labels and section-freshness.csv).
 REQUIRED_SECTIONS: tuple[str, ...] = (
-    "1. Get started",
-    "2. Before you start",
-    "3. Infra setup",
-    "4. Cost monitoring",
-    "5. Governance strategy",
-    "6. Access your data",
-    "7. Build the first ETL pipeline",
-    "8. Query and explore",
-    "9. Unified analytics",
-    "10. Predictive analytics",
-    "11. Agents",
-    "12. Orchestration using jobs",
-    "13. Data access control",
-    "14. CI/CD and DevOps",
+    "1. Introduction",
+    "2. Account and workspaces",
+    "3. Data access and ETL",
+    "4. Governance",
+    "5. Genie Ontology",
+    "6. Data science",
+    "7. Operations",
 )
 
 STALE_DAYS = 60

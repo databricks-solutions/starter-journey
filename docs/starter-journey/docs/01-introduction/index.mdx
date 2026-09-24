@@ -1,37 +1,44 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
+sidebar_label: Introduction
+description: Follow the Databricks starter journey from platform foundations through governed data, analytics, data science, and operations.
 ---
+import StarterJourneyProgress from '@site/src/components/StarterJourneyProgress';
 
-# 1. Get Started
+# 1. Introduction
 
-Starter Journey walks you through setting up Databricks the right way - from an empty account to a production-ready environment.
+> **You'll map** the platform layers you need to build, in the order they depend on each other, in ~10 min.
+>
+> **Prereqs:** [A Databricks account](https://docs.databricks.com/aws/en/getting-started/free-trial)
 
-## All about data
+Start with the foundation.
+Every dashboard, model, and agent reads data from the same platform and catalog.
+If the tables are wrong, reports mislead, models train on noise, and agents return unreliable answers.
 
-Get the data foundation right first. Every dashboard, ML model, and agent reads from the same tables. When those tables are wrong, everything downstream is wrong: reports mislead, models train on noise, agents hallucinate.
+BI, machine learning, and AI have different serving needs.
+They still depend on the same account, governance model, and trusted data.
+Fix those layers once, then build each workload on top.
 
-BI, ML, and GenAI have different requirements from that data, but all three share the same platform and the same catalog. Fix the foundation once and it serves all three.
+This guide follows that dependency order.
+It starts with the account and workspaces, moves through data access and governance, then reaches the products people use.
+Operations closes the loop by making the platform repeatable.
 
-This guide is the minimum steps, in order, from an empty account to a working production environment.
+<StarterJourneyProgress currentLevel={0}/>
 
-## The big picture
-
-Each section starts where the last one left off, taking you from an empty Databricks account to a production-ready environment:
+## What you'll build
 
 | # | Section | What you'll have when done |
 |---|---|---|
-| 2 | **Before you start**<br/>- [Foundations](/docs/01-introduction/foundations/)<br/>- [Cloud tenant ready](/docs/01-introduction/cloud-tenant-ready/) | A clear understanding of workspaces, Unity Catalog, and your cloud tenant model |
-| 3 | **[Infra setup](/docs/02-account-workspaces/)** | Workspaces provisioned, users and groups added, SSO activated |
-| 4 | **[Cost monitoring](/docs/02-account-workspaces/workspace-settings/cost-monitoring/)** | Day-zero visibility: imported usage dashboard, optional packaged dashboards, tags, and account budgets |
-| 5 | **[Governance strategy](/docs/04-governance/)** | Group-based Unity Catalog ownership and a catalog/schema structure that fits your organization's size |
-| 6 | **[Access your data](/docs/03-data-access-etl/)** | Cloud storage connected, external systems accessible via managed connectors |
-| 7 | **[Build the first ETL pipeline](/docs/03-data-access-etl/build-first-pipeline/)** | A working medallion pipeline (bronze → silver → gold) |
-| 8 | **[Query and explore](/docs/03-data-access-etl/query-and-explore)** | A dedicated serverless SQL warehouse and a saved daily franchise revenue query |
-| 9 | **[Unified analytics](/docs/05-genie-ontology/)**<br/>- [Metric Views](/docs/05-genie-ontology/metric-views)<br/>- [Dashboards](/docs/05-genie-ontology/dashboards)<br/>- [Genie Agents](/docs/05-genie-ontology/genie-agents) | A governed franchise_sales_metrics metric view, a published dashboard, and a shared Genie Agent, all returning the same numbers |
-| 10 | **[Predictive analytics](/docs/06-data-science/)** | Models trained, saved to Unity Catalog, and scored in batch |
-| 11 | **Agents** | AI agents built on your data |
-| 12 | **[Orchestration and Jobs](/docs/03-data-access-etl/orchestration/)** | The pipeline running on a schedule with retries and notifications |
-| 13 | **[Data access control](/docs/04-governance/abac/)** | Row, column, and object-level access controls on your catalog |
-| 14 | **[CI/CD and DevOps](/docs/07-operations/)** | Projects version-controlled and deployed with DABs and CI/CD |
+| 1 | **[Introduction](/docs/01-introduction/)** | A foundation-first map of the journey and a cloud tenant model that fits your organization |
+| 2 | **[Account and workspaces](/docs/02-account-workspaces/)** | Workspaces, identity, SSO, account administration, workspace settings, and cost monitoring |
+| 3 | **[Data access and ETL](/docs/03-data-access-etl/)** | Connected data sources, a working ETL pipeline, SQL exploration, and scheduled jobs |
+| 4 | **[Governance](/docs/04-governance/)** | A Unity Catalog structure, ownership model, and access controls for your data |
+| 5 | **[Genie Ontology](/docs/05-genie-ontology/)** | Generated metadata, governed metrics, dashboards, Genie agents, and a domain structure |
+| 6 | **[Data science](/docs/06-data-science/)** | Governed feature tables, registered models, and batch inference |
+| 7 | **[Operations](/docs/07-operations/)** | Version-controlled Databricks projects deployed with DABs and CI/CD |
 
-Work through the sidebar in order, or jump straight to the topic you need.
+## Next
+
+- **Do next:** [Foundations](/docs/01-introduction/foundations/)
+- **Learn why:** [Cloud tenant ready](/docs/01-introduction/cloud-tenant-ready/)
+- **Reference:** [Databricks architecture overview](https://docs.databricks.com/aws/en/getting-started/overview)
