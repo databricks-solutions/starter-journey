@@ -479,3 +479,28 @@ a:hover {
 .navbar .DocSearch-Button {
   border-radius: 8px;
 }
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE FIXES
+   ═══════════════════════════════════════ */
+
+@media (max-width: 996px) {
+  /* The navbar's backdrop-filter makes it the containing block for the fixed
+     mobile sidebar, so its height: 100% collapsed to the 4.25rem navbar height
+     and clipped the links. Anchor it to the viewport and scroll the items. */
+  .navbar-sidebar {
+    height: 100vh;
+  }
+  .navbar-sidebar__items {
+    height: calc(100vh - var(--ifm-navbar-height));
+    overflow-y: auto;
+  }
+
+  /* Raw iframe video embeds ship a fixed 560px width. Cap them to the content
+     width and hold the 16:9 ratio. Desktop keeps its dimensions above 996px. */
+  .markdown iframe {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
