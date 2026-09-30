@@ -23,6 +23,21 @@ Pick **one** template from [Terraform resources](#terraform-resources) below.
 Unity Catalog metastore assignment on Shared VPC is optional via `metastore_id`.
 Add catalogs later in the workspace or with separate UC automation.
 
+## YouTube tutorial
+
+:::warning
+The video shows the manual UI steps.
+Clicking through the console is easy to miss a setting on, and the next workspace will drift from this one.
+Use the [Terraform resources](#terraform-resources) on this page instead so every workspace matches.
+:::
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/4XMMXBbE-tg"
+  title="Create a classic GCP Databricks workspace"
+></iframe>
+
 ## Prerequisites
 
 - A GCP project with a Google service account that has `roles/Owner` on the project (or the tighter roles in the template README).
