@@ -18,6 +18,21 @@ A Databricks workspace with VNet injection on Azure plus Unity Catalog resources
 
 The **Workspace + Catalog** template creates a new VNet. The **Workspace** template takes a new or existing VNet. The **Private Link** template adds backend private endpoints for control plane and DBFS traffic.
 
+## YouTube tutorial
+
+:::warning
+The video shows the manual UI steps.
+Clicking through the portal is easy to miss a setting on, and the next workspace will drift from this one.
+Use the [Terraform resources](#terraform-resources) on this page instead so every workspace matches.
+:::
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/hb_cQ8d3750"
+  title="Create a classic Azure Databricks workspace"
+></iframe>
+
 ## Prerequisites
 
 - An Azure subscription with **Contributor** at subscription scope (not resource-group only, because Databricks creates a managed resource group).

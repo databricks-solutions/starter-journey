@@ -16,6 +16,21 @@ import PromptBlock from '@site/src/components/PromptBlock';
 
 A classic Databricks workspace with a customer-managed VPC (BYOVPC) on AWS plus Unity Catalog resources, all deployed from Terraform. Pick **one** template from [Terraform resources](#terraform-resources) below. The **Workspace + Catalog** template creates a new VPC; the **Workspace** template takes a new or existing one.
 
+## YouTube tutorial
+
+:::warning
+The video shows the manual UI steps.
+Clicking through the console is easy to miss a setting on, and the next workspace will drift from this one.
+Use the [Terraform resources](#terraform-resources) on this page instead so every workspace matches.
+:::
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/sZnZZ0JLLfk"
+  title="Create a classic AWS Databricks workspace"
+></iframe>
+
 ## Prerequisites
 
 - An AWS account with permission to create IAM roles, S3 buckets, and VPC resources.
