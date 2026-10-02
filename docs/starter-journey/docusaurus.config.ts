@@ -50,11 +50,19 @@ const config: Config = {
             },
             {
               from: `/docs/02-account-workspaces/create-workspaces/${c}/terraform`,
-              to: `/docs/02-account-workspaces/create-workspaces/${c}/classic`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/hybrid`,
             },
             {
               from: `/docs/02-account-workspaces/create-workspaces/${c}/sra`,
-              to: `/docs/02-account-workspaces/create-workspaces/${c}/private-link`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/hybrid`,
+            },
+            {
+              from: `/docs/02-account-workspaces/create-workspaces/${c}/classic`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/hybrid`,
+            },
+            {
+              from: `/docs/02-account-workspaces/create-workspaces/${c}/private-link`,
+              to: `/docs/02-account-workspaces/create-workspaces/${c}/hybrid`,
             },
           ]),
           {

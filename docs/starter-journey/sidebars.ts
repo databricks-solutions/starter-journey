@@ -47,8 +47,7 @@ const sidebars: SidebarsConfig = {
               collapsed: true,
               items: [
                 '02-account-workspaces/create-workspaces/aws/serverless',
-                '02-account-workspaces/create-workspaces/aws/classic',
-                '02-account-workspaces/create-workspaces/aws/private-link',
+                '02-account-workspaces/create-workspaces/aws/hybrid',
               ],
             },
             {
@@ -57,8 +56,7 @@ const sidebars: SidebarsConfig = {
               collapsed: true,
               items: [
                 '02-account-workspaces/create-workspaces/azure/serverless',
-                '02-account-workspaces/create-workspaces/azure/classic',
-                '02-account-workspaces/create-workspaces/azure/private-link',
+                '02-account-workspaces/create-workspaces/azure/hybrid',
               ],
             },
             {
@@ -67,8 +65,7 @@ const sidebars: SidebarsConfig = {
               collapsed: true,
               items: [
                 '02-account-workspaces/create-workspaces/gcp/serverless',
-                '02-account-workspaces/create-workspaces/gcp/classic',
-                '02-account-workspaces/create-workspaces/gcp/private-link',
+                '02-account-workspaces/create-workspaces/gcp/hybrid',
               ],
             },
           ],
