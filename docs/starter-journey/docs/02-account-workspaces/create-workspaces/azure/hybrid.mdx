@@ -1,12 +1,12 @@
 ---
-sidebar_label: Classic
-description: Deploy a classic Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform.
+sidebar_label: Hybrid
+description: Deploy a hybrid Databricks workspace on Azure with VNet injection and Unity Catalog using Terraform.
 ---
 
 import { StepGuide, Step } from '@site/src/components/StepGuide';
 import PromptBlock from '@site/src/components/PromptBlock';
 
-# Azure Classic
+# Azure Hybrid
 
 > **You'll deploy** a Databricks workspace and catalog on Azure using Terraform in ~20 min.
 >
@@ -18,12 +18,12 @@ A Databricks workspace with VNet injection on Azure plus Unity Catalog resources
 
 The **Workspace + Catalog** template creates a new VNet. The **Workspace** template takes a new or existing VNet. The **Private Link** template adds backend private endpoints for control plane and DBFS traffic.
 
-## YouTube tutorial
+## Manual Deployment - YouTube Tutorial
 
 :::warning
 The video shows the manual UI steps.
 Clicking through the portal is easy to miss a setting on, and the next workspace will drift from this one.
-Use the [Terraform resources](#terraform-resources) on this page instead so every workspace matches.
+Use the [Automated Deployment](#automated-deployment) options on this page instead so every workspace matches.
 :::
 
 <iframe
@@ -40,9 +40,32 @@ Use the [Terraform resources](#terraform-resources) on this page instead so ever
 - Terraform CLI installed locally.
 - Azure CLI authenticated (`az login`).
 
-## Prompt your coding agent
+## Automated Deployment
 
-Paste this into your coding agent to provision the classic Azure workspace with [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit).
+The Platform Kit is a suite of tools designed to help you deploy your workspaces faster. It features a deterministic app, for teams who want to define their deployment through a guided UI experience, and a set of LLM skills, for teams who want to use an AI coding agent to help with the deployment.
+
+![Platform Kit: a deterministic app (Platform Deployment Kit) and LLM-powered agent skills (AI Platform Kit)](/img/create-workspaces-platform-kit.png)
+
+### Platform Deployment Kit
+
+The [Platform Deployment Kit](https://databricks-solutions.github.io/platform-deployment-kit/#/) is a guided web UI that helps you define your environment and automatically exports the Terraform code to run your deployment. Use it when you want a deterministic, click-through path instead of prompting an agent.
+
+<div className="pdk-access-banner">
+  Access it here: <a href="https://databricks-solutions.github.io/platform-deployment-kit/#/">https://databricks-solutions.github.io/platform-deployment-kit/#/</a>
+</div>
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/44zUbgUq7JA"
+  title="Platform Deployment Kit walkthrough"
+></iframe>
+
+### AI Platform Kit
+
+The AI Platform Kit is a set of agent skills that your AI coding agent uses to define your workspace settings, create customizations, and deploy with Terraform.
+
+Paste this into your coding agent to provision the hybrid Azure workspace with [AI Platform Kit](https://github.com/databricks-solutions/ai-platform-kit).
 
 <PromptBlock>
 
@@ -93,9 +116,9 @@ When you use an **existing** metastore with **Workspace + Catalog**, `admin_user
 Pin the Databricks provider to Azure CLI auth before apply: `export DATABRICKS_AUTH_TYPE=azure-cli`
 :::
 
-## Verify
+## Validate your Deployment
 
-<StepGuide eyebrow="Verify" idPrefix="verify">
+<StepGuide eyebrow="Validate" idPrefix="validate">
 
 <Step>
 
@@ -112,6 +135,12 @@ Open **Workspaces** and confirm the new workspace shows **Running**.
 <Step>
 
 Open the workspace, go to **Catalog**, and confirm the new catalog appears (for the **Workspace + Catalog** template).
+
+</Step>
+
+<Step>
+
+Create a simple general purpose single node cluster and confirm it starts. This proves clusters can spin up after the deployment.
 
 </Step>
 
@@ -143,6 +172,15 @@ Confirm `az login` (or your service principal) has Contributor access on the tar
 
 Subnets must be delegated to `Microsoft.Databricks/workspaces` and must not overlap existing address spaces. Make sure `subnet_public_cidr` and `subnet_private_cidr` fit inside the VNet `cidr`. `vnet_resource_group_name` must differ from `resource_group_name`.
 </details>
+
+## Regulated Deployments and Security Reference Architecture
+
+For regulated environments, deploy a hardened workspace with Private Link and the Security Reference Architecture (SRA) defaults, so traffic stays off the public internet. Use the SRA Terraform templates:
+
+| Resource | Link |
+|---|---|
+| SRA documentation site | [databricks.github.io/terraform-databricks-sra](https://databricks.github.io/terraform-databricks-sra/docs/usage/Azure/) |
+| GitHub repo (Azure) | [databricks/terraform-databricks-sra/azure](https://github.com/databricks/terraform-databricks-sra/tree/main/azure) |
 
 ## Next
 
