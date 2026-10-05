@@ -14,14 +14,18 @@ import PromptBlock from '@site/src/components/PromptBlock';
 
 ## The big picture
 
-A Databricks workspace on GCP with a customer-managed VPC (BYOVPC), deployed from Terraform.
-Pick **one** template from [Terraform resources](#terraform-resources) below.
+In this section, you will find materials to help you deploy a **Hybrid** workspace on GCP. A hybrid workspace can use serverless compute, which Databricks manages for you, and it also lets you run compute resources (classic clusters) inside your own network: a customer-managed VPC in your Google Cloud project. This gives your team more control over networking and security, and covers workloads that serverless doesn't support yet. You can set up Unity Catalog resources alongside the workspace, so your data is ready to govern from day one.
 
-**Standalone** creates a new VPC, subnet, Cloud Router, and NAT.
-**Shared VPC** attaches a workspace to an existing VPC and subnet, in the same project or a Shared VPC host project.
+This page covers three ways to deploy a hybrid workspace:
 
-Unity Catalog metastore assignment on Shared VPC is optional via `metastore_id`.
-Add catalogs later in the workspace or with separate UC automation.
+- **Automated Deployment**
+  - [Platform Deployment Kit](#platform-deployment-kit): a guided web UI that exports ready-to-run Terraform.
+  - [AI Platform Kit](#ai-platform-kit): agent skills your AI coding agent uses to generate and apply the Terraform.
+- **Manual Deployment**: click through the cloud and Databricks account consoles by following the [YouTube tutorial](#manual-deployment---youtube-tutorial).
+
+:::tip Recommended for beginners
+If you are new to Databricks, start with the **Platform Deployment Kit**. It walks you through each decision (networking, storage, Unity Catalog) in a guided UI, so you don't need to know Terraform or how to prompt a coding agent up front. The output is deterministic: the same inputs always produce the same Terraform, which you can review before you apply and rerun for development, staging, and production so every workspace matches. Use the AI Platform Kit when you need customizations the UI doesn't cover, and keep manual deployment for learning how the pieces fit together.
+:::
 
 ## Manual Deployment - YouTube Tutorial
 
