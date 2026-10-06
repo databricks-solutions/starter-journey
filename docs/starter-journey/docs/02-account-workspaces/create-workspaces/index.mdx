@@ -32,23 +32,24 @@ For more on isolation choices, see [Governance for medium-large organizations](/
 
 <img src={useBaseUrl('/img/workspace-target.jpg')} alt="Account console user management screen"/>
 
-## Serverless, Classic, or Private Link
+## Serverless or Hybrid
 
-Every cloud gives you three ways to deploy. Start with Serverless:
+Every cloud gives you two ways to deploy. Decide between them by asking one question: do you want Databricks to handle the setup for you?
 
-- **Serverless** is the recommended path. You create the workspace from the account console and Databricks runs the compute, so there is no VPC or VNet to size and maintain. Start here for your first workspace and for most new deployments.
-- **Classic** is infrastructure as code with a customer-managed VPC or VNet, deployed from Terraform. Use it when you need the network under your own control, repeatable across environments, with a record of what changed.
-- **Private Link** is the hardened path: a classic workspace with Private Link and the Security Reference Architecture (SRA) defaults, deployed from Terraform. Use it when traffic must stay off the public internet.
+![Decision tree for choosing between a serverless and a hybrid workspace](/img/create-workspaces-serverless-hybrid-decision.png)
 
-Serverless end-to-end deployments are supported with the latest Network Connectivity Configuration (NCC) and Private Link releases, so you can lock down a serverless workspace without falling back to classic.
+**Serverless is the preferred choice.** You create the workspace from the account console, and Databricks runs the compute and securely stores your workspace data. You do not need to decide on cluster types or manage sophisticated network infrastructure, and you keep security and scalability. Start here for your first workspace and for most new deployments.
+
+Choose **Hybrid** when the workspace must run inside your own VPC or VNet with the network under your control, when it must also allow you to create clusters inside your own cloud network (classic compute), or when your workload is not supported by serverless (check the [serverless limitations](https://docs.databricks.com/aws/en/compute/serverless/limitations) for your cloud to learn more). Your team sets it up in your cloud account, deployed from Terraform so it is repeatable across environments with a record of what changed. Private Link and the Security Reference Architecture (SRA) defaults are a hardened variant of the hybrid path, for when traffic must stay off the public internet.
+
+Serverless end-to-end deployments are supported with the latest Network Connectivity Configuration (NCC) and Private Link releases, so you can lock down a serverless workspace without falling back to a hybrid one.
 
 ## Choose your approach
 
 | Method | AWS | Azure | GCP |
 |---|---|---|---|
 | Serverless | [AWS](/docs/02-account-workspaces/create-workspaces/aws/serverless) | [Azure](/docs/02-account-workspaces/create-workspaces/azure/serverless) | [GCP](/docs/02-account-workspaces/create-workspaces/gcp/serverless) |
-| Classic | [BYOVPC](/docs/02-account-workspaces/create-workspaces/aws/classic) | [VNet injection](/docs/02-account-workspaces/create-workspaces/azure/classic) | [BYOVPC](/docs/02-account-workspaces/create-workspaces/gcp/classic) |
-| Private Link (SRA) | [AWS SRA](/docs/02-account-workspaces/create-workspaces/aws/private-link) | [Azure SRA](/docs/02-account-workspaces/create-workspaces/azure/private-link) | [GCP SRA](/docs/02-account-workspaces/create-workspaces/gcp/private-link) |
+| Hybrid | [BYOVPC](/docs/02-account-workspaces/create-workspaces/aws/hybrid) | [VNet injection](/docs/02-account-workspaces/create-workspaces/azure/hybrid) | [BYOVPC](/docs/02-account-workspaces/create-workspaces/gcp/hybrid) |
 
 ## Next
 
