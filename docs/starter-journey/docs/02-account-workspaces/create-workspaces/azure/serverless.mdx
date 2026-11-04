@@ -129,6 +129,9 @@ The `azurerm_databricks_workspace` resource cannot create serverless workspaces 
 The example below calls the Azure Databricks ARM API directly through the AzAPI provider.
 :::
 
+This example deploys a serverless workspace named `adb-serverless-ws` in a new resource group in the Azure region `eastus`.
+Change `location` on the resource group to deploy elsewhere.
+
 ```hcl title="main.tf"
 terraform {
   required_providers {

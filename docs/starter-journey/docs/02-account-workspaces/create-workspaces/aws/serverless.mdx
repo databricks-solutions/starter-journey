@@ -110,6 +110,9 @@ You can create the same workspace as code.
 A serverless workspace needs no IAM role, root bucket, or VPC, so the workspace resource is the only thing to declare.
 Setting `compute_mode = "SERVERLESS"` is what makes it serverless.
 
+This example deploys a serverless workspace named `serverless-workspace` in the AWS region `us-east-1`.
+Change `aws_region` to deploy elsewhere.
+
 ```hcl title="main.tf"
 terraform {
   required_providers {

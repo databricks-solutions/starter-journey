@@ -117,6 +117,9 @@ You can create the same workspace as code.
 A serverless workspace needs no VPC or service account, so the workspace resource is the only thing to declare.
 Setting `compute_mode = "SERVERLESS"` is what makes it serverless.
 
+This example deploys a serverless workspace named `serverless-workspace` in the GCP region `us-east4`.
+Change `location` to deploy elsewhere.
+
 ```hcl title="main.tf"
 terraform {
   required_providers {
