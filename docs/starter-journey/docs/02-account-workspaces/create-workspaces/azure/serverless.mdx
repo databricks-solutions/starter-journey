@@ -125,7 +125,7 @@ On Azure the workspace is an Azure resource, so you use Azure providers rather t
 Setting `computeMode = "Serverless"` with the Premium SKU is what makes it serverless.
 
 :::warning
-The `azurerm_databricks_workspace` resource cannot create serverless workspaces yet (tracked in [terraform-provider-azurerm#31218](https://github.com/hashicorp/terraform-provider-azurerm/issues/31218)).
+The `azurerm_databricks_workspace` resource cannot create serverless workspaces yet.
 The example below calls the Azure Databricks ARM API directly through the AzAPI provider.
 :::
 
