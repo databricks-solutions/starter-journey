@@ -118,7 +118,92 @@ Seeing this page means the workspace is deployed and ready.
 
 <StepImage src="/img/azure-serverless/7.png" alt="Welcome to Databricks workspace home for the newly created serverless workspace adb-serverless-ws, showing left nav with Workspace, Catalog, Compute, and SQL sections" />
 
+## Deploy with Terraform
+
+You can create the same workspace as code.
+On Azure the workspace is an Azure resource, so you use Azure providers rather than the Databricks one.
+Setting `computeMode = "Serverless"` with the Premium SKU is what makes it serverless.
+
+:::warning
+The `azurerm_databricks_workspace` resource cannot create serverless workspaces yet.
+The example below calls the Azure Databricks ARM API directly through the AzAPI provider.
+:::
+
+This example deploys a serverless workspace named `adb-serverless-ws` in a new resource group in the Azure region `eastus`.
+Change `location` on the resource group to deploy elsewhere.
+
+```hcl title="main.tf"
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+    }
+    azapi = {
+      source  = "Azure/azapi"
+      version = ">= 2.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+provider "azapi" {}
+
+resource "azurerm_resource_group" "this" {
+  name     = "rg-databricks-serverless"
+  location = "eastus"
+}
+
+resource "azapi_resource" "workspace" {
+  type      = "Microsoft.Databricks/workspaces@2026-01-01"
+  name      = "adb-serverless-ws"
+  parent_id = azurerm_resource_group.this.id
+  location  = azurerm_resource_group.this.location
+
+  body = {
+    sku = {
+      name = "premium"
+    }
+    properties = {
+      computeMode = "Serverless"
+    }
+  }
+
+  response_export_values = ["properties.workspaceUrl"]
+}
+
+output "workspace_url" {
+  value = "https://${azapi_resource.workspace.output.properties.workspaceUrl}"
+}
+```
+
+Log in with `az login` (or set the `ARM_*` environment variables for a service principal), then run:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+When the apply finishes, Terraform prints `workspace_url`.
+Open it and you land on the same **Welcome to Databricks** page shown above.
+
+:::tip
+For production, start from the SRA [serverless_workspace module](https://github.com/databricks/terraform-databricks-sra/tree/main/azure/tf/modules/serverless_workspace).
+It adds metastore assignment, a network connectivity config, a network policy, customer-managed keys, and front-end Private Link on top of this example.
+:::
+
 ## Where people trip
+
+<details>
+<summary>azurerm_databricks_workspace has no serverless option</summary>
+
+The AzureRM resource cannot set `computeMode`, and that property can only be set at creation.
+Use the `azapi_resource` example above instead.
+Do not set a managed resource group, VNet parameters, or an access connector in the body: the API rejects them for serverless workspaces.
+</details>
 
 <details>
 <summary>The Workspace type field does not show "Serverless"</summary>
@@ -148,4 +233,4 @@ If it shows an error state, delete the workspace and redeploy.
 
 - **Do next:** [Add Users](/docs/02-account-workspaces/add-users/manual)
 - **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
-- **Reference:** [Set up a Databricks workspace on Azure](https://docs.databricks.com/en/getting-started/workspace-setup-azure.html)
+- **Reference:** [Set up a Databricks workspace on Azure](https://docs.databricks.com/en/getting-started/workspace-setup-azure.html), [SRA serverless_workspace module](https://github.com/databricks/terraform-databricks-sra/tree/main/azure/tf/modules/serverless_workspace)

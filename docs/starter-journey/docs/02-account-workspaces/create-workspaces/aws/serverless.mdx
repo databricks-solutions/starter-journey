@@ -104,7 +104,69 @@ Seeing this page means the workspace is deployed and ready.
 
 <StepImage src="/img/aws-serverless/6.png" alt="Welcome to Databricks workspace home for the new serverless workspace" />
 
+## Deploy with Terraform
+
+You can create the same workspace as code.
+A serverless workspace needs no IAM role, root bucket, or VPC, so the workspace resource is the only thing to declare.
+Setting `compute_mode = "SERVERLESS"` is what makes it serverless.
+
+This example deploys a serverless workspace named `serverless-workspace` in the AWS region `us-east-1`.
+Change `aws_region` to deploy elsewhere.
+
+```hcl title="main.tf"
+terraform {
+  required_providers {
+    databricks = {
+      source = "databricks/databricks"
+    }
+  }
+}
+
+variable "databricks_account_id" {
+  description = "Account ID from the account console (top right, under your user name)"
+}
+
+provider "databricks" {
+  host       = "https://accounts.cloud.databricks.com"
+  account_id = var.databricks_account_id
+}
+
+resource "databricks_mws_workspaces" "this" {
+  account_id     = var.databricks_account_id
+  workspace_name = "serverless-workspace"
+  aws_region     = "us-east-1"
+  compute_mode   = "SERVERLESS"
+}
+
+output "workspace_url" {
+  value = databricks_mws_workspaces.this.workspace_url
+}
+```
+
+The provider talks to the account console, not a workspace.
+Authenticate with an account-level service principal by exporting `DATABRICKS_CLIENT_ID` and `DATABRICKS_CLIENT_SECRET` before you run Terraform.
+See [provider authentication](https://registry.terraform.io/providers/databricks/databricks/latest/docs#authentication) for other options.
+
+Then run:
+
+```bash
+terraform init
+terraform plan -var="databricks_account_id=<your-account-id>"
+terraform apply -var="databricks_account_id=<your-account-id>"
+```
+
+When the apply finishes, Terraform prints `workspace_url`.
+Open it and you land on the same **Welcome to Databricks** page shown above.
+
 ## Where people trip
+
+<details>
+<summary>Terraform rejects credentials_id or storage_configuration_id</summary>
+
+Serverless workspaces must not set `credentials_id` or `storage_configuration_id`.
+Those belong to classic workspaces, where you bring your own IAM role and root bucket.
+Remove both arguments and keep `compute_mode = "SERVERLESS"`.
+</details>
 
 <details>
 <summary>Serverless Workspaces is not in the Previews list</summary>
@@ -134,4 +196,4 @@ Deploy in the region that hosts your data sources to avoid cross-region egress f
 
 - **Do next:** [Add Users](/docs/02-account-workspaces/add-users/manual)
 - **Learn why:** [Unity Catalog foundations](/docs/01-introduction/foundations/unity-catalog)
-- **Reference:** [Databricks workspace administration](https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html)
+- **Reference:** [Databricks workspace administration](https://docs.databricks.com/aws/en/admin/account-settings-e2/workspaces.html), [databricks_mws_workspaces (Terraform)](https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/mws_workspaces#creating-a-serverless-workspace-in-aws-and-gcp)
