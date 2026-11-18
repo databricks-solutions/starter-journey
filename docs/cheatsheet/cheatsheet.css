@@ -1,0 +1,212 @@
+/* Databricks Cheatsheet: slide styles.
+   Page size is 900 x 1125 pt (4:5 carousel). 1 pt = 4/3 px, so a slide is 1200 x 1500 px. */
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/DMSans.ttf") format("truetype");
+  font-weight: 100 1000;
+}
+@font-face {
+  font-family: "DM Mono";
+  src: url("fonts/DMMono-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+:root {
+  --ink: #1e2d34;        /* titles and body text */
+  --ink-soft: #4a5a62;   /* descriptions */
+  --muted: #757e82;      /* footer text */
+  --red: #ef2e29;        /* accent */
+  --red-deep: #c4231f;
+  --maroon: #6f1223;     /* cover title */
+  --blush: #fde9e9;      /* background shapes */
+  --blush-line: #f6c9c9;
+  --line: #e6e9ea;
+  --green: #1f8a4c;
+}
+
+@page { size: 900pt 1125pt; margin: 0; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "DM Sans", sans-serif;
+  color: var(--ink);
+  font-optical-sizing: auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.slide {
+  position: relative;
+  width: 1200px;
+  height: 1500px;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  background: #fff;
+  padding: 96px 96px 150px;
+  display: flex;
+  flex-direction: column;
+}
+.slide:last-child { page-break-after: auto; break-after: auto; }
+
+/* Background shapes from the original cover, used in a lighter form on content slides */
+.blob { position: absolute; border-radius: 50%; background: var(--blush); z-index: 0; }
+.slide > *:not(.blob):not(.footer) { position: relative; z-index: 1; }
+.slide > .footer { z-index: 1; }
+
+/* ---------- Header ---------- */
+.kicker {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 18px;
+}
+.kicker .num {
+  display: inline-grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--red); color: #fff; letter-spacing: 0; font-size: 19px;
+}
+.title-row { display: flex; align-items: center; gap: 28px; margin-bottom: 18px; }
+.title-row img.icon { width: 96px; height: 96px; object-fit: contain; flex: none; }
+h1 {
+  font-size: 92px; line-height: 1.02; font-weight: 500; letter-spacing: -0.02em;
+  margin: 0;
+}
+h1 .sub { display: block; font-size: 44px; font-weight: 400; color: var(--ink-soft); letter-spacing: -0.01em; margin-top: 8px; }
+.lede {
+  font-size: 31px; line-height: 1.42; color: var(--ink-soft);
+  margin: 8px 0 34px; max-width: 980px;
+}
+.lede b, .lede strong { color: var(--ink); font-weight: 600; }
+.hl { color: var(--red); font-weight: 600; }
+
+/* ---------- Term cards ---------- */
+.terms { display: grid; gap: 18px; }
+/* .fill stretches the cards so that the text slides use the full page */
+.terms.fill { flex: 1; grid-auto-rows: 1fr; min-height: 0; }
+.terms.fill .term { display: flex; flex-direction: column; justify-content: center; }
+.terms.fill:not(.two) .term h3 { font-size: 36px; }
+.terms.fill:not(.two) .term p { font-size: 29px; }
+.terms.fill.two .term h3 { font-size: 31px; }
+.terms.fill.two .term p { font-size: 26px; }
+.terms.two { grid-template-columns: 1fr 1fr; }
+.term {
+  border-left: 6px solid var(--red);
+  background: #fafbfb;
+  border-radius: 0 14px 14px 0;
+  padding: 20px 26px 22px;
+}
+.term h3 {
+  margin: 0 0 8px; font-size: 33px; font-weight: 700; line-height: 1.2;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px;
+}
+.term p { margin: 0; font-size: 27px; line-height: 1.42; color: var(--ink-soft); }
+.term p + p { margin-top: 8px; }
+.term.compact { padding: 16px 22px 18px; }
+.term.compact h3 { font-size: 29px; }
+.term.compact p { font-size: 24px; }
+.term.feature { border-left-color: var(--maroon); background: var(--blush); }
+
+/* ---------- Status pills ---------- */
+.pill {
+  display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; line-height: 1;
+  padding: 7px 11px 6px; border-radius: 999px; border: 2px solid currentColor;
+  white-space: nowrap;
+}
+.pill.ga { color: var(--green); }
+.pill.preview { color: var(--red); }
+.pill.beta { color: var(--maroon); }
+.pill.sl { color: #fff; background: var(--red); border-color: var(--red); }
+
+.legend {
+  position: absolute; top: 40px; right: 96px;
+  display: flex; gap: 12px; align-items: center;
+  font-size: 18px; color: var(--muted);
+}
+
+/* ---------- Figure ---------- */
+.figure {
+  margin-top: auto;
+  border: 3px solid var(--red);
+  border-radius: 22px;
+  padding: 18px;
+  background: #fff;
+  display: flex; justify-content: center; align-items: center;
+}
+.figure img { max-width: 100%; max-height: 100%; display: block; border-radius: 10px; }
+.figure.flush { padding: 0; overflow: hidden; }
+.figure.flush img { border-radius: 0; }
+.figure svg { width: 100%; height: auto; display: block; }
+.caption { font-size: 19px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+/* ---------- Lists, chips, tips ---------- */
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.checks li { font-size: 28px; line-height: 1.38; padding-left: 52px; position: relative; color: var(--ink-soft); }
+.checks li b { color: var(--ink); }
+.checks li::before {
+  content: ""; position: absolute; left: 0; top: 4px; width: 34px; height: 34px; border-radius: 8px;
+  background: var(--red) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M5 12.5l4.2 4.2L19 7' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / 24px no-repeat;
+}
+.chips { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.chip {
+  font-family: "DM Mono", monospace; font-size: 26px; text-align: center;
+  border: 2px dashed var(--red); border-radius: 12px; padding: 16px 10px;
+}
+.tip {
+  display: flex; gap: 18px; align-items: flex-start;
+  background: var(--blush); border-radius: 16px; padding: 22px 26px;
+  font-size: 25px; line-height: 1.42; color: var(--ink);
+}
+.tip .tag { flex: none; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: .08em; font-size: 19px; padding-top: 4px; }
+code { font-family: "DM Mono", monospace; font-size: .9em; background: #f1f3f4; padding: 1px 7px; border-radius: 6px; }
+
+.spacer { flex: 1; }
+.mt { margin-top: 28px; }
+.mt-s { margin-top: 16px; }
+
+/* ---------- Footer ---------- */
+.footer {
+  position: absolute; left: 96px; right: 96px; bottom: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 26px; color: var(--muted);
+  border-top: 2px solid var(--line); padding-top: 22px;
+}
+.footer .brand { color: var(--maroon); font-weight: 600; }
+.footer .right { display: flex; align-items: center; gap: 18px; }
+.footer .page { font-variant-numeric: tabular-nums; }
+.footer .arrow {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--red);
+  display: grid; place-items: center;
+}
+.footer .arrow svg { width: 34px; height: 34px; }
+
+/* ---------- Cover and closing ---------- */
+.cover { justify-content: center; padding-top: 120px; }
+.cover h1 { font-size: 168px; line-height: .98; color: var(--maroon); letter-spacing: -0.03em; }
+.cover .tagline { font-size: 46px; font-weight: 600; color: var(--red); line-height: 1.3; margin-top: 56px; }
+.cover .edition {
+  display: inline-flex; align-items: center; gap: 14px; margin-top: 44px;
+  font-size: 26px; font-weight: 600; color: var(--maroon);
+  border: 2px solid var(--maroon); border-radius: 999px; padding: 12px 24px;
+}
+
+/* ---------- Table of contents ---------- */
+.toc { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 36px; }
+.toc a, .toc div {
+  display: flex; gap: 14px; align-items: baseline; text-decoration: none; color: var(--ink);
+  font-size: 25px; font-weight: 500; padding: 9px 0; border-bottom: 2px solid var(--line);
+}
+.toc .n { color: var(--red); font-weight: 700; font-variant-numeric: tabular-nums; width: 40px; flex: none; }
+.toc .pg { margin-left: auto; color: var(--muted); font-size: 22px; font-variant-numeric: tabular-nums; }
+
+/* ---------- Two-up comparison ---------- */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.compare .col { border: 3px solid var(--red); border-radius: 20px; padding: 26px 28px; }
+.compare .col.alt { border-color: var(--line); background: #fafbfb; }
+.compare h3 { margin: 0 0 6px; font-size: 32px; }
+.compare .meta { margin-bottom: 14px; }
+.compare ul { margin: 0; padding-left: 26px; }
+.compare li { font-size: 24px; line-height: 1.42; color: var(--ink-soft); margin-bottom: 6px; }

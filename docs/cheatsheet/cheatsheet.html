@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Databricks Cheatsheet 2026 Ready (Nov 2026 edition)</title>
+<meta name="author" content="Starter Journey">
+<link rel="stylesheet" href="cheatsheet.css">
+</head>
+<body data-edition="Nov 2026">
+
+<!-- ================================================================
+  How to edit
+  - One <section class="slide"> is one PDF page (900 x 1125 pt).
+  - The script at the end adds the footer and the page number.
+  - Status pills: <span class="pill ga">GA</span>, .preview, .beta, .sl (serverless only), .new
+  - Use a status only when an official Databricks page or release note confirms it.
+  - Build: ./build.sh
+================================================================= -->
+
+<!-- 1. Cover -->
+<section class="slide cover">
+  <div class="blob" style="width:1500px;height:1500px;left:-700px;top:-560px"></div>
+  <div class="blob" style="width:520px;height:520px;right:-130px;top:-200px;background:#fbd9d9"></div>
+  <div class="blob" style="width:300px;height:300px;left:-120px;bottom:-140px"></div>
+  <h1>Databricks<br>Cheatsheet<br>2026 Ready</h1>
+  <div class="tagline">No fluff quick reference<br>for architects and engineers</div>
+  <div><span class="edition">Nov 2026 edition</span></div>
+</section>
+
+<!-- 2. Contents -->
+<section class="slide">
+  <div class="kicker">Contents</div>
+  <h1>What is inside</h1>
+  <p class="lede">One page for each part of the platform. Each card gives the current product name and the status that the official docs confirm.</p>
+  <div class="toc" id="toc"></div>
+  <div class="spacer"></div>
+  <div class="tip">
+    <span class="tag">Legend</span>
+    <span><span class="pill ga">GA</span> generally available &nbsp; <span class="pill preview">Public Preview</span> &nbsp; <span class="pill beta">Beta</span> &nbsp; <span class="pill sl">Serverless only</span> &nbsp;</span>
+  </div>
+</section>
+
+<!-- 3. Data + AI Platform -->
+<section class="slide" data-toc="The Data + AI Platform">
+  <div class="kicker"><span class="num">01</span>Platform</div>
+  <h1>Data + AI Platform</h1>
+  <p class="lede">One platform to build, deploy, share and operate data, analytics and AI on all clouds.</p>
+  <div class="compare">
+    <div class="col">
+      <h3>Unified control plane</h3>
+      <ul><li>One place for data engineering, warehousing, transactional data, BI and agents.</li><li>The same governance applies to every workload.</li></ul>
+    </div>
+    <div class="col alt">
+      <h3>Open lakehouse foundation</h3>
+      <ul><li>Your data stays in open formats: Delta Lake, Apache Iceberg and Postgres.</li><li>One governed layer for all clouds.</li></ul>
+    </div>
+  </div>
+  <ul class="checks mt">
+    <li><b>Publish agents</b> with code (Agent Bricks) or without code (Genie Agents).</li>
+    <li><b>Build trusted tables and metrics</b> with Lakeflow and metric views.</li>
+    <li><b>Start small.</b> Add one workload at a time on the same governance.</li>
+  </ul>
+  <div class="spacer"></div>
+  <div class="tip"><span class="tag">Next</span><span>How do you go from data to decisions with this stack? The next page shows the full map.</span></div>
+</section>
+
+<!-- 4. Platform map (redrawn) -->
+<section class="slide" data-toc="Platform map">
+  <div class="kicker"><span class="num">02</span>Platform</div>
+  <h1>The platform map</h1>
+  <p class="lede">Move data in, transform it, query it with SQL, build dashboards and deploy agents on top. <b>Governance, security and discovery sit under everything</b>, so the same controls apply to every workload.</p>
+  <div class="figure" style="padding:28px">
+    <svg viewBox="0 0 960 760" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <text x="480" y="30" text-anchor="middle" font-size="22" font-weight="700" fill="#ef2e29" letter-spacing="2">DATA + AI PLATFORM</text>
+      <!-- Experience layer -->
+      <g font-size="23" font-weight="600" fill="#1e2d34" text-anchor="middle">
+        <rect x="20" y="60" width="452" height="110" rx="16" fill="#fde9e9"/>
+        <text x="246" y="108">Genie One</text>
+        <text x="246" y="140" font-size="18" font-weight="400" fill="#4a5a62">business users: chat, dashboards, apps</text>
+        <rect x="488" y="60" width="452" height="110" rx="16" fill="#fde9e9"/>
+        <text x="714" y="108">Databricks Apps</text>
+        <text x="714" y="140" font-size="18" font-weight="400" fill="#4a5a62">custom data and AI applications</text>
+      </g>
+      <!-- Workloads -->
+      <g font-size="21" font-weight="600" fill="#1e2d34" text-anchor="middle">
+        <rect x="20" y="196" width="296" height="118" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="168" y="246">Lakeflow</text><text x="168" y="276" font-size="17" font-weight="400" fill="#4a5a62">ingest, transform, orchestrate</text>
+        <rect x="332" y="196" width="296" height="118" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="480" y="246">Databricks SQL</text><text x="480" y="276" font-size="17" font-weight="400" fill="#4a5a62">warehousing and AI/BI</text>
+        <rect x="644" y="196" width="296" height="118" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="792" y="246">Lakebase</text><text x="792" y="276" font-size="17" font-weight="400" fill="#4a5a62">serverless Postgres (OLTP)</text>
+        <rect x="20" y="330" width="452" height="118" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="246" y="380">Agent Bricks and Genie Agents</text><text x="246" y="410" font-size="17" font-weight="400" fill="#4a5a62">agents with code and without code</text>
+        <rect x="488" y="330" width="452" height="118" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="714" y="380">Machine learning</text><text x="714" y="410" font-size="17" font-weight="400" fill="#4a5a62">MLflow, Model Serving, AI Runtime</text>
+      </g>
+      <!-- Governance -->
+      <rect x="20" y="474" width="920" height="270" rx="20" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+      <g text-anchor="middle" fill="#1e2d34">
+        <rect x="44" y="498" width="872" height="66" rx="12" fill="#ef2e29"/>
+        <text x="480" y="541" font-size="24" font-weight="700" fill="#fff">Unity Catalog: unified governance and discovery</text>
+        <rect x="44" y="580" width="872" height="66" rx="12" fill="#fde9e9"/>
+        <text x="480" y="622" font-size="21" font-weight="600">Unity Gateway: one API for models, MCP servers and skills</text>
+        <rect x="44" y="662" width="872" height="66" rx="12" fill="#f6f7f7"/>
+        <text x="480" y="704" font-size="21" font-weight="600">Open formats: Delta Lake &#183; Apache Iceberg &#183; Postgres</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- 5. Governance and Security -->
+<section class="slide" data-toc="Governance and security">
+  <div class="kicker"><span class="num">03</span>Governance</div>
+  <div class="title-row"><img class="icon" src="assets/icons/uc.png" alt=""><h1>Governance and Security</h1></div>
+  <div class="terms two fill">
+    <div class="term compact" style="grid-column:1/-1"><h3>Unity Catalog</h3><p>The unified governance layer. It manages discovery, access control, lineage, quality monitoring and sharing of all data and AI assets.</p></div>
+    <div class="term compact"><h3>Metric views</h3><p>Governed, reusable business metrics in Unity Catalog. Every tool gets the same KPI definition through SQL.</p></div>
+    <div class="term compact"><h3>Access control <span class="pill ga">ABAC GA</span></h3><p>Role-based grants and attribute-based policies (ABAC) on tags. Row filters and column masks apply automatically.</p></div>
+    <div class="term compact"><h3>Data lineage</h3><p>End-to-end lineage of tables, columns, notebooks, jobs and dashboards. External lineage adds systems outside Databricks.</p></div>
+    <div class="term compact"><h3>Governed tags <span class="pill ga">GA</span></h3><p>Account-level tags with allowed values. Use them for compliance, cost tracking and ABAC policies.</p></div>
+    <div class="term compact"><h3>Data classification <span class="pill ga">GA</span></h3><p>An AI system scans your catalogs and tags sensitive columns such as names, emails and card numbers.</p></div>
+    <div class="term compact"><h3>Data quality monitoring</h3><p>Anomaly detection checks freshness and completeness of each table. Data profiling tracks statistics over time.</p></div>
+  </div>
+</section>
+
+<!-- 6. Unity Catalog (redrawn feature map) -->
+<section class="slide" data-toc="Unity Catalog">
+  <div class="kicker"><span class="num">04</span>Governance</div>
+  <div class="title-row"><img class="icon" src="assets/icons/uc.png" alt=""><h1>Unity Catalog</h1></div>
+  <p class="lede">Unity Catalog (UC) gives central access control, auditing, lineage, quality monitoring and discovery for all workspaces. Every object has a three-level name: <code>catalog.schema.object</code>.</p>
+  <div class="figure" style="padding:26px">
+    <svg viewBox="0 0 960 700" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <g text-anchor="middle">
+        <circle cx="480" cy="350" r="118" fill="#ef2e29"/>
+        <text x="480" y="340" font-size="27" font-weight="700" fill="#fff">Unity</text>
+        <text x="480" y="374" font-size="27" font-weight="700" fill="#fff">Catalog</text>
+      </g>
+      <g stroke="#f6c9c9" stroke-width="3">
+        <line x1="480" y1="232" x2="480" y2="150"/><line x1="480" y1="468" x2="480" y2="550"/>
+        <line x1="362" y1="350" x2="300" y2="350"/><line x1="598" y1="350" x2="660" y2="350"/>
+        <line x1="397" y1="267" x2="300" y2="170"/><line x1="563" y1="267" x2="660" y2="170"/>
+        <line x1="397" y1="433" x2="300" y2="530"/><line x1="563" y1="433" x2="660" y2="530"/>
+      </g>
+      <g font-size="21" font-weight="700" fill="#1e2d34" text-anchor="middle">
+        <rect x="330" y="20" width="300" height="130" rx="16" fill="#fde9e9"/>
+        <text x="480" y="66">Access control</text>
+        <text x="480" y="96" font-size="17" font-weight="400" fill="#4a5a62">grants, ABAC, row filters,</text>
+        <text x="480" y="120" font-size="17" font-weight="400" fill="#4a5a62">column masks</text>
+
+        <rect x="20" y="80" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="160" y="126">Discovery</text>
+        <text x="160" y="156" font-size="17" font-weight="400" fill="#4a5a62">Catalog Explorer, search,</text>
+        <text x="160" y="180" font-size="17" font-weight="400" fill="#4a5a62">AI-generated comments</text>
+
+        <rect x="660" y="80" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="800" y="126">Lineage and audit</text>
+        <text x="800" y="156" font-size="17" font-weight="400" fill="#4a5a62">column lineage, external</text>
+        <text x="800" y="180" font-size="17" font-weight="400" fill="#4a5a62">lineage, system tables</text>
+
+        <rect x="20" y="285" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="160" y="331">Tags and classification</text>
+        <text x="160" y="361" font-size="17" font-weight="400" fill="#4a5a62">governed tags, automatic</text>
+        <text x="160" y="385" font-size="17" font-weight="400" fill="#4a5a62">data classification</text>
+
+        <rect x="660" y="285" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="800" y="331">Business semantics</text>
+        <text x="800" y="361" font-size="17" font-weight="400" fill="#4a5a62">metric views,</text>
+        <text x="800" y="385" font-size="17" font-weight="400" fill="#4a5a62">certified KPIs</text>
+
+        <rect x="20" y="490" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="160" y="536">Quality</text>
+        <text x="160" y="566" font-size="17" font-weight="400" fill="#4a5a62">anomaly detection,</text>
+        <text x="160" y="590" font-size="17" font-weight="400" fill="#4a5a62">data profiling</text>
+
+        <rect x="660" y="490" width="280" height="130" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="800" y="536">Federation and sharing</text>
+        <text x="800" y="566" font-size="17" font-weight="400" fill="#4a5a62">Lakehouse Federation,</text>
+        <text x="800" y="590" font-size="17" font-weight="400" fill="#4a5a62">OpenSharing, Iceberg REST</text>
+
+        <rect x="330" y="550" width="300" height="130" rx="16" fill="#fde9e9"/>
+        <text x="480" y="596">AI assets</text>
+        <text x="480" y="626" font-size="17" font-weight="400" fill="#4a5a62">models, functions, volumes,</text>
+        <text x="480" y="650" font-size="17" font-weight="400" fill="#4a5a62">agents and MCP servers</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- 7. Databricks SQL -->
+<section class="slide" data-toc="Databricks SQL">
+  <div class="kicker"><span class="num">05</span>Analytics</div>
+  <div class="title-row"><img class="icon" src="assets/icons/sql.png" alt=""><h1>Databricks SQL</h1></div>
+  <p class="lede">Databricks SQL runs ANSI SQL on scalable SQL warehouses. It includes query tools, dashboards, alerts and metric views. Unity Catalog governs all of it.</p>
+  <ul class="checks">
+    <li><b>AI Functions</b> such as <code>ai_query</code>, <code>ai_classify</code> and <code>ai_extract</code> put LLM tasks directly in SQL.</li>
+    <li><b>SQL scripting and stored procedures</b> move procedural logic from legacy warehouses with little rewrite.</li>
+    <li><b>Genie Code</b> writes, explains and fixes queries in the SQL editor.</li>
+  </ul>
+  <div class="spacer"></div>
+  <div class="figure flush"><img src="assets/diagrams/sql-unified-ai.jpg" alt="Databricks SQL unified with AI: any LLM via SQL, DBSQL in agents, high throughput"></div>
+</section>
+
+<!-- 8. Data Warehousing -->
+<section class="slide" data-toc="Data warehousing and federation">
+  <div class="kicker"><span class="num">06</span>Analytics</div>
+  <div class="title-row"><img class="icon" src="assets/icons/sql.png" alt=""><h1>Data Warehousing</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>SQL warehouse</h3><p>The compute for Databricks SQL. It brings data warehouse performance to the data in your lake. Use serverless for fast start and automatic scaling.</p></div>
+    <div class="term"><h3>SQL editor</h3><p>An analyst-friendly editor with multiple statement results, real-time collaboration and Genie Code built in.</p></div>
+    <div class="term"><h3>Lakehouse Federation</h3><p>Run queries on external data sources without a migration of all the data first.</p></div>
+    <div class="term"><h3>Query federation</h3><p>Databricks pushes the query down to the foreign database over JDBC. Part of the work runs in Databricks and part runs on the remote system.</p></div>
+    <div class="term"><h3>Catalog federation</h3><p>Databricks reads the foreign tables directly from object storage. Only Databricks compute runs the query.</p></div>
+  </div>
+</section>
+
+<!-- 9. Compute -->
+<section class="slide" data-toc="Compute">
+  <div class="kicker"><span class="num">07</span>Infrastructure</div>
+  <div class="title-row"><img class="icon" src="assets/icons/compute.png" alt=""><h1>Compute</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>Serverless compute <span class="pill sl">Serverless only</span></h3><p>On-demand compute that Databricks manages. It starts in seconds and scales with the workload. Use it as the default.</p></div>
+    <div class="term"><h3>All-purpose and job compute</h3><p>Classic compute that you create and configure. All-purpose compute is for interactive work. Job compute runs one job and then stops.</p></div>
+    <div class="term"><h3>SQL warehouse</h3><p>Classic, pro or serverless. It is tuned for SQL and BI workloads.</p></div>
+    <div class="term"><h3>Lakebase <span class="pill sl">Serverless only</span> <span class="pill ga">GA</span></h3><p>Managed Postgres that autoscales and scales to zero. It serves low-latency transactional and app workloads next to the lakehouse.</p></div>
+    <div class="term"><h3>AI Runtime <span class="pill sl">Serverless only</span></h3><p>Serverless GPU compute (A10 and H100) for training, fine-tuning and deep learning. You do not manage clusters.</p></div>
+  </div>
+</section>
+
+<!-- 10. Data Engineering -->
+<section class="slide" data-toc="Data engineering with Lakeflow">
+  <div class="kicker"><span class="num">08</span>Data engineering</div>
+  <div class="title-row"><img class="icon" src="assets/icons/lakeflow.png" alt=""><h1>Data Engineering</h1></div>
+  <div class="terms fill">
+    <div class="term compact feature"><h3>Lakeflow</h3><p>The end-to-end data engineering solution. Engineers, SQL developers and analysts use it to deliver quality data for analytics, AI and apps.</p></div>
+    <div class="term compact"><h3>Lakeflow Connect</h3><p>Managed connectors for SaaS apps, databases, cloud storage, message buses and local files.</p></div>
+    <div class="term compact"><h3>Lakeflow pipelines</h3><p>Declarative batch and streaming pipelines. Databricks orchestrates flows, streaming tables and materialized views for you. The open source engine is Spark Declarative Pipelines.</p></div>
+    <div class="term compact"><h3>Lakeflow Jobs</h3><p>Orchestration and monitoring for every workload: notebooks, pipelines, connectors, SQL, ML training and inference.</p></div>
+    <div class="term compact"><h3>Auto Loader</h3><p>Processes new files incrementally as they arrive in cloud storage.</p></div>
+    <div class="term compact"><h3>Lakeflow Designer <span class="pill ga">GA</span></h3><p>A no-code, visual pipeline builder with Genie Code. It generates code that you can keep in Git and deploy with CI/CD.</p></div>
+  </div>
+</section>
+
+<!-- 11. Lakeflow Ecosystem (redrawn) -->
+<section class="slide" data-toc="Lakeflow ecosystem and real time">
+  <div class="kicker"><span class="num">09</span>Data engineering</div>
+  <div class="title-row"><img class="icon" src="assets/icons/lakeflow.png" alt=""><h1>Lakeflow Ecosystem</h1></div>
+  <p class="lede">Lakeflow puts ingestion, transformation and orchestration in one governed, serverless experience. It replaces a stack of separate tools.</p>
+  <div class="figure" style="padding:24px">
+    <svg viewBox="0 0 960 300" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <g text-anchor="middle" fill="#1e2d34">
+        <rect x="10" y="10" width="220" height="200" rx="18" fill="#fde9e9"/>
+        <text x="120" y="70" font-size="24" font-weight="700">Connect</text>
+        <text x="120" y="110" font-size="17" fill="#4a5a62">ingest from</text><text x="120" y="134" font-size="17" fill="#4a5a62">any system,</text><text x="120" y="158" font-size="17" fill="#4a5a62">Zerobus Ingest</text>
+        <rect x="250" y="10" width="220" height="200" rx="18" fill="#fde9e9"/>
+        <text x="360" y="70" font-size="24" font-weight="700">Pipelines</text>
+        <text x="360" y="110" font-size="17" fill="#4a5a62">declarative ETL</text><text x="360" y="134" font-size="17" fill="#4a5a62">with built-in</text><text x="360" y="158" font-size="17" fill="#4a5a62">data quality</text>
+        <rect x="490" y="10" width="220" height="200" rx="18" fill="#fde9e9"/>
+        <text x="600" y="70" font-size="24" font-weight="700">Designer</text>
+        <text x="600" y="110" font-size="17" fill="#4a5a62">no-code ETL</text><text x="600" y="134" font-size="17" fill="#4a5a62">for analysts</text>
+        <rect x="730" y="10" width="220" height="200" rx="18" fill="#fde9e9"/>
+        <text x="840" y="70" font-size="24" font-weight="700">Jobs</text>
+        <text x="840" y="110" font-size="17" fill="#4a5a62">orchestrate and</text><text x="840" y="134" font-size="17" fill="#4a5a62">monitor all</text><text x="840" y="158" font-size="17" fill="#4a5a62">workloads</text>
+        <rect x="10" y="230" width="940" height="60" rx="14" fill="#ef2e29"/>
+        <text x="480" y="269" font-size="22" font-weight="700" fill="#fff">Unity Catalog governance &#183; serverless compute</text>
+      </g>
+    </svg>
+  </div>
+  <div class="terms mt">
+    <div class="term compact"><h3>Real-time mode <span class="pill ga">GA in Lakeflow pipelines</span></h3><p>Ultra-low-latency stream processing for operational use cases.</p></div>
+    <div class="term compact"><h3>Zerobus Ingest</h3><p>A Lakeflow Connect API that writes events directly to Delta tables, with no message bus. Default quota: 100 MB/s for each stream. Data lands in a table in about 5 seconds.</p></div>
+  </div>
+</section>
+
+<!-- 12. Data Sharing -->
+<section class="slide" data-toc="Data sharing and collaboration">
+  <div class="kicker"><span class="num">10</span>Collaboration</div>
+  <div class="title-row"><img class="icon" src="assets/icons/sharing.png" alt=""><h1>Data Sharing</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>OpenSharing</h3><p>The open protocol to share data and AI assets inside and outside Databricks. The recipient does not need Databricks.</p></div>
+    <div class="term"><h3>Clean Rooms</h3><p>A privacy-safe space where several parties run approved code on shared data. No party sees the raw data of another. It uses OpenSharing and serverless compute.</p></div>
+    <div class="term"><h3>Marketplace</h3><p>An open exchange for data products, models, notebooks and MCP servers from third parties.</p></div>
+    <div class="term"><h3>Partner Connect</h3><p>Create trial accounts with Databricks technology partners and connect them to your workspace from the Databricks UI.</p></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="figure" style="padding:22px">
+    <svg viewBox="0 0 960 230" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <g text-anchor="middle" fill="#1e2d34">
+        <rect x="10" y="40" width="230" height="150" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="125" y="105" font-size="23" font-weight="700">Party A</text><text x="125" y="138" font-size="17" fill="#4a5a62">own tables</text>
+        <rect x="720" y="40" width="230" height="150" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="835" y="105" font-size="23" font-weight="700">Party B</text><text x="835" y="138" font-size="17" fill="#4a5a62">own tables</text>
+        <rect x="320" y="10" width="320" height="210" rx="20" fill="#fde9e9" stroke="#ef2e29" stroke-width="3"/>
+        <text x="480" y="70" font-size="24" font-weight="700">Clean room</text>
+        <text x="480" y="108" font-size="17" fill="#4a5a62">approved code only</text>
+        <text x="480" y="134" font-size="17" fill="#4a5a62">SQL, Python, notebooks</text>
+        <text x="480" y="174" font-size="17" font-weight="600" fill="#ef2e29">only results leave</text>
+      </g>
+      <g stroke="#ef2e29" stroke-width="3" fill="none" marker-end="url(#a)">
+        <line x1="244" y1="115" x2="312" y2="115"/><line x1="716" y1="115" x2="648" y2="115"/>
+      </g>
+      <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef2e29"/></marker></defs>
+      <text x="278" y="100" font-size="14" text-anchor="middle" fill="#757e82">OpenSharing</text>
+      <text x="682" y="100" font-size="14" text-anchor="middle" fill="#757e82">OpenSharing</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 13. AI/BI and Genie -->
+<section class="slide" data-toc="AI/BI and Genie">
+  <div class="kicker"><span class="num">11</span>Business intelligence</div>
+  <div class="title-row"><img class="icon" src="assets/icons/dashboards.png" alt=""><h1>AI/BI and Genie</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>Genie One <span class="pill ga">Chat GA</span></h3><p>The front door for business users. They chat with their data and open published dashboards, Genie Agents and apps. They do not need workspace skills.</p></div>
+    <div class="term"><h3>Genie Agents</h3><p>No-code agents that answer natural-language questions on your tables and documents. You curate the data, instructions and example queries.</p></div>
+    <div class="term"><h3>AI/BI dashboards</h3><p>Dashboards with AI-assisted authoring, a large visual library and simple sharing. Publish to Genie One for business users.</p></div>
+    <div class="term"><h3>Databricks Apps</h3><p>Build and deploy secure data and AI applications on the platform, with no separate infrastructure.</p></div>
+  </div>
+  <div class="tip mt"><span class="tag">Tip</span><span>Put your KPIs in <b>metric views</b> first. Dashboards, Genie Agents and SQL users then all get the same numbers.</span></div>
+</section>
+
+<!-- 14. Lakebase -->
+<section class="slide" data-toc="Lakebase">
+  <div class="kicker"><span class="num">12</span>Transactional data</div>
+  <div class="title-row"><img class="icon" src="assets/icons/delta-stack.png" alt=""><h1>Lakebase <span class="pill ga" style="vertical-align:middle;font-size:20px">GA</span></h1></div>
+  <p class="lede">Lakebase is fully managed, serverless Postgres in the Data + AI Platform. It brings OLTP (online transaction processing) to the lakehouse, with Unity Catalog governance.</p>
+  <div class="chips">
+    <div class="chip">Autoscaling</div><div class="chip">Scale to zero</div>
+    <div class="chip">Branching</div><div class="chip">Instant restore</div>
+    <div class="chip">High availability</div><div class="chip">Postgres 16 to 18</div>
+    <div class="chip">Lakebase Search</div><div class="chip">Apps resource</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="figure flush"><img src="assets/diagrams/lakebase-reverse-etl.jpg" alt="Lakebase between analytical data and applications: register with UC, reverse ETL, transactional data"></div>
+</section>
+
+<!-- 15. Machine Learning -->
+<section class="slide" data-toc="Machine learning">
+  <div class="kicker"><span class="num">13</span>AI and ML</div>
+  <div class="title-row"><img class="icon" src="assets/icons/ml.png" alt=""><h1>Machine Learning</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>MLflow 3</h3><p>The open source tool for the full ML and GenAI lifecycle: experiment tracking, tracing, evaluation, model registry and deployment.</p></div>
+    <div class="term"><h3>AutoML</h3><p>Builds, selects and tunes baseline models from your data with little code.</p></div>
+    <div class="term"><h3>Feature Store</h3><p>A central, governed place in Unity Catalog to store, share and serve ML features for training and real-time inference.</p></div>
+    <div class="term"><h3>Databricks Runtime for ML</h3><p>A runtime with popular ML libraries already installed, for classic compute.</p></div>
+    <div class="term"><h3>AI Runtime <span class="pill sl">Serverless only</span></h3><p>Serverless GPUs for training and fine-tuning. Use the AI Runtime SDK from Python.</p></div>
+  </div>
+</section>
+
+<!-- 16. Gen AI -->
+<section class="slide" data-toc="Generative AI building blocks">
+  <div class="kicker"><span class="num">14</span>AI and ML</div>
+  <div class="title-row"><img class="icon" src="assets/icons/mosaic.png" alt=""><h1>Gen AI</h1></div>
+  <div class="terms two fill">
+    <div class="term compact"><h3>Model Serving</h3><p>Deploy models and agents as scalable real-time REST endpoints.</p></div>
+    <div class="term compact"><h3>Foundation Model APIs</h3><p>Pay-per-token or provisioned access to frontier and open LLMs hosted by Databricks.</p></div>
+    <div class="term compact"><h3>Unity Gateway</h3><p>One governed API for all models, MCP servers and skills. It adds policies, rate limits and usage tracking.</p></div>
+    <div class="term compact"><h3>Databricks AI Search</h3><p>Vector and full-text search on your data for retrieval and RAG.</p></div>
+    <div class="term compact"><h3>AI Playground</h3><p>A chat space to test prompts, tools and models side by side before you write code.</p></div>
+    <div class="term compact"><h3>Inference tables</h3><p>Tables in Unity Catalog that log the requests and responses of each endpoint for monitoring.</p></div>
+    <div class="term compact" style="grid-column:1/-1"><h3>Production monitoring</h3><p>MLflow scorers check the quality of agent traces in production.</p></div>
+  </div>
+</section>
+
+<!-- 17. Agent Bricks -->
+<section class="slide" data-toc="Agent Bricks">
+  <div class="kicker"><span class="num">15</span>Agents</div>
+  <div class="title-row"><img class="icon" src="assets/icons/agentbricks.png" alt=""><h1>Agent Bricks</h1></div>
+  <p class="lede">Agent Bricks is the Databricks <b>agent developer platform</b>. It is for developers who write code. Use any framework, harness or model.</p>
+  <div class="terms two fill">
+    <div class="term compact"><h3>Agent Runtime</h3><p>Hosts your agent server on Databricks Apps.</p></div>
+    <div class="term compact"><h3>AgentKit</h3><p>Durable execution. Runs survive restarts and crashes.</p></div>
+    <div class="term compact"><h3>Sandbox</h3><p>Runs the code that an agent writes, in isolation.</p></div>
+    <div class="term compact"><h3>Memory and sessions</h3><p>Managed stores in Lakebase. Agents recall facts across conversations.</p></div>
+    <div class="term compact"><h3>Agent Bricks CLI <span class="pill beta">Beta</span></h3><p>Scaffold a project, then run <code>agentbricks deploy</code>.</p></div>
+    <div class="term compact"><h3>MLflow tracing and evaluation</h3><p>Records each step of the agent, in development and in production.</p></div>
+  </div>
+  <div class="tip mt"><span class="tag">Legacy</span><span>Knowledge Assistant and Supervisor Agent are legacy. Do not use them for new agents. Build a custom agent with Agent Bricks, or a no-code Genie Agent.</span></div>
+</section>
+
+<!-- 18. Which tool (redrawn decision guide) -->
+<section class="slide" data-toc="Which AI tool to choose">
+  <div class="kicker"><span class="num">16</span>Agents</div>
+  <h1>Choose the right AI tool</h1>
+  <p class="lede">Start with the simplest tool that solves the problem. Move to the next one only when you need more control.</p>
+  <div class="figure" style="padding:26px">
+    <svg viewBox="0 0 960 860" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ef2e29"/></marker></defs>
+      <g text-anchor="middle" fill="#1e2d34">
+        <rect x="230" y="10" width="500" height="90" rx="16" fill="#1e2d34"/>
+        <text x="480" y="50" font-size="22" font-weight="700" fill="#fff">Who uses it, and how?</text>
+        <text x="480" y="80" font-size="17" fill="#d4d7d8">pick the first row that matches</text>
+      </g>
+      <g stroke="#ef2e29" stroke-width="3" marker-end="url(#b)">
+        <line x1="480" y1="100" x2="480" y2="132"/>
+      </g>
+      <g font-family="DM Sans">
+        <!-- rows -->
+        <g transform="translate(0,140)">
+          <rect x="10" y="0" width="420" height="120" rx="16" fill="#fde9e9"/>
+          <text x="34" y="48" font-size="21" font-weight="700" fill="#1e2d34">A business user asks questions</text>
+          <text x="34" y="82" font-size="17" fill="#4a5a62">or opens dashboards and apps</text>
+          <line x1="440" y1="60" x2="520" y2="60" stroke="#ef2e29" stroke-width="3" marker-end="url(#b)"/>
+          <rect x="530" y="0" width="420" height="120" rx="16" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+          <text x="554" y="52" font-size="25" font-weight="700" fill="#ef2e29">Genie One</text>
+          <text x="554" y="86" font-size="17" fill="#4a5a62">no build work</text>
+        </g>
+        <g transform="translate(0,280)">
+          <rect x="10" y="0" width="420" height="120" rx="16" fill="#fde9e9"/>
+          <text x="34" y="48" font-size="21" font-weight="700" fill="#1e2d34">Repeated task on many rows</text>
+          <text x="34" y="82" font-size="17" fill="#4a5a62">classify, extract, summarize in batch</text>
+          <line x1="440" y1="60" x2="520" y2="60" stroke="#ef2e29" stroke-width="3" marker-end="url(#b)"/>
+          <rect x="530" y="0" width="420" height="120" rx="16" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+          <text x="554" y="52" font-size="25" font-weight="700" fill="#ef2e29">AI Functions</text>
+          <text x="554" y="86" font-size="17" fill="#4a5a62">ai_query, ai_extract in SQL or a pipeline</text>
+        </g>
+        <g transform="translate(0,420)">
+          <rect x="10" y="0" width="420" height="120" rx="16" fill="#fde9e9"/>
+          <text x="34" y="48" font-size="21" font-weight="700" fill="#1e2d34">Chat agent on your data</text>
+          <text x="34" y="82" font-size="17" fill="#4a5a62">tables and documents, no code</text>
+          <line x1="440" y1="60" x2="520" y2="60" stroke="#ef2e29" stroke-width="3" marker-end="url(#b)"/>
+          <rect x="530" y="0" width="420" height="120" rx="16" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+          <text x="554" y="52" font-size="25" font-weight="700" fill="#ef2e29">Genie Agents</text>
+          <text x="554" y="86" font-size="17" fill="#4a5a62">curate data, instructions, examples</text>
+        </g>
+        <g transform="translate(0,560)">
+          <rect x="10" y="0" width="420" height="120" rx="16" fill="#fde9e9"/>
+          <text x="34" y="48" font-size="21" font-weight="700" fill="#1e2d34">Custom agent in code</text>
+          <text x="34" y="82" font-size="17" fill="#4a5a62">own framework, tools and model</text>
+          <line x1="440" y1="60" x2="520" y2="60" stroke="#ef2e29" stroke-width="3" marker-end="url(#b)"/>
+          <rect x="530" y="0" width="420" height="120" rx="16" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+          <text x="554" y="52" font-size="25" font-weight="700" fill="#ef2e29">Agent Bricks</text>
+          <text x="554" y="86" font-size="17" fill="#4a5a62">can call Genie Agents as tools</text>
+        </g>
+        <g transform="translate(0,700)">
+          <rect x="10" y="0" width="420" height="120" rx="16" fill="#fde9e9"/>
+          <text x="34" y="48" font-size="21" font-weight="700" fill="#1e2d34">Many agents work together</text>
+          <text x="34" y="82" font-size="17" fill="#4a5a62">for example, coding agents</text>
+          <line x1="440" y1="60" x2="520" y2="60" stroke="#ef2e29" stroke-width="3" marker-end="url(#b)"/>
+          <rect x="530" y="0" width="420" height="120" rx="16" fill="#fff" stroke="#ef2e29" stroke-width="3"/>
+          <text x="554" y="52" font-size="25" font-weight="700" fill="#ef2e29">Omnigent <tspan font-size="16" fill="#6f1223">BETA</tspan></text>
+          <text x="554" y="86" font-size="17" fill="#4a5a62">compose, then deploy on Agent Bricks</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- 19. Databricks Apps -->
+<section class="slide" data-toc="Databricks Apps">
+  <div class="kicker"><span class="num">17</span>Applications</div>
+  <div class="title-row"><img class="icon" src="assets/icons/apps.png" alt=""><h1>Databricks Apps</h1></div>
+  <p class="lede">Build and deploy secure data and AI apps directly on Databricks. Apps run on serverless compute and connect to Unity Catalog, Databricks SQL, Lakebase, Model Serving, Lakeflow Jobs and Genie Agents.</p>
+  <div class="terms two fill">
+    <div class="term compact"><h3>Built-in identity</h3><p>Each app has a service principal. OAuth gives user-level access when you need it.</p></div>
+    <div class="term compact"><h3>Resources</h3><p>Declare SQL warehouses, Lakebase databases, endpoints and secrets as app resources.</p></div>
+    <div class="term compact"><h3>Any framework</h3><p>Streamlit, Dash, Gradio, Flask, FastAPI, Node.js and React.</p></div>
+    <div class="term compact"><h3>Deploy as code</h3><p>Use Declarative Automation Bundles and Git for repeatable deployments.</p></div>
+    <div class="term compact"><h3>Network controls</h3><p>Serverless network policies control the traffic in and out of the app.</p></div>
+    <div class="term compact"><h3>Agent host</h3><p>Agent Bricks Agent Runtime runs agent servers on Databricks Apps.</p></div>
+  </div>
+  <div class="tip mt"><span class="tag">Tip</span><span>To debug an app, open the <b>Logs</b> tab of the app. It shows stdout and stderr of the app process.</span></div>
+</section>
+
+<!-- 20. Productivity -->
+<section class="slide" data-toc="Developer productivity">
+  <div class="kicker"><span class="num">18</span>Productivity</div>
+  <div class="title-row"><img class="icon" src="assets/icons/notebooks.png" alt=""><h1>Productivity</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>Databricks notebooks</h3><p>The main tool for data science and ML work. Real-time co-authoring in many languages, automatic versions and built-in visuals.</p></div>
+    <div class="term"><h3>Genie Code</h3><p>The AI pair programmer in notebooks, the SQL editor, pipelines and dashboards. It has three modes: Chat, Edit and Agent. The Genie Code CLI is <span class="hl">GA</span>.</p></div>
+    <div class="term"><h3>Agent mode</h3><p>Genie Code plans and runs multi-step work for you: it explores data, writes code, runs it and fixes errors.</p></div>
+    <div class="term"><h3>Declarative Automation Bundles</h3><p>Define jobs, pipelines, apps and other resources as code. Deploy them with CI/CD. Use Git folders for source control in the workspace.</p></div>
+  </div>
+</section>
+
+<!-- 21. Data Storage Layer (redrawn) -->
+<section class="slide" data-toc="Storage layer and open formats">
+  <div class="kicker"><span class="num">19</span>Storage</div>
+  <div class="title-row"><img class="icon" src="assets/icons/iceberg.png" alt=""><h1>Data Storage Layer</h1></div>
+  <div class="terms two">
+    <div class="term compact"><h3>Delta Lake</h3><p>Open source table format. It adds an ACID transaction log and scalable metadata to Parquet files.</p></div>
+    <div class="term compact"><h3>Apache Iceberg&trade;</h3><p>Open table format with schema evolution, time travel and hidden partitions. Unity Catalog manages Iceberg tables too.</p></div>
+  </div>
+  <div class="figure mt" style="padding:26px">
+    <svg viewBox="0 0 960 600" font-family="DM Sans" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ef2e29"/></marker></defs>
+      <g text-anchor="middle" fill="#1e2d34">
+        <text x="480" y="30" font-size="21" font-weight="700" fill="#ef2e29" letter-spacing="1.5">ONE COPY OF DATA, MANY ENGINES</text>
+        <rect x="20" y="60" width="280" height="110" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="160" y="108" font-size="21" font-weight="700">Databricks</text><text x="160" y="138" font-size="17" fill="#4a5a62">SQL, Spark, ML</text>
+        <rect x="340" y="60" width="280" height="110" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="480" y="108" font-size="21" font-weight="700">External engines</text><text x="480" y="138" font-size="17" fill="#4a5a62">Iceberg REST catalog API</text>
+        <rect x="660" y="60" width="280" height="110" rx="16" fill="#fff" stroke="#e6e9ea" stroke-width="3"/>
+        <text x="800" y="108" font-size="21" font-weight="700">Partners</text><text x="800" y="138" font-size="17" fill="#4a5a62">OpenSharing recipients</text>
+        <rect x="20" y="240" width="920" height="110" rx="18" fill="#ef2e29"/>
+        <text x="480" y="290" font-size="25" font-weight="700" fill="#fff">Unity Catalog</text>
+        <text x="480" y="322" font-size="18" fill="#fff">access control, lineage, metadata for Delta Lake and Iceberg tables</text>
+        <rect x="20" y="420" width="445" height="160" rx="18" fill="#fde9e9"/>
+        <text x="242" y="478" font-size="22" font-weight="700">Delta Lake tables</text>
+        <text x="242" y="510" font-size="17" fill="#4a5a62">UniForm adds Iceberg metadata,</text>
+        <text x="242" y="534" font-size="17" fill="#4a5a62">so Iceberg clients can read them</text>
+        <rect x="495" y="420" width="445" height="160" rx="18" fill="#fde9e9"/>
+        <text x="717" y="478" font-size="22" font-weight="700">Managed Iceberg tables</text>
+        <text x="717" y="510" font-size="17" fill="#4a5a62">native Iceberg, read and write</text>
+        <text x="717" y="534" font-size="17" fill="#4a5a62">from any Iceberg engine</text>
+      </g>
+      <g stroke="#ef2e29" stroke-width="3" marker-end="url(#c)" marker-start="url(#c)">
+        <line x1="160" y1="178" x2="160" y2="232"/><line x1="480" y1="178" x2="480" y2="232"/><line x1="800" y1="178" x2="800" y2="232"/>
+        <line x1="242" y1="358" x2="242" y2="412"/><line x1="717" y1="358" x2="717" y2="412"/>
+      </g>
+      <text x="480" y="596" font-size="16" text-anchor="middle" fill="#757e82">Parquet files in your cloud object storage (S3, ADLS, GCS)</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 22. Monitoring -->
+<section class="slide" data-toc="Monitoring and observability">
+  <div class="kicker"><span class="num">20</span>Operations</div>
+  <div class="title-row"><img class="icon" src="assets/icons/monitoring.png" alt=""><h1>Monitoring</h1></div>
+  <div class="terms">
+    <div class="term compact"><h3>System tables</h3><p>Built-in tables with operational data: billing, audit logs, jobs, compute, lineage and more. Query them with SQL.</p></div>
+    <div class="term compact"><h3>Anomaly detection</h3><p>Part of data quality monitoring. It checks the freshness and completeness of each table in a schema, with no setup per table.</p></div>
+    <div class="term compact"><h3>Data profiling</h3><p>Summary statistics for a table over time. It also profiles inference tables to track ML models and serving endpoints.</p></div>
+    <div class="term compact"><h3>Production monitoring</h3><p>Quality checks on the traces of GenAI apps and agents in production.</p></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="figure flush"><img src="assets/diagrams/monitoring-inference.jpg" alt="Data profiling on input tables, feature tables and inference tables"></div>
+</section>
+
+<!-- 23. Accelerators -->
+<section class="slide" data-toc="Accelerators and ecosystem">
+  <div class="kicker"><span class="num">21</span>Ecosystem</div>
+  <div class="title-row"><img class="icon" src="assets/icons/lakebridge.png" alt=""><h1>Accelerators</h1></div>
+  <div class="terms fill">
+    <div class="term"><h3>Lakebridge</h3><p>A migration toolkit. It profiles legacy data warehouses and ETL, converts the code to Databricks SQL and checks the results.</p></div>
+    <div class="term"><h3>Solution Accelerators</h3><p>Prebuilt, customizable notebooks and best practices for common industry use cases.</p></div>
+    <div class="term"><h3>MCP servers</h3><p>Model Context Protocol (MCP) servers give agents tools to reach external systems. Install them from Marketplace or bring your own. Unity Gateway governs them.</p></div>
+    <div class="term"><h3>Private exchanges</h3><p>Make some Marketplace data products visible only to a selected group of consumers.</p></div>
+  </div>
+</section>
+
+<!-- 24. Closing -->
+<section class="slide cover">
+  <div class="blob" style="width:1300px;height:1300px;right:-760px;bottom:-640px"></div>
+  <div class="blob" style="width:420px;height:420px;left:-180px;top:-160px;background:#fbd9d9"></div>
+  <h1 style="font-size:132px">Keep<br>learning</h1>
+  <div class="tagline" style="font-size:38px;margin-top:40px">Follow the Starter Journey step by step,<br>from your first workspace to production.</div>
+  <ul class="checks mt" style="margin-top:56px">
+    <li><b>Starter Journey:</b> databricks-solutions.github.io/starter-journey</li>
+    <li><b>Release notes:</b> docs.databricks.com/aws/en/release-notes/product</li>
+  </ul>
+  <p class="caption" style="text-align:left;margin-top:56px;font-size:21px">Original content by Lingeshwaran Kanniappan.</p>
+</section>
+
+<script>
+(function () {
+  const edition = document.body.dataset.edition;
+  const slides = [...document.querySelectorAll('.slide')];
+  const arrow = '<svg viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // Table of contents from data-toc attributes.
+  const toc = document.getElementById('toc');
+  let n = 0;
+  slides.forEach((s, i) => {
+    if (!s.dataset.toc) return;
+    n += 1;
+    const row = document.createElement('div');
+    row.innerHTML = `<span class="n">${String(n).padStart(2, '0')}</span><span>${s.dataset.toc}</span><span class="pg">p. ${i + 1}</span>`;
+    toc.appendChild(row);
+  });
+
+  // Footer on every slide.
+  slides.forEach((s, i) => {
+    const last = i === slides.length - 1;
+    const f = document.createElement('div');
+    f.className = 'footer';
+    f.innerHTML =
+      `<span>${edition}</span>` +
+      `<span class="brand">Starter Journey</span>` +
+      `<span class="right"><span class="page">${i + 1} / ${slides.length}</span>` +
+      (last ? '' : `<span class="arrow">${arrow}</span>`) + `</span>`;
+    s.appendChild(f);
+  });
+
+  // Layout check: report any block that ends below the footer line.
+  if (location.hash === '#check') {
+    const out = [];
+    slides.forEach((s, i) => {
+      const top = s.getBoundingClientRect().top;
+      const limit = 1500 - 130;
+      [...s.children].forEach(c => {
+        if (c.classList.contains('footer') || c.classList.contains('blob') || c.tagName === 'SCRIPT') return;
+        const b = c.getBoundingClientRect().bottom - top;
+        if (b > limit) out.push(`page ${i + 1}: ${c.className || c.tagName} ends at ${Math.round(b)}px`);
+      });
+      s.querySelectorAll('.term').forEach(t => { if (t.scrollHeight > t.clientHeight + 2) out.push(`page ${i + 1}: card text overflows`); });
+    });
+    const pre = document.createElement('pre'); pre.id = 'layout-report';
+    pre.textContent = out.length ? out.join('\n') : 'LAYOUT OK';
+    document.body.appendChild(pre);
+  }
+})();
+</script>
+</body>
+</html>
