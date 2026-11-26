@@ -27,6 +27,19 @@
   max-width: 700px;
 }
 
+.movedNotice {
+  margin-bottom: 2rem;
+}
+
+.movedNotice :global(.button--warning),
+.movedNotice :global(.button--warning):hover {
+  color: #1c1e21;
+}
+
+.movedNotice p {
+  margin-bottom: 0.75rem;
+}
+
 .heroTitle {
   font-size: 5.25rem;
   font-weight: 800;

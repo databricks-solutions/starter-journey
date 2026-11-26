@@ -19,6 +19,17 @@ function HomepageHero() {
       <HeaderAnimation isDarkMode={isDarkTheme} />
       <div className={styles.heroOverlay}>
         <div className={styles.heroText}>
+          <div className={`alert alert--warning ${styles.movedNotice}`} role="alert">
+            <p>
+              <strong>Starter Journey has moved to the official Databricks documentation</strong>{' '}
+              and is no longer maintained.
+            </p>
+            <Link
+              className="button button--warning"
+              href="https://docs.databricks.com/aws/en/getting-started/starter-journey/">
+              Go to the new guide →
+            </Link>
+          </div>
           <Heading as="h1" className={styles.heroTitle}>
             {siteConfig.title}
           </Heading>
