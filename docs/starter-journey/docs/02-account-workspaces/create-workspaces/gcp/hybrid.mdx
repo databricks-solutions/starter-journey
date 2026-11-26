@@ -114,8 +114,8 @@ If you are **new to Databricks** and do not already have a VPC, start with **Sta
 
 | Terraform template | What it creates | URL |
 | --- | --- | --- |
-| 💎 **Standalone (new VPC)** | <ul><li>VPC, subnet (`private_ip_google_access`)</li><li>Cloud Router and Cloud NAT</li><li>Databricks MWS network and workspace</li><li>Workspace admin user in `admins` group</li><li>GCS buckets for workspace storage (Databricks-managed)</li></ul> | [gcp-byovpc-standalone](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-standalone) |
-| **Shared VPC (existing network)** | <ul><li>Databricks MWS network referencing existing VPC/subnet</li><li>Databricks workspace</li><li>Workspace admin user in `admins` group</li><li>Optional Unity Catalog metastore assignment (`metastore_id`)</li></ul> | [gcp-byovpc-shared-vpc](https://github.com/databricks-solutions/technical-services-solutions/tree/main/workspace-setup/terraform-examples/gcp/gcp-byovpc-shared-vpc) |
+| 💎 **Standalone (new VPC)** | <ul><li>VPC, subnet (`private_ip_google_access`)</li><li>Cloud Router and Cloud NAT</li><li>Databricks MWS network and workspace</li><li>Workspace admin user in `admins` group</li><li>GCS buckets for workspace storage (Databricks-managed)</li></ul> | [gcp-byovpc-standalone](https://github.com/databricks-solutions/technical-services-solutions/releases/tag/gcp-byovpc-standalone-latest) |
+| **Shared VPC (existing network)** | <ul><li>Databricks MWS network referencing existing VPC/subnet</li><li>Databricks workspace</li><li>Workspace admin user in `admins` group</li><li>Optional Unity Catalog metastore assignment (`metastore_id`)</li></ul> | [gcp-byovpc-shared-vpc](https://github.com/databricks-solutions/technical-services-solutions/releases/tag/gcp-byovpc-shared-vpc-latest) |
 
 :::warning
 For **Shared VPC** when the VPC lives in a **host project**, grant the GSA `roles/compute.networkUser` and `roles/compute.networkViewer` on the host project. Enable Shared VPC and attach the service project per the template README.
