@@ -1,5 +1,8 @@
 # Starter Journey
 
+> **Starter Journey has moved to the official Databricks documentation and is no longer maintained.**
+> Go to the new guide: https://docs.databricks.com/aws/en/getting-started/starter-journey/
+
 A step-by-step guide for people getting started on Databricks. Whether you're setting up your first workspace, connecting to data, building pipelines, or exploring AI/ML, this guide walks you through each stage from foundations to production-ready workflows.
 
 Built with [Docusaurus](https://docusaurus.io/) and deployed to GitHub Pages.

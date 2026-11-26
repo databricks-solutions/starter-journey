@@ -138,6 +138,14 @@ const config: Config = {
 
   themeConfig: {
     image: 'img/starter-journey-social-card.png',
+    announcementBar: {
+      id: 'moved-to-official-docs',
+      content:
+        'Starter Journey has moved to the official Databricks documentation and is no longer maintained. <a href="https://docs.databricks.com/aws/en/getting-started/starter-journey/">Go to the new guide</a>',
+      backgroundColor: '#ffc94d',
+      textColor: '#1c1e21',
+      isCloseable: false,
+    },
     colorMode: {
       defaultMode: 'light',
       respectPrefersColorScheme: false,

@@ -1,9 +1,7 @@
 name: Section freshness
 
 on:
-  schedule:
-    # Mondays 14:00 UTC
-    - cron: '0 14 * * 1'
+  # Weekly schedule removed: the project moved to the official Databricks docs and is no longer maintained.
   workflow_dispatch:
 
 permissions:
